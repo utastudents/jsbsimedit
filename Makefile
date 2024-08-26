@@ -92,8 +92,8 @@ clean:
 	$(RM) $(OUTPUTMAIN)
 	$(RM) $(call FIXPATH,$(OBJECTS))
 	$(RM) $(call FIXPATH,$(DEPS))
-	@echo Cleanup complete!
+	 
 
 run: all
 	./$(OUTPUTMAIN)
-	@echo Executing 'run: all' complete!
+	 
