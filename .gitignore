@@ -33,6 +33,7 @@
 
 # Build Directory
 out/build/
+output
 
 # Macos stuff
 .DS_Store
