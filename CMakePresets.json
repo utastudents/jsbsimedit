@@ -1,54 +1,75 @@
 {
-  "version": 3,
-  "configurePresets": [
-    {
-      "name": "windows-x64-Clang-Debug",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build",
-      "description": "This build is only for windows clang builds",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-        "CMAKE_C_COMPILER": "clang-cl",
-        "CMAKE_CXX_COMPILER": "clang-cl",
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_INSTALL_OPTIONS": "--x-buildtrees-root=C:/gtkmm"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "intelliSenseMode": "windows-clang-x64"
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "Windows-x64-Clang-Debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build",
+            "description": "This preset is only for Windows Clang Debug Builds",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "clang-cl",
+                "CMAKE_CXX_COMPILER": "clang-cl",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALL_OPTIONS": "--x-buildtrees-root=C:/gtkmm"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "intelliSenseMode": "windows-clang-x64"
+                }
+            }
+        },
+        {
+            "name": "Windows-x64-Debug",
+            "inherits": "Windows-x64-Clang-Debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build",
+            "description": "This preset is only for Windows MSVC Debug Builds",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "cl",
+                "CMAKE_CXX_COMPILER": "cl"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "intelliSenseMode": "windows-msvc-x64"
+                }
+            }
+        },
+        {
+            "name": "Windows-x64-Clang-Release",
+            "description": "This preset is only for Windows Wlang Release Builds",
+            "inherits": "Windows-x64-Clang-Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "Windows-x64-Release",
+            "description": "This preset is only for Windows MSVC Release Builds",
+            "inherits": "Windows-x64-Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "MacOS-Arm64-Clang-Debug",
+            "description": "This preset is only for MacOS Clang Debug Builds",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "MacOS-Arm64-Clang-Release",
+            "description": "This preset is only for MacOS Clang Release Builds",
+            "inherits": "Windows-x64-Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
         }
-      }
-    },
-    {
-      "name": "windows-x64-Debug",
-      "inherits": "windows-x64-Clang-Debug",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build",
-      "description": "This build is only for windows builds",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "cl",
-        "CMAKE_CXX_COMPILER": "cl"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "intelliSenseMode": "windows-msvc-x64"
-        }
-      }
-    },
-    {
-      "name": "windows-x64-Clang-Release",
-      "inherits": "windows-x64-Clang-Debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    },
-    {
-      "name": "windows-x64-Release",
-      "inherits": "windows-x64-Debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    }
-  ]
+    ]
 }
