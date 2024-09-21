@@ -32,7 +32,8 @@
 *.app
 
 # Build Directory
-out/build/
+out/*
+build/*
 output
 
 # Macos stuff
@@ -59,3 +60,6 @@ output
 
 # Visual Studio
 .vs/*
+
+# CMake
+CMakeUserPresets.json
