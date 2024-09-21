@@ -56,3 +56,6 @@ output
 # Ignore all local history of files
 .history
 .ionide
+
+# Visual Studio
+.vs/*
