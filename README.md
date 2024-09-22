@@ -13,7 +13,7 @@
     <a href="https://github.com/utastudents/jsbsimedit/releases">
         <img src="https://img.shields.io/github/downloads/utastudents/jsbsimedit/total.svg?style=flat-square&label=Downloads" alt="JSBSimEdit Downloads">
     </a>
-    <a href="https://github.com/official-antistasi-community/A3-Antistasi/blob/unstable/LICENSE">
+    <a href="https://github.com/utastudents/jsbsimedit/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-GPL2.0-blue.svg?style=flat-square" alt="JSBSimEdit License">
     </a>
 </p>
