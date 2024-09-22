@@ -1,6 +1,6 @@
 <div>
 <p align="center">
-    <img src="https://dummyimage.com/200x200/db9e60/277487&text=Placeholder" width="240">
+    <img src="assets/JSBSimEdit512x512.png" width="240">
 </p>
 
 <p align="center">
@@ -43,10 +43,11 @@ Building on Windows Requires the following. Clang tooling is optional if you don
 1. Download Visual Studio 2022 community edition or download just the build tools if using another IDE.
 2. Download the Clang tooling for VS22 if targeting llvm.
 3. Download CMake 3.25.1 or greater.
-4. ```git clone https://github.com/utastudents/jsbsimedit.git```
-5. cd to the cloned directory
-6. Generate build files ```cmake --present=Windows-x64-Clang-Debug .```
-7. Use CMake to build ```cmake --build out/build/Windows-x64-Clang-Debug```
+4. Open the Developer PowerShell for VS 2022
+5. ```git clone https://github.com/utastudents/jsbsimedit.git```
+6. cd to the cloned directory
+7. Generate build files ```cmake --present=Windows-x64-Clang-Debug .```
+8. Use CMake to build ```cmake --build out/build/Windows-x64-Clang-Debug```
 #### Linux
 - [CMake 3.25.1+](https://cmake.org/)
 - Clang 17+ 
