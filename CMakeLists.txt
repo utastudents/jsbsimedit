@@ -49,7 +49,6 @@ target_compile_options(${PROJECT_NAME} PUBLIC ${GTKMM4_CFLAGS_OTHER})
 
 if(WIN32)
     message("Compiling Schemas for Windows")
-    find_program(CMD_EXEC names "compile_schemas.bat")
     message(STATUS ${CMD_EXEC})
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMD_EXEC})
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmd /c ${CMAKE_SOURCE_DIR}/compile_schemas.bat)
 endif()
