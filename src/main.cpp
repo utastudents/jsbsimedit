@@ -12,9 +12,8 @@
 #include <fstream>
 #include <ostream>
 #include <istream>
-#include <array>
-#include <vector>
 #include <sstream>
+#include <filesystem>
 
 static void foo_parser_start_element(GMarkupParseContext* context,
     const gchar* element_name,
@@ -144,8 +143,16 @@ static int xml_main(void)
     gboolean success = FALSE;
     glong len;
 
+    std::filesystem::path path{"../../../reference/JSBSimCommander/f16.xml"};
+
+    if(!std::filesystem::exists(path))
+    {
+        g_printerr("ERROR: file does not exist\n");
+        return 1;
+    }
+
     // TODO: add error handling here, this will fail if the path is wrong. - Ellis Nielsen
-    std::ifstream t("..\\..\\..\\reference\\JSBSimCommander\\f16.xml");
+    std::ifstream t(path.c_str());
     std::stringstream buffer;
     buffer << t.rdbuf();
 
