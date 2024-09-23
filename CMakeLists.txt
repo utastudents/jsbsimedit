@@ -4,7 +4,7 @@ project(JSBSimEdit)
 
 
 # get the files recursively so that programmers don't have to touch this file
-file(GLOB_RECURSE SIMEDIT_SOURCES src/*.hpp src/*.cpp src/*.h src/*.c)
+file(GLOB_RECURSE SIMEDIT_SOURCES src/*.cpp src/*.c)
 
 add_executable(${PROJECT_NAME} ${SIMEDIT_SOURCES})
 
