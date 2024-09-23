@@ -1,7 +1,6 @@
 Name			           e-mail			                    github ID
 ---------------------------------------------------------
 Bud Davis            jimmie.davis@uta.edu	          BudDavis
-Shaikh Islam         shaikh.islam@uta.edu           shaikhalvee
 Ellis Nielsen        ellis.nielsen@mavs.uta.edu	    Killerswin2
 Safiullah Ahmed      sxa5280@mavs.uta.edu           safahmed1
 Wilmer Soriano	     wes5481@mavs.uta.edu	          UTA-Wilmer
@@ -25,5 +24,4 @@ Zac Montgomery       zdm9277@mavs.uta.edu	    zdm9277
 Chris Pressley       cdp7684@mavs.uta.edu           cdp7684
 Saul Lara            sxl8275@mavs.uta.edu           Saul568
 Jorge Tovar          jxt2222@mavs.uta.edu           JorgeT-1
-Sujal More           srm6735@mavs.uta.edu           Sujal7002
-Jake Browder         jrb6943@mavs.uta.edu           jakeb856
+Sujal More           srm6735@mvas.uta.edu           Sujal7002
