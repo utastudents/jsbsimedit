@@ -1,5 +1,7 @@
-#include "examplewindow.h"
+#include "ExampleWindow.hpp"
 #include <iostream>
+
+namespace JSBEdit {
 
 ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     : m_Box(Gtk::Orientation::VERTICAL),
@@ -157,3 +159,5 @@ void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
     std::cout << (m_refRecentManager->has_item(selected_uri) ? "A" : "Not a")
         << " recently used file" << std::endl;
 }
+
+};

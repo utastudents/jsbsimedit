@@ -1,7 +1,8 @@
-#ifndef GTKMM_EXAMPLEWINDOW_H
-#define GTKMM_EXAMPLEWINDOW_H
+#pragma once
 
 #include <gtkmm.h>
+
+namespace JSBEdit {
 
 class ExampleWindow : public Gtk::Window
 {
@@ -26,4 +27,4 @@ protected:
 	Glib::RefPtr<Gtk::FileDialog> m_refFileDialog;
 };
 
-#endif //GTKMM_EXAMPLEWINDOW_H
+};

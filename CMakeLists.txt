@@ -44,7 +44,7 @@ pkg_check_modules(GTKMM4 REQUIRED IMPORTED_TARGET gtkmm-4.0)
 # we use pkgconfig, we must link manually here
 target_link_libraries(${PROJECT_NAME} ${GTKMM4_LIBRARIES})
 target_link_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_LIBRARY_DIRS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_INCLUDE_DIRS} PUBLIC "src")
 target_compile_options(${PROJECT_NAME} PUBLIC ${GTKMM4_CFLAGS_OTHER})
 
 if(WIN32)
