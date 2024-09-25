@@ -3,19 +3,21 @@
 
 #include <string>
 
-namespace JSBEdit {
-
-class XMLDoc
+namespace JSBEdit
 {
-private:
-    std::string m_xmlData;
-    XMLParser* m_pParser;
-    void GetFileContexts(const std::filesystem::path& path);
-    bool ParseData();
-public:
-    XMLDoc();
-    ~XMLDoc();
-    void LoadFileAndParse(const std::filesystem::path& path);
-};
+
+    class XMLDoc
+    {
+    private:
+        Glib::ustring m_xmlData;
+        XMLParser *m_pParser;
+        void GetFileContexts(const std::filesystem::path &path);
+        bool ParseData();
+
+    public:
+        XMLDoc();
+        ~XMLDoc();
+        void LoadFileAndParse(const std::filesystem::path &path);
+    };
 
 };

@@ -3,16 +3,18 @@
 #include <gtkmm.h>
 #include <gtkmm/application.h>
 
-namespace JSBEdit {
-
-class Application
+namespace JSBEdit
 {
-private:
-    Glib::RefPtr<Gtk::Application> m_pApp;
-public:
-    Application();
-    int Run();
-    int Stop();
-};
+
+    class Application
+    {
+    private:
+        Glib::RefPtr<Gtk::Application> m_pApp;
+
+    public:
+        Application();
+        int Run();
+        int Stop();
+    };
 
 };
