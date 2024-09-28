@@ -1,46 +1,46 @@
 {
     "version": 3,
     "configurePresets": [
-      {
-        "name": "Windows-x64-Clang-Debug",
-        "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "description": "This preset is only for Windows Clang Debug Builds",
-        "architecture": {
-          "value": "x64",
-          "strategy": "external"
+        {
+            "name": "Windows-x64-Clang-Debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "description": "This preset is only for Windows Clang Debug Builds",
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "clang-cl",
+                "CMAKE_CXX_COMPILER": "clang-cl",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALL_OPTIONS": "--x-buildtrees-root=C:/gtkmm",
+                "VCPKG_TARGET_TRIPLET": "x64-windows"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "intelliSenseMode": "windows-clang-x64"
+                }
+            }
         },
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Debug",
-          "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-          "CMAKE_C_COMPILER": "clang-cl",
-          "CMAKE_CXX_COMPILER": "clang-cl",
-          "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-          "VCPKG_INSTALL_OPTIONS": "--x-buildtrees-root=C:/gtkmm",
-          "VCPKG_TARGET_TRIPLET": "x64-windows"
+        {
+            "name": "Windows-x64-Debug",
+            "inherits": "Windows-x64-Clang-Debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "description": "This preset is only for Windows MSVC Debug Builds",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "cl",
+                "CMAKE_CXX_COMPILER": "cl"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "intelliSenseMode": "windows-msvc-x64"
+                }
+            }
         },
-        "vendor": {
-          "microsoft.com/VisualStudioSettings/CMake/1.0": {
-            "intelliSenseMode": "windows-clang-x64"
-          }
-        }
-      },
-      {
-        "name": "Windows-x64-Debug",
-        "inherits": "Windows-x64-Clang-Debug",
-        "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "description": "This preset is only for Windows MSVC Debug Builds",
-        "cacheVariables": {
-          "CMAKE_C_COMPILER": "cl",
-          "CMAKE_CXX_COMPILER": "cl"
-        },
-        "vendor": {
-          "microsoft.com/VisualStudioSettings/CMake/1.0": {
-            "intelliSenseMode": "windows-msvc-x64"
-          }
-        }
-      },
         {
             "name": "Windows-x64-Clang-Release",
             "description": "This preset is only for Windows Wlang Release Builds",
@@ -72,7 +72,7 @@
         {
             "name": "MacOS-Arm64-Clang-Release",
             "description": "This preset is only for MacOS Clang Release Builds",
-            "inherits": "Windows-x64-Debug",
+            "inherits": "MacOS-Arm64-Clang-Debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
@@ -92,10 +92,30 @@
         {
             "name": "Linux-x64-Clang-Release",
             "description": "This preset is only for Linux Clang Release Builds",
-            "inherits": "Windows-x64-Debug",
+            "inherits": "Linux-x64-Clang-Debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
-        }
+        },
+        {
+          "name": "Linux-x64-GCC-Debug",
+          "generator": "Unix Makefiles",
+          "description": "This preset is only for Linux GCC Debug Builds",
+          "binaryDir": "${sourceDir}/out/build/${presetName}",
+          "cacheVariables": {
+              "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+              "CMAKE_C_COMPILER": "/usr/bin/gcc",
+              "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+              "CMAKE_BUILD_TYPE": "Debug"
+          }
+      },
+      {
+          "name": "Linux-x64-GCC-Release",
+          "description": "This preset is only for Linux GCC Release Builds",
+          "inherits": "Linux-x64-GCC-Debug",
+          "cacheVariables": {
+              "CMAKE_BUILD_TYPE": "Release"
+          }
+      }
     ]
 }
