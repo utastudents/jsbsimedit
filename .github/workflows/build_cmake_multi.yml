@@ -1,0 +1,104 @@
+name: Build CMake on multiple platforms
+# vcpkg to use github cache
+env: 
+    VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: 
+      - 'src/**'
+  pull_request:
+    branches: [ "main" ]
+    paths: 
+      - 'src/**'
+
+jobs:
+  build-windows:
+    name: Build Windows Clang
+    runs-on: windows-latest
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+      # use the git action cache to speed up vcpkgs
+    steps:
+    - name: Export GitHub Actions cache environment variables
+      uses: actions/github-script@v7
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+      # this prevents cmake from finding the wrong compiler
+    - name: setup the windows commandline
+      uses: TheMrMilchmann/setup-msvc-dev@v3
+      with:
+        arch: x64
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+
+    - name: Get ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+
+    - name: Configure CMake
+      run: >
+        cmake --preset Windows-x64-Clang-Debug -S ${{ github.workspace }}
+    - name: Build
+      run: cmake --build ${{ github.workspace }}/out/build/Windows-x64-Clang-Debug
+
+  build-linux:
+    name: Build Linux Clang
+    runs-on: ubuntu-24.04
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+      # use the git action cache to speed up vcpkgs
+    steps:
+    - name: Update apt-get
+      run: |
+        lsb_release -a
+        sudo add-apt-repository "http://us.archive.ubuntu.com/ubuntu/"
+        sudo add-apt-repository "http://security.ubuntu.com/ubuntu/"
+        sudo apt-get update
+
+
+    - name: get gtkmm
+      run: |
+        sudo apt-get install libgtkmm-4.0-dev
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+
+    - name: Configure CMake
+      run: >
+        cmake --preset Linux-x64-Clang-Debug -S ${{ github.workspace }}
+    - name: Build
+      run: cmake --build ${{ github.workspace }}/out/build/Linux-x64-Clang-Debug
+
+  build-macos:
+    name: Build MacOS Clang
+    runs-on: macos-14
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+      # use the git action cache to speed up vcpkgs
+    steps:
+    - name: Homebrew update and gtkmm
+      run: |
+        brew update
+        brew install gtkmm4
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: >
+        cmake --preset MacOS-Arm64-Clang-Debug -S ${{ github.workspace }}
+    - name: Build
+      run: cmake --build ${{ github.workspace }}/out/build/MacOS-Arm64-Clang-Debug

@@ -32,13 +32,15 @@
 *.app
 
 # Build Directory
-out/build/
+out/*
+build/*
 output
 
 # Macos stuff
 .DS_Store
 
 # vs code
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -56,3 +58,9 @@ output
 # Ignore all local history of files
 .history
 .ionide
+
+# Visual Studio
+.vs/*
+
+# CMake
+CMakeUserPresets.json
