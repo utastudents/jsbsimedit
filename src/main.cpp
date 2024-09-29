@@ -12,8 +12,11 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
 
     JSBEdit::Application app;
 
+    std::filesystem::path path {app.GetApplicationPath()};
+    path = std::filesystem::canonical(path.append("../../../reference/JSBSimCommander/f16.xml"));
+
     JSBEdit::XMLDoc doc;
-    doc.LoadFileAndParse({"../../../reference/JSBSimCommander/f16.xml"});
+    doc.LoadFileAndParse(path);
 
     //Shows the window and returns when it is closed.
     return app.Run();

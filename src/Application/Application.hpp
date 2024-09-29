@@ -10,11 +10,13 @@ namespace JSBEdit
     {
     private:
         Glib::RefPtr<Gtk::Application> m_pApp;
+        Glib::ustring m_appPath;
 
     public:
         Application();
         int Run();
         int Stop();
+        Glib::ustring GetApplicationPath();
     };
 
 };

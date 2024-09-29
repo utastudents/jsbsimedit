@@ -8,6 +8,7 @@ namespace JSBEdit
     Application::Application()
     {
         m_pApp = Gtk::Application::create("org.gtkmm.example");
+        m_appPath = Glib::get_current_dir();
     }
     int Application::Run()
     {
@@ -16,6 +17,10 @@ namespace JSBEdit
     int Application::Stop()
     {
         return 0;
+    }
+    Glib::ustring Application::GetApplicationPath()
+    {
+        return m_appPath;
     }
 
 };
