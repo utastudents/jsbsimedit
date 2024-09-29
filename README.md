@@ -22,6 +22,20 @@
 JSBSimEdit is the spiritual successor to [JSBSimCommander](https://github.com/JSBSim-Team/jsbsimcommander). Written in C++17 and targets MacOS, Windows, and Linux.
 
 ### Building
+#### Linux
+- [CMake 3.25.1+](https://cmake.org/)
+- Clang 17+ or GCC 13+
+- gtkmm 4.10+
+
+> **Warning**
+> Ubuntu 22.04 may not have libgtkmm-4.0-dev in the apt get repository. The recommend action is to use 24.04 if possible.
+##### Steps
+1. Download clang++ ```sudo apt install clang++``` or g++ ```sudo apt install g++```
+2. Download cmake ```sudo apt install cmake```
+3. Download gtkmm ```sudo apt install libgtkmm-4.0-dev```
+4. Clone source ```git clone https://github.com/utastudents/jsbsimedit.git```
+5. cd into directory and generator build files ```cmake --preset Linux-x64-Clang-Debug .``` make sure to note if you are using clang or gcc, you will need to change the preset
+6. Use CMake to build ```cmake --build out/build/Linux-x64-Clang-Debug```
 #### Windows
 Building on Windows Requires the following. Clang tooling is optional if you don't want to target llvm, the cl compiler will work just fine.
 - [Visual Studio 2022 community or VS build tools](https://visualstudio.microsoft.com/vs/community/)
@@ -46,19 +60,9 @@ Building on Windows Requires the following. Clang tooling is optional if you don
 4. Open the Developer PowerShell for VS 2022
 5. ```git clone https://github.com/utastudents/jsbsimedit.git```
 6. cd to the cloned directory
-7. Generate build files ```cmake --present=Windows-x64-Clang-Debug .```
+7. Generate build files ```cmake --preset Windows-x64-Clang-Debug .```
 8. Use CMake to build ```cmake --build out/build/Windows-x64-Clang-Debug```
-#### Linux
-- [CMake 3.25.1+](https://cmake.org/)
-- Clang 17+ 
-- gtkmm 4.10+
-##### Steps
-1. Download clang++ ```sudo apt install clang++```
-2. Download cmake ```sudo apt install cmake```
-3. Download gtkmm ```sudo apt install libgtkmm-4.0-dev```
-4. Clone source ```git clone https://github.com/utastudents/jsbsimedit.git```
-5. cd into directory and generator build files ```cmake --present=Linux-x64-Clang-Debug .```
-6. Use CMake to build ```cmake --build out/build/Linux-x64-Clang-Debug```
+
 #### MacOS
 - [Homebrew](https://brew.sh/)
 - [Xcode developer tools](https://developer.apple.com/xcode/)
@@ -70,5 +74,5 @@ Building on Windows Requires the following. Clang tooling is optional if you don
 3. Download and install [CMake](https://cmake.org/download/) for MacOS.
 4. Downoad gtkmm ```brew install gtkmm4```
 5. Clone source ```git clone https://github.com/utastudents/jsbsimedit.git```
-6. cd into directory and generator build files ```cmake --present=MacOS-Arm64-Clang-Debug .```
+6. cd into directory and generator build files ```cmake --preset MacOS-Arm64-Clang-Debug .```
 7. Use CMake to build ```cmake --build out/build/MacOS-Arm64-Clang-Debug```
