@@ -12,7 +12,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
 
     JSBEdit::Application app;
 
-    std::filesystem::path path {app.GetApplicationPath()};
+    std::filesystem::path path {app.GetApplicationPath().c_str()};
     path = std::filesystem::canonical(path.append("../../../reference/JSBSimCommander/f16.xml"));
 
     JSBEdit::XMLDoc doc;
