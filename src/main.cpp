@@ -17,6 +17,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
 
     JSBEdit::XMLDoc doc;
     doc.LoadFileAndParse(path);
+    JSBEdit::Metrics* metric = doc.GetMetricsData();
 
     //Shows the window and returns when it is closed.
     return app.Run();
