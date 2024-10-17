@@ -23,7 +23,7 @@ bool JSBEdit::XMLDoc::ParseData()
     //Glib::Markup::ParseContext parseContext{*m_pParser};
     //try {
     //    parseContext.parse(m_xmlData);
-    //} catch (Glib::MarkupError error) 
+    //} catch (Glib::MarkupError& error) 
     //{
     //    std::cerr << "Error: " << error.what() << "\n";
     //   return false;
