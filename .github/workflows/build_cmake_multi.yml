@@ -45,9 +45,9 @@ jobs:
 
     - name: Configure CMake
       run: >
-        cmake --preset Windows-x64-Clang-Debug -S ${{ github.workspace }}
+        cmake --preset Windows-x64-Debug -S ${{ github.workspace }}
     - name: Build
-      run: cmake --build ${{ github.workspace }}/out/build/Windows-x64-Clang-Debug
+      run: cmake --build ${{ github.workspace }}/out/build/Windows-x64-Debug
 
   build-linux:
     name: Build Linux Clang
