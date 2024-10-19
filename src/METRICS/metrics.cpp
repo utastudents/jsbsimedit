@@ -83,6 +83,13 @@ void Metrics::init() {
     vertex_data_units["Aerodynamic Reference Point"] = std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
     vertex_data_units["Eye Point"] = std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
     vertex_data_units["Visual Reference Point"] = std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
+
+    // Added map for the data units
+    std::map<std::string, std::vector<std::string>> data_unit_map;
+    data_unit_map["Positive_Double"] = {"Wingarea", "Wingspan", "Chord", "Htailarea", "Htailarm", "Vtailarea", "Vtailarm"};
+    data_unit_map["Norm_Double"] = {"Wing Incidence"};
+    data_unit_map["Vertex_Unit"] = {"Aerodynamic Reference Point", "Eye Point", "Visual Reference Point"};
+
 }
 
 int main(int argc, char* argv[]) {
