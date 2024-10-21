@@ -1,5 +1,5 @@
 #include <string>
-#include <XML/XMLDoc>
+#include <XML/XMLDoc.hpp>
 namespace JSBEdit
 {
 

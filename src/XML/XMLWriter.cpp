@@ -1,11 +1,11 @@
 #include <XML/XMLWriter.hpp>
 
-JBSEdit::XMLWriter::XMLWriter() {
+JSBEdit::XMLWriter::XMLWriter(JSBEdit::XMLDoc doc) {
 
 }
-JBSEdit::XMLWriter::~XMLWriter() {
+JSBEdit::XMLWriter::~XMLWriter() {
 
 }
-XMLDoc JBSEdit::XMLWriter::Write(const std::filesystem::path& path) {
-
+JSBEdit::XMLDoc JSBEdit::XMLWriter::Write(const std::filesystem::path& path) {
+    return JSBEdit::XMLDoc();
 }
