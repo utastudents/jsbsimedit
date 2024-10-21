@@ -1,10 +1,17 @@
 #pragma once
-#include <XML/XMLParser.hpp>
 
 #include <pugixml.hpp>
 #include <Metrics/Metrics.hpp>
 
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <ostream>
+#include <istream>
+#include <sstream>
+#include <filesystem>
+
+#include <glibmm.h>
 
 namespace JSBEdit
 {
