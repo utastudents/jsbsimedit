@@ -1,4 +1,4 @@
-#include "Metrics.h"
+#include <Metrics/Metrics.h>
 #include <iostream>
 
 // Constructor
@@ -92,7 +92,3 @@ void Metrics::init() {
 
 }
 
-int main(int argc, char* argv[]) {
-    Metrics metrics_system;
-    return 0;
-}

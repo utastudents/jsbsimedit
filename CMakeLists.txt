@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.25.1)
 
 project(JSBSimEdit)
 
+add_subdirectory(thirdparty/pugixml)
+
 
 # get the files recursively so that programmers don't have to touch this file
 file(GLOB_RECURSE SIMEDIT_SOURCES src/*.cpp src/*.c)
@@ -42,9 +44,9 @@ endif()
 pkg_check_modules(GTKMM4 REQUIRED IMPORTED_TARGET gtkmm-4.0)
 	
 # we use pkgconfig, we must link manually here
-target_link_libraries(${PROJECT_NAME} ${GTKMM4_LIBRARIES})
-target_link_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_LIBRARY_DIRS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_INCLUDE_DIRS} PUBLIC "src")
+target_link_libraries(${PROJECT_NAME} ${GTKMM4_LIBRARIES} pugixml::pugixml)
+target_link_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_LIBRARY_DIRS} PUBLIC pugixml::pugixml)
+target_include_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_INCLUDE_DIRS} PUBLIC "src" PUBLIC pugixml::pugixml)
 target_compile_options(${PROJECT_NAME} PUBLIC ${GTKMM4_CFLAGS_OTHER})
 
 if(WIN32)
