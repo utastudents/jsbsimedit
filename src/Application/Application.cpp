@@ -8,7 +8,7 @@ namespace JSBEdit
     Application::Application()
     {
         m_pApp = Gtk::Application::create("org.gtkmm.example");
-        m_appPath = Glib::get_current_dir();
+        m_aircraftDoc = std::make_shared<XMLDoc>();
     }
     int Application::Run()
     {
@@ -18,9 +18,10 @@ namespace JSBEdit
     {
         return 0;
     }
-    Glib::ustring Application::GetApplicationPath()
-    {
-        return m_appPath;
-    }
+
+    /*
+    * @brief Application singleton instance
+    */
+    Application Application::s_Instance;
 
 };

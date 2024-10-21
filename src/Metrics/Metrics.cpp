@@ -1,52 +1,94 @@
-#include "Metrics.hpp"
+#include <Metrics/Metrics.h>
+#include <iostream>
 
+// Constructor
+Metrics::Metrics() {
+    init();
+}
 
-namespace JSBEdit
-{
-	Metrics::WingArea::WingArea(double wingArea, Glib::ustring unit) : m_Unit{unit}
-	{
-		// check if WingArea is negative
-		if (wingArea > 0)
-		{
-			m_WingArea = wingArea;
-		}
-	}
+// Unit class methods
+Metrics::Unit::Unit(string_vector& p_bank) : unit_bank(p_bank) {}
 
-	Metrics::WingSpan::WingSpan(double wingSpan, Glib::ustring unit)
-	{
-		// check if WingArea is negative
-		if (wingSpan > 0)
-		{
-			m_WingSpan = wingSpan;
-		}
-	}
+Metrics::string_vector& Metrics::Unit::get_unit_bank() {
+    return unit_bank;
+}
 
-	Metrics::WingIncidence::WingIncidence(double wingIncidence, Glib::ustring unit) : m_WingIncidence{ wingIncidence }, m_Unit{unit}
-	{
-	}
+std::string Metrics::Unit::get_current_unit() {
+    return current_unit;
+}
 
-	Metrics::Chord::Chord(double chordLength, Glib::ustring unit) : m_chord{ chordLength }, m_Unit{ unit }
-	{
-	}
+void Metrics::Unit::set_current_unit(const std::string& p_unit) {
+    current_unit = p_unit;
+}
 
-	Metrics::HTailArea::HTailArea(double horizTailArea, Glib::ustring unit) : m_hTailArea{ horizTailArea }, m_Unit{unit}
-	{
-	}
+// Data_Unit class methods
+Metrics::Data_Unit::Data_Unit(string_vector& unit_bank) {
+    its_unit = std::make_unique<Unit>(unit_bank);
+}
 
-	Metrics::HTailArm::HTailArm(double horizTailArm, Glib::ustring unit): m_hTailArm{horizTailArm}, m_Unit{unit}
-	{
-	}
+double Metrics::Data_Unit::get_value() const {
+    return the_value;
+}
 
-	Metrics::VTailArea::VTailArea(double vertTailArea, Glib::ustring unit) : m_vTailArea{ vertTailArea }, m_Unit{unit}
-	{
-	}
+// Positive_Double class methods
+Metrics::Positive_Double::Positive_Double(double p_value, string_vector unit_bank)
+    : Data_Unit(unit_bank) {
+    set_value(p_value);
+}
 
-	Metrics::VTailArm::VTailArm(double vertTailArm, Glib::ustring unit) : m_vTailArm{ vertTailArm }, m_Unit{unit}
-	{
-	}
+void Metrics::Positive_Double::set_value(double p_value) {
+    if (p_value > 0)
+        the_value = p_value;
+}
 
-	Metrics::Location::Location(double x, double y, double z, Glib::ustring name, Glib::ustring unit) : m_name{ name }, m_Unit{ unit }, m_X{x}, m_Y{y}, m_Z{z}
-	{
-	}
+// Norm_Double class methods
+Metrics::Norm_Double::Norm_Double(double p_value, string_vector unit_bank)
+    : Data_Unit(unit_bank) {
+    set_value(p_value);
+}
 
-};
+void Metrics::Norm_Double::set_value(double p_value) {
+    the_value = p_value;
+}
+
+// Vertex_Unit class methods
+Metrics::Vertex_Unit::Vertex_Unit(double p_x, double p_y, double p_z, string_vector unit_bank)
+    : Data_Unit(unit_bank), x(p_x), y(p_y), z(p_z) {}
+
+void Metrics::Vertex_Unit::set_x(double p_x) { x = p_x; }
+void Metrics::Vertex_Unit::set_y(double p_y) { y = p_y; }
+void Metrics::Vertex_Unit::set_z(double p_z) { z = p_z; }
+
+double Metrics::Vertex_Unit::get_x() const { return x; }
+double Metrics::Vertex_Unit::get_y() const { return y; }
+double Metrics::Vertex_Unit::get_z() const { return z; }
+
+// Metrics init() method
+void Metrics::init() {
+    string_vector unit_bank = {"FT2", "M2", "FT", "M", "Deg", "In"};
+
+    // Add Positive_Double instances
+    positive_data_unit["Wingarea"] = std::make_unique<Positive_Double>(75.0, unit_bank);
+    positive_data_unit["Wingspan"] = std::make_unique<Positive_Double>(76.0, unit_bank);
+    positive_data_unit["Chord"] = std::make_unique<Positive_Double>(77.0, unit_bank);
+    positive_data_unit["Htailarea"] = std::make_unique<Positive_Double>(78.0, unit_bank);
+    positive_data_unit["Htailarm"] = std::make_unique<Positive_Double>(79.0, unit_bank);
+    positive_data_unit["Vtailarea"] = std::make_unique<Positive_Double>(80.0, unit_bank);
+    positive_data_unit["Vtailarm"] = std::make_unique<Positive_Double>(81.0, unit_bank);
+
+    // Add Norm_Double instance
+    normal_data_units["Wing Incidence"] = std::make_unique<Norm_Double>(37.0, unit_bank);
+
+    // Add Vertex_Unit instances
+    vertex_data_units["Aerodynamic Reference Point"] = std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
+    vertex_data_units["Eye Point"] = std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
+    vertex_data_units["Visual Reference Point"] = std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
+
+    // Added map for the data units
+    std::map<std::string, std::vector<std::string>> data_unit_map;
+    data_unit_map["Positive_Double"] = {"Wingarea", "Wingspan", "Chord", "Htailarea", "Htailarm", "Vtailarea", "Vtailarm"};
+    data_unit_map["Norm_Double"] = {"Wing Incidence"};
+    data_unit_map["Vertex_Unit"] = {"Aerodynamic Reference Point", "Eye Point", "Visual Reference Point"};
+
+}
+

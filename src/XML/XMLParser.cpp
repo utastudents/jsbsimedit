@@ -17,7 +17,10 @@ void JSBEdit::XMLParser::on_end_element([[maybe_unused]] Glib::Markup::ParseCont
 
 void JSBEdit::XMLParser::on_text([[maybe_unused]] Glib::Markup::ParseContext& context, const Glib::ustring& text)
 {
-    std::cout << "text: [" << text <<"]\n";
+    if(text.length() != 0)
+        std::cout << "text: [" << text <<"]\n";
+    else
+        std::cout << "text: [N/A]\n";
 }
 
 void JSBEdit::XMLParser::on_passthrough([[maybe_unused]] Glib::Markup::ParseContext& context, const Glib::ustring& passthrough_text)
