@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "BuoyantForces/MathFunctions.hpp"
+#include "BuoyantForces/MathFunction.hpp"
 
 // Forward declaration of Ballonet class
 class Ballonet;
