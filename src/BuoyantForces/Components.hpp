@@ -3,6 +3,8 @@
 #include <vector>
 #include "BuoyantForces/MathFunctions.hpp"
 
+// Forward declaration of Ballonet class
+class Ballonet;
 class Component
 {
     public:
