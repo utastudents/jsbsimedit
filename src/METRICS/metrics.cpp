@@ -92,7 +92,3 @@ void Metrics::init() {
 
 }
 
-int main(int argc, char* argv[]) {
-    Metrics metrics_system;
-    return 0;
-}
