@@ -6,6 +6,7 @@
 class Component
 {
     public:
+        Component();
         virtual ~Component() = default;
         void setLocation(double x, double y, double z);
         void setDimensions(double x, double y, double z);
@@ -34,7 +35,7 @@ class Component
 class GasCell : public Component
 {
     public:
-        GasCell(double v, double t, double p, double m, int g);
+        GasCell(double v, double t, double p, double m);
         ~GasCell();
 
     private:
@@ -45,11 +46,10 @@ class Ballonet : public Component
 {
     public:
         // Constructor Missing
-
         ~Ballonet();
         int getBallonetNumber();
         void createBallonetTab(int tabIndex);
-        void createBallonet(const std::string& name, const std::string& gasType);
+        void createBallonet(const std::string& name, GasType gasType);
         void inputBlowerValve(double blowerValue);
     
     private:
