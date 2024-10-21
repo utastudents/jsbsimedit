@@ -15,7 +15,7 @@ on:
 
 jobs:
   build-windows:
-    name: Build Windows Clang
+    name: Build Windows
     runs-on: windows-latest
 
     strategy:
@@ -49,7 +49,7 @@ jobs:
     - name: Build
       run: cmake --build ${{ github.workspace }}/out/build/Windows-x64-Debug
 
-  build-linux:
+  build-linux-Clang:
     name: Build Linux Clang
     runs-on: ubuntu-24.04
 
@@ -79,6 +79,38 @@ jobs:
         cmake --preset Linux-x64-Clang-Debug -S ${{ github.workspace }}
     - name: Build
       run: cmake --build ${{ github.workspace }}/out/build/Linux-x64-Clang-Debug
+
+  build-linux-GCC:
+    name: Build Linux GCC
+    runs-on: ubuntu-24.04
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+      # use the git action cache to speed up vcpkgs
+    steps:
+    - name: Update apt-get
+      run: |
+        lsb_release -a
+        sudo add-apt-repository "http://us.archive.ubuntu.com/ubuntu/"
+        sudo add-apt-repository "http://security.ubuntu.com/ubuntu/"
+        sudo apt-get update
+
+
+    - name: get gtkmm
+      run: |
+        sudo apt-get install libgtkmm-4.0-dev
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+
+    - name: Configure CMake
+      run: >
+        cmake --preset Linux-x64-GCC-Debug -S ${{ github.workspace }}
+    - name: Build
+      run: cmake --build ${{ github.workspace }}/out/build/Linux-x64-GCC-Debug
+
 
   build-macos:
     name: Build MacOS Clang
