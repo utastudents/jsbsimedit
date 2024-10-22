@@ -11,15 +11,15 @@ MathFunction::~MathFunction() {
 }
 
 void MathFunction::addFunction(std::string function) {
-
+    functionArray.push_back(function);
 }
 
 void MathFunction::addProperty(std::string property) {
-
+    propertyArray.push_back(property);
 }
 
 void MathFunction::addValue(double value){
-
+    valueArray.push_back(value);
 }
 
 double MathFunction::conduction(double surfaceArea, double conductivity) {
