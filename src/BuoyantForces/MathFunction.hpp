@@ -7,9 +7,9 @@ class MathFunction
     public:
         MathFunction();
         ~MathFunction();
-        void addFunction();
-        void addProperty();
-        void addValue();
+        void addFunction(std::string function);
+        void addProperty(std::string property);
+        void addValue(double value);
         double radiation(double emissivity, double surfaceArea, double stefanConst);
         double conduction(double surfaceArea, double conductivity);
         void del();     // delete method
@@ -17,7 +17,7 @@ class MathFunction
     private:
         std::string name;
         std::string description;
-        std::string dropDownMenu;
+        std::vector<std::string> dropDownMenu;
         std::vector<std::string> functionArray;
         std::vector<std::string> propertyArray;
         std::vector<double> valueArray;

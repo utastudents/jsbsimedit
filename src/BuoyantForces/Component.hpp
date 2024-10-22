@@ -12,20 +12,20 @@ class Component
         virtual ~Component() = default;
         void setLocation(double x, double y, double z);
         void setDimensions(double x, double y, double z);
-        void inputOverpressure(double max_overpressure);
-        void inputValveCoefficient(double valveCo);
+        void inputOverpressure(double overpressure);
+        void inputValveCoefficient(double valveCoefficient);
         void inputInitialFullness(double initFullness);
 
         enum GasType {HELIUM, HYDROGEN, AIR};
 
     protected:
         GasType gasType;
-        double fullness;
-        double overPressure;
         double location[3];
         double dimensions[3];
-        double volume;
+        double maxOverpressure;
+        double fullness;
         double valveCoefficient;
+        double volume;
         double temperature;
         double pressure;
         double mass;
@@ -50,7 +50,7 @@ class Ballonet : public Component
         ~Ballonet();
         int getBallonetNumber();
         void createBallonetTab(int tabIndex);
-        void inputBlowerValue(double blowerVal);
+        void inputBlowerValue(double blowerValue);
     
     private:
         std::string name;

@@ -1,4 +1,5 @@
 #include "MathFunction.hpp"
+#include <iostream>
 
 MathFunction::MathFunction() {
     // Constructor
@@ -9,15 +10,15 @@ MathFunction::~MathFunction() {
     // Destructor definition
 }
 
-void MathFunction::addFunction() {
+void MathFunction::addFunction(std::string function) {
 
 }
 
-void MathFunction::addProperty() {
+void MathFunction::addProperty(std::string property) {
 
 }
 
-void MathFunction::addValue(){
+void MathFunction::addValue(double value){
 
 }
 

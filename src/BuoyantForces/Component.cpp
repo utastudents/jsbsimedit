@@ -19,8 +19,8 @@ void Component::setDimensions(double x, double y, double z) {
     dimensions[2] = z;
 }
 
-void Component::inputOverpressure(double max_overpressure) { overPressure = max_overpressure; }
-void Component::inputValveCoefficient(double valveCo) { valveCoefficient = valveCo; }
+void Component::inputOverpressure(double overpressure) { maxOverpressure = overpressure; }
+void Component::inputValveCoefficient(double valveCoefficient) { valveCoefficient = valveCoefficient; }
 void Component::inputInitialFullness(double initFullness) { fullness = initFullness; }
 
 
@@ -50,5 +50,5 @@ void Ballonet::createBallonetTab(int tabIndex) {
 
 }
 
-void Ballonet::inputBlowerValue(double blowerVal) { blowerValue = blowerVal; }
+void Ballonet::inputBlowerValue(double blowerValue) { blowerValue = blowerValue; }
 
