@@ -19,10 +19,9 @@ void Component::setDimensions(double x, double y, double z) {
     dimensions[2] = z;
 }
 
-void Component::inputOverpressure(double overpressure) { overPressure = overpressure; }
-void Component::inputValveCoefficient(double valveCoefficient) { valveCoefficient = valveCoefficient; }
-void Component::inputInitialFullness(double fullness) { fullness = fullness; }
-// void Component::selectMeasurementUnits(const std::string& unit) { }
+void Component::inputOverpressure(double max_overpressure) { overPressure = max_overpressure; }
+void Component::inputValveCoefficient(double valveCo) { valveCoefficient = valveCo; }
+void Component::inputInitialFullness(double initFullness) { fullness = initFullness; }
 
 
 // GasCell methods
@@ -37,6 +36,19 @@ GasCell::~GasCell() {
 
 
 // Ballonet methods
+Ballonet::Ballonet(const std::string& name, GasType gastype) {
+    // Constructor
+}
+
 Ballonet::~Ballonet() {
     // Destructor definition
 }
+
+int Ballonet::getBallonetNumber() { return ballonetCount; }
+
+void Ballonet::createBallonetTab(int tabIndex) {
+
+}
+
+void Ballonet::inputBlowerValue(double blowerVal) { blowerValue = blowerVal; }
+
