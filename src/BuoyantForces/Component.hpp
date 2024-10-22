@@ -17,6 +17,21 @@ class Component
         void inputInitialFullness(double initFullness);
 
         enum GasType {HELIUM, HYDROGEN, AIR};
+        enum class Unit {
+            WIDTH,              // Width
+            RADIUS,             // Radius
+            PSI,                // PSI
+            M,                  // Meters
+            IN,                 // Inches
+            PA,                 // PA
+            M4_SEC_KG,          // m^4 * sec / kg
+            FT4_SEC_SLUG,       // ft^4 * sec / slug
+            LB_FT_SEC_R,        // lb ft / (sec R)
+            LBS_FT_SEC,         // lbs ft / sec
+            FT3_SEC             // ft^3 / sec
+        };
+
+        static std::string unitToString(Unit unit);
 
     protected:
         GasType gasType;

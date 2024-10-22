@@ -20,8 +20,15 @@ void Component::setDimensions(double x, double y, double z) {
 }
 
 void Component::inputOverpressure(double overpressure) { maxOverpressure = overpressure; }
-void Component::inputValveCoefficient(double valveCoefficient) { valveCoefficient = valveCoefficient; }
+void Component::inputValveCoefficient(double valveCoefficient) { this->valveCoefficient = valveCoefficient; }
 void Component::inputInitialFullness(double initFullness) { fullness = initFullness; }
+
+std::string Component::unitToString(Unit unit) {
+    switch (unit) {
+        // include all cases for each enum type and return appropriate string
+        default: return "Unknown Unit";
+    }
+}
 
 
 // GasCell methods
@@ -50,5 +57,5 @@ void Ballonet::createBallonetTab(int tabIndex) {
 
 }
 
-void Ballonet::inputBlowerValue(double blowerValue) { blowerValue = blowerValue; }
+void Ballonet::inputBlowerValue(double blowerValue) { this->blowerValue = blowerValue; }
 
