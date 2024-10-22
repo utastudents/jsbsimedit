@@ -33,8 +33,10 @@ std::string Component::unitToString(Unit unit) {
 
 // GasCell methods
 GasCell::GasCell(double v, double t, double p, double m) : Component() {
-    // Constructor
-    // set attributes to provided parameters
+    volume = v;
+    temperature = t;
+    pressure = p;
+    mass = m;
 }
 
 GasCell::~GasCell() {
@@ -44,7 +46,8 @@ GasCell::~GasCell() {
 
 // Ballonet methods
 Ballonet::Ballonet(const std::string& name, GasType gastype) {
-    // Constructor
+    this->name = name;
+    this->gasType = gastype;
 }
 
 Ballonet::~Ballonet() {
@@ -54,7 +57,7 @@ Ballonet::~Ballonet() {
 int Ballonet::getBallonetNumber() { return ballonetCount; }
 
 void Ballonet::createBallonetTab(int tabIndex) {
-
+    
 }
 
 void Ballonet::inputBlowerValue(double blowerValue) { this->blowerValue = blowerValue; }
