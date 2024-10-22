@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "BuoyantForces/Component.hpp"
+#include "Component.hpp"
 
 class BuoyantForces 
 {
