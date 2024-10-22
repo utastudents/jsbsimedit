@@ -24,7 +24,6 @@ namespace JSBEdit
 
         void GetFileContexts(const std::filesystem::path &path);
         bool ParseData();
-        void CreateMetrics();
 
     public:
         XMLDoc();

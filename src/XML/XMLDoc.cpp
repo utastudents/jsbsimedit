@@ -34,74 +34,75 @@ bool JSBEdit::XMLDoc::ParseData()
     return result;
 }
 
-void JSBEdit::XMLDoc::CreateMetrics()
-{
+// This was left as a reference to other groups 
+//void JSBEdit::XMLDoc::CreateMetrics()
+//{
 
-    // get the metrics node
-    pugi::xpath_node metricData = doc.select_node("/fdm_config/metrics");
+    // // get the metrics node
+    // pugi::xpath_node metricData = doc.select_node("/fdm_config/metrics");
 
-    if (!metricData)
-    {
-        return;
-    }
+    // if (!metricData)
+    // {
+    //     return;
+    // }
 
-    // alright now get the data
-    pugi::xpath_node wingAreaNode = doc.select_node("/fdm_config/metrics/wingarea");
-    pugi::xpath_node wingSpanNode = doc.select_node("/fdm_config/metrics/wingspan");
-    pugi::xpath_node wingIncidenceNode = doc.select_node("/fdm_config/metrics/wing_incidence");
-    pugi::xpath_node chordNode = doc.select_node("/fdm_config/metrics/chord");
-    pugi::xpath_node hTailArmNode = doc.select_node("/fdm_config/metrics/htailarea");
-    pugi::xpath_node hTailAreaNode = doc.select_node("/fdm_config/metrics/htailarm");
-    pugi::xpath_node vTailArmNode = doc.select_node("/fdm_config/metrics/vtailarea");
-    pugi::xpath_node vTailAreaNode = doc.select_node("/fdm_config/metrics/vtailarm");
-    pugi::xpath_node_set LocationNodeSet = doc.select_nodes("/fdm_config/metrics/location");
+    // // alright now get the data
+    // pugi::xpath_node wingAreaNode = doc.select_node("/fdm_config/metrics/wingarea");
+    // pugi::xpath_node wingSpanNode = doc.select_node("/fdm_config/metrics/wingspan");
+    // pugi::xpath_node wingIncidenceNode = doc.select_node("/fdm_config/metrics/wing_incidence");
+    // pugi::xpath_node chordNode = doc.select_node("/fdm_config/metrics/chord");
+    // pugi::xpath_node hTailArmNode = doc.select_node("/fdm_config/metrics/htailarea");
+    // pugi::xpath_node hTailAreaNode = doc.select_node("/fdm_config/metrics/htailarm");
+    // pugi::xpath_node vTailArmNode = doc.select_node("/fdm_config/metrics/vtailarea");
+    // pugi::xpath_node vTailAreaNode = doc.select_node("/fdm_config/metrics/vtailarm");
+    // pugi::xpath_node_set LocationNodeSet = doc.select_nodes("/fdm_config/metrics/location");
 
-    // wingarea
-    auto areanodevalue = wingAreaNode.node().text().as_double();
-    auto areanodeunit = wingAreaNode.node().attribute("unit").as_string();
+    // // wingarea
+    // auto areanodevalue = wingAreaNode.node().text().as_double();
+    // auto areanodeunit = wingAreaNode.node().attribute("unit").as_string();
 
-    wingAreaNode.node().text().set("400");
-    wingAreaNode.node().attribute("unit").set_value("FT22");
+    // wingAreaNode.node().text().set("400");
+    // wingAreaNode.node().attribute("unit").set_value("FT22");
 
 
-    // wingspan
-    auto wingspanvalue = wingSpanNode.node().text().as_double();
-    auto wingspanunit = wingSpanNode.node().attribute("unit").as_string();
+    // // wingspan
+    // auto wingspanvalue = wingSpanNode.node().text().as_double();
+    // auto wingspanunit = wingSpanNode.node().attribute("unit").as_string();
 
-    // wing Incidence
-    auto wingIncidencevalue = wingIncidenceNode.node().text().as_double();
-    auto wingIncidenceunit = wingIncidenceNode.node().attribute("unit").as_string();
+    // // wing Incidence
+    // auto wingIncidencevalue = wingIncidenceNode.node().text().as_double();
+    // auto wingIncidenceunit = wingIncidenceNode.node().attribute("unit").as_string();
 
-    // chord
-    auto chordvalue = chordNode.node().text().as_double();
-    auto chordunit = chordNode.node().attribute("unit").as_string();
+    // // chord
+    // auto chordvalue = chordNode.node().text().as_double();
+    // auto chordunit = chordNode.node().attribute("unit").as_string();
 
-    // hTailArmNode
-    auto hTailArmNodevalue = hTailArmNode.node().text().as_double();
-    auto hTailArmNodeunit = hTailArmNode.node().attribute("unit").as_string();
+    // // hTailArmNode
+    // auto hTailArmNodevalue = hTailArmNode.node().text().as_double();
+    // auto hTailArmNodeunit = hTailArmNode.node().attribute("unit").as_string();
 
-    // hTailAreaNode
-    auto hTailAreaNodevalue = hTailAreaNode.node().text().as_double();
-    auto hTailAreaNodeUnit = hTailAreaNode.node().attribute("unit").as_string();
+    // // hTailAreaNode
+    // auto hTailAreaNodevalue = hTailAreaNode.node().text().as_double();
+    // auto hTailAreaNodeUnit = hTailAreaNode.node().attribute("unit").as_string();
 
-    // vTailArmNode
-    auto vTailArmNodevalue = vTailArmNode.node().text().as_double();
-    auto vTailArmNodeunit = vTailArmNode.node().attribute("unit").as_string();
+    // // vTailArmNode
+    // auto vTailArmNodevalue = vTailArmNode.node().text().as_double();
+    // auto vTailArmNodeunit = vTailArmNode.node().attribute("unit").as_string();
 
-    // vTailAreaNode
-    auto vTailAreaNodevalue = vTailAreaNode.node().text().as_double();
-    auto vTailAreaNodeunit = vTailAreaNode.node().attribute("unit").as_string();
+    // // vTailAreaNode
+    // auto vTailAreaNodevalue = vTailAreaNode.node().text().as_double();
+    // auto vTailAreaNodeunit = vTailAreaNode.node().attribute("unit").as_string();
 
-    for (pugi::xpath_node node : LocationNodeSet)
-    {
-        double x = node.node().child("x").text().as_double();
-        double y = node.node().child("y").text().as_double();
-        double z = node.node().child("z").text().as_double();
-        Glib::ustring name = node.node().name();
-        Glib::ustring unit = node.node().attribute("unit").as_string();
-    }
-    metricData.node().print(std::cout);
-}
+    // for (pugi::xpath_node node : LocationNodeSet)
+    // {
+    //     double x = node.node().child("x").text().as_double();
+    //     double y = node.node().child("y").text().as_double();
+    //     double z = node.node().child("z").text().as_double();
+    //     Glib::ustring name = node.node().name();
+    //     Glib::ustring unit = node.node().attribute("unit").as_string();
+    // }
+    // metricData.node().print(std::cout);
+//}
 
 JSBEdit::XMLDoc::XMLDoc()
 {
@@ -115,5 +116,4 @@ void JSBEdit::XMLDoc::LoadFileAndParse(const std::filesystem::path& path)
 {
     GetFileContexts(path);
     ParseData();
-    CreateMetrics();
 }
