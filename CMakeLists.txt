@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 3.25.1)
 
 project(JSBSimEdit)
 
+if(BUILD_TESTING)
+    #include(Ctest)
+    add_subdirectory(thirdparty/Catch2)
+    add_subdirectory(test)
+endif()
+
 add_subdirectory(thirdparty/pugixml)
+
 
 
 # get the files recursively so that programmers don't have to touch this file

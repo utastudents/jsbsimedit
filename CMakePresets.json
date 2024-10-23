@@ -43,7 +43,7 @@
         },
         {
             "name": "Windows-x64-Clang-Release",
-            "description": "This preset is only for Windows Wlang Release Builds",
+            "description": "This preset is only for Windows Clang Release Builds",
             "inherits": "Windows-x64-Clang-Debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
