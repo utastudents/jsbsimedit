@@ -35,12 +35,13 @@ private:
     class Data_Unit {
     public:
         Data_Unit(string_vector& unit_bank);
+        virtual ~Data_Unit() = default;  // Virtual destructor
         virtual void set_value(double p_value) = 0;
         double get_value() const;
 
     protected:
         std::unique_ptr<Unit> its_unit;
-        double the_value{0};
+        double the_value{ 0 };
     };
 
     ////////////////////////////////////////////////////////
@@ -48,6 +49,7 @@ private:
     class Positive_Double : public Data_Unit {
     public:
         Positive_Double(double p_value, string_vector unit_bank);
+        ~Positive_Double() override = default;  // Virtual destructor
         void set_value(double p_value) override;
     };
 
@@ -56,6 +58,7 @@ private:
     class Norm_Double : public Data_Unit {
     public:
         Norm_Double(double p_value, string_vector unit_bank);
+        ~Norm_Double() override = default;  // Virtual destructor
         void set_value(double p_value) override;
     };
 
@@ -64,6 +67,7 @@ private:
     class Vertex_Unit : public Data_Unit {
     public:
         Vertex_Unit(double p_x, double p_y, double p_z, string_vector unit_bank);
+        ~Vertex_Unit() override = default;  // Virtual destructor
         void set_x(double p_x);
         void set_y(double p_y);
         void set_z(double p_z);
@@ -72,11 +76,11 @@ private:
         double get_z() const;
 
         void set_value(double p_value) override {
-            the_value = p_value;  // Just a stub implementation
+            the_value = p_value;
         }
 
     private:
-        double x{0}, y{0}, z{0};
+        double x{ 0 }, y{ 0 }, z{ 0 };
     };
 
     ////////////////////////////////////////////////////////
