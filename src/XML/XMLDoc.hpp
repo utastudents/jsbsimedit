@@ -30,6 +30,9 @@ namespace JSBEdit
         ~XMLDoc();
         void LoadFileAndParse(const std::filesystem::path &path);
         pugi::xml_document& GetPugiDoc() { return doc; }
+        pugi::xml_node GetNode(Glib::ustring search);
+        std::vector<pugi::xml_node> GetNodes(Glib::ustring search);
+
     };
 
 };
