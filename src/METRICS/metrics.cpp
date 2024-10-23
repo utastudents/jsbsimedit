@@ -76,18 +76,39 @@ void Metrics::init() {
     wingspan->set_value(76.0);
     positive_data_unit["Wingspan"] = std::move(wingspan);
 
+    auto chord = std::make_unique<Positive_Double>(0.0, unit_bank);
+    chord->set_value(77.0);
+    positive_data_unit["Chord"] = std::move(chord);
+
+    auto htailarea = std::make_unique<Positive_Double>(0.0, unit_bank);
+    htailarea->set_value(78.0);
+    positive_data_unit["Htailarea"] = std::move(htailarea);
+
+    auto htailarm = std::make_unique<Positive_Double>(0.0, unit_bank);
+    htailarm->set_value(79.0);
+    positive_data_unit["Htailarm"] = std::move(htailarm);
+
+    auto vtailarea = std::make_unique<Positive_Double>(0.0, unit_bank);
+    vtailarea->set_value(80.0);
+    positive_data_unit["Vtailarea"] = std::move(vtailarea);
+
+    auto vtailarm = std::make_unique<Positive_Double>(0.0, unit_bank);
+    vtailarm->set_value(81.0);
+    positive_data_unit["Vtailarm"] = std::move(vtailarm);
+
+
     // Create and initialize Norm_Double instance
     auto wing_incidence = std::make_unique<Norm_Double>(0.0, unit_bank);
     wing_incidence->set_value(37.0);
     normal_data_units["Wing Incidence"] = std::move(wing_incidence);
 
     // Create and initialize Vertex_Unit instances
-    vertex_data_units["Aerodynamic Reference Point"] =
-        std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
+    auto aerodynamic_reference_point = std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
+    vertex_data_units["Aerodynamic Reference Point"] = std::move(aerodynamic_reference_point);
 
-    vertex_data_units["Eye Point"] =
-        std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
+    auto eye_point = std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
+    vertex_data_units["Eye Point"] = std::move(eye_point);
 
-    vertex_data_units["Visual Reference Point"] =
-        std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
+    auto visual_reference_point = std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
+    vertex_data_units["Visual Reference Point"] = std::move(visual_reference_point);
 }
