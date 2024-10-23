@@ -1,4 +1,4 @@
-#include <Metrics/Metrics.h>
+#include "Metrics.h"
 #include <iostream>
 
 // Constructor
@@ -33,7 +33,7 @@ double Metrics::Data_Unit::get_value() const {
 // Positive_Double class methods
 Metrics::Positive_Double::Positive_Double(double p_value, string_vector unit_bank)
     : Data_Unit(unit_bank) {
-    set_value(p_value);
+    the_value = 0;  // Initialize to 0, actual value set outside
 }
 
 void Metrics::Positive_Double::set_value(double p_value) {
@@ -44,7 +44,7 @@ void Metrics::Positive_Double::set_value(double p_value) {
 // Norm_Double class methods
 Metrics::Norm_Double::Norm_Double(double p_value, string_vector unit_bank)
     : Data_Unit(unit_bank) {
-    set_value(p_value);
+    the_value = 0;  // Initialize to 0, actual value set outside
 }
 
 void Metrics::Norm_Double::set_value(double p_value) {
@@ -65,27 +65,29 @@ double Metrics::Vertex_Unit::get_z() const { return z; }
 
 // Metrics init() method
 void Metrics::init() {
-    string_vector unit_bank = {"FT2", "M2", "FT", "M", "Deg", "In"};
+    string_vector unit_bank = { "FT2", "M2", "FT", "M", "Deg", "In" };
 
-    // Add Positive_Double instances
-    positive_data_unit["Wingarea"] = std::make_unique<Positive_Double>(75.0, unit_bank);
-    positive_data_unit["Wingspan"] = std::make_unique<Positive_Double>(76.0, unit_bank);
-    positive_data_unit["Chord"] = std::make_unique<Positive_Double>(77.0, unit_bank);
-    positive_data_unit["Htailarea"] = std::make_unique<Positive_Double>(78.0, unit_bank);
-    positive_data_unit["Htailarm"] = std::make_unique<Positive_Double>(79.0, unit_bank);
-    positive_data_unit["Vtailarea"] = std::make_unique<Positive_Double>(80.0, unit_bank);
-    positive_data_unit["Vtailarm"] = std::make_unique<Positive_Double>(81.0, unit_bank);
+    // Create and initialize Positive_Double instances
+    auto wingarea = std::make_unique<Positive_Double>(0.0, unit_bank);
+    wingarea->set_value(75.0);
+    positive_data_unit["Wingarea"] = std::move(wingarea);
 
-    // Add Norm_Double instance
-    normal_data_units["Wing Incidence"] = std::make_unique<Norm_Double>(37.0, unit_bank);
+    auto wingspan = std::make_unique<Positive_Double>(0.0, unit_bank);
+    wingspan->set_value(76.0);
+    positive_data_unit["Wingspan"] = std::move(wingspan);
 
-    // Add Vertex_Unit instances
-    vertex_data_units["Aerodynamic Reference Point"] = std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
-    vertex_data_units["Eye Point"] = std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
-    vertex_data_units["Visual Reference Point"] = std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
-}
+    // Create and initialize Norm_Double instance
+    auto wing_incidence = std::make_unique<Norm_Double>(0.0, unit_bank);
+    wing_incidence->set_value(37.0);
+    normal_data_units["Wing Incidence"] = std::move(wing_incidence);
 
-int main(int argc, char* argv[]) {
-    Metrics metrics_system;
-    return 0;
+    // Create and initialize Vertex_Unit instances
+    vertex_data_units["Aerodynamic Reference Point"] =
+        std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
+
+    vertex_data_units["Eye Point"] =
+        std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
+
+    vertex_data_units["Visual Reference Point"] =
+        std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
 }
