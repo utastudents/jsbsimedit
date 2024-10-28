@@ -567,3 +567,54 @@ TEST_CASE("Testing Parser Constructor")
     JSBEdit::XMLNode parserNodeBad{doc, "<parsertest id=\"en\">tested on macbook air"};
     REQUIRE(!parserNodeBad);
 }
+
+TEST_CASE("Testing xml_node Constructor")
+{
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse({"../../../../test/TestFiles/book.xml"});
+    pugi::xml_node pugiNode = doc.GetPugiDoc().select_node("catalog/testattributes").node();
+    JSBEdit::XMLNode node{pugiNode};
+
+    REQUIRE(node);
+    REQUIRE(node.GetName() == "testattributes");
+    REQUIRE(node.GetText() == "Text Data");
+
+    // testing bad nodes
+    JSBEdit::XMLNode nodeBad{pugi::xml_node()};
+    REQUIRE(!nodeBad);
+}
+
+TEST_CASE("Testing name attributes text Constructor")
+{
+    JSBEdit::XMLDoc doc;
+
+    std::string name{"testattributes"};
+    std::vector<AttributeKV> attributes;
+    attributes.push_back(AttributeKV{"id", "bk100"});
+    attributes.push_back(AttributeKV{"test", "yes/no"});
+    attributes.push_back(AttributeKV{"placement", "yeah"});
+    attributes.push_back(AttributeKV{"random", "10"});
+    std::string text{"Text Data"};
+
+    JSBEdit::XMLNode node{doc, name, attributes, text};
+
+    REQUIRE(node);
+    REQUIRE(node.GetName() == "testattributes");
+    REQUIRE(node.GetText() == "Text Data");
+
+    // attributes
+    REQUIRE(attributes.size() == 4);
+    // the vector should contain the elements id="bk100" test="yes/no" placement="yeah" random="10"
+    // id
+    REQUIRE(attributes[0].first == "id");
+    REQUIRE(attributes[0].second == "bk100");
+    // test
+    REQUIRE(attributes[1].first == "test");
+    REQUIRE(attributes[1].second == "yes/no");
+    // placement
+    REQUIRE(attributes[2].first == "placement");
+    REQUIRE(attributes[2].second == "yeah");
+    // random
+    REQUIRE(attributes[3].first == "random");
+    REQUIRE(attributes[3].second == "10");
+}
