@@ -4,7 +4,7 @@ project(JSBSimEdit)
 
 if(TRUE)
     #include(Ctest)
-    add_subdirectory(thirdparty/Catch2)
+    add_subdirectory(thirdparty/catch2)
     add_subdirectory(test)
 endif()
 
