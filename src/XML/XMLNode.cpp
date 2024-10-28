@@ -79,6 +79,18 @@ void JSBEdit::XMLNode::SetAttribute(AttributeKV attribute)
     m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str();
 }
 
+bool JSBEdit::XMLNode::ChangeAttributeValue(AttributeKV attribute)
+{
+    pugi::xml_attribute xmlAttribute = m_Node.attribute(attribute.first.c_str());
+    if(!xmlAttribute)
+    {
+        return false;
+    }
+
+    return xmlAttribute.set_value(attribute.second.c_str());
+    
+}
+
 void JSBEdit::XMLNode::RemoveAttributes()
 {
     m_Node.remove_attributes();

@@ -172,6 +172,30 @@ TEST_CASE("Testing SetAttribute")
 
 }
 
+TEST_CASE("Testing ChangeAttributeValue")
+{
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse({"../../../../test/TestFiles/book.xml"});
+    JSBEdit::XMLNode node = doc.GetNode("catalog/testattributes");
+
+    AttributeKV changedAttributes{"test", "no"};
+
+    REQUIRE(node.ChangeAttributeValue(changedAttributes));
+
+    // get the attribute
+    AttributeKV attribute = node.GetAttribute("test");
+    REQUIRE(attribute.first == "test");
+    REQUIRE(attribute.second == "no");
+
+    // Test bad cases
+
+    REQUIRE(!node.ChangeAttributeValue(AttributeKV{"",""}));
+    REQUIRE(!node.ChangeAttributeValue(AttributeKV{"a","b"}));
+    REQUIRE(!node.ChangeAttributeValue(AttributeKV{"","b"}));
+    REQUIRE(!node.ChangeAttributeValue(AttributeKV{"a",""}));
+
+}
+
 TEST_CASE("Testing RemoveAttributes")
 {
     JSBEdit::XMLDoc doc;

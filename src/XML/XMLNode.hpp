@@ -40,7 +40,7 @@ namespace JSBEdit
         void SetAttributes(std::vector<AttributeKV>& attributes);
         // Sets an attribute and overrides attributes in the element node
         void SetAttribute(AttributeKV attribute);
-        // changes the value of an attribute with delete and append back attributes XML045
+        // changes the value of an attribute without deleting and appending back attributes XML045
         bool ChangeAttributeValue(AttributeKV attribute);
 
         // removes all attributes from the node element
