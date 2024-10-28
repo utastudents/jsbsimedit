@@ -12,9 +12,15 @@
 
 namespace JSBEdit
 {
+    class XMLDoc;
+    class XMLNode;
 
     class XMLParser : public Glib::Markup::Parser
     {
+    private:
+        XMLNode* m_Node;
+    public:
+        XMLParser(XMLNode* node): m_Node{node} {}
     protected:
         // Called for opening tags like <foo bar="baz">
         void on_start_element(Glib::Markup::ParseContext &context, const Glib::ustring &element_name, const AttributeMap &attributes) override;

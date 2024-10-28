@@ -1,4 +1,5 @@
 #include <XML/XMLDoc.hpp>
+#include "XMLDoc.hpp"
 
 
 
@@ -19,17 +20,6 @@ void JSBEdit::XMLDoc::GetFileContexts(const std::filesystem::path& path)
 
 bool JSBEdit::XMLDoc::ParseData()
 {
-    // Glib::Markup needs a context to parse
-    //Glib::Markup::ParseContext parseContext{*m_pParser};
-    //try {
-    //    parseContext.parse(m_xmlData);
-    //} catch (Glib::MarkupError& error) 
-    //{
-    //    std::cerr << "Error: " << error.what() << "\n";
-    //   return false;
-    //}
-    //return true;
-
     pugi::xml_parse_result result = doc.load_string(m_xmlData.data());
     return result;
 }
@@ -116,4 +106,55 @@ void JSBEdit::XMLDoc::LoadFileAndParse(const std::filesystem::path& path)
 {
     GetFileContexts(path);
     ParseData();
+}
+void JSBEdit::XMLDoc::LoadStringAndParse(const std::string &xmlString)
+{
+    m_xmlData = xmlString;
+    ParseData();
+}
+
+JSBEdit::XMLNode JSBEdit::XMLDoc::GetNode(std::string search)
+{  
+    // empty returns the root as the node
+    if(search.empty())
+    {
+        return XMLNode(doc);
+    }
+
+    pugi::xml_node node = doc.select_node(search.c_str()).node();
+    return JSBEdit::XMLNode(node);
+}
+
+std::vector<JSBEdit::XMLNode> JSBEdit::XMLDoc::GetNodes(std::string search)
+{
+    std::vector<JSBEdit::XMLNode> nodes;
+    if(search.empty())
+    {
+        return nodes;
+    }
+
+    pugi::xpath_node_set xpathSet = doc.select_nodes(search.c_str());
+    if(xpathSet.empty())
+    {
+        // log here
+        return nodes;
+    }
+
+    for(auto & node: xpathSet)
+    {
+        if(node.node())
+        {
+            nodes.push_back(node.node());
+        }
+    }
+    return nodes;
+}
+
+bool JSBEdit::XMLDoc::SaveToFile(const std::filesystem::path &path)
+{
+    if(std::filesystem::exists(path.parent_path()))
+    {
+        return doc.save_file(path.c_str());
+    }
+    return false;   
 }

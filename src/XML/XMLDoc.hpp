@@ -1,7 +1,7 @@
 #pragma once
 
 #include <pugixml.hpp>
-#include <Metrics/Metrics.hpp>
+#include <XML/XMLNode.hpp>
 
 #include <string>
 #include <iostream>
@@ -11,7 +11,6 @@
 #include <sstream>
 #include <filesystem>
 
-#include <glibmm.h>
 
 namespace JSBEdit
 {
@@ -20,16 +19,20 @@ namespace JSBEdit
     {
     private:
         pugi::xml_document doc;
-        Glib::ustring m_xmlData;
+        std::string m_xmlData;
 
         void GetFileContexts(const std::filesystem::path &path);
         bool ParseData();
-
     public:
         XMLDoc();
         ~XMLDoc();
         void LoadFileAndParse(const std::filesystem::path &path);
+        void LoadStringAndParse(const std::string& xmlstring);
         pugi::xml_document& GetPugiDoc() { return doc; }
+        XMLNode GetNode(std::string search);
+        std::vector<XMLNode> GetNodes(std::string search);
+        bool SaveToFile(const std::filesystem::path &path);
+
     };
 
 };

@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.25.1)
 
 project(JSBSimEdit)
 
-if(BUILD_TESTING)
+if(TRUE)
     #include(Ctest)
-    add_subdirectory(thirdparty/Catch2)
+    add_subdirectory(thirdparty/catch2)
     add_subdirectory(test)
 endif()
 
