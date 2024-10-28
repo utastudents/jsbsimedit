@@ -5,11 +5,11 @@ namespace JSBEdit {
 
 ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     : m_Box(Gtk::Orientation::VERTICAL),
-    m_refRecentManager(Gtk::RecentManager::get_default())
+    m_refRecentManager(Gtk::RecentManager::get_default()),
+    m_tab1(app, "HI TAB1"), m_tab2(app, "HI TAB2"), m_fcDemo(app)
 {
     set_title("Recent files example");
     set_default_size(300, 150);
-
     //We can put a PopoverMenuBar at the top of the box and other stuff below it.
     set_child(m_Box);
 
@@ -29,9 +29,6 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
 
     insert_action_group("example", m_refActionGroup);
 
-
-    m_refBuilder = Gtk::Builder::create();
-
     // When the menubar is a child of a Gtk::Window, keyboard accelerators are not
     // automatically fetched from the Gio::Menu.
     // See the examples/book/menus/main_menu example for an alternative way of
@@ -40,63 +37,14 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     app->set_accel_for_action("example.files-dialog", "<Primary>o");
     app->set_accel_for_action("example.quit", "<Primary>q");
 
-    //Layout the actions in a menubar and a toolbar:
-    const char* ui_info =
-        "<interface>"
-        "  <menu id='menubar'>"
-        "    <submenu>"
-        "      <attribute name='label' translatable='yes'>_File</attribute>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_New</attribute>"
-        "        <attribute name='action'>example.new</attribute>"
-        "        <attribute name='accel'>&lt;Primary&gt;n</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>File _Dialog</attribute>"
-        "        <attribute name='action'>example.files-dialog</attribute>"
-        "        <attribute name='accel'>&lt;Primary&gt;o</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Quit</attribute>"
-        "        <attribute name='action'>example.quit</attribute>"
-        "        <attribute name='accel'>&lt;Primary&gt;q</attribute>"
-        "      </item>"
-        "    </submenu>"
-        "  </menu>"
-        "  <object class='GtkBox' id='toolbar'>"
-        "    <property name='can_focus'>False</property>"
-        "    <child>"
-        "      <object class='GtkButton' id='toolbutton_new'>"
-        "        <property name='can_focus'>False</property>"
-        "        <property name='tooltip_text' translatable='yes'>New</property>"
-        "        <property name='action_name'>example.new</property>"
-        "        <property name='icon_name'>document-new</property>"
-        "        <property name='hexpand'>False</property>"
-        "        <property name='vexpand'>False</property>"
-        "      </object>"
-        "    </child>"
-        "    <child>"
-        "      <object class='GtkButton' id='toolbutton_quit'>"
-        "        <property name='can_focus'>False</property>"
-        "        <property name='tooltip_text' translatable='yes'>Quit</property>"
-        "        <property name='action_name'>example.quit</property>"
-        "        <property name='icon_name'>application-exit</property>"
-        "        <property name='hexpand'>False</property>"
-        "        <property name='vexpand'>False</property>"
-        "      </object>"
-        "    </child>"
-        "  </object>"
-        "</interface>";
-
     try
     {
-        m_refBuilder->add_from_string(ui_info);
+        m_refBuilder = Gtk::Builder::create_from_file("mainWindow.xml");
     }
     catch (const Glib::Error& ex)
     {
-        std::cerr << "building menubar and toolbar failed: " << ex.what();
+        std::cerr << "Error loading mainWindow.xml" << ex.what();
     }
-
     //Get the menubar and toolbar widgets, and add them to a container widget:
     auto object = m_refBuilder->get_object("menubar");
     auto gmenu = std::dynamic_pointer_cast<Gio::Menu>(object);
@@ -115,10 +63,40 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
         m_Box.append(*pToolbar);
     else
         g_warning("toolbar not found");
+
+    //Load Stack elements..
+    if(!load_stack(app))
+        std::cerr << "Error loading tabs\n";
+    //Append the stack siwtcher to the mainPage box
+    auto tabBox = m_refBuilder->get_widget<Gtk::Box>("tabBox");
+    if (tabBox)
+    {
+        m_Box.append(*tabBox);
+        tabBox->append(m_stackSwitcher);
+    }
+    else
+        g_warning("tabbox not found");
+    
+    //Append the stack to the tabContents box
+    auto tabContents = m_refBuilder->get_widget<Gtk::Box>("tabContents");
+    if (tabContents)
+    {
+        m_Box.append(*tabContents);
+        tabContents->append(m_stack);
+    }
+    else
+        g_warning("tabbox not found");
 }
 
-ExampleWindow::~ExampleWindow()
+bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app)
 {
+    m_stack.add(m_tab1, "Tab1", "Tab1");
+    m_stack.add(m_tab2, "Tab2", "Tab2");
+    m_stack.add(m_fcDemo, "Flight Control", "Flight Control");
+    m_stackSwitcher.set_stack(m_stack);
+    m_stackSwitcher.set_visible(true);
+    m_stack.set_visible(true);
+    return true;
 }
 
 void ExampleWindow::on_menu_file_new()
