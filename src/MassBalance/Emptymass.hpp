@@ -1,0 +1,23 @@
+#pragma once
+
+#include <string>
+
+class EmptyMass {
+private:
+    float emptyMass;        // Mass value
+    std::string units;      // Units of measurement
+
+public:
+    // Constructor
+    EmptyMass(float massValue = 0.0f, const std::string& unitMeasure = "kg");
+
+    // Setters
+    void setEmptyMass(float massValue);
+    void setUnits(const std::string& unitMeasure);
+
+    // Getters
+    float getEmptyMass() const;
+    std::string getUnits() const;
+
+};
+
