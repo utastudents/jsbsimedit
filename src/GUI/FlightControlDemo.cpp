@@ -3,6 +3,7 @@
 namespace JSBEdit {
 
 FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app)
+    : m_canvas(app)
 {
     set_orientation(Gtk::Orientation::VERTICAL);
     try
@@ -33,6 +34,8 @@ FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app)
     auto canBox = m_refBuilder->get_widget<Gtk::Box>("canvasBox");
     if (canBox)
     {
+        canBox->append(m_canvas);
+        canBox->show();
         append(*canBox);
     }
     else

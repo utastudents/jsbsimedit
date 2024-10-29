@@ -7,6 +7,8 @@
 #include <iostream>
 #include "IComponentCommon.hpp"
 #include "PIDComponent.hpp"
+#include "ChannelCanvas.hpp"
+
 
 namespace JSBEdit
 {
@@ -23,6 +25,7 @@ namespace JSBEdit
 	protected:
 		// Signal handlers:
         //NONE
+		ChannelCanvas m_canvas;
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 		std::unordered_map<std::string, ComponentChannel> m_componentChannels{};
 	};
