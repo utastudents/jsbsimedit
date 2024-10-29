@@ -14,17 +14,17 @@ void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     drawCont->paint();
 }
 
-const std::pair<int, int> ComponentSprite::GetBounds() const
+std::pair<int, int> ComponentSprite::GetBounds() const
 {
     return std::pair<int, int>(m_width, m_height);
 }
 
-const ComponentType ComponentSprite::GetComponentType() const
+ComponentType ComponentSprite::GetComponentType() const
 {
     return m_componentType;
 }
 
-const std::pair<int, int> ComponentSprite::GetPosition() const
+std::pair<int, int> ComponentSprite::GetPosition() const
 {
     return std::pair<int, int>(m_x, m_y);
 }
