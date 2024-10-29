@@ -1,4 +1,4 @@
-#include "MomentOfInertia.h"
+#include "MomentOfInteria.h"
 #include <iostream>
 
 //Fuselage constructor

@@ -1,4 +1,4 @@
-#include "EmptyMass.hpp"
+#include "Emptymass.hpp"
 #include <iostream>
 
 //constructor
