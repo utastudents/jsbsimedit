@@ -34,8 +34,62 @@
       </object>
     </child>
     <child>
+      <object class="GtkImage" id="gain">
+        <property name="file">componentImg/gain.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="filter">
+        <property name="file">componentImg/filter.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="pid">
+        <property name="file">componentImg/pid.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="deadband">
+        <property name="file">componentImg/deadband.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
       <object class="GtkImage" id="switch">
         <property name="file">componentImg/switch.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="kinemat">
+        <property name="file">componentImg/kinemat.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="func">
+        <property name="file">componentImg/func.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -53,13 +107,5 @@
     </child>
   </object>
   <object class="GtkBox" id="canvasBox">
-    <child>
-      <object class="GtkDrawingArea" id="canvas">
-        <property name="content-height">400</property>
-        <property name="content-width">400</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
-      </object>
-    </child>
   </object>
 </interface>
