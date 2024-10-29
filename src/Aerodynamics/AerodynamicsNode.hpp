@@ -5,8 +5,6 @@
 
 class AerodynamicsNode {
 public:
-    AerodynamicsNode();
-
     enum Type {
         PROPERTY,
         VALUE,
