@@ -8,6 +8,6 @@ namespace JSBEdit
 	class IDrawable
 	{
 	public:
-		virtual void Draw(Cairo::RefPtr<Cairo::Context>& drawCont) = 0;
+		virtual void Draw(const Cairo::RefPtr<Cairo::Context>& drawCont) = 0;
 	};
 };
