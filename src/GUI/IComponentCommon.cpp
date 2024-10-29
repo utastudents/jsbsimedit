@@ -14,12 +14,12 @@ void IComponentCommon::CreateWindow()
         CreateComponentWindow();
 }
 
-const std::string IComponentCommon::GetName() const
+std::string IComponentCommon::GetName() const
 {
     return m_componentName;
 }
 
-const ComponentType IComponentCommon::GetComponentType() const
+ComponentType IComponentCommon::GetComponentType() const
 {
     return m_componentType;
 }

@@ -13,8 +13,8 @@ class IComponentCommon
 public:
     IComponentCommon(const std::string& compName, ComponentType& type);
     void CreateWindow();
-    const std::string GetName() const;
-    const ComponentType GetComponentType() const;
+    std::string GetName() const;
+    ComponentType GetComponentType() const;
     void SetName(const std::string& newName);
     virtual void LoadGUI(Glib::RefPtr<Gtk::Box>& uiBox) = 0;
 

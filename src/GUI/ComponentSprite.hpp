@@ -19,9 +19,9 @@ namespace JSBEdit
 		~ComponentSprite() = default;
 
 		void Draw(const Cairo::RefPtr<Cairo::Context>& drawCont) override;
-		const std::pair<int, int> GetBounds() const;
-		const ComponentType GetComponentType() const;
-		const std::pair<int, int> GetPosition() const;
+		std::pair<int, int> GetBounds() const;
+		ComponentType GetComponentType() const;
+		std::pair<int, int> GetPosition() const;
 		void SetBounds(int width, int height);
 		void SetComponentType(const ComponentType& compType);
 		void SetPosition(int x, int y);
