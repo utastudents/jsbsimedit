@@ -9,7 +9,7 @@ private:
 public:
     AerodynamicsData();
 
-    std::vector<AerodynamicsNode> getAerodynamicsNodes();
+    const std::vector<AerodynamicsNode> getAerodynamicsNodes() const;
     void setAerodynamicsNodes(std::vector<AerodynamicsNode> AerodynamicsNodes);
 
     void fetchData();
