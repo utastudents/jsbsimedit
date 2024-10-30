@@ -14,32 +14,41 @@ FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app)
     {
         std::cerr << "Error loading flightControl.xml" << ex.what();
     }
-    //Get the menubar and toolbar widgets, and add them to a container widget:
-    auto cBox = m_refBuilder->get_widget<Gtk::Box>("componentBox");
-    if (cBox)
-    {
-        append(*cBox);
-    }
-    else
-        g_warning("GMenu not found");
 
-    auto dBox = m_refBuilder->get_widget<Gtk::Box>("dividerBox");
-    if (dBox)
-    {
-        append(*dBox);
-    }
-    else
-        g_warning("Divider not found");
 
-    auto canBox = m_refBuilder->get_widget<Gtk::Box>("canvasBox");
-    if (canBox)
+    std::vector<std::string> widgetContainers {"componentBox", "dividerBox", "canvasBox"};
+    //Get all the box widgets, and add them to a container widget:
+    for(auto& i : widgetContainers)
     {
-        canBox->append(m_canvas);
-        canBox->show();
-        append(*canBox);
+        auto boxWidget = m_refBuilder->get_widget<Gtk::Box>(i);
+        if (boxWidget)
+        {
+            //if canvasBox append the canvas to it, sorry about one line if
+            if(i == "canvasBox") { boxWidget->append(m_canvas); boxWidget->show(); }
+            append(*boxWidget);
+        }
+        else
+            std::cerr << "Error loading GUI widget: " << i << "from file.\n";
     }
-    else
-        g_warning("CanvasBox not found");
+
+    //Make sure this is the same order as the ComponentEnum for casting.
+    //Theres probably a better way to do this.
+    std::vector<std::string> dragDropIcons { "actuator", "deadband", 
+        "destination", "filter", "func", "gain", "kinemat"
+        , "pid", "sensor", "source", "summer", "switch"
+    };
+    //Get all the box widgets, and add them to a container widget:
+    for(int i = 0; i < dragDropIcons.size(); i++)
+    {
+        auto imgWidget = m_refBuilder->get_widget<Gtk::Image>(dragDropIcons[i]);
+        if (imgWidget)
+        {
+            //TODO attach the drag handler here.
+        }
+        else
+            std::cout << "Error finding: " << dragDropIcons[i] << " widget.\n";
+    }
+
 }
 
 };
