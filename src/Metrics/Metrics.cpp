@@ -63,8 +63,14 @@ double Metrics::Vertex_Unit::get_x() const { return x; }
 double Metrics::Vertex_Unit::get_y() const { return y; }
 double Metrics::Vertex_Unit::get_z() const { return z; }
 
+void Metrics::activate() {
+	std::cout << "calling Metrics::activate" << std::endl;
+}
+
 // Metrics init() method
 void Metrics::init() {
+    std::cout << "Metrics::init() has been called" << std::endl;
+
     string_vector unit_bank = { "FT2", "M2", "FT", "M", "Deg", "In" };
 
     // Create and initialize Positive_Double instances

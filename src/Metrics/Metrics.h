@@ -13,6 +13,10 @@ public:
     // Constructor
     Metrics();
 
+    // Initialization function
+    void init();
+    void activate();
+
 private:
     ////////////////////////////////////////////////////////
     // ------ Custom types ------
@@ -90,9 +94,6 @@ private:
     std::map<std::string, std::unique_ptr<Positive_Double>> positive_data_unit;
     std::map<std::string, std::unique_ptr<Norm_Double>> normal_data_units;
     std::map<std::string, std::unique_ptr<Vertex_Unit>> vertex_data_units;
-
-    // Initialization function
-    void init();
 };
 
 #endif // METRICS_H
