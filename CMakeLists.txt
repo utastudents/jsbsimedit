@@ -15,7 +15,31 @@ add_subdirectory(thirdparty/pugixml)
 # get the files recursively so that programmers don't have to touch this file
 file(GLOB_RECURSE SIMEDIT_SOURCES src/*.cpp src/*.c)
 
-add_executable(${PROJECT_NAME} ${SIMEDIT_SOURCES})
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources.c
+  COMMAND glib-compile-resources --target=${CMAKE_CURRENT_BINARY_DIR}/resources.c --generate-source exampleapp.gresource.xml
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Application/
+  DEPENDS ${CMAKE_SOURCE_DIR}/src/Application/exampleapp.gresource.xml
+)
+
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gschemas.compiled
+    COMMAND glib-compile-schemas --targetdir=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/src/Application
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/Application/org.gtkmm.exampleapp.gschema.xml
+)
+
+# /usr/bin/glib-compile-resources --target=resources.c --sourcedir=. --generate-source exampleapp.gresource.xml
+# cc -MT resources.o -MD -MP -MF .deps/resources.Tpo -c -o resources.o `pkg-config --cflags gtk4` resources.c
+# g++ -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g main.cc
+# g++ -MT exampleappwindow.o -MD -MP -MF .deps/exampleappwindow.Tpo -c -o exampleappwindow.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g exampleappwindow.cc
+# g++ -MT exampleapplication.o -MD -MP -MF .deps/exampleapplication.Tpo -c -o exampleapplication.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g exampleapplication.cc
+# g++ -MT exampleappprefs.o -MD -MP -MF .deps/exampleappprefs.Tpo -c -o exampleappprefs.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g exampleappprefs.cc
+# g++ -o exampleapp resources.o main.o exampleappwindow.o exampleapplication.o exampleappprefs.o `pkg-config --libs gtkmm-4.0`
+# /usr/bin/glib-compile-schemas --strict --dry-run --schema-file=org.gtkmm.exampleapp.gschema.xml
+# /usr/bin/glib-compile-schemas .
+
+add_executable(${PROJECT_NAME} ${SIMEDIT_SOURCES} ${CMAKE_BINARY_DIR}/resources.c ${CMAKE_CURRENT_BINARY_DIR}/gschemas.compiled )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES C_STANDARD 17 C_STANDARD_REQUIRED ON)
