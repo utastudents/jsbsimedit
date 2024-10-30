@@ -9,7 +9,8 @@ std::vector<Glib::RefPtr<Gdk::Pixbuf>> ComponentSprite::spriteTable{};
 void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
 {
     size_t spriteIndex = static_cast<std::size_t>(m_componentType);
-    //Should probably do a resize check here in case another sprite scaled it.
+    //Should probably do a resize check here in case another sprite scaled it before hand
+    //TODO Determine width/height at a later date.
     Gdk::Cairo::set_source_pixbuf(drawCont, spriteTable.at(spriteIndex), m_x, m_y);
     drawCont->paint();
 }
@@ -54,11 +55,11 @@ void ComponentSprite::LoadSpriteComponents()
 
     //WARNING make sure this order is the same as ComponentEnum, so as to cast it to the index.
     std::vector<std::string> filenames{
-        "actuator.bmp", "deadband,bmp", "destination.bmp"
+        "actuator.bmp", "deadband.bmp", "destination.bmp"
         , "filter.bmp", "func.bmp", "gain.bmp", "kinemat.bmp"
         , "pid.bmp", "sensor.bmp", "source.bmp", "summer.bmp", "switch.bmp"
     };
-    std::string pathPrefix = "componentImg/";
+    std::string pathPrefix = "componentImg/"; //Only because i didnt wanna manually type it yay lazy
 
     //Create the pixel_bufs
     for(auto& i : filenames)
