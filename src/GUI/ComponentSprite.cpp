@@ -7,7 +7,7 @@ namespace JSBEdit
 std::vector<Glib::RefPtr<Gdk::Pixbuf>> ComponentSprite::spriteTable{};
 
 ComponentSprite::ComponentSprite(const ComponentType &comp, int x, int y)
-    m_componentType(comp), m_x(x), m_y(y)
+    : m_componentType(comp), m_x(x), m_y(y)
 {
 }
 
