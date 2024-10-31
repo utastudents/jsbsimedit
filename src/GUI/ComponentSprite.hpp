@@ -5,8 +5,7 @@
 #include "IDrawable.hpp"
 #include <iostream>
 #include <vector>
-//TODO: MOVE ENUM OUT OF HERE
-#include "IComponentCommon.hpp"
+#include "ComponentTypeEnum.hpp"
 
 namespace JSBEdit
 {
@@ -15,7 +14,7 @@ namespace JSBEdit
 	{
 	public:
 	//TODO static load the pixel buffs for each comp type..
-		ComponentSprite() = default;
+		ComponentSprite(const ComponentType& comp = ComponentType::Actuator, int x = 0, int y = 0);
 		~ComponentSprite() = default;
 
 		void Draw(const Cairo::RefPtr<Cairo::Context>& drawCont) override;
