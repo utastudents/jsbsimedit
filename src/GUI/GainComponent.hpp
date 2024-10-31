@@ -14,7 +14,7 @@ public:
     std::string Description {};
     std::string Input {};
     bool IsTableEnabled = false;
-    std::string Gain{}//========update later...
+    float Gain { 0.0f }
     bool IsClipperEnabled = false;
     float MaxClip { 0.0f };
     float MinClip { 0.0f };
