@@ -10,7 +10,7 @@ project(JSBSimEdit_Testing)
 file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # filter out main.cpp
-list(FILTER SIMEDIT_SOURCES EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/src/main.cpp")
+list(FILTER SIMEDIT_SOURCES EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/src/Application/main.cpp")
 
 file(GLOB ADMIN_TESTS Administrative/*.cpp )
 file(GLOB AERO_TESTS Aerodynamics/*.cpp )
@@ -27,10 +27,11 @@ file(GLOB PROPULSION_TESTS Propulsion/*.cpp )
 file(GLOB SYSTEM_TESTS System/*.cpp )
 file(GLOB XML_TESTS XML/*.cpp )
 
-add_executable(${PROJECT_NAME} main.cpp ${ADMIN_TESTS} ${AERO_TESTS} ${BOUYANT_TESTS}
+add_executable(${PROJECT_NAME}  ${ADMIN_TESTS} ${AERO_TESTS} ${BOUYANT_TESTS}
  ${ENGINE_TESTS} ${EXTERNAL_RE_TESTS} ${FLIGHT_CONTROL_TESTS} ${GROUND_TESTS}
  ${INPUT_OUTPUT_TESTS} ${MASS_BALANCE_TESTS} ${METRICS_TESTS} ${PLOT_EDITING_TESTS}
  ${PROPULSION_TESTS} ${SYSTEM_TESTS} ${XML_TESTS} ${SIMEDIT_SOURCES}
+ ${CMAKE_BINARY_DIR}/resources.c ${CMAKE_BINARY_DIR}/gschemas.compiled
  )
 
 #include(Catch)
@@ -65,9 +66,3 @@ target_link_libraries(${PROJECT_NAME} ${GTKMM4_LIBRARIES} pugixml::pugixml Catch
 target_link_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_LIBRARY_DIRS} )
 target_include_directories(${PROJECT_NAME} PUBLIC ${GTKMM4_INCLUDE_DIRS} PUBLIC "../src" PUBLIC pugixml::pugixml Catch2::Catch2WithMain)
 target_compile_options(${PROJECT_NAME} PUBLIC ${GTKMM4_CFLAGS_OTHER})
-
-if(WIN32)
-    message("Compiling Schemas for Windows")
-    message(STATUS ${CMD_EXEC})
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmd /c ${CMAKE_SOURCE_DIR}/compile_schemas.bat ${CMAKE_BINARY_DIR})
-endif()
