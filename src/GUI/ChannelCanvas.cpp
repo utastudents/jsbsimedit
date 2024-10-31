@@ -14,6 +14,12 @@ ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app)
     auto dropController = Gtk::DropTarget::create(G_TYPE_INT, Gdk::DragAction::COPY);
     dropController->signal_drop().connect(sigc::mem_fun(*this, &ChannelCanvas::OnDragEnd), false);
     add_controller(dropController);
+
+    ComponentSprite::LoadSpriteComponents();
+
+    //Making a default channel for testing functionallity
+    m_currentChannel = "test";
+    m_channels.insert({m_currentChannel, Channel{m_currentChannel}});
 }
 
 ChannelCanvas::~ChannelCanvas()
@@ -38,15 +44,13 @@ void ChannelCanvas::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int widt
     drawCont->set_source_rgb(1.0, 1.0, 0);
     drawCont->paint();
 
-    //This might be slow every draw, I'll probably need to make a channel class.
-    auto result = m_spriteChannels.find(m_currentChannel);
-    //Channel doesn't exist...
-    if( result == m_spriteChannels.end())
+    auto result = m_channels.find(m_currentChannel);
+    //Channel doesn't exist... or we are empty.
+    if( result == m_channels.end())
         return;
 
-    //Channel exists, draw every sprite in the list.
-    for(auto& sprite : result->second)
-        sprite.second.Draw(drawCont);
+    //Channel exists, yay. Now draw it.
+    result->second.Draw(drawCont);
 }
 
 bool ChannelCanvas::OnDragEnd(const Glib::ValueBase &value, double x, double y)
@@ -56,6 +60,15 @@ bool ChannelCanvas::OnDragEnd(const Glib::ValueBase &value, double x, double y)
     std::cout << "Something was dragged at: "<< x << ", " << y << " with data type: "
         << passedData.get() << ". \n";
     //Create the sprite... no data for now...
+    auto result = m_channels.find(m_currentChannel);
+    //Channel doesn't exist... or we are empty.
+    if( result == m_channels.end())
+        return false;
+
+    //Channel exists, make the dropped sprite, TODO: sorry about lack of static_cast<>
+    result->second.CreateDroppedComponent((ComponentType)passedData.get(), (int)x, (int)y);
+
+
     return true;
 }
 

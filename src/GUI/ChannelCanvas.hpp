@@ -7,14 +7,10 @@
 #include <iostream>
 #include "PIDComponent.hpp"
 #include "ComponentSprite.hpp"
+#include "Channel.hpp"
 
 namespace JSBEdit
 {
-	///@brief This is a vector of components that a channel has.
-	typedef	std::vector<IComponentCommon*> ComponentChannel;
-	
-	///@brief This is a map of component names to sprites.
-	typedef	std::unordered_map<std::string, ComponentSprite> NameSpriteMap;
 
 	class ChannelCanvas : public Gtk::DrawingArea
 	{
@@ -31,8 +27,7 @@ namespace JSBEdit
 	private:
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 		std::string m_currentChannel {};
-		std::unordered_map<std::string, ComponentChannel> m_componentChannels{};
-        std::unordered_map<std::string, NameSpriteMap> m_spriteChannels{};
+		std::unordered_map<std::string, Channel> m_channels{};
 	};
 
 };
