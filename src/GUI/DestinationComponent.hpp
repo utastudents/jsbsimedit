@@ -1,6 +1,8 @@
 #pragma once
 #include "IComponentCommon.hpp"
 
+namespace JSBEdit{
+
 class DestinationComponent : public IComponentCommon
 {
 
@@ -13,4 +15,6 @@ public:
     //Member Variables, better practice to have getters/setters but lifes short to do this for all values.
     
     std::string propertyname {};
+};
+
 };

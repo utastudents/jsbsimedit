@@ -1,5 +1,7 @@
 #include "IComponentCommon.hpp"
 
+namespace JSBEdit{
+
 IComponentCommon::IComponentCommon(const std::string &compName, ComponentType& type)
     : m_componentName(compName), m_componentType(type)
 {
@@ -41,3 +43,5 @@ void IComponentCommon::CreateComponentWindow()
 void IComponentCommon::CreateSourceDestWindow()
 {
 }
+
+};
