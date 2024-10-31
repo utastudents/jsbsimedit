@@ -51,8 +51,11 @@ void ChannelCanvas::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int widt
 
 bool ChannelCanvas::OnDragEnd(const Glib::ValueBase &value, double x, double y)
 {
-    //value.gobj()->data();
-    std::cout << "Something was dragged at: "<< x << ", " << y << " \n.";
+    Glib::Value<int> passedData;
+    passedData.init(value.gobj());
+    std::cout << "Something was dragged at: "<< x << ", " << y << " with data type: "
+        << passedData.get() << ". \n";
+    //Create the sprite... no data for now...
     return true;
 }
 
