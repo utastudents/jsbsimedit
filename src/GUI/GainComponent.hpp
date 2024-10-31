@@ -1,6 +1,8 @@
 #pragma once
 #include "IComponentCommon.hpp"
 
+namespace JSBEdit{
+
 class GainComponent : public IComponentCommon
 {
 
@@ -14,8 +16,10 @@ public:
     std::string Description {};
     std::string Input {};
     bool IsTableEnabled = false;
-    float Gain { 0.0f }
+    float Gain { 0.0f };
     bool IsClipperEnabled = false;
     float MaxClip { 0.0f };
     float MinClip { 0.0f };
+ };
+
  };

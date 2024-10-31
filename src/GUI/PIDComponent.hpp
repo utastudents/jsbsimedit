@@ -1,6 +1,8 @@
 #pragma once
 #include "IComponentCommon.hpp"
 
+namespace JSBEdit{
+
 class PIDComponent : public IComponentCommon
 {
 
@@ -20,4 +22,6 @@ public:
     float KD { 0.0f };
     std::string Trigger {};
     bool IsInputInverted = false;
+};
+
 };

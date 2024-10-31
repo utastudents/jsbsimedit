@@ -4,6 +4,8 @@
 #include <iostream>
 #include "ComponentTypeEnum.hpp"
 
+namespace JSBEdit{
+
 class IComponentCommon
 {
 public:
@@ -24,5 +26,7 @@ protected:
 private:
     void CreateComponentWindow();
     void CreateSourceDestWindow();
+
+};
 
 };

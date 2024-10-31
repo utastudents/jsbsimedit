@@ -1,6 +1,8 @@
 #pragma once
 #include "IComponentCommon.hpp"
 
+namespace JSBEdit{
+
 class SensorComponent : public IComponentCommon
 {
 
@@ -21,4 +23,6 @@ public:
     bool IsClipperEnabled = false;
     float MaxClip { 0.0f };
     float MinClip { 0.0f };
+};
+
 };
