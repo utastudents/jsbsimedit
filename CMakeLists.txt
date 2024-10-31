@@ -47,16 +47,6 @@ else()
     )
 endif()
 
-# /usr/bin/glib-compile-resources --target=resources.c --sourcedir=. --generate-source exampleapp.gresource.xml
-# cc -MT resources.o -MD -MP -MF .deps/resources.Tpo -c -o resources.o `pkg-config --cflags gtk4` resources.c
-# g++ -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g main.cc
-# g++ -MT exampleappwindow.o -MD -MP -MF .deps/exampleappwindow.Tpo -c -o exampleappwindow.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g exampleappwindow.cc
-# g++ -MT exampleapplication.o -MD -MP -MF .deps/exampleapplication.Tpo -c -o exampleapplication.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g exampleapplication.cc
-# g++ -MT exampleappprefs.o -MD -MP -MF .deps/exampleappprefs.Tpo -c -o exampleappprefs.o `pkg-config --cflags gtkmm-4.0` -std=c++17 -Wall -g exampleappprefs.cc
-# g++ -o exampleapp resources.o main.o exampleappwindow.o exampleapplication.o exampleappprefs.o `pkg-config --libs gtkmm-4.0`
-# /usr/bin/glib-compile-schemas --strict --dry-run --schema-file=org.gtkmm.exampleapp.gschema.xml
-# /usr/bin/glib-compile-schemas .
-
 add_executable(${PROJECT_NAME} ${SIMEDIT_SOURCES} ${CMAKE_BINARY_DIR}/resources.c ${CMAKE_CURRENT_BINARY_DIR}/gschemas.compiled )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)

@@ -21,10 +21,13 @@
         
     }
 
-    void Force ::calculateMagnitude() {
-        
+    string Force :: forceName(string name) {
+        return name;
     }
 
+    double locationUnits(double units){
+        return units; 
+    }
     void Force :: changeFrame(Frame newFrame) {
         frameType = newFrame;
     }
