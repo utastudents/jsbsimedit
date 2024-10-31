@@ -21,13 +21,14 @@ namespace JSBEdit
 		FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app);
 		~FlightControlDemo() = default;
 
+	private:
+		// Signal handlers
+		Glib::RefPtr<Gdk::ContentProvider> SetDragData(int data);
 
-	protected:
-		// Signal handlers:
-        //NONE
 		ChannelCanvas m_canvas;
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 		std::unordered_map<std::string, ComponentChannel> m_componentChannels{};
+
 	};
 
 };

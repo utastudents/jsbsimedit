@@ -31,24 +31,28 @@ FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app)
             std::cerr << "Error loading GUI widget: " << i << "from file.\n";
     }
 
-    //Make sure this is the same order as the ComponentEnum for casting.
-    //Theres probably a better way to do this.
-    std::vector<std::string> dragDropIcons { "actuator", "deadband", 
-        "destination", "filter", "func", "gain", "kinemat"
-        , "pid", "sensor", "source", "summer", "switch"
-    };
     //Get all the box widgets, and add them to a container widget:
-    for(int i = 0; i < dragDropIcons.size(); i++)
+    for(int i = 0; i < COMPONENT_NAMES.size(); i++)
     {
-        auto imgWidget = m_refBuilder->get_widget<Gtk::Image>(dragDropIcons[i]);
+        auto imgWidget = m_refBuilder->get_widget<Gtk::Image>(COMPONENT_NAMES[i]);
         if (imgWidget)
         {
-            //TODO attach the drag handler here.
+            auto dragController = Gtk::DragSource::create();
+            dragController->property_content().set_value(SetDragData(i));
+            imgWidget->add_controller(dragController);
         }
         else
-            std::cout << "Error finding: " << dragDropIcons[i] << " widget.\n";
+            std::cout << "Error finding: " << COMPONENT_NAMES[i] << " widget.\n";
     }
 
+}
+
+Glib::RefPtr<Gdk::ContentProvider> FlightControlDemo::SetDragData(int _data)
+{
+    Glib::Value<int> data;
+    data.init(data.value_type());
+    data.set(_data);
+    return Gdk::ContentProvider::create(data);
 }
 
 };
