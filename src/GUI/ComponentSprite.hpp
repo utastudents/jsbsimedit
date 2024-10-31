@@ -14,7 +14,7 @@ namespace JSBEdit
 	{
 	public:
 	//TODO static load the pixel buffs for each comp type..
-		ComponentSprite(const ComponentType& comp = ComponentType::Actuator, int x = 0, int y = 0);
+		ComponentSprite(const ComponentType& comp = ComponentType::ACTUATOR, int x = 0, int y = 0);
 		~ComponentSprite() = default;
 
 		void Draw(const Cairo::RefPtr<Cairo::Context>& drawCont) override;
