@@ -6,6 +6,11 @@ namespace JSBEdit
 //Having this allows to only load the sprite files once.
 std::vector<Glib::RefPtr<Gdk::Pixbuf>> ComponentSprite::spriteTable{};
 
+ComponentSprite::ComponentSprite(const ComponentType &comp, int x, int y)
+    m_componentType(comp), m_x(x), m_y(y)
+{
+}
+
 void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
 {
     size_t spriteIndex = static_cast<std::size_t>(m_componentType);
