@@ -2,11 +2,7 @@
 #include <gtkmm.h>
 #include <string>
 #include <iostream>
-
-enum ComponentType
-{
-    ACTUATOR=0, DEADBAND, DESTINATION, FILTER, FUNC, GAIN, KINEMATIC, PID, SENSOR, SOURCE, SUMMER, SWITCH
-};
+#include "ComponentTypeEnum.hpp"
 
 class IComponentCommon
 {
