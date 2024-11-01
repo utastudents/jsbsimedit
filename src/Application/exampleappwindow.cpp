@@ -19,6 +19,11 @@
 #include <set>
 
 
+#include "Aerodynamics/AeroDynamicsSubsystem.hpp"
+#include "BuoyantForces/BuoyantForcesSubsystem.hpp"
+
+
+
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
 : Gtk::ApplicationWindow(cobject),

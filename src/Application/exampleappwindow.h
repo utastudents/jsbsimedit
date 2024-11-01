@@ -19,9 +19,7 @@
 #include <gtkmm.h>
 
 
-#include "Aerodynamics/AeroDynamicsSubsystem.hpp"
-#include "BuoyantForces/BuoyantForcesSubsystem.hpp"
-  
+#include "inc/Subsystem.hpp"  
 
 #define HAS_SEARCH_ENTRY2 GTKMM_CHECK_VERSION(4,13,2)
 
@@ -64,8 +62,8 @@ protected:
   Glib::RefPtr<Glib::Binding> m_binding_search_enabled;
   Glib::RefPtr<Glib::Binding> m_binding_lines_visible;
 
-  AeroDynamicsSubsystem *m_AeroDynSub {nullptr};
-  BuoyantForcesSubsystem *m_BouySub {nullptr};
+  Subsystem *m_AeroDynSub {nullptr};
+  Subsystem *m_BouySub {nullptr};
 
 };
 
