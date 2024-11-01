@@ -17,7 +17,11 @@
 #define GTKMM_EXAMPLEAPPWINDOW_H_
 
 #include <gtkmm.h>
-#include "Metrics/Metrics.h"
+
+
+#include "Aerodynamics/AeroDynamicsSubsystem.hpp"
+#include "BuoyantForces/BuoyantForcesSubsystem.hpp"
+  
 
 #define HAS_SEARCH_ENTRY2 GTKMM_CHECK_VERSION(4,13,2)
 
@@ -37,7 +41,7 @@ protected:
   void on_visible_child_changed();
   void on_find_word(const Gtk::Button* button);
   void on_reveal_child_changed();
-
+  void on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num);
   void update_words();
   void update_lines();
 
@@ -56,9 +60,13 @@ protected:
   Gtk::ListBox* m_words {nullptr};
   Gtk::Label* m_lines {nullptr};
   Gtk::Label* m_lines_label {nullptr};
+  Gtk::Notebook* m_Notebook {nullptr};
   Glib::RefPtr<Glib::Binding> m_binding_search_enabled;
   Glib::RefPtr<Glib::Binding> m_binding_lines_visible;
-  Metrics *m_MetricsSubSystem;
+
+  AeroDynamicsSubsystem *m_AeroDynSub {nullptr};
+  BuoyantForcesSubsystem *m_BouySub {nullptr};
+
 };
 
 #endif /* GTKMM_EXAMPLEAPPWINDOW_H */

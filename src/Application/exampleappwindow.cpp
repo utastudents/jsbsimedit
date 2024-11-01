@@ -18,6 +18,7 @@
 #include <stdexcept>
 #include <set>
 
+
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
 : Gtk::ApplicationWindow(cobject),
@@ -102,9 +103,26 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   Gtk::IconTheme::get_for_display(get_display())->add_resource_path("/org/gtkmm/exampleapp");
   set_icon_name("exampleapp");
 
-  // create the objects.  they should not create any gtk items now.
-  m_MetricsSubSystem = new Metrics();
-  m_MetricsSubSystem->init();
+  // may need to move this to be a class member variable.
+  m_Notebook = new Gtk::Notebook();
+  set_child(*m_Notebook);
+
+  m_Notebook->set_margin(10);
+  m_Notebook->set_expand();
+
+  // create the Subsystems.  
+  m_AeroDynSub = new AeroDynamicsSubsystem(std::string("Aerodynamics"));
+  m_BouySub = new BuoyantForcesSubsystem(std::string("Bouyant Forces"));
+
+  m_AeroDynSub->Create();
+  m_BouySub->Create();
+
+  m_Notebook->append_page(m_AeroDynSub->m_Grid,"Aerodynamics");
+  m_Notebook->append_page(m_BouySub->m_Grid,"Bouyant Forces");
+  
+  m_Notebook->signal_switch_page().connect(sigc::mem_fun(*this,
+              &ExampleAppWindow::on_notebook_switch_page) );
+
 }
 
 //static
@@ -122,6 +140,7 @@ ExampleAppWindow* ExampleAppWindow::create()
 
 void ExampleAppWindow::open_file_view(const Glib::RefPtr<Gio::File>& file)
 {
+#if 0
   const Glib::ustring basename = file->get_basename();
 
   auto scrolled = Gtk::make_managed<Gtk::ScrolledWindow>();
@@ -156,10 +175,12 @@ void ExampleAppWindow::open_file_view(const Glib::RefPtr<Gio::File>& file)
   m_search->set_sensitive(true);
   update_words();
   update_lines();
+#endif
 }
 
 void ExampleAppWindow::on_search_text_changed()
 {
+#if 0
   const auto text = m_searchentry->get_text();
   if (text.empty())
     return;
@@ -188,6 +209,7 @@ void ExampleAppWindow::on_search_text_changed()
     buffer->select_range(match_start, match_end);
     view->scroll_to(match_start);
   }
+#endif
 }
 
 void ExampleAppWindow::on_visible_child_changed()
@@ -209,6 +231,7 @@ void ExampleAppWindow::on_reveal_child_changed()
 
 void ExampleAppWindow::update_words()
 {
+#if 0
   auto tab = dynamic_cast<Gtk::ScrolledWindow*>(m_stack->get_visible_child());
   if (!tab)
     return;
@@ -255,10 +278,12 @@ void ExampleAppWindow::update_words()
       &ExampleAppWindow::on_find_word), row));
     m_words->append(*row);
   }
+#endif
 }
 
 void ExampleAppWindow::update_lines()
 {
+#if 0
   auto tab = dynamic_cast<Gtk::ScrolledWindow*>(m_stack->get_visible_child());
   if (!tab)
     return;
@@ -280,4 +305,13 @@ void ExampleAppWindow::update_lines()
       break;
   }
   m_lines->set_text(Glib::ustring::format(count));
+#endif
 }
+
+void ExampleAppWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
+{
+  std::cout << "Switched to tab with index " << page_num << std::endl;
+
+  //You can also use m_Notebook.get_current_page() to get this index.
+}
+
