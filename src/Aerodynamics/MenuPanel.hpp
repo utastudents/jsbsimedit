@@ -1,8 +1,9 @@
 #pragma once
 
 #include <gtkmm.h>
+#include "AerodynamicsNode.hpp"
 
-class MenuPanel: gtkmm::box{
+class MenuPanel: Gtk::Box{
 private:
     std::string name;
     AerodynamicsNode::Type type;

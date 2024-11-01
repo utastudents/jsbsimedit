@@ -41,7 +41,7 @@ class Value: public AerodynamicsNode {
 public:
     Value();
 
-    const double getInput() const;
+    double getInput() const;
     void setInput(double input);
 private:
     double input;

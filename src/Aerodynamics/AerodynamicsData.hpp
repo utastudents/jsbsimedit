@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <AerodynamicsNode.hpp>
+#include "AerodynamicsNode.hpp"
 
 class AerodynamicsData {
 private:

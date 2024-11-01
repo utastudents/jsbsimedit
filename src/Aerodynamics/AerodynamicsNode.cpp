@@ -44,7 +44,7 @@ Value::Value()
 {
 }
 
-const double Value::getInput() const
+double Value::getInput() const
 {
 }
 

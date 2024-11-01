@@ -2,11 +2,11 @@
 
 #include <gtkmm.h>
 
-class HierarchyPanel: public gtkmm::box{
+class HierarchyPanel: public Gtk::Box{
 private:
-    gtkmm::TreeView treeView;
-    gtkmm::TreeStore tree;
-    gtkmm::ScrolledWindow scrolledWindow;
+    Gtk::TreeView treeView;
+    //Gtk::TreeStore tree;
+    Gtk::ScrolledWindow scrolledWindow;
 public:
     HierarchyPanel();
     void populateTree();
