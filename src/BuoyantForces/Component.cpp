@@ -29,36 +29,3 @@ std::string Component::unitToString(Unit unit) {
         default: return "Unknown Unit";
     }
 }
-
-
-// GasCell methods
-GasCell::GasCell(double v, double t, double p, double m) : Component() {
-    volume = v;
-    temperature = t;
-    pressure = p;
-    mass = m;
-}
-
-GasCell::~GasCell() {
-    // Destructor definition
-}
-
-
-// Ballonet methods
-Ballonet::Ballonet(const std::string& name, GasType gastype) {
-    this->name = name;
-    this->gasType = gastype;
-}
-
-Ballonet::~Ballonet() {
-    // Destructor definition
-}
-
-int Ballonet::getBallonetNumber() { return ballonetCount; }
-
-void Ballonet::createBallonetTab(int tabIndex) {
-    
-}
-
-void Ballonet::inputBlowerValue(double blowerValue) { this->blowerValue = blowerValue; }
-
