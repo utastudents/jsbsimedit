@@ -21,7 +21,7 @@
 
 #include "Aerodynamics/AeroDynamicsSubsystem.hpp"
 #include "BuoyantForces/BuoyantForcesSubsystem.hpp"
-
+#include "Metrics/MetricsSubsystem.hpp"
 
 
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
@@ -115,16 +115,37 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   m_Notebook->set_margin(10);
   m_Notebook->set_expand();
 
-  // create the Subsystems.  
-  m_AeroDynSub = new AeroDynamicsSubsystem(std::string("Aerodynamics"));
-  m_BouySub = new BuoyantForcesSubsystem(std::string("Bouyant Forces"));
+  // create the Subsystems objects
+  //    The key is the title used in the tab. 
+  //    Maybe a better way to get the name, perhaps add it to Subsystem?
+  m_Subsystems["Aerodynamics"] = new AeroDynamicsSubsystem(std::string("Aerodynamics"));
+  m_Subsystems["BuoyantForces"] = new BuoyantForcesSubsystem(std::string("BuoyantForces"));
+  m_Subsystems["Metrics"] = new MetricsSubsystem(std::string("Metrics"));
+#if 0
+  Subsystem* m_AeroDynSub {nullptr};
+  Subsystem* m_BouySub {nullptr};
+  Subsystem* m_ExtReactSub {nullptr};
+  Subsystem* m_GenInfoSub {nullptr};
+  Subsystem* m_GroundReactSub {nullptr};
+  Subsystem* m_InOutSub {nullptr};
+  Subsystem* m_MassBalSub {nullptr};
+  Subsystem* m_MetricsSub {nullptr};
+  Subsystem* m_PropSub {nullptr};
+#endif
+  // create the gtk objects inside
+  // (i wanted to use a lambda, but that would be just showing off...)
+  for (auto i = m_Subsystems.begin(); i != m_Subsystems.end(); i++)
+  {
+      i->second->Create();
+  }
 
-  m_AeroDynSub->Create();
-  m_BouySub->Create();
-
-  m_Notebook->append_page(m_AeroDynSub->m_Grid,"Aerodynamics");
-  m_Notebook->append_page(m_BouySub->m_Grid,"Bouyant Forces");
+  // make the pages part of the notebook
+  for (auto i = m_Subsystems.begin(); i != m_Subsystems.end(); i++)
+  {
+      m_Notebook->append_page(i->second->m_Grid,i->first);
+  }
   
+  // connect the switch page callbook 
   m_Notebook->signal_switch_page().connect(sigc::mem_fun(*this,
               &ExampleAppWindow::on_notebook_switch_page) );
 

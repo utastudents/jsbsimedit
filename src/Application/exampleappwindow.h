@@ -15,6 +15,7 @@
 
 #ifndef GTKMM_EXAMPLEAPPWINDOW_H_
 #define GTKMM_EXAMPLEAPPWINDOW_H_
+#include <map>
 
 #include <gtkmm.h>
 
@@ -62,9 +63,19 @@ protected:
   Glib::RefPtr<Glib::Binding> m_binding_search_enabled;
   Glib::RefPtr<Glib::Binding> m_binding_lines_visible;
 
-  Subsystem *m_AeroDynSub {nullptr};
-  Subsystem *m_BouySub {nullptr};
-
+  // Subsystems
+  std::map<std::string,Subsystem*> m_Subsystems;
+#if 0
+  Subsystem* m_AeroDynSub {nullptr};
+  Subsystem* m_BouySub {nullptr};
+  Subsystem* m_ExtReactSub {nullptr};
+  Subsystem* m_GenInfoSub {nullptr};
+  Subsystem* m_GroundReactSub {nullptr};
+  Subsystem* m_InOutSub {nullptr};
+  Subsystem* m_MassBalSub {nullptr};
+  Subsystem* m_MetricsSub {nullptr};
+  Subsystem* m_PropSub {nullptr};
+#endif
 };
 
 #endif /* GTKMM_EXAMPLEAPPWINDOW_H */
