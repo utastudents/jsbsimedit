@@ -1,6 +1,4 @@
-
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #include <string>
 
@@ -22,5 +20,3 @@ public:
     void setFlightModelVersion(const std::string& flightModelVersion);
     std::string getFlightModelVersion() const;
 };
-
-#endif // CONFIG_H

@@ -1,6 +1,4 @@
-
-#ifndef VALIDATION_H
-#define VALIDATION_H
+#pragma once
 
 #include <string>
 
@@ -18,5 +16,3 @@ public:
     static bool validateLimitations(const std::string& limitations);
     static bool validateNotes(const std::string& notes);
 };
-
-#endif // VALIDATION_H

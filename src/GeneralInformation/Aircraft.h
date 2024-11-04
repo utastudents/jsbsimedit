@@ -1,6 +1,4 @@
-
-#ifndef AIRCRAFT_H
-#define AIRCRAFT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -57,5 +55,3 @@ public:
     void saveToFile();
     Aircraft loadFromFile();
 };
-
-#endif // AIRCRAFT_H

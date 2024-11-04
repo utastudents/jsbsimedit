@@ -1,5 +1,4 @@
-#ifndef METRICS_H
-#define METRICS_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -94,5 +93,3 @@ private:
     // Initialization function
     void init();
 };
-
-#endif // METRICS_H
