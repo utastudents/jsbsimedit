@@ -20,9 +20,9 @@ int xxmain() {
     std::cout << "Thruster Thrust: " << thruster.getThrust() << " " << thruster.getThrustUnit() << std::endl;
 
     // Create dialogs
-    //EngineThrusterDialog engineThrusterDialog;
-    //engineThrusterDialog.onConfirm();
-    //engineThrusterDialog.onCancel();
+    EngineThrusterDialog engineThrusterDialog;
+    engineThrusterDialog.onConfirm();
+    engineThrusterDialog.onCancel();
 
     TankDialog tankDialog;
     tankDialog.onConfirm();
