@@ -65,3 +65,26 @@ void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, gu
 // {
 
 // }
+void BuoyantForcesSubsystem::setupGasCellTab()
+{	//creating the widgets for the cell tabl
+	Gtk::Box gasCellBox(Gtk::ORIENTATION_VERTICAL, 10);
+	// create lavel for gas cell tab
+    	Gtk::Label gasCellNameLabel("Gas Cell: ");
+	gasCellNameLabel.set_halign(Gtk::ALIGN_START);
+	gasCellBox.pack_start(gasCellNameLabel);
+	//next creating the drop down menu
+	Gtk::Label gasTypeLabel("Select Gas Type:");
+	gasTypeLabel.set_halign(Gtk::ALIGN_START);
+	gasCellBox.pack_start(gasTypeLabel);
+	m_gasTypeMenu.append("Air");//adding elements to drop down menu
+	m_gasTypeMenu.append("Helium");
+	m_gasTypeMenu.append("Hydrogen");
+	m_gasTypeMenu.set_active(0); // Set default to Air
+	gasCellBox.pack_start(m_gasTypeMenu);
+
+
+
+
+
+
+}
