@@ -19,8 +19,8 @@ private:
     std::string Description;
 
     std::vector<References> references; 
-    std::string limitations;                //Nam Ho handles
-    std::string notes;                      //Nam Ho handles
+    std::string limitations;                
+    std::string notes;                      
 
 public:
     Aircraft();
@@ -48,10 +48,10 @@ public:
     void setNotes(const std::string& notes);
     std::string getNotes() const;
 
-    bool setLimitations(std::string limitations);
+    void setLimitations(std::string limitations);
     std::string getLimitations();
 
-    bool setNotes(std::string notes);
+    void setNotes(std::string notes);
     std::string getNotes();
 
     void saveToFile();

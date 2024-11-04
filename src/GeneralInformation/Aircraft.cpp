@@ -1,6 +1,7 @@
 #include "Aircraft.h"
 #include <fstream>
 #include <iostream>
+#include "Validation.h"
 
 // Default constructor
 Aircraft::Aircraft() : name(""), Description(""), limitations(""), notes("") {}
@@ -16,7 +17,25 @@ std::string Aircraft::getName() const {
 
 // Set and get functions for user
 void Aircraft::setUser(const User& user) {
-    this->user = user;
+    if (!Validation::validateAuthor(user.getAuthorName()))
+    {
+        std::cout << "Invalid Author name!" << std::endl;
+        return;
+    }
+
+    if (!Validation::validateEmail(user.getEmail()))
+    {
+        std::cout << "Invalid Email input!" << std::endl;
+        return;
+    }
+
+    if (!Validation::validateOrganization(user.getOrganization()))
+    {
+        std::cout << "Organization limit must be 100 or fewer!" << std::endl;
+        return;
+    }
+
+    this->user = user;  //Set the user if all validations pass
 }
 
 User Aircraft::getUser() const {
@@ -60,8 +79,13 @@ std::string Aircraft::getDescription() {
 }
 
 // Set and get functions for limitations
-bool Aircraft::setLimitations(std::string limitations) {
-    return true;
+void Aircraft::setLimitations(std::string limitations) {
+    if (!Validation::validateLimitations(limitations))
+    {
+        std::cout << "Limitations must be 400 characters or fewer!" << std::endl;
+        return;
+    }
+    this->limitations = limitations;
 }
 
 std::string Aircraft::getLimitations() {
@@ -69,8 +93,13 @@ std::string Aircraft::getLimitations() {
 }
 
 // Set and get functions for notes
-bool Aircraft::setNotes(std::string notes) {
-    return true;
+void Aircraft::setNotes(std::string notes) {
+    if (!Validation::validateNotes(notes))
+    {
+        std::cout << "Notes must be 500 characters or fewer!" << std::endl;
+        return;
+    }
+    this->notes = notes;
 }
 
 std::string Aircraft::getNotes() const {
