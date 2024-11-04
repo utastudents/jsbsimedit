@@ -216,6 +216,11 @@ JSBEdit::XMLNode JSBEdit::XMLNode::GetParent()
     return JSBEdit::XMLNode(m_Node.parent());
 }
 
+JSBEdit::XMLNode JSBEdit::XMLNode::GetRoot()
+{
+    return XMLNode(m_Node.root());
+}
+
 bool JSBEdit::XMLNode::IsMixedContent()
 {
     bool pcdata = false;
