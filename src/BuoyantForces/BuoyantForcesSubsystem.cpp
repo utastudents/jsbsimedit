@@ -4,11 +4,7 @@
 #include "Component.hpp"
 
 BuoyantForcesSubsystem::BuoyantForcesSubsystem(std::string N)
-                :m_name(N),
-                m_label1("Contents for gas cell"),
-                m_label2("Contents for ballonet 1"),
-                m_label3("Contents for ballonet 2"),
-                m_label4("Contents for ballonet 3")
+                :m_name(N)
 {
     std::cout << "In BuoyantForcesSubsystem contructor" << std::endl;
 }
@@ -29,15 +25,8 @@ void BuoyantForcesSubsystem::Create()
 
   m_Grid.attach(m_notebook, 0, 0);
 
-  m_notebook.append_page(m_label1, "Gas Cell");
-  m_notebook.append_page(m_label2, "Ballonet 1");
-  m_notebook.append_page(m_label3, "Ballonet 2");
-  m_notebook.append_page(m_label4, "Ballonet 3");
-
-  m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
-             &BuoyantForcesSubsystem::on_notebook_switch_page) );
-
-  m_Grid.attach(m_gasTypeMenu, 0, 1);
+  m_pages.push_back(std::make_unique<Gtk::Box>(Gtk::Orientation::HORIZONTAL));
+  m_notebook.append_page(*m_pages.back(), "Gas Cell");
 
   /* this simply creates a grid of toggle buttons
    * to demonstrate the scrolled window. */
@@ -57,34 +46,40 @@ void BuoyantForcesSubsystem::Create()
 void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
   std::cout << "Switched to tab with index " << page_num << std::endl;
-
-  //You can also use m_Notebook.get_current_page() to get this index.
 }
 
-// void BuoyantForcesSubsystem::page_setup(Gtk::Widget*, guint page_num)
-// {
-
-// }
 void BuoyantForcesSubsystem::setupGasCellTab()
-{	//creating the widgets for the cell tabl
+{	
+  //creating the widgets for the cell tabl
 	Gtk::Box gasCellBox(Gtk::ORIENTATION_VERTICAL, 10);
-	// create lavel for gas cell tab
-    	Gtk::Label gasCellNameLabel("Gas Cell: ");
+	
+  // create lavel for gas cell tab
+  Gtk::Label gasCellNameLabel("Gas Cell: ");
 	gasCellNameLabel.set_halign(Gtk::ALIGN_START);
 	gasCellBox.pack_start(gasCellNameLabel);
-	//next creating the drop down menu
+	
+  //next creating the drop down menu
 	Gtk::Label gasTypeLabel("Select Gas Type:");
 	gasTypeLabel.set_halign(Gtk::ALIGN_START);
 	gasCellBox.pack_start(gasTypeLabel);
-	m_gasTypeMenu.append("Air");//adding elements to drop down menu
+
+  //adding elements to drop down menu
+	m_gasTypeMenu.append("Air");
 	m_gasTypeMenu.append("Helium");
 	m_gasTypeMenu.append("Hydrogen");
+  
 	m_gasTypeMenu.set_active(0); // Set default to Air
 	gasCellBox.pack_start(m_gasTypeMenu);
 
+}
 
+void BuoyantForcesSubsystem::BuildTabs() 
+{
+  std::cout << "in BuoyantForcesSubsystem::BuildTabs" << std::endl;
 
-
-
-
+  for (int i = 0; i < Component::getBallonetCount(); i++) 
+  {
+    Gtk::Box box(Gtk::Orientation::HORIZONTAL);
+    m_notebook.append_page(box, "Ballonet " + std::to_string(i+1));
+  }
 }
