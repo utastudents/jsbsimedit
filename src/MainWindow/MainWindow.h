@@ -28,5 +28,3 @@ public:
 private:
     Gtk::Notebook main_notebook; // The main notebook widget
 };
-
-#endif
