@@ -25,21 +25,9 @@ void BuoyantForcesSubsystem::Create()
 
   m_Grid.attach(m_notebook, 0, 0);
 
-  m_pages.push_back(std::make_unique<Gtk::Box>(Gtk::Orientation::HORIZONTAL));
+  m_pages.push_back(std::make_unique<Gtk::Grid>());
+  SetupTab(*m_pages.back());
   m_notebook.append_page(*m_pages.back(), "Gas Cell");
-
-  /* this simply creates a grid of toggle buttons
-   * to demonstrate the scrolled window. */
-  // for (int i = 0; i < 14; i++)
-  // {
-  //   for (int j = 0; j < 15; j++)
-  //   {
-  //     auto s = Glib::ustring::compose("button (%1,%2)", i, j);
-  //     auto pButton = Gtk::make_managed<Gtk::ToggleButton>(s);
-  //     m_Grid.attach(*pButton, i, j);
-  //   }
-  // }
-
 
 }
 
@@ -48,30 +36,30 @@ void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, gu
   std::cout << "Switched to tab with index " << page_num << std::endl;
 }
 
-void BuoyantForcesSubsystem::setupGasCellTab()
-{	
-  //creating the widgets for the cell tabl
-	Gtk::Box gasCellBox(Gtk::ORIENTATION_VERTICAL, 10);
+// void BuoyantForcesSubsystem::setupGasCellTab()
+// {	
+//   //creating the widgets for the cell tabl
+// 	Gtk::Box gasCellBox(Gtk::ORIENTATION_VERTICAL, 10);
 	
-  // create lavel for gas cell tab
-  Gtk::Label gasCellNameLabel("Gas Cell: ");
-	gasCellNameLabel.set_halign(Gtk::ALIGN_START);
-	gasCellBox.pack_start(gasCellNameLabel);
+//   // create lavel for gas cell tab
+//   Gtk::Label gasCellNameLabel("Gas Cell: ");
+// 	gasCellNameLabel.set_halign(Gtk::ALIGN_START);
+// 	gasCellBox.pack_start(gasCellNameLabel);
 	
-  //next creating the drop down menu
-	Gtk::Label gasTypeLabel("Select Gas Type:");
-	gasTypeLabel.set_halign(Gtk::ALIGN_START);
-	gasCellBox.pack_start(gasTypeLabel);
+//   //next creating the drop down menu
+// 	Gtk::Label gasTypeLabel("Select Gas Type:");
+// 	gasTypeLabel.set_halign(Gtk::ALIGN_START);
+// 	gasCellBox.pack_start(gasTypeLabel);
 
-  //adding elements to drop down menu
-	m_gasTypeMenu.append("Air");
-	m_gasTypeMenu.append("Helium");
-	m_gasTypeMenu.append("Hydrogen");
-  
-	m_gasTypeMenu.set_active(0); // Set default to Air
-	gasCellBox.pack_start(m_gasTypeMenu);
+//   //adding elements to drop down menu
+// 	m_gasTypeMenu.append("Air");
+// 	m_gasTypeMenu.append("Helium");
+// 	m_gasTypeMenu.append("Hydrogen");
 
-}
+// 	m_gasTypeMenu.set_active(0); // Set default to Air
+// 	gasCellBox.pack_start(m_gasTypeMenu);
+
+// }
 
 void BuoyantForcesSubsystem::BuildTabs() 
 {
@@ -79,7 +67,73 @@ void BuoyantForcesSubsystem::BuildTabs()
 
   for (int i = 0; i < Component::getBallonetCount(); i++) 
   {
-    Gtk::Box box(Gtk::Orientation::HORIZONTAL);
-    m_notebook.append_page(box, "Ballonet " + std::to_string(i+1));
+    Gtk::Grid grid;
+    grid.set_row_spacing(10);
+    grid.set_column_spacing(10);
+    m_notebook.append_page(grid, "Ballonet " + std::to_string(i+1));
   }
+}
+
+void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid) 
+{
+  // Drop Down Menu for Gas Type
+  auto dropdown_gas = Gtk::make_managed<Gtk::DropDown>();
+  auto gasItems = Gtk::StringList::create({"Air", "Helium", "Hydrogen"});
+
+  dropdown_gas->set_model(gasItems);
+  dropdown_gas->set_selected(0);
+  dropdown_gas->set_expand(false);
+  dropdown_gas->set_show_arrow(true);
+  dropdown_gas->set_size_request(150, -1);
+  p_grid.attach(*dropdown_gas, 0, 0);
+
+
+  // Drop Down Menu for Units (for Location)
+  AddUnitsDropDown(p_grid, 0, 1);
+
+  // Entry Texts for Location
+  AddEntry(p_grid, "Location X", 0, 3);
+  AddEntry(p_grid, "Location Y", 0, 4);
+  AddEntry(p_grid, "Location Z", 0, 5);
+
+
+    // Drop Down Menu for Units (for Dimensions)
+  AddUnitsDropDown(p_grid, 0, 6);
+
+  // Entry Texts for Dimensions
+  AddEntry(p_grid, "Dimension X", 0, 7);
+  AddEntry(p_grid, "Dimension Y", 0, 8);
+  AddEntry(p_grid, "Dimension Z", 0, 9);
+}
+
+void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, int col, int row) {
+  auto dropdown_units = Gtk::make_managed<Gtk::DropDown>();
+  auto unitItems = Gtk::StringList::create({});
+
+  for (int i = static_cast<int>(Component::Unit::WIDTH); i <= static_cast<int>(Component::Unit::FT3_SEC); ++i)
+  {
+    Component::Unit unit = static_cast<Component::Unit>(i);
+    unitItems->append(Component::unitToString(unit));
+  }
+
+  dropdown_units->set_model(unitItems);
+  dropdown_units->set_selected(0);
+  dropdown_units->set_expand(false);
+  dropdown_units->set_show_arrow(true);
+  dropdown_units->set_size_request(150, -1);
+  p_grid.attach(*dropdown_units, col, row);
+}
+
+void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row)
+{
+  auto entry_number = Gtk::make_managed<Gtk::Entry>();
+
+  entry_number->set_max_length(50);
+  entry_number->select_region(0, entry_number->get_text_length());
+  entry_number->set_expand(false);
+  entry_number->set_input_purpose(Gtk::InputPurpose::NUMBER);
+
+  auto entry_label = Gtk::make_managed<Gtk::Label>(label);
+  p_grid.attach(*entry_label, col, row);
+  p_grid.attach(*entry_number, ++col, row);
 }

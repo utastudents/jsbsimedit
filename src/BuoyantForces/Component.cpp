@@ -44,14 +44,14 @@ std::string Component::unitToString(Unit unit) {
         case Unit::WIDTH:           return "Width";
         case Unit::RADIUS:          return "Radius";
         case Unit::PSI:             return "PSI";
-        case Unit::M:               return "Meters";
-        case Unit::IN:              return "Inches";
+        case Unit::M:               return "M";
+        case Unit::IN:              return "IN";
         case Unit::PA:              return "PA";
-        case Unit::M4_SEC_KG:       return "m^4 * sec / kg";
-        case Unit::FT4_SEC_SLUG:    return "ft^4 * sec / slug";
-        case Unit::LB_FT_SEC_R:     return "lb ft / (sec R)";
-        case Unit::LBS_FT_SEC:      return "lbs ft / sec";
-        case Unit::FT3_SEC:         return "ft^3 / sec";
+        case Unit::M4_SEC_KG:       return "M4 * SEC / KG";
+        case Unit::FT4_SEC_SLUG:    return "FT4 * SEC / SLUG";
+        case Unit::LB_FT_SEC_R:     return "LB FT / (SEC R)";
+        case Unit::LBS_FT_SEC:      return "LBS FT / SEC";
+        case Unit::FT3_SEC:         return "FT3 / SEC";
         default: return "Unknown Unit";
     }
 }
