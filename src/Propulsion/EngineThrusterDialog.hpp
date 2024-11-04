@@ -1,0 +1,16 @@
+#ifndef ENGINE_THRUSTER_DIALOG_H
+#define ENGINE_THRUSTER_DIALOG_H
+
+class EngineThrusterDialog {
+public:
+    // Constructor
+    EngineThrusterDialog();
+
+    // Method to handle confirmation action
+    void onConfirm();
+
+    // Method to handle cancellation action
+    void onCancel();
+};
+
+#endif // ENGINE_THRUSTER_DIALOG_H

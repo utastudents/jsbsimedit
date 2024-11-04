@@ -12,6 +12,10 @@ public:
     // Constructor
     Metrics();
 
+    // Initialization function
+    void init();
+    void activate();
+
 private:
     ////////////////////////////////////////////////////////
     // ------ Custom types ------
@@ -93,3 +97,5 @@ private:
     // Initialization function
     void init();
 };
+
+#endif // METRICS_H

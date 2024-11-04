@@ -14,8 +14,40 @@ add_subdirectory(thirdparty/pugixml)
 
 # get the files recursively so that programmers don't have to touch this file
 file(GLOB_RECURSE SIMEDIT_SOURCES src/*.cpp src/*.c)
+if(WIN32)
 
-add_executable(${PROJECT_NAME} ${SIMEDIT_SOURCES})
+    add_custom_command(
+      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources.c
+      COMMAND ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows/tools/glib//glib-compile-resources.exe --target=${CMAKE_CURRENT_BINARY_DIR}/resources.c --generate-source exampleapp.gresource.xml
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Application/
+      DEPENDS ${CMAKE_SOURCE_DIR}/src/Application/exampleapp.gresource.xml
+    )
+   
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gschemas.compiled
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows/tools/glib/glib-compile-schemas.exe --targetdir=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/src/Application
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/Application/org.gtkmm.exampleapp.gschema.xml
+    )
+
+else()
+
+    add_custom_command(
+      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources.c
+      COMMAND glib-compile-resources --target=${CMAKE_CURRENT_BINARY_DIR}/resources.c --generate-source exampleapp.gresource.xml
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Application/
+      DEPENDS ${CMAKE_SOURCE_DIR}/src/Application/exampleapp.gresource.xml
+    )
+
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gschemas.compiled
+        COMMAND glib-compile-schemas --targetdir=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/src/Application
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/Application/org.gtkmm.exampleapp.gschema.xml
+    )
+endif()
+
+add_executable(${PROJECT_NAME} ${SIMEDIT_SOURCES} ${CMAKE_BINARY_DIR}/resources.c ${CMAKE_CURRENT_BINARY_DIR}/gschemas.compiled )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES C_STANDARD 17 C_STANDARD_REQUIRED ON)
