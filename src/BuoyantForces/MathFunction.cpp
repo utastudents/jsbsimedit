@@ -1,12 +1,13 @@
 #include "MathFunction.hpp"
 #include "BuoyantForcesSubsystem.cpp"
 #include <iostream>
-
+/*
  int main(int argc, char const *argv[])
  {
     std::cout << "just for testing";
     return 0;
  }
+*/
  
 
 MathFunction::MathFunction() {
