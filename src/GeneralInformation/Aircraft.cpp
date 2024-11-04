@@ -9,6 +9,7 @@ Aircraft::Aircraft() : name(""), Description(""), limitations(""), notes("") {}
 // Set and get functions for name
 void Aircraft::setName(const std::string& name) {
     this->name = name;
+    // test for the push/pull
 }
 
 std::string Aircraft::getName() const {
