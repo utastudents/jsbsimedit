@@ -32,6 +32,7 @@ class Component
         };
 
         static std::string unitToString(Unit unit);
+        static int getBallonetCount();
 
     protected:
         GasType gasType;
@@ -46,6 +47,7 @@ class Component
         double mass;
         bool hasHeat;
         std::vector<MathFunction> heatFunctions;
+        static int ballonetCount;
 };
 
 class GasCell : public Component
@@ -63,12 +65,10 @@ class Ballonet : public Component
     public:
         Ballonet(const std::string& name, GasType gastype);
         ~Ballonet();
-        int getBallonetNumber();
-        void createBallonetTab(int tabIndex);
+        std::string getName();
         void inputBlowerValue(double blowerValue);
     
     private:
         std::string name;
-        int ballonetCount;
         double blowerValue;
 };

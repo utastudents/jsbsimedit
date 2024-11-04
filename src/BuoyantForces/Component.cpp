@@ -1,12 +1,13 @@
 #include "Component.hpp"
 #include <iostream>
 
+int Component::ballonetCount = 0;
 // Component methods
 // Constructor
 Component::Component() : maxOverpressure(0.0), 
                          fullness(0.0), 
                          valveCoefficient(0), 
-                         gasType(AIR), 
+                         gasType(GasType::AIR), 
                          location(0,0,0),
 	                     dimensions(0,0,0), 
                          volume(0.0), 
@@ -55,33 +56,31 @@ std::string Component::unitToString(Unit unit) {
     }
 }
 
-// GasCell methods
-GasCell::GasCell(double v, double t, double p, double m) : Component() {
-    volume = v;
-    temperature = t;
-    pressure = p;
-    mass = m;
-}
+int Component::getBallonetCount() { return ballonetCount; }
 
-GasCell::~GasCell() {
-    // Destructor definition
-}
+// // GasCell methods
+// GasCell::GasCell(double v, double t, double p, double m) : Component() {
+//     volume = v;
+//     temperature = t;
+//     pressure = p;
+//     mass = m;
+// }
 
-// Ballonet methods
-Ballonet::Ballonet(const std::string& name, GasType gastype) {
-    this->name = name;
-    this->gasType = gastype;
-}
+// GasCell::~GasCell() {
+//     // Destructor definition
+// }
 
-Ballonet::~Ballonet() {
-    // Destructor definition
-}
+// // Ballonet methods
+// Ballonet::Ballonet(const std::string& name, GasType gastype) {
+//     this->name = name;
+//     this->gasType = gastype;
+// }
 
-int Ballonet::getBallonetNumber() { return ballonetCount; }
+// Ballonet::~Ballonet() {
+//     // Destructor definition
+// }
 
-void Ballonet::createBallonetTab(int tabIndex) {
-    // Implementation for creating Ballonet Tab
-}
+// std::string Ballonet::getName() { return name; }
 
-void Ballonet::inputBlowerValue(double blowerValue) { this->blowerValue = blowerValue; }
+// void Ballonet::inputBlowerValue(double blowerValue) { this->blowerValue = blowerValue; }
 
