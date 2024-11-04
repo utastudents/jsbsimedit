@@ -3,11 +3,11 @@
 namespace JSBEdit{
 
 KinematicsComponent::KinematicsComponent(const std::string &name, ComponentType &type)
-    : IComponentCommon(name, type)
+    : IComponentCommon(name, type), table(40)
 {
 }
 
-void PIDComponent::LoadGUI(Glib::RefPtr<Gtk::Box> &uiBox)
+void KinematicsComponent::LoadGUI(Glib::RefPtr<Gtk::Box> &uiBox)
 {
     //Load GUI here, add signal handlers and callbacks to uiBox.
 }
