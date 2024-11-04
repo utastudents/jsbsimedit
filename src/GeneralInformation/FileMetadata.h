@@ -1,6 +1,4 @@
-
-#ifndef FILEMETADATA_H
-#define FILEMETADATA_H
+#pragma once
 
 #include <string>
 #include <chrono>
@@ -23,5 +21,3 @@ public:
     void setFlightModelVersion(const std::string& version);
     std::string getFlightModelVersion() const;
 };
-
-#endif // FILEMETADATA_H

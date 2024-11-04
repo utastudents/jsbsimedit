@@ -1,5 +1,4 @@
-#ifndef METRICS_H
-#define METRICS_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -94,6 +93,9 @@ private:
     std::map<std::string, std::unique_ptr<Positive_Double>> positive_data_unit;
     std::map<std::string, std::unique_ptr<Norm_Double>> normal_data_units;
     std::map<std::string, std::unique_ptr<Vertex_Unit>> vertex_data_units;
+
+    // Initialization function
+    void init();
 };
 
 #endif // METRICS_H
