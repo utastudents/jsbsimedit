@@ -97,5 +97,3 @@ private:
     // Initialization function
     void init();
 };
-
-#endif // METRICS_H
