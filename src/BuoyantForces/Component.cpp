@@ -4,7 +4,9 @@
 // Component methods
 Component::Component() {
     // Constructor
-    // include any default values for attributes
+	: maxOverpressure(0.0), fullness(0.0), valveCoefficient(0,0), gasType(air),, location(0.0,0.0,0.0),
+	dimensions(0.0,0.0,0.0), volume(0.0), temperature(0.0), pressure(0.0), mass(0.0),
+	 hasHeat(false){}
 }
 
 void Component::setLocation(double x, double y, double z) {
