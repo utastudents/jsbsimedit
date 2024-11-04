@@ -1,8 +1,5 @@
 #ifndef TANK_DIALOG_H
 #define TANK_DIALOG_H
-#include "TankDialog.hpp"
-#include <map>
-#include <string>
 
 class TankDialog {
 public:
@@ -14,6 +11,9 @@ public:
 
     // Method to handle cancellation action
     void onCancel();
+
+    // Method to fill default values of dialog box
+    void defaultValueFill();
 };
 
 #endif // TANK_DIALOG_H
