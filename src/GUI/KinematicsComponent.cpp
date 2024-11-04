@@ -7,7 +7,7 @@ KinematicsComponent::KinematicsComponent(const std::string &name, ComponentType 
 {
 }
 
-void PIDComponent::LoadGUI(Glib::RefPtr<Gtk::Box> &uiBox)
+void KinematicsComponent::LoadGUI(Glib::RefPtr<Gtk::Box> &uiBox)
 {
     //Load GUI here, add signal handlers and callbacks to uiBox.
 }
