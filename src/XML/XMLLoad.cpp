@@ -7,8 +7,11 @@ JSBEdit::XMLDoc JSBEdit::XMLLoad::Load(std::filesystem::path path)
     {
         pugi::xml_document doc;
         doc.load_file(path.c_str());
-        return JSBEdit::XMLDoc(doc);
+        return JSBEdit::XMLDoc(std::move(doc));
     }
     else
+    {
         std::cerr << "File path does not exist: " << path << "\n";
+        return JSBEdit::XMLDoc();
+    }
 }

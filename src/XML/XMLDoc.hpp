@@ -25,7 +25,7 @@ namespace JSBEdit
         bool ParseData();
     public:
         XMLDoc();
-        XMLDoc(pugi::xml_document newDoc) {doc = newDoc;} 
+        XMLDoc(pugi::xml_document&& newDoc) : doc {std::move(newDoc)} {} 
         ~XMLDoc();
         void LoadFileAndParse(const std::filesystem::path &path);
         void LoadStringAndParse(const std::string& xmlstring);
