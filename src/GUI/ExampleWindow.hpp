@@ -2,7 +2,7 @@
 
 #include <gtkmm.h>
 #include "ExampleTab.hpp"
-#include "FlightControlDemo.hpp"
+#include <DragDropUI/FlightControlDemo.hpp>
 
 namespace JSBEdit
 {
