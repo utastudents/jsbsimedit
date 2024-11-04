@@ -26,6 +26,17 @@ void Component::inputInitialFullness(double initFullness) { fullness = initFulln
 std::string Component::unitToString(Unit unit) {
     switch (unit) {
         // include all cases for each enum type and return appropriate string
+        case Unit::WIDTH:           return "Width";
+        case Unit::RADIUS:          return "Radius";
+        case Unit::PSI:             return "PSI";
+        case Unit::M:               return "Meters";
+        case Unit::IN:              return "Inches";
+        case Unit::PA:              return "PA";
+        case Unit::M4_SEC_KG:       return "m^4 * sec / kg";
+        case Unit::FT4_SEC_SLUG:    return "ft^4 * sec / slug";
+        case Unit::LB_FT_SEC_R:     return "lb ft / (sec R)";
+        case Unit::LBS_FT_SEC:      return "lbs ft / sec";
+        case Unit::FT3_SEC:         return "ft^3 / sec";
         default: return "Unknown Unit";
     }
 }
