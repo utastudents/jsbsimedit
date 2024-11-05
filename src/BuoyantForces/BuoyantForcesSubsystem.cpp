@@ -3,6 +3,7 @@
 #include "BuoyantForcesSubsystem.hpp"
 #include "Component.hpp"
 
+
 BuoyantForcesSubsystem::BuoyantForcesSubsystem(std::string N)
                 :m_name(N)
 {
@@ -28,7 +29,6 @@ void BuoyantForcesSubsystem::Create()
   m_pages.push_back(std::make_unique<Gtk::Grid>());
   SetupTab(*m_pages.back());
   m_notebook.append_page(*m_pages.back(), "Gas Cell");
-
 }
 
 void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
@@ -79,36 +79,50 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   // Drop Down Menu for Gas Type
   auto dropdown_gas = Gtk::make_managed<Gtk::DropDown>();
   auto gasItems = Gtk::StringList::create({"Air", "Helium", "Hydrogen"});
+  auto label_gas = Gtk::make_managed<Gtk::Label>("Gas Type");
 
   dropdown_gas->set_model(gasItems);
   dropdown_gas->set_selected(0);
   dropdown_gas->set_expand(false);
   dropdown_gas->set_show_arrow(true);
   dropdown_gas->set_size_request(150, -1);
-  p_grid.attach(*dropdown_gas, 0, 0);
+  label_gas->set_size_request(250, -1);
+
+  p_grid.attach(*label_gas, 0,0);
+  p_grid.attach(*dropdown_gas, 1, 0);
 
 
   // Drop Down Menu for Units (for Location)
-  AddUnitsDropDown(p_grid, 0, 1);
+  AddUnitsDropDown(p_grid, "Location", 0, 1);
 
   // Entry Texts for Location
-  AddEntry(p_grid, "Location X", 0, 3);
-  AddEntry(p_grid, "Location Y", 0, 4);
-  AddEntry(p_grid, "Location Z", 0, 5);
+  AddEntry(p_grid, "x", 0, 3);
+  AddEntry(p_grid, "y", 0, 4);
+  AddEntry(p_grid, "z", 0, 5);
 
 
     // Drop Down Menu for Units (for Dimensions)
-  AddUnitsDropDown(p_grid, 0, 6);
+  AddUnitsDropDown(p_grid, "Dimensions", 0, 6);
 
   // Entry Texts for Dimensions
-  AddEntry(p_grid, "Dimension X", 0, 7);
-  AddEntry(p_grid, "Dimension Y", 0, 8);
-  AddEntry(p_grid, "Dimension Z", 0, 9);
+  AddEntry(p_grid, "x", 0, 7);
+  AddEntry(p_grid, "y", 0, 8);
+  AddEntry(p_grid, "z", 0, 9);
+
+  // Entry Text for Max Overpressure
+  AddEntry(p_grid, "Max Overpressure", 0, 10);
+
+  // Entry Text for Fullness
+  AddEntry(p_grid, "Fullness", 0, 11);
+
+  // Entry Text for Valve Coefficient
+  AddEntry(p_grid, "Valve Coefficient", 0, 12);
 }
 
-void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, int col, int row) {
+void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row) {
   auto dropdown_units = Gtk::make_managed<Gtk::DropDown>();
   auto unitItems = Gtk::StringList::create({});
+  auto dropdown_label = Gtk::make_managed<Gtk::Label>(label);
 
   for (int i = static_cast<int>(Component::Unit::WIDTH); i <= static_cast<int>(Component::Unit::FT3_SEC); ++i)
   {
@@ -117,23 +131,25 @@ void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, int col, int ro
   }
 
   dropdown_units->set_model(unitItems);
-  dropdown_units->set_selected(0);
+  dropdown_units->set_selected(3);
   dropdown_units->set_expand(false);
   dropdown_units->set_show_arrow(true);
-  dropdown_units->set_size_request(150, -1);
-  p_grid.attach(*dropdown_units, col, row);
+  // dropdown_units->set_size_request(150, -1);   // Already defined in DropDown Menu for Gas Type
+
+  p_grid.attach(*dropdown_label, col, row);
+  p_grid.attach(*dropdown_units, ++col, row);
 }
 
 void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row)
 {
   auto entry_number = Gtk::make_managed<Gtk::Entry>();
+  auto entry_label = Gtk::make_managed<Gtk::Label>(label);
 
   entry_number->set_max_length(50);
   entry_number->select_region(0, entry_number->get_text_length());
   entry_number->set_expand(false);
   entry_number->set_input_purpose(Gtk::InputPurpose::NUMBER);
 
-  auto entry_label = Gtk::make_managed<Gtk::Label>(label);
   p_grid.attach(*entry_label, col, row);
   p_grid.attach(*entry_number, ++col, row);
 }

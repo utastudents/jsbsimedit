@@ -11,7 +11,7 @@ class BuoyantForcesSubsystem : public Subsystem
     // void setupGasCellTab();
     void BuildTabs();
     void SetupTab(Gtk::Grid& p_grid);
-    void AddUnitsDropDown(Gtk::Grid& p_grid, int col, int row);
+    void AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row);
     void AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row);
 
   protected:
