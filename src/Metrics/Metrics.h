@@ -94,6 +94,4 @@ private:
     std::map<std::string, std::unique_ptr<Norm_Double>> normal_data_units;
     std::map<std::string, std::unique_ptr<Vertex_Unit>> vertex_data_units;
 
-    // Initialization function
-    void init();
 };

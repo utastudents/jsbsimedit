@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include <gtkmm.h>
 #include <iostream>
-
+#if 0
 // Function to create a new tab in the notebook
 void create_tab(Gtk::Notebook& notebook, const Glib::ustring& tab_name, Gtk::Widget& content) {
     // Create a label for the tab
@@ -76,3 +76,4 @@ int main(int argc, char* argv[]) {
     // Run the application
     return app->run(window);
 }
+#endif
