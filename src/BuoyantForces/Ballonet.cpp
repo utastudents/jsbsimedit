@@ -2,14 +2,15 @@
 #include <iostream>
 
 // Ballonet methods
-Ballonet::Ballonet(const std::string& name, GasType gastype) {
+Ballonet::Ballonet(const std::string& name, GasType gastype) 
+{
     this->name = name;
     this->gasType = gastype;
     Component::ballonetCount++;
 }
 
-Ballonet::~Ballonet() {
-    // Destructor definition
+Ballonet::~Ballonet() 
+{
 }
 
 std::string Ballonet::getName() { return name; }
