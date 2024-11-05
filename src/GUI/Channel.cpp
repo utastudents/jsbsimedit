@@ -2,9 +2,10 @@
 
 namespace JSBEdit{
 
-Channel::Channel(const std::string & channelName)
+Channel::Channel(const Glib::RefPtr<Gtk::Application> &app, const std::string & channelName)
     : m_channelName(channelName)
 {
+    m_appRef = app;
 }
 
 bool Channel::ComponentNameExists(const std::string & name)
@@ -38,6 +39,21 @@ void Channel::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
 std::string Channel::GetChannelName() const
 {
     return m_channelName;
+}
+
+void Channel::HandleClickRelease(int x, int y)
+{
+    std::cout << "Canvas was clicked at: " << x << ", " << y << ". \n";
+}
+
+void Channel::HandleDoubleClick(int x, int y)
+{
+    std::cout << "Canvas was double clicked at: " << x << ", " << y << ". \n";
+    for(auto& i : m_spriteComponents)
+    {
+        if(i.second.ContainsPoint(x, y))
+            std::cout << i.first << " component was double clicked.\n";
+    }
 }
 
 void Channel::SetChannelName(const std::string channelName)
