@@ -20,6 +20,14 @@ void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     drawCont->paint();
 }
 
+bool ComponentSprite::ContainsPoint(int x, int y)
+{
+    //This was a fun memory exercize
+    bool withinXBounds = ((m_x + m_width) >= x && m_x <= x);
+    bool withinYBounds = ((m_y + m_height) >= y && m_y <= y);
+    return (withinXBounds && withinYBounds);
+}
+
 std::pair<int, int> ComponentSprite::GetBounds() const
 {
     return std::pair<int, int>(m_width, m_height);

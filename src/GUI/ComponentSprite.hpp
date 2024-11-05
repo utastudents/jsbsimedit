@@ -13,10 +13,10 @@ namespace JSBEdit
 	class ComponentSprite : public IDrawable
 	{
 	public:
-	//TODO static load the pixel buffs for each comp type..
 		ComponentSprite(const ComponentType& comp = ComponentType::ACTUATOR, int x = 0, int y = 0);
 		~ComponentSprite() = default;
 
+		bool ContainsPoint(int x, int y);
 		void Draw(const Cairo::RefPtr<Cairo::Context>& drawCont) override;
 		std::pair<int, int> GetBounds() const;
 		ComponentType GetComponentType() const;
@@ -30,8 +30,8 @@ namespace JSBEdit
     private:
 		int m_x = 0;
 		int m_y = 0;
-		int	m_width = 16;
-		int m_height = 16;
+		int	m_width = 32;
+		int m_height = 32;
 		int m_fontSize = 8;
 		ComponentType m_componentType {ComponentType::ACTUATOR};
 		
