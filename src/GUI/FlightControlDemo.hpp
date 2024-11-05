@@ -5,15 +5,11 @@
 #include <vector>
 #include <unordered_map>
 #include <iostream>
-#include "IComponentCommon.hpp"
-#include "PIDComponent.hpp"
 #include "ChannelCanvas.hpp"
 
 
 namespace JSBEdit
 {
-
-	typedef	std::vector<IComponentCommon*> ComponentChannel;
 
 	class FlightControlDemo : public Gtk::Box
 	{
@@ -27,7 +23,6 @@ namespace JSBEdit
 
 		ChannelCanvas m_canvas;
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
-		std::unordered_map<std::string, ComponentChannel> m_componentChannels{};
 
 	};
 
