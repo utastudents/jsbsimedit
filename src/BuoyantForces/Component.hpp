@@ -3,8 +3,6 @@
 #include <vector>
 #include "MathFunction.hpp"
 
-// Forward declaration of Ballonet class
-class Ballonet;
 class Component
 {
     public:
@@ -50,25 +48,3 @@ class Component
         static int ballonetCount;
 };
 
-class GasCell : public Component
-{
-    public:
-        GasCell(double v, double t, double p, double m);
-        ~GasCell();
-
-    private:
-        std::vector<Ballonet> ballonets;
-};
-
-class Ballonet : public Component
-{
-    public:
-        Ballonet(const std::string& name, GasType gastype);
-        ~Ballonet();
-        std::string getName();
-        void inputBlowerValue(double blowerValue);
-    
-    private:
-        std::string name;
-        double blowerValue;
-};
