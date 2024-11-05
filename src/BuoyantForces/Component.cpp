@@ -33,9 +33,9 @@ void Component::setDimensions(double x, double y, double z) {
 }
 
 // Input methods
-void Component::inputOverpressure(double overpressure) { maxOverpressure = overpressure; }
-void Component::inputValveCoefficient(double valveCoefficient) { this->valveCoefficient = valveCoefficient; }
-void Component::inputInitialFullness(double initFullness) { fullness = initFullness; }
+void Component::setOverpressure(double overpressure) { maxOverpressure = overpressure; }
+void Component::setValveCoefficient(double valveCoefficient) { this->valveCoefficient = valveCoefficient; }
+void Component::setInitialFullness(double initFullness) { fullness = initFullness; }
 
 // Unit to string conversion
 std::string Component::unitToString(Unit unit) {
@@ -57,30 +57,3 @@ std::string Component::unitToString(Unit unit) {
 }
 
 int Component::getBallonetCount() { return ballonetCount; }
-
-// // GasCell methods
-// GasCell::GasCell(double v, double t, double p, double m) : Component() {
-//     volume = v;
-//     temperature = t;
-//     pressure = p;
-//     mass = m;
-// }
-
-// GasCell::~GasCell() {
-//     // Destructor definition
-// }
-
-// // Ballonet methods
-// Ballonet::Ballonet(const std::string& name, GasType gastype) {
-//     this->name = name;
-//     this->gasType = gastype;
-// }
-
-// Ballonet::~Ballonet() {
-//     // Destructor definition
-// }
-
-// std::string Ballonet::getName() { return name; }
-
-// void Ballonet::inputBlowerValue(double blowerValue) { this->blowerValue = blowerValue; }
-

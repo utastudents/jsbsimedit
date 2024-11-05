@@ -12,9 +12,9 @@ class Component
         virtual ~Component() = default;
         void setLocation(double x, double y, double z);
         void setDimensions(double x, double y, double z);
-        void inputOverpressure(double overpressure);
-        void inputValveCoefficient(double valveCoefficient);
-        void inputInitialFullness(double initFullness);
+        void setOverpressure(double overpressure);
+        void setValveCoefficient(double valveCoefficient);
+        void setInitialFullness(double initFullness);
 
         enum GasType {HELIUM, HYDROGEN, AIR};
         enum class Unit {
