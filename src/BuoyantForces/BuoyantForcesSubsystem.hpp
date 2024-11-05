@@ -12,7 +12,7 @@ class BuoyantForcesSubsystem : public Subsystem
     void BuildTabs();
     void SetupTab(Gtk::Grid& p_grid);
     void AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row);
-    void AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row);
+    void AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row, bool hasDDMenu);
 
   protected:
     void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
