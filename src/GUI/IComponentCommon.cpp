@@ -7,15 +7,6 @@ IComponentCommon::IComponentCommon(const std::string &compName, ComponentType& t
 {
 }
 
-//Potential circular dependancy here in the future..
-void IComponentCommon::CreateWindow()
-{
-    if(m_componentType == ComponentType::DESTINATION || m_componentType == ComponentType::SOURCE)
-        CreateSourceDestWindow();
-    else
-        CreateComponentWindow();
-}
-
 std::string IComponentCommon::GetName() const
 {
     return m_componentName;
@@ -36,11 +27,7 @@ Glib::RefPtr<Gtk::Box> IComponentCommon::GetCommonTab()
     return Glib::RefPtr<Gtk::Box>();
 }
 
-void IComponentCommon::CreateComponentWindow()
-{
-}
-
-void IComponentCommon::CreateSourceDestWindow()
+Glib::RefPtr<Gtk::Window> IComponentCommon::CreateWindow()
 {
 }
 

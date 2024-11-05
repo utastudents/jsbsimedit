@@ -10,11 +10,10 @@ class IComponentCommon
 {
 public:
     IComponentCommon(const std::string& compName, ComponentType& type);
-    void CreateWindow();
     std::string GetName() const;
     ComponentType GetComponentType() const;
     void SetName(const std::string& newName);
-    virtual void LoadGUI(Glib::RefPtr<Gtk::Box>& uiBox) = 0;
+    virtual void LoadGUI(Glib::RefPtr<Gtk::Application>& app) = 0;
 
 protected:
     Glib::RefPtr<Gtk::Box> GetCommonTab();
@@ -24,9 +23,7 @@ protected:
     ComponentType m_componentType;
 
 private:
-    void CreateComponentWindow();
-    void CreateSourceDestWindow();
-
+    Glib::RefPtr<Gtk::Window> CreateWindow();
 };
 
 };
