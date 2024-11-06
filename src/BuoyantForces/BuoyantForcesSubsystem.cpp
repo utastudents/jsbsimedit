@@ -25,11 +25,16 @@ void BuoyantForcesSubsystem::Create()
   m_notebook.set_expand();
 
   m_Grid.attach(m_notebook, 0, 0);
+  
+
 
   m_pages.push_back(std::make_unique<Gtk::Grid>());
   SetupTab(*m_pages.back());
   m_notebook.append_page(*m_pages.back(), "Gas Cell");
+
 }
+
+
 
 void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
@@ -64,7 +69,7 @@ void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, gu
 void BuoyantForcesSubsystem::BuildTabs() 
 {
   std::cout << "in BuoyantForcesSubsystem::BuildTabs" << std::endl;
-
+  
   for (int i = 0; i < Component::getBallonetCount(); i++) 
   {
     Gtk::Grid grid;
@@ -119,8 +124,38 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   AddEntry(p_grid, "Fullness", 0, 12, false);
 
   // Entry Text for # of Ballonets
-  AddEntry(p_grid, "Ballonets", 0, 13, false);
+  //AddEntry(p_grid, "Ballonets", 0, 13, false);
+  auto combo_ballonetCount = Gtk :: make_managed<Gtk::ComboBoxText>();
+  combo_ballonetCount->append("1");
+  combo_ballonetCount->append("2");
+  combo_ballonetCount->append("3");
+  combo_ballonetCount->append("4");
+  combo_ballonetCount->append("5");
+  combo_ballonetCount->set_active_id("1");
+  
+
+
+  combo_ballonetCount->signal_changed().connect(sigc::mem_fun(*this,&BuoyantForcesSubsystem:: on_ballonetcount_changed));
+  m_Grid.attach(*combo_ballonetCount,1,1);
 }
+
+void BuoyantForcesSubsystem:: on_ballonetcount_changed()
+{
+  auto selected_value = combo_ballonetCount->get_active_id();
+  if(!selected_value.empty())
+  {
+    int ballonetCount = (std::stoi(selected_value));
+
+  
+  Component :: setBallonetCount(ballonetCount);
+  std::cout << "Selected Ballonet Count:" <<ballonetCount <<std::endl;
+
+  BuildTabs();
+  }
+
+}
+
+
 
 void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row) {
   auto dropdown_units = Gtk::make_managed<Gtk::DropDown>();

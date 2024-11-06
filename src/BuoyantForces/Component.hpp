@@ -33,6 +33,7 @@ class Component
 
         static std::string unitToString(Unit unit);
         static int getBallonetCount();
+        static void setBallonetCount(int count);
 
     protected:
         GasType gasType;
@@ -48,6 +49,7 @@ class Component
         bool hasHeat;
         std::vector<MathFunction> heatFunctions;
         static int ballonetCount;
+        
 };
 
 class GasCell : public Component

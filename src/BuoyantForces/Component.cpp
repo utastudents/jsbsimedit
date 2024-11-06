@@ -56,4 +56,14 @@ std::string Component::unitToString(Unit unit) {
     }
 }
 
-int Component::getBallonetCount() { return ballonetCount; }
+
+
+void Component::setBallonetCount(int count) 
+{ 
+    ballonetCount=count; 
+}
+
+int Component::getBallonetCount() 
+{ 
+    return ballonetCount; 
+}

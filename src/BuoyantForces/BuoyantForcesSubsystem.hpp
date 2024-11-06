@@ -16,7 +16,9 @@ class BuoyantForcesSubsystem : public Subsystem
 
   protected:
     void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
+    void on_ballonetcount_changed();
 
     Gtk::Notebook m_notebook;
+    Glib::RefPtr<Gtk::ComboBoxText> combo_ballonetCount;
     std::vector<std::unique_ptr<Gtk::Grid>> m_pages;
 };
