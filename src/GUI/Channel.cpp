@@ -8,7 +8,7 @@ Channel::Channel(const Glib::RefPtr<Gtk::Application> &app, const std::string & 
     m_appRef = app;
 }
 
-bool Channel::ComponentNameExists(const std::string & name)
+bool Channel::ComponentNameExists(const std::string &name)
 {
     //I think I should revise this to be a pair of sprites/components.
     return (m_components.contains(name) || m_spriteComponents.contains(name)); 
