@@ -88,7 +88,7 @@ void ChannelCanvas::OnClickRelease(int numClick, double x, double y)
     if(!CurrentChannelExists())
         return;
 
-    //WHYYYYYY does m_channels[m_currentChannel] raise all hell here but at is fine...
+    //WHYYYYYY does m_channels[m_currentChannel] raise all hell here but .at() is fine...
     if(numClick < 2)
         m_channels.at(m_currentChannel).HandleClickRelease(static_cast<int>(x), static_cast<int>(y));
     else
