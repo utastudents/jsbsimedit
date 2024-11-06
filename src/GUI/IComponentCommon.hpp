@@ -16,14 +16,14 @@ public:
     virtual void LoadGUI(Glib::RefPtr<Gtk::Application>& app) = 0;
 
 protected:
-    Glib::RefPtr<Gtk::Box> GetCommonTab();
+    Glib::RefPtr<Gtk::Window> CreateWindow();
     
     //Member Variables;
     std::string m_componentName {};
     ComponentType m_componentType;
+    const static std::string COMMON_TAB;
 
 private:
-    Glib::RefPtr<Gtk::Window> CreateWindow();
 };
 
 };
