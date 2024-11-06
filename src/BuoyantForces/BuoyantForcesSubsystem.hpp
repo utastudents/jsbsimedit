@@ -4,7 +4,6 @@
 class BuoyantForcesSubsystem : public Subsystem
 {
   public:
-    std::string m_name;
-    BuoyantForcesSubsystem(std::string N);
+    BuoyantForcesSubsystem();
     void Create();
 };

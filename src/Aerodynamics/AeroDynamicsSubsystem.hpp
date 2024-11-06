@@ -4,7 +4,6 @@
 class AeroDynamicsSubsystem : public Subsystem
 {
   public:
-    std::string m_name;
-    AeroDynamicsSubsystem(std::string N);
+    AeroDynamicsSubsystem();
     void Create(); 
 };

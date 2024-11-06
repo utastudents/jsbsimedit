@@ -1,6 +1,4 @@
-
-#ifndef USER_H
-#define USER_H
+#pragma once
 
 #include <string>
 
@@ -22,5 +20,3 @@ public:
     void setOrganization(const std::string& organization);
     std::string getOrganization() const;
 };
-
-#endif // USER_H

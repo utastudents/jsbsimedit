@@ -118,9 +118,9 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   // create the Subsystems objects
   //    The key is the title used in the tab. 
   //    Maybe a better way to get the name, perhaps add it to Subsystem?
-  m_Subsystems["Aerodynamics"] = new AeroDynamicsSubsystem(std::string("Aerodynamics"));
-  m_Subsystems["BuoyantForces"] = new BuoyantForcesSubsystem(std::string("BuoyantForces"));
-  m_Subsystems["Metrics"] = new MetricsSubsystem(std::string("Metrics"));
+  m_Subsystems.push_back(new AeroDynamicsSubsystem());
+  m_Subsystems.push_back(new BuoyantForcesSubsystem());
+  m_Subsystems.push_back(new MetricsSubsystem());
 #if 0
   Subsystem* m_AeroDynSub {nullptr};
   Subsystem* m_BouySub {nullptr};
@@ -133,16 +133,15 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   Subsystem* m_PropSub {nullptr};
 #endif
   // create the gtk objects inside
-  // (i wanted to use a lambda, but that would be just showing off...)
-  for (auto i = m_Subsystems.begin(); i != m_Subsystems.end(); i++)
+  for (const auto &i : m_Subsystems)
   {
-      i->second->Create();
+      i->Create();
   }
 
   // make the pages part of the notebook
-  for (auto i = m_Subsystems.begin(); i != m_Subsystems.end(); i++)
+  for (const auto &i : m_Subsystems)
   {
-      m_Notebook->append_page(i->second->m_Grid,i->first);
+      m_Notebook->append_page(i->m_Grid,i->m_Name);
   }
   
   // connect the switch page callbook 

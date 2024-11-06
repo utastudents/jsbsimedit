@@ -2,9 +2,9 @@
 
 #include "AeroDynamicsSubsystem.hpp"
 
-AeroDynamicsSubsystem::AeroDynamicsSubsystem(std::string N)
-                :m_name(N)
+AeroDynamicsSubsystem::AeroDynamicsSubsystem()
 {
+    m_Name = "AeroDynamics";
     std::cout << "In AeroDynamicsSubsystem contructor" << std::endl; 
 }
 

@@ -1,5 +1,4 @@
-#ifndef AIRPLANE_MOMENT_OF_INERTIA_H
-#define AIRPLANE_MOMENT_OF_INERTIA_H
+#pragma once
 
 // Fuselage Class
 class Fuselage {
@@ -89,5 +88,3 @@ private:
     Wing rightWing;
     Tail tail;
 };
-
-#endif // AIRPLANE_MOMENT_OF_INERTIA_H

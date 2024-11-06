@@ -1,5 +1,7 @@
-#ifndef DIALOGBOX_H
-#define DIALOGBOX_H
+#ifndef TANK_DIALOGBOX_H
+#define TANK_DIALOGBOX_H
+#include <map>
+#include <string>
 #include <iostream>
 #include "TankDialog.hpp"
 
@@ -10,6 +12,7 @@ TankDialog::TankDialog() {
     void close();
     void onConfirm();
     void onCancel();
+    void defaultValueFill();
 };
 
 void TankDialog::onConfirm() {
@@ -22,5 +25,9 @@ void TankDialog::onCancel() {
     std::cout << "Cancelling tank settings..." << std::endl;
 }
 
-#endif // TANK_H
+void TankDialog::defaultValueFill(){
+    // TODO: Implement defaultValueFill logic
+    std::cout << "Unable to fill tank dialog box..." << std::endl;
+}
 
+#endif // TANK_DIALOG_H

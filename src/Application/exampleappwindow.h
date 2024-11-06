@@ -64,18 +64,7 @@ protected:
   Glib::RefPtr<Glib::Binding> m_binding_lines_visible;
 
   // Subsystems
-  std::map<std::string,Subsystem*> m_Subsystems;
-#if 0
-  Subsystem* m_AeroDynSub {nullptr};
-  Subsystem* m_BouySub {nullptr};
-  Subsystem* m_ExtReactSub {nullptr};
-  Subsystem* m_GenInfoSub {nullptr};
-  Subsystem* m_GroundReactSub {nullptr};
-  Subsystem* m_InOutSub {nullptr};
-  Subsystem* m_MassBalSub {nullptr};
-  Subsystem* m_MetricsSub {nullptr};
-  Subsystem* m_PropSub {nullptr};
-#endif
+  std::vector<Subsystem*> m_Subsystems;
 };
 
 #endif /* GTKMM_EXAMPLEAPPWINDOW_H */

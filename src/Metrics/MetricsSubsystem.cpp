@@ -2,9 +2,9 @@
 
 #include "MetricsSubsystem.hpp"
 
-MetricsSubsystem::MetricsSubsystem(std::string N)
-                :m_name(N)
+MetricsSubsystem::MetricsSubsystem()
 {
+    m_Name = "Metrics";
     std::cout << "In MetricsSubsystem contructor" << std::endl; 
 }
 

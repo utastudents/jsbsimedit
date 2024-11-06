@@ -1,6 +1,4 @@
-
-#ifndef AIRCRAFT_H
-#define AIRCRAFT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -64,3 +62,4 @@ public:
 };
 
 #endif // AIRCRAFT_H
+
