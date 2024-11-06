@@ -17,4 +17,5 @@ class BuoyantForcesSubsystem : public Subsystem
 
     Gtk::Notebook m_notebook;
     std::vector<std::unique_ptr<Gtk::Grid>> m_pages;
+    std::map<std::string, std::unique_ptr<Gtk::DropDown>> m_dropdowns;
 };

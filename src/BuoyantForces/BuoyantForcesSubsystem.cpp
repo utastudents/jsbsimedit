@@ -63,19 +63,19 @@ void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, gu
 void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid) 
 {
   // Drop Down Menu for Gas Type
-  auto dropdown_gas = Gtk::make_managed<Gtk::DropDown>();
+  m_dropdowns["Gas Type"] = std::make_unique<Gtk::DropDown>();
   auto gasItems = Gtk::StringList::create({"Air", "Helium", "Hydrogen"});
   auto label_gas = Gtk::make_managed<Gtk::Label>("Gas Type");
 
-  dropdown_gas->set_model(gasItems);
-  dropdown_gas->set_selected(0);
-  dropdown_gas->set_expand(false);
-  dropdown_gas->set_show_arrow(true);
-  dropdown_gas->set_size_request(150, -1);
+  m_dropdowns["Gas Type"]->set_model(gasItems);
+  m_dropdowns["Gas Type"]->set_selected(0);
+  m_dropdowns["Gas Type"]->set_expand(false);
+  m_dropdowns["Gas Type"]->set_show_arrow(true);
+  m_dropdowns["Gas Type"]->set_size_request(150, -1);
   label_gas->set_size_request(250, -1);
 
   p_grid.attach(*label_gas, 0,0);
-  p_grid.attach(*dropdown_gas, 1, 0);
+  p_grid.attach(*m_dropdowns["Gas Type"], 1, 0);
 
 
   // Drop Down Menu for Units (for Location)
@@ -109,7 +109,7 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
 }
 
 void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row) {
-  auto dropdown_units = Gtk::make_managed<Gtk::DropDown>();
+  m_dropdowns[label] = std::make_unique<Gtk::DropDown>();
   auto unitItems = Gtk::StringList::create({});
   auto dropdown_label = Gtk::make_managed<Gtk::Label>(label);
 
@@ -119,13 +119,13 @@ void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, std::string lab
     unitItems->append(Component::unitToString(unit));
   }
 
-  dropdown_units->set_model(unitItems);
-  dropdown_units->set_selected(3);
-  dropdown_units->set_expand(false);
-  dropdown_units->set_show_arrow(true); 
+  m_dropdowns[label]->set_model(unitItems);
+  m_dropdowns[label]->set_selected(3);
+  m_dropdowns[label]->set_expand(false);
+  m_dropdowns[label]->set_show_arrow(true); 
 
   p_grid.attach(*dropdown_label, col, row);
-  p_grid.attach(*dropdown_units, ++col, row);
+  p_grid.attach(*m_dropdowns[label], ++col, row);
 }
 
 void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row, bool hasDDMenu)
@@ -140,5 +140,5 @@ void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int 
 
   p_grid.attach(*entry_label, col, row);
   p_grid.attach(*entry_number, ++col, row);
-  if (hasDDMenu) AddUnitsDropDown(p_grid, "", ++col, row);
+  if (hasDDMenu) AddUnitsDropDown(p_grid, label, ++col, row);
 }
