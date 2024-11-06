@@ -20,6 +20,12 @@ public:
     bool IsClipperEnabled = false;
     float MaxClip { 0.0f };
     float MinClip { 0.0f };
+
+private:
+    //Member vars
+    void CreateCommonTab(Gtk::Notebook& note);
+
+    Glib::RefPtr<Gtk::Window> m_window;
  };
 
  };

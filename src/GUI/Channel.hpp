@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "IComponentCommon.hpp"
 #include "ComponentSprite.hpp"
+#include "GainComponent.hpp"
 #include <random>
 
 namespace JSBEdit
@@ -29,6 +30,7 @@ namespace JSBEdit
     private:
 		//Member Functions
 		std::string createName(ComponentType type);
+		void addDefaultComponent(ComponentType type, const std::string& name);
 
 		//Member Variables
 		std::string m_channelName {};

@@ -25,7 +25,10 @@ void Channel::CreateDroppedComponent(ComponentType type, int x, int y)
     while(ComponentNameExists(name))
         name = createName(type);
 
+    //Insert the new sprite
     m_spriteComponents.insert({name, s});
+    //Insert the appropriate component
+    addDefaultComponent(type, name);
 }
 
 //Maybe TODO: change this later for partial redraws if its a problem.
@@ -52,7 +55,10 @@ void Channel::HandleDoubleClick(int x, int y)
     for(auto& i : m_spriteComponents)
     {
         if(i.second.ContainsPoint(x, y))
+        {
             std::cout << i.first << " component was double clicked.\n";
+            m_components.at(i.first)->LoadGUI(m_appRef);
+        }
     }
 }
 
@@ -65,6 +71,19 @@ std::string Channel::createName(ComponentType type)
 {
     //If theres over 1000 components in a channel we have bigger issues..
     return std::string{COMPONENT_NAMES[static_cast<int>(type)] + std::to_string((std::rand() % 1000))};
+}
+
+void Channel::addDefaultComponent(ComponentType type, const std::string & name)
+{
+    switch(type)
+    {
+        case ComponentType::GAIN:
+            m_components.insert({name, new GainComponent{name, type}});
+            break;
+        default:
+            m_components.insert({name, new GainComponent{name, type}});
+            break;
+    }
 }
 
 };
