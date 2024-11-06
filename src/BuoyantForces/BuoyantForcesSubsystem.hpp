@@ -8,8 +8,6 @@ class BuoyantForcesSubsystem : public Subsystem
     std::string m_name;
     BuoyantForcesSubsystem(std::string N);
     void Create(); 
-    // void setupGasCellTab();
-    void BuildTabs();
     void SetupTab(Gtk::Grid& p_grid);
     void AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row);
     void AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row, bool hasDDMenu);

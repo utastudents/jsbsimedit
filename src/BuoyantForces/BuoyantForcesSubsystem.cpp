@@ -26,52 +26,38 @@ void BuoyantForcesSubsystem::Create()
 
   m_Grid.attach(m_notebook, 0, 0);
 
+
+  // Gas Cell Tab
+  Gtk::Label main("Gas Cell");
   m_pages.push_back(std::make_unique<Gtk::Grid>());
   SetupTab(*m_pages.back());
-  m_notebook.append_page(*m_pages.back(), "Gas Cell");
+  m_notebook.append_page(*m_pages.back(), main);
+
+
+  // Ballonet Tabs
+  Gtk::Label bal1("Ballonet 1");
+  m_pages.push_back(std::make_unique<Gtk::Grid>());
+  SetupTab(*m_pages.back());
+  m_notebook.append_page(*m_pages.back(), bal1);
+
+  Gtk::Label bal2("Ballonet 2");
+  m_pages.push_back(std::make_unique<Gtk::Grid>());
+  SetupTab(*m_pages.back());
+  m_notebook.append_page(*m_pages.back(), bal2);
+
+  Gtk::Label bal3("Ballonet 3");
+  m_pages.push_back(std::make_unique<Gtk::Grid>());
+  SetupTab(*m_pages.back());
+  m_notebook.append_page(*m_pages.back(), bal3);
+
+
+  m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
+      &BuoyantForcesSubsystem::on_notebook_switch_page));
 }
 
 void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
-  std::cout << "Switched to tab with index " << page_num << std::endl;
-}
-
-// void BuoyantForcesSubsystem::setupGasCellTab()
-// {	
-//   //creating the widgets for the cell tabl
-// 	Gtk::Box gasCellBox(Gtk::ORIENTATION_VERTICAL, 10);
-	
-//   // create lavel for gas cell tab
-//   Gtk::Label gasCellNameLabel("Gas Cell: ");
-// 	gasCellNameLabel.set_halign(Gtk::ALIGN_START);
-// 	gasCellBox.pack_start(gasCellNameLabel);
-	
-//   //next creating the drop down menu
-// 	Gtk::Label gasTypeLabel("Select Gas Type:");
-// 	gasTypeLabel.set_halign(Gtk::ALIGN_START);
-// 	gasCellBox.pack_start(gasTypeLabel);
-
-//   //adding elements to drop down menu
-// 	m_gasTypeMenu.append("Air");
-// 	m_gasTypeMenu.append("Helium");
-// 	m_gasTypeMenu.append("Hydrogen");
-
-// 	m_gasTypeMenu.set_active(0); // Set default to Air
-// 	gasCellBox.pack_start(m_gasTypeMenu);
-
-// }
-
-void BuoyantForcesSubsystem::BuildTabs() 
-{
-  std::cout << "in BuoyantForcesSubsystem::BuildTabs" << std::endl;
-
-  for (int i = 0; i < Component::getBallonetCount(); i++) 
-  {
-    Gtk::Grid grid;
-    grid.set_row_spacing(10);
-    grid.set_column_spacing(10);
-    m_notebook.append_page(grid, "Ballonet " + std::to_string(i+1));
-  }
+  std::cout << "Switched to BYF tab with index " << page_num << std::endl;
 }
 
 void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid) 
