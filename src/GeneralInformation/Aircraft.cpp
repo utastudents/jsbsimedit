@@ -4,7 +4,7 @@
 #include "Validation.h"
 
 // Default constructor
-Aircraft::Aircraft() : name(""), Description(""), limitations(""), notes("") {}
+Aircraft::Aircraft() : name(""), Description(""), limitations(""), notes(""), Organization("")  {}
 
 // Set and get functions for name
 void Aircraft::setName(const std::string& name) {
@@ -72,6 +72,10 @@ std::vector<References> Aircraft::getReferences() const {
 
 // Set and get functions for description
 void Aircraft::setDescription(std::string description) {
+     if (description.length() > 500) {
+        std::cout << "Description must be 500 characters or fewer!" << std::endl;
+        return;
+    }
     this->Description = description;
 }
 
@@ -116,4 +120,17 @@ void Aircraft::saveToFile() {
 Aircraft Aircraft::loadFromFile() {
     Aircraft loadedAircraft;
     return loadedAircraft;
+}
+
+
+void Aircraft::setOrganization(std::string organization) {
+    if (organization.length() > 100) {
+        std::cout << "Organization name must be 100 characters or fewer!" << std::endl;
+        return;
+    }
+    this->Organization = organization;
+}
+
+std::string Aircraft::getOrganization() const {
+    return Organization;
 }

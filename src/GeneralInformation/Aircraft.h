@@ -17,6 +17,7 @@ private:
     Config config;
 
     std::string Description;
+    std::string Organization;
 
     std::vector<References> references; 
     std::string limitations;                
@@ -56,6 +57,10 @@ public:
 
     void saveToFile();
     Aircraft loadFromFile();
+
+    void setOrganization(std::string organization);
+    std::string getOrganization() const;
+
 };
 
 #endif // AIRCRAFT_H
