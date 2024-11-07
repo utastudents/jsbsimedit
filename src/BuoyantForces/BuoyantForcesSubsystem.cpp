@@ -102,11 +102,29 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   AddEntry(p_grid, "y", 0, 8, false);
   AddEntry(p_grid, "z", 0, 9, false);
 
-  // Entry Text for Max Overpressure
-  AddEntry(p_grid, "Max Overpressure", 0, 10, true);
+	 // Entry Text for Max Overpressure
+  auto input_max_overpressure= AddEntry(p_grid, "Max Overpressure", 0, 10, true);//gui dispaly text input field
+
+        //conect input to a class variable
+  input_max_overpressure->signal_changed().connect([this, input_max_overpressure]()
+        {
+                maxOverpressure=std::stod(input_max_overpressure->get_text());//stores value
+
+        });
 
   // Entry Text for Valve Coefficient
-  AddEntry(p_grid, "Valve Coefficient", 0, 11, true);
+auto input_valve_coefficient= AddEntry(p_grid, "Valve Coefficient", 0, 11, true);// gui display text input field
+
+
+  input_valve_coefficient->signal_changed().connect([this,input_valve_coefficient](){
+        valveCoefficient=std::stod(input_valve_coefficient->get_text());
+
+        });
+  
+
+
+  
+
 
   // Entry Text for Fullness
   AddEntry(p_grid, "Fullness", 0, 12, false);
@@ -178,7 +196,7 @@ void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, std::string lab
   p_grid.attach(*dropdown_units, ++col, row);
 }
 
-void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row, bool hasDDMenu)
+Gtk::Entry* BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row, bool hasDDMenu)
 {
   auto entry_number = Gtk::make_managed<Gtk::Entry>();
   auto entry_label = Gtk::make_managed<Gtk::Label>(label);
@@ -191,4 +209,7 @@ void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int 
   p_grid.attach(*entry_label, col, row);
   p_grid.attach(*entry_number, ++col, row);
   if (hasDDMenu) AddUnitsDropDown(p_grid, "", ++col, row);
+
+	return entry_number;
 }
+
