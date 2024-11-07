@@ -58,6 +58,7 @@ void Channel::HandleDoubleClick(int x, int y)
         {
             std::cout << i.first << " component was double clicked.\n";
             m_components.at(i.first)->LoadGUI(m_appRef);
+            return;
         }
     }
 }
@@ -79,6 +80,9 @@ void Channel::addDefaultComponent(ComponentType type, const std::string & name)
     {
         case ComponentType::GAIN:
             m_components.insert({name, new GainComponent{name, type}});
+            break;
+        case ComponentType::PID:
+            m_components.insert({name, new PIDComponent{name, type}});
             break;
         default:
             m_components.insert({name, new GainComponent{name, type}});

@@ -8,6 +8,8 @@
 #include "IComponentCommon.hpp"
 #include "ComponentSprite.hpp"
 #include "GainComponent.hpp"
+#include "PIDComponent.hpp"
+#include "DeadbandComponent.hpp"
 #include <random>
 
 namespace JSBEdit

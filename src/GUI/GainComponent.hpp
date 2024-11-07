@@ -22,10 +22,21 @@ public:
     float MinClip { 0.0f };
 
 private:
-    //Member vars
+    //Member functions
     void CreateCommonTab(Gtk::Notebook& note);
+    void HandleClipperLogic();
+    void SaveVariableChanges();
+    void DeleteWidgetData();
 
+    //Member Variables
     Glib::RefPtr<Gtk::Window> m_window;
+    Glib::RefPtr<Gtk::Entry> m_nameEntry{};
+    Glib::RefPtr<Gtk::Entry> m_maxEntry{};
+    Glib::RefPtr<Gtk::Entry> m_minEntry{};
+    Glib::RefPtr<Gtk::CheckButton> m_clipperButton;
+    Glib::RefPtr<Gtk::Button> m_acceptButton{};
+    Glib::RefPtr<Gtk::Button> m_cancelButton{};
+
  };
 
  };
