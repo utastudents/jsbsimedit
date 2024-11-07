@@ -1,4 +1,4 @@
-#include "Component.hpp"
+#include "GasCell.hpp"
 
 // GasCell constructor
 GasCell::GasCell(double v, double t, double p, double m) : Component() {

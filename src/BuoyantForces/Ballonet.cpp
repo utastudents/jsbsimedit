@@ -1,4 +1,4 @@
-#include "Component.hpp"
+#include "Ballonet.hpp"
 #include <iostream>
 
 // Ballonet methods
