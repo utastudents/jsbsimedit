@@ -25,10 +25,10 @@ class BuoyantForcesSubsystem : public Subsystem
     Glib::RefPtr<Gtk::StringList> m_gasStringList;
     Glib::RefPtr<Gtk::StringList> m_unitsStringList;
 
-   private:
-	double maxOverpressure;
-        double valveCoefficient;
-        Component::Unit maxOverpressureUnit;
-        Component::Unit valveCoefficientUnit;
+ private:
+  	double maxOverpressure;
+    double valveCoefficient;
+    Component::Unit maxOverpressureUnit;
+    Component::Unit valveCoefficientUnit;
 
 };

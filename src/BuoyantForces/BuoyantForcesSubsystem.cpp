@@ -27,18 +27,32 @@ void BuoyantForcesSubsystem::Create()
   m_Grid.attach(m_notebook, 0, 0);
   
 
-
   m_pages.push_back(std::make_unique<Gtk::Grid>());
   SetupTab(*m_pages.back());
   m_notebook.append_page(*m_pages.back(), "Gas Cell");
 
+  // Track switching tabs
+  m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
+      &BuoyantForcesSubsystem::on_notebook_switch_page));
 }
 
 
 
 void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
-  std::cout << "Switched to tab with index " << page_num << std::endl;
+  std::cout << "Switched to BYF tab with index " << page_num << std::endl;
+}
+
+void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& dropdown_name)
+{
+  auto& dropdown = m_dropdowns[dropdown_name];
+  const auto selected = dropdown->get_selected();
+
+  std::cout << "Dropdown '" << dropdown_name << "' changed Row = " << selected
+            << ", String = " << (dropdown_name == "Gas Type" ?
+                                  m_gasStringList->get_string(selected) :
+                                  m_unitsStringList->get_string(selected))
+            << std::endl;
 }
 
 // void BuoyantForcesSubsystem::setupGasCellTab()
@@ -70,19 +84,22 @@ void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, gu
 void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid) 
 {
   // Drop Down Menu for Gas Type
-  auto dropdown_gas = Gtk::make_managed<Gtk::DropDown>();
-  auto gasItems = Gtk::StringList::create({"Air", "Helium", "Hydrogen"});
+  m_gasStringList = Gtk::StringList::create({"Air", "Helium", "Hydrogen"});
   auto label_gas = Gtk::make_managed<Gtk::Label>("Gas Type");
 
-  dropdown_gas->set_model(gasItems);
-  dropdown_gas->set_selected(0);
-  dropdown_gas->set_expand(false);
-  dropdown_gas->set_show_arrow(true);
-  dropdown_gas->set_size_request(150, -1);
+  m_dropdowns["Gas Type"] = std::make_unique<Gtk::DropDown>();
+  m_dropdowns["Gas Type"]->set_model(m_gasStringList);
+  m_dropdowns["Gas Type"]->set_selected(0);
+  m_dropdowns["Gas Type"]->set_expand(false);
+  m_dropdowns["Gas Type"]->set_show_arrow(true);
+  m_dropdowns["Gas Type"]->set_size_request(150, -1);
   label_gas->set_size_request(250, -1);
 
   p_grid.attach(*label_gas, 0,0);
-  p_grid.attach(*dropdown_gas, 1, 0);
+  p_grid.attach(*m_dropdowns["Gas Type"], 1, 0);
+
+  m_dropdowns["Gas Type"]->property_selected().signal_changed().connect(
+    sigc::bind(sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_dropdown_changed), "Gas Type"));
 
 
   // Drop Down Menu for Units (for Location)
@@ -102,10 +119,11 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   AddEntry(p_grid, "y", 0, 8, false);
   AddEntry(p_grid, "z", 0, 9, false);
 
-	 // Entry Text for Max Overpressure
-  auto input_max_overpressure= AddEntry(p_grid, "Max Overpressure", 0, 10, true);//gui dispaly text input field
+  // Entry Text for Max Overpressure
+  //gui dispaly text input field
+  auto input_max_overpressure= AddEntry(p_grid, "Max Overpressure", 0, 10, true);
 
-        //conect input to a class variable
+  //conect input to a class variable
   input_max_overpressure->signal_changed().connect([this, input_max_overpressure]()
         {
                 maxOverpressure=std::stod(input_max_overpressure->get_text());//stores value
@@ -113,17 +131,13 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
         });
 
   // Entry Text for Valve Coefficient
-auto input_valve_coefficient= AddEntry(p_grid, "Valve Coefficient", 0, 11, true);// gui display text input field
+  // gui display text input field
+  auto input_valve_coefficient= AddEntry(p_grid, "Valve Coefficient", 0, 11, true);
 
 
   input_valve_coefficient->signal_changed().connect([this,input_valve_coefficient](){
         valveCoefficient=std::stod(input_valve_coefficient->get_text());
-
         });
-  
-
-
-  
 
 
   // Entry Text for Fullness
@@ -177,23 +191,26 @@ void BuoyantForcesSubsystem::BuildTabs()
 
 
 void BuoyantForcesSubsystem::AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row) {
-  auto dropdown_units = Gtk::make_managed<Gtk::DropDown>();
-  auto unitItems = Gtk::StringList::create({});
+  m_unitsStringList = Gtk::StringList::create({});
   auto dropdown_label = Gtk::make_managed<Gtk::Label>(label);
 
   for (int i = static_cast<int>(Component::Unit::WIDTH); i <= static_cast<int>(Component::Unit::FT3_SEC); ++i)
   {
     Component::Unit unit = static_cast<Component::Unit>(i);
-    unitItems->append(Component::unitToString(unit));
+    m_unitsStringList->append(Component::unitToString(unit));
   }
 
-  dropdown_units->set_model(unitItems);
-  dropdown_units->set_selected(3);
-  dropdown_units->set_expand(false);
-  dropdown_units->set_show_arrow(true); 
+  m_dropdowns[label] = std::make_unique<Gtk::DropDown>();
+  m_dropdowns[label]->set_model(m_unitsStringList);
+  m_dropdowns[label]->set_selected(3);
+  m_dropdowns[label]->set_expand(false);
+  m_dropdowns[label]->set_show_arrow(true); 
 
   p_grid.attach(*dropdown_label, col, row);
-  p_grid.attach(*dropdown_units, ++col, row);
+  p_grid.attach(*m_dropdowns[label], ++col, row);
+
+  m_dropdowns[label]->property_selected().signal_changed().connect(
+    sigc::bind(sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_dropdown_changed), label));
 }
 
 Gtk::Entry* BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, int col, int row, bool hasDDMenu)
@@ -208,7 +225,10 @@ Gtk::Entry* BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string labe
 
   p_grid.attach(*entry_label, col, row);
   p_grid.attach(*entry_number, ++col, row);
-  if (hasDDMenu) AddUnitsDropDown(p_grid, "", ++col, row);
+
+  if (hasDDMenu) {
+    AddUnitsDropDown(p_grid, "", ++col, row);
+  }
 
 	return entry_number;
 }
