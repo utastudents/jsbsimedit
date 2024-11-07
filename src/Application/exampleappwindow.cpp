@@ -22,6 +22,7 @@
 #include "Aerodynamics/AeroDynamicsSubsystem.hpp"
 #include "BuoyantForces/BuoyantForcesSubsystem.hpp"
 #include "Metrics/MetricsSubsystem.hpp"
+#include "GeneralInformation/GeneralInformationSubsystem.hpp"
 
 
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
