@@ -23,6 +23,7 @@
 #include "BuoyantForces/BuoyantForcesSubsystem.hpp"
 #include "Metrics/MetricsSubsystem.hpp"
 #include "Propulsion/PropulsionSubsystem.hpp"
+#include "InputOutput/IOSubSystem.hpp"
 
 
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
@@ -123,6 +124,7 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   m_Subsystems.push_back(new BuoyantForcesSubsystem());
   m_Subsystems.push_back(new MetricsSubsystem());
   m_Subsystems.push_back(new PropulsionSubsystem());
+  m_Subsystems.push_back(new IOSubSystem());
 #if 0
   Subsystem* m_AeroDynSub {nullptr};
   Subsystem* m_BouySub {nullptr};

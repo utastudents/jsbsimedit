@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "MainWindow.h"
+#include "MainWindow.hpp"
 
 class FileHandler : public MainWindow {
 public:
