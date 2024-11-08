@@ -119,6 +119,7 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   // create the Subsystems objects
   //    The key is the title used in the tab. 
   //    Maybe a better way to get the name, perhaps add it to Subsystem?
+  m_Subsystems.push_back(new GeneralInformationSubsystem());
   m_Subsystems.push_back(new AeroDynamicsSubsystem());
   m_Subsystems.push_back(new BuoyantForcesSubsystem());
   m_Subsystems.push_back(new MetricsSubsystem());
