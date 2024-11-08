@@ -59,7 +59,7 @@ void GainComponent::CreateCommonTab(Gtk::Notebook& note)
   m_minEntry = Glib::RefPtr<Gtk::Entry>(new Gtk::Entry);
   m_minEntry->set_text(std::to_string(MinClip));
   //Disable when check box is clicked
-  m_minEntry->set_sensitive(!IsClipperEnabled);
+  m_minEntry->set_sensitive(IsClipperEnabled);
 
   //Clipper button and label
   Gtk::Label clipperLabel{"Clipper:"};
