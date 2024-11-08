@@ -24,7 +24,7 @@
 #include "Metrics/MetricsSubsystem.hpp"
 #include "Propulsion/PropulsionSubsystem.hpp"
 #include "InputOutput/IOSubSystem.hpp"
-
+#include "MassBalance/MassBalanceSubsystem.hpp"
 
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
@@ -125,6 +125,7 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   m_Subsystems.push_back(new MetricsSubsystem());
   m_Subsystems.push_back(new PropulsionSubsystem());
   m_Subsystems.push_back(new IOSubSystem());
+  m_Subsystems.push_back(new MassBalanceSubsystem());
 #if 0
   Subsystem* m_AeroDynSub {nullptr};
   Subsystem* m_BouySub {nullptr};
