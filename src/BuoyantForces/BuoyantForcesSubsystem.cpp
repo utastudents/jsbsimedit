@@ -145,28 +145,39 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
 
   // Entry Text for # of Ballonets
   //AddEntry(p_grid, "Ballonets", 0, 13, false);
-  auto combo_ballonetCount = Gtk :: make_managed<Gtk::ComboBoxText>();
-  combo_ballonetCount->append("1");
-  combo_ballonetCount->append("2");
-  combo_ballonetCount->append("3");
-  combo_ballonetCount->append("4");
-  combo_ballonetCount->append("5");
-  combo_ballonetCount->set_active_id("1");
+
+   Glib::RefPtr<Gtk::StringList> m_ballonetStringList;
   
 
+  const std:: vector<Glib::ustring> ballonetOptions = {"0","1","2","3","4","5"};
+  auto label_ballonet = Gtk::make_managed<Gtk::Label>("Ballonet");
 
-  combo_ballonetCount->signal_changed().connect(sigc::mem_fun(*this,&BuoyantForcesSubsystem:: on_ballonetcount_changed));
-  m_Grid.attach(*combo_ballonetCount,1,1);
+  m_ballonetStringList = Gtk ::StringList::create(ballonetOptions);
+
+  m_dropdowns["Ballonet"] = std::make_unique<Gtk::DropDown>();
+  m_dropdowns["Ballonet"]->set_model(m_ballonetStringList);
+  m_dropdowns["Ballonet"]->set_selected(0);
+
+  m_dropdowns["Ballonet"]->set_expand(false);
+  m_dropdowns["Ballonet"]->set_show_arrow(true);
+  m_dropdowns["Ballonet"]->set_size_request(150, -1);
+
+  
+
+  m_dropdowns["Ballonet"]->property_selected().signal_changed().connect(sigc::mem_fun(*this,&BuoyantForcesSubsystem:: on_ballonetcount_changed));
+  label_ballonet->set_size_request(250, -1);
+
+  p_grid.attach(*label_ballonet, 0,13);
+  p_grid.attach(*m_dropdowns["Ballonet"],1,13);
+  
 }
 
 void BuoyantForcesSubsystem:: on_ballonetcount_changed()
 {
-  auto selected_value = combo_ballonetCount->get_active_id();
-  if(!selected_value.empty())
+  int selected_value = m_dropdowns["Ballonet"]->get_selected();
+  if(selected_value >= 0)
   {
-    int ballonetCount = (std::stoi(selected_value));
-
-  
+  int ballonetCount= selected_value;
   Component :: setBallonetCount(ballonetCount);
   std::cout << "Selected Ballonet Count:" <<ballonetCount <<std::endl;
 

@@ -19,7 +19,7 @@ class BuoyantForcesSubsystem : public Subsystem
     void on_dropdown_changed(const std::string& dropdown_name);
 
     Gtk::Notebook m_notebook;
-    Glib::RefPtr<Gtk::ComboBoxText> combo_ballonetCount;
+    Glib::RefPtr<Gtk::StringList> m_ballonetStringList;
     std::vector<std::unique_ptr<Gtk::Grid>> m_pages;
     std::map<std::string, std::unique_ptr<Gtk::DropDown>> m_dropdowns;
     Glib::RefPtr<Gtk::StringList> m_gasStringList;
