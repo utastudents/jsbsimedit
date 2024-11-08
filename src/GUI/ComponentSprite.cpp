@@ -7,8 +7,12 @@ namespace JSBEdit
 std::vector<Glib::RefPtr<Gdk::Pixbuf>> ComponentSprite::spriteTable{};
 
 ComponentSprite::ComponentSprite(const ComponentType &comp, int x, int y)
-    : m_componentType(comp), m_x(x), m_y(y)
+    : m_componentType(comp), m_spriteBox(x-16, y-16, 32, 32)
+        , m_inputBox(x-20, y-2, 4, 4), m_outputBox(x+16, y-2, 4, 4)
 {
+    //Spriteboxs are oriented via top left position, however the drop coordiate is top left
+    //We want it to be orientied in the center of the mouse. Input boxes are 4x4 currently 
+    //Oriented from the sides, hence all the math.
 }
 
 void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
@@ -16,21 +20,44 @@ void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     size_t spriteIndex = static_cast<std::size_t>(m_componentType);
     //Should probably do a resize check here in case another sprite scaled it before hand
     //TODO Determine width/height at a later date.
-    Gdk::Cairo::set_source_pixbuf(drawCont, spriteTable.at(spriteIndex), m_x, m_y);
+    auto sprPos = m_spriteBox.GetPosition();
+    Gdk::Cairo::set_source_pixbuf(drawCont, spriteTable.at(spriteIndex), sprPos.first, sprPos.second);
     drawCont->paint();
+
+    //Draw Input box, I know width height is 4x4 which is bad if we change later, sorry for hardcode
+    auto impPos = m_inputBox.GetPosition();
+    drawCont->set_source_rgb(0.0, 1.0, 0.0); //Green
+    drawCont->rectangle(impPos.first, impPos.second, 4, 4);
+    drawCont->fill();
+    drawCont->stroke();
+
+    //Draw output box
+    auto outPos = m_outputBox.GetPosition();
+    drawCont->set_source_rgb(1.0, 0.0, 0.0); //Red
+    drawCont->rectangle(outPos.first, outPos.second, 4, 4);
+    drawCont->fill();
+    drawCont->stroke();
 }
 
 bool ComponentSprite::ContainsPoint(int x, int y)
 {
-    //This was a fun memory exercize
-    bool withinXBounds = ((m_x + m_width) >= x && m_x <= x);
-    bool withinYBounds = ((m_y + m_height) >= y && m_y <= y);
-    return (withinXBounds && withinYBounds);
+    return (m_spriteBox.ContainsPoint(x,y) || m_inputBox.ContainsPoint(x,y)
+        || m_outputBox.ContainsPoint(x,y));
+}
+
+bool ComponentSprite::IsInputBoxClicked(int x, int y) const
+{
+    return m_inputBox.ContainsPoint(x,y);
+}
+
+bool ComponentSprite::IsOutputBoxClicked(int x, int y) const
+{
+    return m_outputBox.ContainsPoint(x,y);
 }
 
 std::pair<int, int> ComponentSprite::GetBounds() const
 {
-    return std::pair<int, int>(m_width, m_height);
+    return m_spriteBox.GetBounds();
 }
 
 ComponentType ComponentSprite::GetComponentType() const
@@ -40,13 +67,11 @@ ComponentType ComponentSprite::GetComponentType() const
 
 std::pair<int, int> ComponentSprite::GetPosition() const
 {
-    return std::pair<int, int>(m_x, m_y);
-}
-
-void ComponentSprite::SetBounds(int width, int height)
-{
-    m_width = width;
-    m_height = height;
+    //box is topleft oriented, but this should return center oriented
+    auto point = m_spriteBox.GetPosition();
+    point.first += 16;
+    point.second += 16;
+    return point;
 }
 
 void ComponentSprite::SetComponentType(const ComponentType& compType)
@@ -56,8 +81,9 @@ void ComponentSprite::SetComponentType(const ComponentType& compType)
 
 void ComponentSprite::SetPosition(int x, int y)
 {
-    m_x = x;
-    m_y = y;
+    m_spriteBox.SetPosition(x-16, y-16);
+    m_inputBox.SetPosition(x-20, y-2);
+    m_outputBox.SetPosition(x+16, y-2);
 }
 
 void ComponentSprite::LoadSpriteComponents()

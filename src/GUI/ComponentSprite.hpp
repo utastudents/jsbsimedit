@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "ComponentTypeEnum.hpp"
+#include "ClickBox.hpp"
 
 namespace JSBEdit
 {
@@ -18,21 +19,22 @@ namespace JSBEdit
 
 		bool ContainsPoint(int x, int y);
 		void Draw(const Cairo::RefPtr<Cairo::Context>& drawCont) override;
+		bool IsInputBoxClicked(int x, int y) const;
+		bool IsOutputBoxClicked(int x, int y) const;
 		std::pair<int, int> GetBounds() const;
 		ComponentType GetComponentType() const;
 		std::pair<int, int> GetPosition() const;
-		void SetBounds(int width, int height);
 		void SetComponentType(const ComponentType& compType);
 		void SetPosition(int x, int y);
 
 		static void LoadSpriteComponents();
 
     private:
-		int m_x = 0;
-		int m_y = 0;
-		int	m_width = 32;
-		int m_height = 32;
-		int m_fontSize = 8;
+		ClickBox m_spriteBox{};
+		ClickBox m_inputBox{};
+		ClickBox m_outputBox{};
+
+		bool m_selected = false;
 		ComponentType m_componentType {ComponentType::ACTUATOR};
 		
 		static std::vector<Glib::RefPtr<Gdk::Pixbuf>> spriteTable;
