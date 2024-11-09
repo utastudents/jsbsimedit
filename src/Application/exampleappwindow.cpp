@@ -126,17 +126,7 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   m_Subsystems.push_back(new PropulsionSubsystem());
   m_Subsystems.push_back(new IOSubSystem());
   m_Subsystems.push_back(new MassBalanceSubsystem());
-#if 0
-  Subsystem* m_AeroDynSub {nullptr};
-  Subsystem* m_BouySub {nullptr};
-  Subsystem* m_ExtReactSub {nullptr};
-  Subsystem* m_GenInfoSub {nullptr};
-  Subsystem* m_GroundReactSub {nullptr};
-  Subsystem* m_InOutSub {nullptr};
-  Subsystem* m_MassBalSub {nullptr};
-  Subsystem* m_MetricsSub {nullptr};
-  Subsystem* m_PropSub {nullptr};
-#endif
+
   // create the gtk objects inside
   for (const auto &i : m_Subsystems)
   {
