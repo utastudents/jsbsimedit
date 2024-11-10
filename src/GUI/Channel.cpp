@@ -58,6 +58,7 @@ void Channel::HandleDoubleClick(int x, int y)
         {
             std::cout << i.first << " component was double clicked.\n";
             m_components.at(i.first)->LoadGUI(m_appRef);
+            return;
         }
     }
 }
