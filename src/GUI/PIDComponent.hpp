@@ -22,6 +22,13 @@ public:
     float KD { 0.0f };
     std::string Trigger {};
     bool IsInputInverted = false;
+
+
+    private:
+    //Member vars
+    void CreateCommonTab(Gtk::Notebook& note);
+
+    Glib::RefPtr<Gtk::Window> m_window;
 };
 
 };
