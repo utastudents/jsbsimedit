@@ -9,7 +9,7 @@ namespace JSBEdit{
 class IComponentCommon
 {
 public:
-    IComponentCommon(const std::string& compName, ComponentType& type);
+    IComponentCommon(const std::string& compName, const ComponentType& type);
     std::string GetName() const;
     ComponentType GetComponentType() const;
     void SetName(const std::string& newName);

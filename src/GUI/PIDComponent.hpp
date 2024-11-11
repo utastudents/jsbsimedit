@@ -7,7 +7,7 @@ class PIDComponent : public IComponentCommon
 {
 
 public:
-    PIDComponent(const std::string& name, ComponentType& type);
+    PIDComponent(const std::string& name);
     ~PIDComponent() = default;
 
     void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;

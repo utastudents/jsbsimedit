@@ -2,8 +2,8 @@
 
 namespace JSBEdit{
 
-PIDComponent::PIDComponent(const std::string &name, ComponentType &type)
-    : IComponentCommon(name, type)
+PIDComponent::PIDComponent(const std::string &name)
+    : IComponentCommon(name, ComponentType::PID)
 {
 }
 
