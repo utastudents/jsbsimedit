@@ -1,12 +1,12 @@
 #pragma once
+
 #include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 #include "Component.hpp"
 class BuoyantForcesSubsystem : public Subsystem
 {
   public:
-    std::string m_name;
-    BuoyantForcesSubsystem(std::string N);
+    BuoyantForcesSubsystem();
     void Create(); 
     void SetupTab(Gtk::Grid& p_grid);
     void AddUnitsDropDown(Gtk::Grid& p_grid, std::string label, int col, int row);
@@ -38,4 +38,4 @@ class BuoyantForcesSubsystem : public Subsystem
     double dimensionZ;
     double blowerInput;
 
-};
+

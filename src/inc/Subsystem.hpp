@@ -1,5 +1,7 @@
 #pragma once
+#include <string>
 #include "gtkmm.h"
+
 // This is the definition of the interface between the main program
 // and each of the subsystems.
 
@@ -13,6 +15,7 @@ class Subsystem
       // Every subsystem has to put all widgets on a Gtk::Grid .
       // All of the subsystem widgets are considered local to the 
       // subsystem.
+      std::string m_Name;
       virtual void Create() = 0;
       // Create makes all the widgets, and initializes and classes.
 };

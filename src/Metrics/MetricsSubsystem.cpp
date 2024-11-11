@@ -1,16 +1,16 @@
 #include <iostream>
 
-#include "AeroDynamicsSubsystem.hpp"
+#include "MetricsSubsystem.hpp"
 
-AeroDynamicsSubsystem::AeroDynamicsSubsystem()
+MetricsSubsystem::MetricsSubsystem()
 {
-    m_Name = "AeroDynamics";
-    std::cout << "In AeroDynamicsSubsystem contructor" << std::endl; 
+    m_Name = "Metrics";
+    std::cout << "In MetricsSubsystem contructor" << std::endl; 
 }
 
-void AeroDynamicsSubsystem::Create()
+void MetricsSubsystem::Create()
 {
-  std::cout << "in AeroDynamicsSubsystem::Create" << std::endl;
+  std::cout << "in MetricsSubsystem::Create" << std::endl;
 
   //These widgets can come from a ui file or direct from code
   //

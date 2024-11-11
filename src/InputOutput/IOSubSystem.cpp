@@ -1,16 +1,16 @@
 #include <iostream>
 
-#include "AeroDynamicsSubsystem.hpp"
+#include "IOSubSystem.hpp"
 
-AeroDynamicsSubsystem::AeroDynamicsSubsystem()
+IOSubSystem::IOSubSystem()
 {
-    m_Name = "AeroDynamics";
-    std::cout << "In AeroDynamicsSubsystem contructor" << std::endl; 
+    m_Name = "InputOutput";
+    std::cout << "In IOSubsystem contructor" << std::endl; 
 }
 
-void AeroDynamicsSubsystem::Create()
+void IOSubSystem::Create()
 {
-  std::cout << "in AeroDynamicsSubsystem::Create" << std::endl;
+  std::cout << "in IOSubsystem::Create" << std::endl;
 
   //These widgets can come from a ui file or direct from code
   //
@@ -21,9 +21,9 @@ void AeroDynamicsSubsystem::Create()
 
   /* this simply creates a grid of toggle buttons
    * to demonstrate the scrolled window. */
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 5; i++)
   {
-    for (int j = 0; j < 10; j++)
+    for (int j = 0; j < 5; j++)
     {
       auto s = Glib::ustring::compose("button (%1,%2)", i, j);
       auto pButton = Gtk::make_managed<Gtk::ToggleButton>(s);

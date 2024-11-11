@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MainWindow.h"
+#include "MainWindow.hpp"
 
 class PopUpWindow : public MainWindow {
     public:

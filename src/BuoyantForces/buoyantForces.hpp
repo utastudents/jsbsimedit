@@ -1,5 +1,7 @@
 #pragma once
+
 #include "GasCell.hpp"
+#include "Ballonet.hpp"
 
 class BuoyantForces 
 {

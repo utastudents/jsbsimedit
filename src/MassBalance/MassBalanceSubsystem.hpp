@@ -1,9 +1,10 @@
 #pragma once
 #include "inc/Subsystem.hpp"
 #include "gtkmm.h"
-class AeroDynamicsSubsystem : public Subsystem
-{
+
+
+class MassBalanceSubsystem : public Subsystem {
   public:
-    AeroDynamicsSubsystem();
+    MassBalanceSubsystem();
     void Create(); 
 };

@@ -9,6 +9,7 @@
 
 
 int xxmain() {
+#if 0
     // Create an instance of Engine
     Engine engine("Main Engine", 0, 1.0f, 2.0f, 45.0f, 1000, 1);
     engine.loadEngineFromXML();
@@ -20,9 +21,9 @@ int xxmain() {
     std::cout << "Thruster Thrust: " << thruster.getThrust() << " " << thruster.getThrustUnit() << std::endl;
 
     // Create dialogs
-    //EngineThrusterDialog engineThrusterDialog;
-    //engineThrusterDialog.onConfirm();
-    //engineThrusterDialog.onCancel();
+    EngineThrusterDialog engineThrusterDialog;
+    engineThrusterDialog.onConfirm();
+    engineThrusterDialog.onCancel();
 
     TankDialog tankDialog;
     tankDialog.onConfirm();
@@ -38,6 +39,6 @@ int xxmain() {
     mainWindow.displayTankDetails();
     mainWindow.saveEngineThrusterData();
     mainWindow.saveTankData();
-
+#endif
     return 0;
 }

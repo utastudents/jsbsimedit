@@ -1,6 +1,4 @@
-
-#ifndef REFERENCES_H
-#define REFERENCES_H
+#pragma once
 
 #include <string>
 
@@ -26,5 +24,3 @@ public:
     void setDate(const std::string& date);
     std::string getDate() const;
 };
-
-#endif // REFERENCES_H

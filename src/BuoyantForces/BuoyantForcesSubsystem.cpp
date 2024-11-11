@@ -4,10 +4,11 @@
 #include "Component.hpp"
 
 
-BuoyantForcesSubsystem::BuoyantForcesSubsystem(std::string N)
-                :m_name(N)
+BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 {
-    std::cout << "In BuoyantForcesSubsystem contructor" << std::endl;
+
+    m_Name = "BuoyantForces";
+    std::cout << "In BuoyantForcesSubsystem contructor" << std::endl; 
 }
 
 void BuoyantForcesSubsystem::Create()

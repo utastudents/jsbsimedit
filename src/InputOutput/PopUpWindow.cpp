@@ -1,4 +1,4 @@
-#include "PopUpWindow.h"
+#include "PopUpWindow.hpp"
 
 PopUpWindow::PopUpWindow() {}
 

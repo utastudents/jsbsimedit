@@ -21,8 +21,11 @@
 
 #include "Aerodynamics/AeroDynamicsSubsystem.hpp"
 #include "BuoyantForces/BuoyantForcesSubsystem.hpp"
-
-
+#include "Metrics/MetricsSubsystem.hpp"
+#include "Propulsion/PropulsionSubsystem.hpp"
+#include "InputOutput/IOSubSystem.hpp"
+#include "MassBalance/MassBalanceSubsystem.hpp"
+#include "ExternalReactions/ExternalReactionSubsystem.hpp"
 
 ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
@@ -115,16 +118,29 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   m_Notebook->set_margin(10);
   m_Notebook->set_expand();
 
-  // create the Subsystems.  
-  m_AeroDynSub = new AeroDynamicsSubsystem(std::string("Aerodynamics"));
-  m_BouySub = new BuoyantForcesSubsystem(std::string("Bouyant Forces"));
+  // create the Subsystems objects
+  //    The key is the title used in the tab. 
+  //    Maybe a better way to get the name, perhaps add it to Subsystem?
+  m_Subsystems.push_back(new AeroDynamicsSubsystem());
+  m_Subsystems.push_back(new BuoyantForcesSubsystem());
+  m_Subsystems.push_back(new MetricsSubsystem());
+  m_Subsystems.push_back(new PropulsionSubsystem());
+  m_Subsystems.push_back(new IOSubSystem());
+  m_Subsystems.push_back(new MassBalanceSubsystem());
+  m_Subsystems.push_back(new ExternalReactionSubsystem());
+  // create the gtk objects inside
+  for (const auto &i : m_Subsystems)
+  {
+      i->Create();
+  }
 
-  m_AeroDynSub->Create();
-  m_BouySub->Create();
-
-  m_Notebook->append_page(m_AeroDynSub->m_Grid,"Aerodynamics");
-  m_Notebook->append_page(m_BouySub->m_Grid,"Bouyant Forces");
+  // make the pages part of the notebook
+  for (const auto &i : m_Subsystems)
+  {
+      m_Notebook->append_page(i->m_Grid,i->m_Name);
+  }
   
+  // connect the switch page callbook 
   m_Notebook->signal_switch_page().connect(sigc::mem_fun(*this,
               &ExampleAppWindow::on_notebook_switch_page) );
 
