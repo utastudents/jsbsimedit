@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "MainWindow.hpp"
 
 // constructor - create and manage main window
 MainWindow::MainWindow() {}
