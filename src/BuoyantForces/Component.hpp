@@ -4,18 +4,16 @@
 #include <vector>
 #include "MathFunction.hpp"
 
-// Forward declaration of Ballonet class
-class Ballonet;
 class Component
 {
     public:
         Component();
         virtual ~Component() = default;
-        void setLocation(double x, double y, double z);
+        void setLocation(double locationX, double locationY, double locationZ);
         void setDimensions(double x, double y, double z);
-        void inputOverpressure(double overpressure);
-        void inputValveCoefficient(double valveCoefficient);
-        void inputInitialFullness(double initFullness);
+        void setOverpressure(double overpressure);
+        void setValveCoefficient(double valveCoefficient);
+        void setInitialFullness(double initFullness);
 
         enum GasType {HELIUM, HYDROGEN, AIR};
         enum class Unit {
@@ -33,6 +31,8 @@ class Component
         };
 
         static std::string unitToString(Unit unit);
+        static int getBallonetCount();
+        static void setBallonetCount(int count);
 
     protected:
         GasType gasType;
@@ -47,29 +47,7 @@ class Component
         double mass;
         bool hasHeat;
         std::vector<MathFunction> heatFunctions;
+        static int ballonetCount;
+        
 };
 
-class GasCell : public Component
-{
-    public:
-        GasCell(double v, double t, double p, double m);
-        ~GasCell();
-
-    private:
-        std::vector<Ballonet> ballonets;
-};
-
-class Ballonet : public Component
-{
-    public:
-        Ballonet(const std::string& name, GasType gastype);
-        ~Ballonet();
-        int getBallonetNumber();
-        void createBallonetTab(int tabIndex);
-        void inputBlowerValue(double blowerValue);
-    
-    private:
-        std::string name;
-        int ballonetCount;
-        double blowerValue;
-};
