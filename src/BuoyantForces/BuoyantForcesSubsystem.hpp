@@ -33,6 +33,9 @@ class BuoyantForcesSubsystem : public Subsystem
     double locationX;
     double locationY;
     double locationZ;
+    double dimensionX;
+    double dimensionY;
+    double dimensionZ;
     
     
 

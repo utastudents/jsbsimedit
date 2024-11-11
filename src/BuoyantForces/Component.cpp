@@ -26,10 +26,10 @@ void Component::setLocation(double locationX, double locationY, double locationZ
 }
 
 // Set dimensions
-void Component::setDimensions(double x, double y, double z) {
-    dimensions[0] = x;
-    dimensions[1] = y;
-    dimensions[2] = z;
+void Component::setDimensions(double dimensionX, double dimensionY, double dimensionZ) {
+    dimensions[0] = dimensionX;
+    dimensions[1] = dimensionY;
+    dimensions[2] = dimensionZ;
 }
 
 // Input methods
