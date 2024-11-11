@@ -14,13 +14,24 @@ ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app)
 
     //Connecting the dnd handler..
     auto dropController = Gtk::DropTarget::create(G_TYPE_INT, Gdk::DragAction::COPY);
-    dropController->signal_drop().connect(sigc::mem_fun(*this, &ChannelCanvas::OnDragEnd), false);
+    dropController->signal_drop().connect(sigc::mem_fun(*this, &ChannelCanvas::OnDropEnd), false);
     add_controller(dropController);
 
     //Creating a clicking handler.
     auto clickController = Gtk::GestureClick::create();
+        //Mouse release handler
     clickController->signal_released().connect(sigc::mem_fun(*this, &ChannelCanvas::OnClickRelease), false);
+        //Mouse down handler
+    clickController->signal_pressed().connect(sigc::mem_fun(*this, &ChannelCanvas::OnClickDown), false);
     add_controller(clickController);
+
+    //Dragging
+    auto dragController = Gtk::GestureDrag::create();
+    dragController->signal_drag_begin().connect(sigc::mem_fun(*this, &ChannelCanvas::OnDragBegin), false);
+    dragController->signal_drag_update().connect(sigc::mem_fun(*this, &ChannelCanvas::OnDragUpdate), false);
+    dragController->signal_drag_end().connect(sigc::mem_fun(*this, &ChannelCanvas::OnDragEnd), false);
+    add_controller(dragController);
+
 
     ComponentSprite::LoadSpriteComponents();
 
@@ -67,11 +78,11 @@ void ChannelCanvas::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int widt
     result->second.Draw(drawCont);
 }
 
-bool ChannelCanvas::OnDragEnd(const Glib::ValueBase &value, double x, double y)
+bool ChannelCanvas::OnDropEnd(const Glib::ValueBase &value, double x, double y)
 {
     Glib::Value<int> passedData;
     passedData.init(value.gobj());
-    std::cout << "Something was dragged at: "<< x << ", " << y << " with data type: "
+    std::cout << "Something was dropped at: "<< x << ", " << y << " with data type: "
         << passedData.get() << ".\n";
 
     if(!CurrentChannelExists())
@@ -88,6 +99,9 @@ void ChannelCanvas::OnClickRelease(int numClick, double x, double y)
     if(!CurrentChannelExists())
         return;
 
+    std::cout << "Mouse released at: "<< x << ", " << y << ".\n";
+
+
     //WHYYYYYY does m_channels[m_currentChannel] raise all hell here but .at() is fine...
     if(numClick < 2)
         m_channels.at(m_currentChannel).HandleClickRelease(static_cast<int>(x), static_cast<int>(y));
@@ -95,4 +109,29 @@ void ChannelCanvas::OnClickRelease(int numClick, double x, double y)
         m_channels.at(m_currentChannel).HandleDoubleClick(static_cast<int>(x), static_cast<int>(y));
 }
 
+void ChannelCanvas::OnClickDown(int numClick, double x, double y)
+{
+    if(!CurrentChannelExists())
+        return;
+     std::cout << "Mouse down at: "<< x << ", " << y << ".\n";
+
+    //Click handling here for left click
+}
+
+void ChannelCanvas::OnDragBegin(double x, double y)
+{
+     std::cout << "Drag began at: "<< x << ", " << y << ".\n";
+
+}
+
+void ChannelCanvas::OnDragUpdate(double x, double y)
+{
+     std::cout << "Drag update at: "<< x << ", " << y << ".\n";
+}
+
+void ChannelCanvas::OnDragEnd(double x, double y)
+{
+     std::cout << "Drag ended at: "<< x << ", " << y << ".\n";
+
+}
 };

@@ -25,8 +25,12 @@ namespace JSBEdit
 		void Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int width, int height);
 
 		//Signal Handlers that should probably be private
-		bool OnDragEnd(const Glib::ValueBase& value, double x, double y);
+		bool OnDropEnd(const Glib::ValueBase& value, double x, double y);
 		void OnClickRelease(int numClick, double x, double y);
+		void OnClickDown(int numClick, double x, double y);
+		void OnDragBegin(double x, double y);
+		void OnDragUpdate(double x, double y);
+		void OnDragEnd(double x, double y);
 
 	private:
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
