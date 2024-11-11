@@ -37,5 +37,4 @@ class BuoyantForcesSubsystem : public Subsystem
     double dimensionY;
     double dimensionZ;
     double blowerInput;
-
-
+  };
