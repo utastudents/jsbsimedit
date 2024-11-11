@@ -55,31 +55,6 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& dropdown_nam
             << std::endl;
 }
 
-// void BuoyantForcesSubsystem::setupGasCellTab()
-// {	
-//   //creating the widgets for the cell tabl
-// 	Gtk::Box gasCellBox(Gtk::ORIENTATION_VERTICAL, 10);
-	
-//   // create lavel for gas cell tab
-//   Gtk::Label gasCellNameLabel("Gas Cell: ");
-// 	gasCellNameLabel.set_halign(Gtk::ALIGN_START);
-// 	gasCellBox.pack_start(gasCellNameLabel);
-	
-//   //next creating the drop down menu
-// 	Gtk::Label gasTypeLabel("Select Gas Type:");
-// 	gasTypeLabel.set_halign(Gtk::ALIGN_START);
-// 	gasCellBox.pack_start(gasTypeLabel);
-
-//   //adding elements to drop down menu
-// 	m_gasTypeMenu.append("Air");
-// 	m_gasTypeMenu.append("Helium");
-// 	m_gasTypeMenu.append("Hydrogen");
-
-// 	m_gasTypeMenu.set_active(0); // Set default to Air
-// 	gasCellBox.pack_start(m_gasTypeMenu);
-
-// }
-
 
 void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid) 
 {
@@ -177,32 +152,38 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   // Entry Text for Fullness
   AddEntry(p_grid, "Fullness", 0, 12, false);
 
-  // Entry Text for # of Ballonets
-  //AddEntry(p_grid, "Ballonets", 0, 13, false);
+  if (m_pages.size() == 1) {
+    // Select # of Ballonets
+    Glib::RefPtr<Gtk::StringList> m_ballonetStringList;
 
-   Glib::RefPtr<Gtk::StringList> m_ballonetStringList;
-  
+    const std:: vector<Glib::ustring> ballonetOptions = {"0","1","2","3","4","5"};
+    auto label_ballonet = Gtk::make_managed<Gtk::Label>("Ballonet");
 
-  const std:: vector<Glib::ustring> ballonetOptions = {"0","1","2","3","4","5"};
-  auto label_ballonet = Gtk::make_managed<Gtk::Label>("Ballonet");
+    m_ballonetStringList = Gtk ::StringList::create(ballonetOptions);
 
-  m_ballonetStringList = Gtk ::StringList::create(ballonetOptions);
+    m_dropdowns["Ballonet"] = std::make_unique<Gtk::DropDown>();
+    m_dropdowns["Ballonet"]->set_model(m_ballonetStringList);
+    m_dropdowns["Ballonet"]->set_selected(0);
 
-  m_dropdowns["Ballonet"] = std::make_unique<Gtk::DropDown>();
-  m_dropdowns["Ballonet"]->set_model(m_ballonetStringList);
-  m_dropdowns["Ballonet"]->set_selected(0);
+    m_dropdowns["Ballonet"]->set_expand(false);
+    m_dropdowns["Ballonet"]->set_show_arrow(true);
+    m_dropdowns["Ballonet"]->set_size_request(150, -1);
 
-  m_dropdowns["Ballonet"]->set_expand(false);
-  m_dropdowns["Ballonet"]->set_show_arrow(true);
-  m_dropdowns["Ballonet"]->set_size_request(150, -1);
+    m_dropdowns["Ballonet"]->property_selected().signal_changed().connect(sigc::mem_fun(*this,&BuoyantForcesSubsystem:: on_ballonetcount_changed));
+    label_ballonet->set_size_request(250, -1);
 
-  
+    p_grid.attach(*label_ballonet, 0,13);
+    p_grid.attach(*m_dropdowns["Ballonet"],1,13);
+  } else {
 
-  m_dropdowns["Ballonet"]->property_selected().signal_changed().connect(sigc::mem_fun(*this,&BuoyantForcesSubsystem:: on_ballonetcount_changed));
-  label_ballonet->set_size_request(250, -1);
+    // Input Blower Input
+    auto input_blower_value = AddEntry(p_grid, "Blower input", 0, 13, false);
+    input_blower_value->signal_changed().connect([this,input_blower_value]()
+    {
+      blowerInput= std::stod(input_blower_value->get_text());
+    });
 
-  p_grid.attach(*label_ballonet, 0,13);
-  p_grid.attach(*m_dropdowns["Ballonet"],1,13);
+  }
   
 }
 
