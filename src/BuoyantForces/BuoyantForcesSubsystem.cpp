@@ -216,6 +216,7 @@ void BuoyantForcesSubsystem:: on_ballonetcount_changed()
   std::cout << "Selected Ballonet Count:" <<ballonetCount <<std::endl;
 
   BuildTabs();
+  
   }
 
 }
@@ -223,14 +224,22 @@ void BuoyantForcesSubsystem:: on_ballonetcount_changed()
 void BuoyantForcesSubsystem::BuildTabs() 
 {
   std::cout << "in BuoyantForcesSubsystem::BuildTabs" << std::endl;
+
+  
   
   for (int i = 0; i < Component::getBallonetCount(); i++) 
   {
     Gtk::Grid grid;
     grid.set_row_spacing(10);
     grid.set_column_spacing(10);
-    m_notebook.append_page(grid, "Ballonet " + std::to_string(i+1));
+    //m_notebook.append_page(grid, "Ballonet " + std::to_string(i+1));
+    m_pages.push_back(std::make_unique<Gtk::Grid>());
+    SetupTab(*m_pages.back());
+    m_notebook.append_page(*m_pages.back(), "Ballonet" + std::to_string(i+1));
+
+  
   }
+
 }
 
 
