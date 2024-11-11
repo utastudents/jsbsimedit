@@ -16,4 +16,6 @@ private:
     Gtk::Entry m_AuthorEntry;
     Gtk::Entry m_EmailEntry;
     Gtk::Entry m_OrganizationEntry;
+    Gtk::Entry m_Limitations;
+    Gtk::Entry m_Notes;
 };

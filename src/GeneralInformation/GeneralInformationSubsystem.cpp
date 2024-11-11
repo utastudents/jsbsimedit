@@ -75,9 +75,32 @@ void GeneralInformationSubsystem::Create()
   // References
 
   // Limitations
+  auto limitationsLabel = Gtk::make_managed<Gtk::Label>("limitations");
+  auto limitationsTextView = Gtk::make_managed<Gtk::TextView>();
+  auto limitationsScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  auto limitationsFrame = Gtk::make_managed<Gtk::Frame>();
+
+  // Set up TextView content and appearance for Limitations
+  limitationsTextView->get_buffer()->set_text("1.\n2.\n3"); // Placeholder text
+  
+  // Configure the ScrolledWindow
+  limitationsScrolledWindow->set_min_content_height(100); // Set the height for the text area
+  limitationsScrolledWindow->set_min_content_width(300); // Set the height for the text area  
+  limitationsScrolledWindow->set_child(*limitationsTextView);
 
   // Notes
+  auto notesLabel = Gtk::make_managed<Gtk::Label>("notes");
+  auto notesTextView = Gtk::make_managed<Gtk::TextView>();
+  auto notesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  auto notesFrame = Gtk::make_managed<Gtk::Frame>();
 
+  // Set up TextView content and appearance for Notes
+  notesTextView->get_buffer()->set_text("1.\n2.\n3"); // Placeholder text
+  
+  // Configure the ScrolledWindow
+  notesScrolledWindow->set_min_content_height(100); // Set the height for the text area
+  notesScrolledWindow->set_min_content_width(300); // Set the height for the text area  
+  notesScrolledWindow->set_child(*notesTextView);
 
   // Attach widgets to the grid
   m_Grid.attach(*aircraftNameLabel, 0, row);
@@ -98,5 +121,11 @@ void GeneralInformationSubsystem::Create()
   m_Grid.attach(*emailTextbox, 4, row++);
 
   m_Grid.attach(*organizationLabel, 0, row);
-  m_Grid.attach(*organizationScrolledWindow, 1, row, 5, 2); // Spans multiple columns for the text area
+  m_Grid.attach(*organizationScrolledWindow, 1, row++, 5, 2); // Spans multiple columns for the text area
+
+  m_Grid.attach(*limitationsLabel, 0, row);
+  m_Grid.attach(*limitationsScrolledWindow, 1, row++, 8, 2);
+
+  m_Grid.attach(*notesLabel, 0, row);
+  m_Grid.attach(*notesScrolledWindow, 1, row++, 8, 2);
 }
