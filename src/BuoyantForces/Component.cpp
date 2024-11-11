@@ -19,10 +19,10 @@ Component::Component() : maxOverpressure(0.0),
 }
 
 // Set location
-void Component::setLocation(double x, double y, double z) {
-    location[0] = x;
-    location[1] = y;
-    location[2] = z;
+void Component::setLocation(double locationX, double locationY, double locationZ) {
+    location[0] = locationX;
+    location[1] = locationY;
+    location[2] = locationZ;
 }
 
 // Set dimensions

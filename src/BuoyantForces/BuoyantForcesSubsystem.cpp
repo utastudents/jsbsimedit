@@ -106,9 +106,26 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   AddUnitsDropDown(p_grid, "Location", 0, 1);
 
   // Entry Texts for Location
-  AddEntry(p_grid, "x", 0, 3, false);
-  AddEntry(p_grid, "y", 0, 4, false);
-  AddEntry(p_grid, "z", 0, 5, false);
+  auto input_location_x = AddEntry(p_grid, "x", 0, 3, false);
+  input_location_x->signal_changed().connect([this,input_location_x]()
+  {
+    double locationX= std:: stod(input_location_x->get_text());
+    
+  });
+  
+  auto input_location_y = AddEntry(p_grid, "y", 0, 4, false);
+  input_location_y->signal_changed().connect([this,input_location_y]()
+  {
+    double locationY= std:: stod(input_location_y->get_text());
+    
+  });
+
+  auto input_location_z = AddEntry(p_grid, "z", 0, 5, false);
+  input_location_z->signal_changed().connect([this,input_location_z]()
+  {
+    double locationZ= std:: stod(input_location_z->get_text());
+  
+  });
 
 
     // Drop Down Menu for Units (for Dimensions)

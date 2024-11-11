@@ -30,5 +30,10 @@ class BuoyantForcesSubsystem : public Subsystem
     double valveCoefficient;
     Component::Unit maxOverpressureUnit;
     Component::Unit valveCoefficientUnit;
+    double locationX;
+    double locationY;
+    double locationZ;
+    
+    
 
 };

@@ -8,7 +8,7 @@ class Component
     public:
         Component();
         virtual ~Component() = default;
-        void setLocation(double x, double y, double z);
+        void setLocation(double locationX, double locationY, double locationZ);
         void setDimensions(double x, double y, double z);
         void setOverpressure(double overpressure);
         void setValveCoefficient(double valveCoefficient);
