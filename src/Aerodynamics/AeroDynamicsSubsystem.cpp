@@ -5,7 +5,7 @@
 
 AeroDynamicsSubsystem::AeroDynamicsSubsystem()
 {
-    m_Name = "AeroDynamics";
+    m_Name = "Aerodynamics";
     std::cout << "In AeroDynamicsSubsystem contructor" << std::endl; 
 }
 
