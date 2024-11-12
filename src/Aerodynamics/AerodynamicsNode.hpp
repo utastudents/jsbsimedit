@@ -20,7 +20,7 @@ public:
     void setPath(const std::string& path);
     
     Type getType() const;
-private:
+protected:
     std::string name, path;
     Type type;
 };
