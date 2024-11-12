@@ -19,10 +19,10 @@ void MassBalanceSubsystem::Create() {
     auto pBoxZ = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
     
-    Location loc; 
-    Gtk::Label xLabel("X: " + std::to_string(loc.getX()));
-    Gtk::Label yLabel("Y: " + std::to_string(loc.getY()));
-    Gtk::Label zLabel("Z: " + std::to_string(loc.getZ()));
+    //Location loc; <- some kind of naming conflict with this 
+    Gtk::Label xLabel("X: \t test");
+    Gtk::Label yLabel("Y: \t test");
+    Gtk::Label zLabel("Z: \t test");
 
     //label boxes
     pBoxX->append(xLabel);
