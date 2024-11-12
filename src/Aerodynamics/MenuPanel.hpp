@@ -3,10 +3,12 @@
 #include <gtkmm.h>
 #include "AerodynamicsNode.hpp"
 
-class MenuPanel: Gtk::Box{
+class MenuPanel : public Gtk::Box {
 private:
-    std::string name;
+    Gtk::Label name;
     AerodynamicsNode::Type type;
+
 public:
     MenuPanel();
 };
+
