@@ -12,9 +12,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef GTKMM_EXAMPLEAPPPREFS_H_
-#define GTKMM_EXAMPLEAPPPREFS_H_
+#ifndef GTKMM_APPPREFS_H_
+#define GTKMM_APPPREFS_H_
 
 #include <gtkmm.h>
 
@@ -24,13 +23,13 @@
 #define HAS_GIO_SETTINGS_BIND_WITH_MAPPING 0
 #endif
 
-class ExampleAppPrefs : public Gtk::Window
+class AppPrefs : public Gtk::Window
 {
 public:
-  ExampleAppPrefs(BaseObjectType* cobject,
+  AppPrefs(BaseObjectType* cobject,
     const Glib::RefPtr<Gtk::Builder>& refBuilder);
 
-  static ExampleAppPrefs* create(Gtk::Window& parent);
+  static AppPrefs* create(Gtk::Window& parent);
 
 protected:
 #if HAS_GIO_SETTINGS_BIND_WITH_MAPPING
@@ -50,4 +49,4 @@ protected:
   Gtk::DropDown* m_transition {nullptr};
 };
 
-#endif /* GTKMM_EXAMPLEAPPPREFS_H_ */
+#endif /* GTKMM_APPPREFS_H_ */

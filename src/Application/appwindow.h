@@ -13,8 +13,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GTKMM_EXAMPLEAPPWINDOW_H_
-#define GTKMM_EXAMPLEAPPWINDOW_H_
+#ifndef GTKMM_JSBWINDOW_
+#define GTKMM_JSBWINDOW_
 #include <map>
 
 #include <gtkmm.h>
@@ -24,13 +24,13 @@
 
 #define HAS_SEARCH_ENTRY2 GTKMM_CHECK_VERSION(4,13,2)
 
-class ExampleAppWindow : public Gtk::ApplicationWindow
+class AppWindow : public Gtk::ApplicationWindow
 {
 public:
-  ExampleAppWindow(BaseObjectType* cobject,
+  AppWindow(BaseObjectType* cobject,
     const Glib::RefPtr<Gtk::Builder>& refBuilder);
 
-  static ExampleAppWindow* create();
+  static AppWindow* create();
 
   void open_file_view(const Glib::RefPtr<Gio::File>& file);
 
@@ -67,4 +67,4 @@ protected:
   std::vector<Subsystem*> m_Subsystems;
 };
 
-#endif /* GTKMM_EXAMPLEAPPWINDOW_H */
+#endif  GTKMM_JSBWINDOW_ 

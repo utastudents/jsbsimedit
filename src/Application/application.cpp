@@ -13,25 +13,25 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "exampleapplication.h"
-#include "exampleappwindow.h"
-#include "exampleappprefs.h"
+#include "application.h"
+#include "appwindow.h"
+#include "appprefs.h"
 #include <iostream>
 #include <exception>
 
-ExampleApplication::ExampleApplication()
+Application::Application()
 : Gtk::Application("org.gtkmm.examples.application", Gio::Application::Flags::HANDLES_OPEN)
 {
 }
 
-Glib::RefPtr<ExampleApplication> ExampleApplication::create()
+Glib::RefPtr<Application> Application::create()
 {
-  return Glib::make_refptr_for_instance<ExampleApplication>(new ExampleApplication());
+  return Glib::make_refptr_for_instance<Application>(new Application());
 }
 
-ExampleAppWindow* ExampleApplication::create_appwindow()
+AppWindow* Application::create_appwindow()
 {
-  auto appwindow = ExampleAppWindow::create();
+  auto appwindow = AppWindow::create();
 
   // Make sure that the application runs for as long this window is still open.
   add_window(*appwindow);
@@ -47,18 +47,18 @@ ExampleAppWindow* ExampleApplication::create_appwindow()
   return appwindow;
 }
 
-void ExampleApplication::on_startup()
+void Application::on_startup()
 {
   // Call the base class's implementation.
   Gtk::Application::on_startup();
 
   // Add actions and keyboard accelerators for the menu.
-  add_action("preferences", sigc::mem_fun(*this, &ExampleApplication::on_action_preferences));
-  add_action("quit", sigc::mem_fun(*this, &ExampleApplication::on_action_quit));
+  add_action("preferences", sigc::mem_fun(*this, &Application::on_action_preferences));
+  add_action("quit", sigc::mem_fun(*this, &Application::on_action_quit));
   set_accel_for_action("app.quit", "<Ctrl>Q");
 }
 
-void ExampleApplication::on_activate()
+void Application::on_activate()
 {
   try
   {
@@ -71,23 +71,23 @@ void ExampleApplication::on_activate()
   // and therefore the application will stop running.
   catch (const Glib::Error& ex)
   {
-    std::cerr << "ExampleApplication::on_activate(): " << ex.what() << std::endl;
+    std::cerr << "Application::on_activate(): " << ex.what() << std::endl;
   }
   catch (const std::exception& ex)
   {
-    std::cerr << "ExampleApplication::on_activate(): " << ex.what() << std::endl;
+    std::cerr << "Application::on_activate(): " << ex.what() << std::endl;
   }
 }
 
-void ExampleApplication::on_open(const Gio::Application::type_vec_files& files,
+void Application::on_open(const Gio::Application::type_vec_files& files,
   const Glib::ustring& /* hint */)
 {
   // The application has been asked to open some files,
   // so let's open a new view for each one.
-  ExampleAppWindow* appwindow = nullptr;
+  AppWindow* appwindow = nullptr;
   auto windows = get_windows();
   if (windows.size() > 0)
-    appwindow = dynamic_cast<ExampleAppWindow*>(windows[0]);
+    appwindow = dynamic_cast<AppWindow*>(windows[0]);
 
   try
   {
@@ -101,19 +101,19 @@ void ExampleApplication::on_open(const Gio::Application::type_vec_files& files,
   }
   catch (const Glib::Error& ex)
   {
-    std::cerr << "ExampleApplication::on_open(): " << ex.what() << std::endl;
+    std::cerr << "Application::on_open(): " << ex.what() << std::endl;
   }
   catch (const std::exception& ex)
   {
-    std::cerr << "ExampleApplication::on_open(): " << ex.what() << std::endl;
+    std::cerr << "Application::on_open(): " << ex.what() << std::endl;
   }
 }
 
-void ExampleApplication::on_action_preferences()
+void Application::on_action_preferences()
 {
   try
   {
-    auto prefs_dialog = ExampleAppPrefs::create(*get_active_window());
+    auto prefs_dialog = AppPrefs::create(*get_active_window());
     prefs_dialog->present();
 
     // Delete the dialog when it is hidden.
@@ -121,15 +121,15 @@ void ExampleApplication::on_action_preferences()
   }
   catch (const Glib::Error& ex)
   {
-    std::cerr << "ExampleApplication::on_action_preferences(): " << ex.what() << std::endl;
+    std::cerr << "Application::on_action_preferences(): " << ex.what() << std::endl;
   }
   catch (const std::exception& ex)
   {
-    std::cerr << "ExampleApplication::on_action_preferences(): " << ex.what() << std::endl;
+    std::cerr << "Application::on_action_preferences(): " << ex.what() << std::endl;
   }
 }
 
-void ExampleApplication::on_action_quit()
+void Application::on_action_quit()
 {
   // Gio::Application::quit() will make Gio::Application::run() return,
   // but it's a crude way of ending the program. The window is not removed

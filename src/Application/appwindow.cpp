@@ -13,7 +13,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "exampleappwindow.h"
+#include "appwindow.h"
 #include <iostream>
 #include <stdexcept>
 #include <set>
@@ -27,7 +27,7 @@
 #include "MassBalance/MassBalanceSubsystem.hpp"
 #include "ExternalReactions/ExternalReactionSubsystem.hpp"
 
-ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
+AppWindow::AppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
 : Gtk::ApplicationWindow(cobject),
   m_refBuilder(refBuilder)
@@ -84,11 +84,11 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
 
   // Connect signal handlers.
   m_searchentry->signal_search_changed().connect(
-    sigc::mem_fun(*this, &ExampleAppWindow::on_search_text_changed));
+    sigc::mem_fun(*this, &AppWindow::on_search_text_changed));
   m_stack->property_visible_child().signal_changed().connect(
-    sigc::mem_fun(*this, &ExampleAppWindow::on_visible_child_changed));
+    sigc::mem_fun(*this, &AppWindow::on_visible_child_changed));
   m_sidebar->property_reveal_child().signal_changed().connect(
-    sigc::mem_fun(*this, &ExampleAppWindow::on_reveal_child_changed));
+    sigc::mem_fun(*this, &AppWindow::on_reveal_child_changed));
 
   // Connect the menu to the MenuButton m_gears, and bind the show-words setting
   // to the win.show-words action and the "Words" menu item.
@@ -142,24 +142,24 @@ ExampleAppWindow::ExampleAppWindow(BaseObjectType* cobject,
   
   // connect the switch page callbook 
   m_Notebook->signal_switch_page().connect(sigc::mem_fun(*this,
-              &ExampleAppWindow::on_notebook_switch_page) );
+              &AppWindow::on_notebook_switch_page) );
 
 }
 
 //static
-ExampleAppWindow* ExampleAppWindow::create()
+AppWindow* AppWindow::create()
 {
   // Load the Builder file and instantiate its widgets.
   auto refBuilder = Gtk::Builder::create_from_resource("/org/gtkmm/exampleapp/window.ui");
 
-  auto window = Gtk::Builder::get_widget_derived<ExampleAppWindow>(refBuilder, "app_window");
+  auto window = Gtk::Builder::get_widget_derived<AppWindow>(refBuilder, "app_window");
   if (!window)
     throw std::runtime_error("No \"app_window\" object in window.ui");
 
   return window;
 }
 
-void ExampleAppWindow::open_file_view(const Glib::RefPtr<Gio::File>& file)
+void AppWindow::open_file_view(const Glib::RefPtr<Gio::File>& file)
 {
 #if 0
   const Glib::ustring basename = file->get_basename();
@@ -184,7 +184,7 @@ void ExampleAppWindow::open_file_view(const Glib::RefPtr<Gio::File>& file)
   }
   catch (const Glib::Error& ex)
   {
-    std::cout << "ExampleAppWindow::open_file_view(\"" << file->get_parse_name()
+    std::cout << "AppWindow::open_file_view(\"" << file->get_parse_name()
       << "\"):\n  " << ex.what() << std::endl;
     return;
   }
@@ -199,7 +199,7 @@ void ExampleAppWindow::open_file_view(const Glib::RefPtr<Gio::File>& file)
 #endif
 }
 
-void ExampleAppWindow::on_search_text_changed()
+void AppWindow::on_search_text_changed()
 {
 #if 0
   const auto text = m_searchentry->get_text();
@@ -209,14 +209,14 @@ void ExampleAppWindow::on_search_text_changed()
   auto tab = dynamic_cast<Gtk::ScrolledWindow*>(m_stack->get_visible_child());
   if (!tab)
   {
-    std::cout << "ExampleAppWindow::on_search_text_changed(): No visible child." << std::endl;
+    std::cout << "AppWindow::on_search_text_changed(): No visible child." << std::endl;
     return;
   }
 
   auto view = dynamic_cast<Gtk::TextView*>(tab->get_child());
   if (!view)
   {
-    std::cout << "ExampleAppWindow::on_search_text_changed(): No visible text view." << std::endl;
+    std::cout << "AppWindow::on_search_text_changed(): No visible text view." << std::endl;
     return;
   }
 
@@ -233,24 +233,24 @@ void ExampleAppWindow::on_search_text_changed()
 #endif
 }
 
-void ExampleAppWindow::on_visible_child_changed()
+void AppWindow::on_visible_child_changed()
 {
   m_searchbar->set_search_mode(false);
   update_words();
   update_lines();  
 }
 
-void ExampleAppWindow::on_find_word(const Gtk::Button* button)
+void AppWindow::on_find_word(const Gtk::Button* button)
 {
   m_searchentry->set_text(button->get_label());
 }
 
-void ExampleAppWindow::on_reveal_child_changed()
+void AppWindow::on_reveal_child_changed()
 {
   update_words();
 }
 
-void ExampleAppWindow::update_words()
+void AppWindow::update_words()
 {
 #if 0
   auto tab = dynamic_cast<Gtk::ScrolledWindow*>(m_stack->get_visible_child());
@@ -260,7 +260,7 @@ void ExampleAppWindow::update_words()
   auto view = dynamic_cast<Gtk::TextView*>(tab->get_child());
   if (!view)
   {
-    std::cout << "ExampleAppWindow::update_words(): No visible text view." << std::endl;
+    std::cout << "AppWindow::update_words(): No visible text view." << std::endl;
     return;
   }
   auto buffer = view->get_buffer();
@@ -296,13 +296,13 @@ void ExampleAppWindow::update_words()
   {
     auto row = Gtk::make_managed<Gtk::Button>(word);
     row->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this,
-      &ExampleAppWindow::on_find_word), row));
+      &AppWindow::on_find_word), row));
     m_words->append(*row);
   }
 #endif
 }
 
-void ExampleAppWindow::update_lines()
+void AppWindow::update_lines()
 {
 #if 0
   auto tab = dynamic_cast<Gtk::ScrolledWindow*>(m_stack->get_visible_child());
@@ -312,7 +312,7 @@ void ExampleAppWindow::update_lines()
   auto view = dynamic_cast<Gtk::TextView*>(tab->get_child());
   if (!view)
   {
-    std::cout << "ExampleAppWindow::update_lines(): No visible text view." << std::endl;
+    std::cout << "AppWindow::update_lines(): No visible text view." << std::endl;
     return;
   }
   auto buffer = view->get_buffer();
@@ -329,7 +329,7 @@ void ExampleAppWindow::update_lines()
 #endif
 }
 
-void ExampleAppWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
+void AppWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
   std::cout << "Switched to tab with index " << page_num << std::endl;
 

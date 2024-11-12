@@ -13,8 +13,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "exampleapplication.h"
-#include "exampleappwindow.h"
+#include "application.h"
+#include "appwindow.h"
 
 int main(int argc, char* argv[])
 {
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
   // schema. This is *not* necessary in a properly installed application.
   Glib::setenv ("GSETTINGS_SCHEMA_DIR", ".", false);
 
-  auto application = ExampleApplication::create();
+  auto application = Application::create();
 
   // Start the application, showing the initial window,
   // and opening extra views for any files that it is asked to open,

@@ -13,8 +13,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "exampleappprefs.h"
-#include "exampleappwindow.h"
+#include "appprefs.h"
+#include "appwindow.h"
 #include <array>
 #include <stdexcept>
 
@@ -35,7 +35,7 @@ const std::array<TransitionTypeStruct, 3> transitionTypes =
 
 } // anonymous namespace
 
-ExampleAppPrefs::ExampleAppPrefs(BaseObjectType* cobject,
+AppPrefs::AppPrefs(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
 : Gtk::Window(cobject),
   m_refBuilder(refBuilder)
@@ -73,14 +73,14 @@ ExampleAppPrefs::ExampleAppPrefs(BaseObjectType* cobject,
   // This is easier when g_settings_bind_with_mapping() is
   // wrapped in a Gio::Settings method.
   m_settings->signal_changed("font").connect(
-    sigc::mem_fun(*this, &ExampleAppPrefs::on_font_setting_changed));
+    sigc::mem_fun(*this, &AppPrefs::on_font_setting_changed));
   m_font->property_font_desc().signal_changed().connect(
-    sigc::mem_fun(*this, &ExampleAppPrefs::on_font_selection_changed));
+    sigc::mem_fun(*this, &AppPrefs::on_font_selection_changed));
 
   m_settings->signal_changed("transition").connect(
-    sigc::mem_fun(*this, &ExampleAppPrefs::on_transition_setting_changed));
+    sigc::mem_fun(*this, &AppPrefs::on_transition_setting_changed));
   m_transition->property_selected().signal_changed().connect(
-    sigc::mem_fun(*this, &ExampleAppPrefs::on_transition_selection_changed));
+    sigc::mem_fun(*this, &AppPrefs::on_transition_selection_changed));
 
   // Synchronize the preferences dialog with m_settings.
   on_font_setting_changed("font");
@@ -89,12 +89,12 @@ ExampleAppPrefs::ExampleAppPrefs(BaseObjectType* cobject,
 }
 
 //static
-ExampleAppPrefs* ExampleAppPrefs::create(Gtk::Window& parent)
+AppPrefs* AppPrefs::create(Gtk::Window& parent)
 {
   // Load the Builder file and instantiate its widgets.
   auto refBuilder = Gtk::Builder::create_from_resource("/org/gtkmm/exampleapp/prefs.ui");
 
-  auto dialog = Gtk::Builder::get_widget_derived<ExampleAppPrefs>(refBuilder, "prefs_dialog");
+  auto dialog = Gtk::Builder::get_widget_derived<AppPrefs>(refBuilder, "prefs_dialog");
   if (!dialog)
     throw std::runtime_error("No \"prefs_dialog\" object in prefs.ui");
 
@@ -104,7 +104,7 @@ ExampleAppPrefs* ExampleAppPrefs::create(Gtk::Window& parent)
 }
 
 #if HAS_GIO_SETTINGS_BIND_WITH_MAPPING
-std::optional<unsigned int> ExampleAppPrefs::map_from_ustring_to_int(const Glib::ustring& transition)
+std::optional<unsigned int> AppPrefs::map_from_ustring_to_int(const Glib::ustring& transition)
 {
   for (std::size_t i = 0; i < transitionTypes.size(); ++i)
   {
@@ -114,14 +114,14 @@ std::optional<unsigned int> ExampleAppPrefs::map_from_ustring_to_int(const Glib:
   return std::nullopt;
 }
 
-std::optional<Glib::ustring> ExampleAppPrefs::map_from_int_to_ustring(const unsigned int& pos)
+std::optional<Glib::ustring> AppPrefs::map_from_int_to_ustring(const unsigned int& pos)
 {
   if (pos >= transitionTypes.size())
     return std::nullopt;
   return transitionTypes[pos].id;
 }
 #else
-void ExampleAppPrefs::on_font_setting_changed(const Glib::ustring& /* key */)
+void AppPrefs::on_font_setting_changed(const Glib::ustring& /* key */)
 {
   const auto font_setting = m_settings->get_string("font");
   const auto font_button = m_font->get_font_desc().to_string();
@@ -129,7 +129,7 @@ void ExampleAppPrefs::on_font_setting_changed(const Glib::ustring& /* key */)
     m_font->set_font_desc(Pango::FontDescription(font_setting));
 }
 
-void ExampleAppPrefs::on_font_selection_changed()
+void AppPrefs::on_font_selection_changed()
 {
   const auto font_setting = m_settings->get_string("font");
   const auto font_button = m_font->get_font_desc().to_string();
@@ -137,7 +137,7 @@ void ExampleAppPrefs::on_font_selection_changed()
     m_settings->set_string("font", font_button);
 }
 
-void ExampleAppPrefs::on_transition_setting_changed(const Glib::ustring& /* key */)
+void AppPrefs::on_transition_setting_changed(const Glib::ustring& /* key */)
 {
   const auto transition_setting = m_settings->get_string("transition");
   const auto transition_button = transitionTypes[m_transition->get_selected()].id;
@@ -154,7 +154,7 @@ void ExampleAppPrefs::on_transition_setting_changed(const Glib::ustring& /* key 
   }
 }
 
-void ExampleAppPrefs::on_transition_selection_changed()
+void AppPrefs::on_transition_selection_changed()
 {
   const auto pos = m_transition->get_selected();
   if (pos >= transitionTypes.size())

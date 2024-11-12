@@ -13,20 +13,20 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GTKMM_EXAMPLEAPPLICATION_H
-#define GTKMM_EXAMPLEAPPLICATION_H
+#ifndef GTKMM_APPLICATION_H
+#define GTKMM_APPLICATION_H
 
 #include <gtkmm.h>
 
-class ExampleAppWindow;
+class AppWindow;
 
-class ExampleApplication: public Gtk::Application
+class Application: public Gtk::Application
 {
 protected:
-  ExampleApplication();
+  Application();
 
 public:
-  static Glib::RefPtr<ExampleApplication> create();
+  static Glib::RefPtr<Application> create();
 
 protected:
   // Override default signal handlers:
@@ -36,9 +36,9 @@ protected:
     const Glib::ustring& hint) override;
 
 private:
-  ExampleAppWindow* create_appwindow();
+  AppWindow* create_appwindow();
   void on_action_preferences();
   void on_action_quit();
 };
 
-#endif /* GTKMM_EXAMPLEAPPLICATION_H */
+#endif /* GTKMM_APPLICATION_H */
