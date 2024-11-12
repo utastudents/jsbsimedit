@@ -55,27 +55,77 @@ void GeneralInformationSubsystem::Create()
   emailTextbox->set_text(""); // Load email here
 
   // Organization
-  auto organizationLabel = Gtk::make_managed<Gtk::Label>("Organization");
-  auto organizationTextView = Gtk::make_managed<Gtk::TextView>();
-  auto organizationScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
-  auto organizationFrame = Gtk::make_managed<Gtk::Frame>();
+auto organizationLabel = Gtk::make_managed<Gtk::Label>("Organization");
+auto organizationTextView = Gtk::make_managed<Gtk::TextView>();
+auto organizationScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+auto organizationFrame = Gtk::make_managed<Gtk::Frame>();
 
-  // Set up TextView content and appearance
-  organizationTextView->get_buffer()->set_text("1. Still need to add a scroll bar and add a frame?\n2.\n3"); // Placeholder text
-  
-  // Configure the ScrolledWindow
-  organizationScrolledWindow->set_min_content_height(100); // Set the height for the text area
-  organizationScrolledWindow->set_min_content_width(300); // Set the height for the text area  
-  organizationScrolledWindow->set_child(*organizationTextView);
+// Set up TextView content and appearance
+organizationTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+
+// Configure the ScrolledWindow
+organizationScrolledWindow->set_min_content_height(100); // Set the height for the text area
+organizationScrolledWindow->set_min_content_width(300);  // Set the width for the text area
+organizationScrolledWindow->set_child(*organizationTextView);
+organizationScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+
+// Add the ScrolledWindow to the Frame to give it a border
+organizationFrame->set_child(*organizationScrolledWindow);
+organizationFrame->set_margin_bottom(10);
+
+// Set TextView wrap mode
+organizationTextView->set_wrap_mode(Gtk::WrapMode::WORD);
+
 
   // Description
+auto descriptionLabel = Gtk::make_managed<Gtk::Label>("description");
+auto descriptionTextView = Gtk::make_managed<Gtk::TextView>();
+auto descriptionScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+auto descriptionFrame = Gtk::make_managed<Gtk::Frame>();
+
+// Set up TextView content and appearance
+descriptionTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+
+// Configure the ScrolledWindow
+descriptionScrolledWindow->set_min_content_height(100); // Set the height for the text area
+descriptionScrolledWindow->set_min_content_width(300);  // Set the width for the text area
+descriptionScrolledWindow->set_child(*descriptionTextView);
+descriptionScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+
+// Add the ScrolledWindow to the Frame to give it a border
+descriptionFrame->set_child(*descriptionScrolledWindow);
+
+// Set TextView wrap mode
+descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   // File Date
+  auto fileDateLabel = Gtk::make_managed<Gtk::Label>("FileDate");
+  auto fileDateTextbox = Gtk::make_managed<Gtk::Entry>();
+  fileDateTextbox->set_text(""); // Load FileDate name here
 
   // References
+  auto referencesLabel = Gtk::make_managed<Gtk::Label>("References");
+  auto referencesTextView = Gtk::make_managed<Gtk::TextView>();
+  auto referencesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  auto referencesFrame = Gtk::make_managed<Gtk::Frame>();
+
+  // Set up TextView content and appearance
+  referencesTextView->get_buffer()->set_text(""); // Placeholder text
+
+  // Configure the ScrolledWindow
+  referencesScrolledWindow->set_min_content_height(100); // Set the height for the text area
+  referencesScrolledWindow->set_min_content_width(300);  // Set the width for the text area
+  referencesScrolledWindow->set_child(*referencesTextView);
+  referencesScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+
+  // Add the ScrolledWindow to the Frame to give it a border
+  referencesFrame->set_child(*referencesScrolledWindow);
+
+  // Set TextView wrap mode
+  referencesTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   // Limitations
-  auto limitationsLabel = Gtk::make_managed<Gtk::Label>("limitations");
+  auto limitationsLabel = Gtk::make_managed<Gtk::Label>("Limitations");
   auto limitationsTextView = Gtk::make_managed<Gtk::TextView>();
   auto limitationsScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
   auto limitationsFrame = Gtk::make_managed<Gtk::Frame>();
@@ -87,9 +137,16 @@ void GeneralInformationSubsystem::Create()
   limitationsScrolledWindow->set_min_content_height(100); // Set the height for the text area
   limitationsScrolledWindow->set_min_content_width(300); // Set the height for the text area  
   limitationsScrolledWindow->set_child(*limitationsTextView);
+  limitationsScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+
+// Add the ScrolledWindow to the Frame to give it a border
+  limitationsFrame->set_child(*limitationsScrolledWindow);
+
+// Set TextView wrap mode
+  limitationsTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   // Notes
-  auto notesLabel = Gtk::make_managed<Gtk::Label>("notes");
+  auto notesLabel = Gtk::make_managed<Gtk::Label>("Notes");
   auto notesTextView = Gtk::make_managed<Gtk::TextView>();
   auto notesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
   auto notesFrame = Gtk::make_managed<Gtk::Frame>();
@@ -101,6 +158,17 @@ void GeneralInformationSubsystem::Create()
   notesScrolledWindow->set_min_content_height(100); // Set the height for the text area
   notesScrolledWindow->set_min_content_width(300); // Set the height for the text area  
   notesScrolledWindow->set_child(*notesTextView);
+  notesScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+
+  // Add the ScrolledWindow to the Frame to give it a border
+  notesFrame->set_child(*notesScrolledWindow);
+
+  // Set TextView wrap mode
+  notesTextView->set_wrap_mode(Gtk::WrapMode::WORD);
+
+
+
+
 
   // Attach widgets to the grid
   m_Grid.attach(*aircraftNameLabel, 0, row);
@@ -121,11 +189,30 @@ void GeneralInformationSubsystem::Create()
   m_Grid.attach(*emailTextbox, 4, row++);
 
   m_Grid.attach(*organizationLabel, 0, row);
-  m_Grid.attach(*organizationScrolledWindow, 1, row++, 5, 2); // Spans multiple columns for the text area
+  m_Grid.attach(*organizationFrame, 1, row, 1, 1); // Spans multiple columns for the text area
+
+
+
+  m_Grid.attach(*descriptionLabel, 3, row);
+  m_Grid.attach(*descriptionFrame, 4, row++, 1, 2);
+
+  m_Grid.attach(*fileDateLabel, 0, row);
+  m_Grid.attach(*fileDateTextbox, 1, row);
+
+  auto spacer = Gtk::make_managed<Gtk::Label>();
+  spacer->set_size_request(-1, 10);  // Set height to 10 pixels
+  m_Grid.attach(*spacer, 0, row++);
+
+  m_Grid.attach(*referencesLabel, 0, row);
+  m_Grid.attach(*referencesFrame, 1, row++, 8, 2);
+  m_Grid.attach(*spacer, 0, row++);
 
   m_Grid.attach(*limitationsLabel, 0, row);
-  m_Grid.attach(*limitationsScrolledWindow, 1, row++, 8, 2);
+  m_Grid.attach(*limitationsFrame, 1, row++, 8, 2);
+  m_Grid.attach(*spacer, 0, row++);
 
   m_Grid.attach(*notesLabel, 0, row);
-  m_Grid.attach(*notesScrolledWindow, 1, row++, 8, 2);
+  m_Grid.attach(*notesFrame, 1, row++, 8, 2);
+  m_Grid.attach(*spacer, 0, row++);
+
 }
