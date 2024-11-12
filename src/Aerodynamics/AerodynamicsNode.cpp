@@ -2,138 +2,141 @@
 
 const std::string &AerodynamicsNode::getName() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return name;
 }
 
 void AerodynamicsNode::setName(const std::string &name)
 {
+    this->name = name;
 }
 
 const std::string &AerodynamicsNode::getPath() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return path;
 }
 
 void AerodynamicsNode::setPath(const std::string &path)
 {
+    this->path = path;
 }
 
 AerodynamicsNode::Type AerodynamicsNode::getType() const
 {
-    return (AerodynamicsNode::Type) 0;
+    return type;
 }
 
 Property::Property()
 {
+    type = PROPERTY;
+    
 }
 
 const std::string &Property::getDescription() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return description;
 }
 
 const std::string &Property::getUnit() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return unit;
 }
 
 const std::string &Property::getAccess() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return access;
 }
 
 const std::string &Property::getComment() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return comment;
 }
 
 Value::Value()
 {
+    type = VALUE;
 }
 
 double Value::getInput() const
 {
-    return 0.0;
+    return input;
 }
 
 void Value::setInput(double input)
 {
+    this->input = input;
 }
 
 Function::Function()
 {
+    type = FUNCTION;
 }
 
 const std::string &Function::getFunctionType() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return functionType;
 }
 
 void Function::setFunctionType(const std::string &functionType)
 {
+    this->functionType = functionType;
 }
 
 const std::string &Function::getDescription() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return description;
 }
 
 void Function::setDescription(const std::string &description)
 {
+    this->description = description;
 }
 
 Table::Table()
 {
+    type = TABLE;
 }
 
 const std::string &Table::getRowProperty() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return rowProperty;
 }
 
 const std::string &Table::getColumnProperty() const
 {
-    std::string *t = new std::string();
-    return *t;
+    return columnProperty;
 }
 
 const std::vector<double> &Table::getTableData() const
 {
-    std::vector<double> *t= new std::vector<double>();
-    return *t;
+    return tableData;
 }
 
 void Table::setTableData(const std::vector<double> &tableData)
 {
+    this->tableData = tableData;
 }
 
 Axis::Axis()
 {
+    type = AXIS;
 }
 
 Axis::AxisName Axis::getname() const
 {
-    return Axis::AxisName (0);
+    return name;
 }
 
 void Axis::setAxisName(AxisName name)
 {
+    this->name = name;
 }
 
 Axis::UnitName Axis::getUnit() const
 {
-    return Axis::UnitName (0);
+    return unit;
 }
 
 void Axis::setUnit(UnitName unit)
 {
+    this->unit = unit;
 }

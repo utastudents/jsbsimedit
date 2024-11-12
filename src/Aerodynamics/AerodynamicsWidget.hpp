@@ -1,4 +1,4 @@
-#pragma once;
+#pragma once
 
 #include <gtkmm.h>
 #include "HierarchyPanel.hpp"
