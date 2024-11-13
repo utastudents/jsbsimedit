@@ -27,6 +27,7 @@
 #include "MassBalance/MassBalanceSubsystem.hpp"
 #include "ExternalReactions/ExternalReactionSubsystem.hpp"
 #include "GeneralInformation/GeneralInformationSubsystem.hpp"
+#include "GroundReactions/GroundReactionsSubsystem.hpp"
 
 AppWindow::AppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
@@ -130,6 +131,7 @@ AppWindow::AppWindow(BaseObjectType* cobject,
   m_Subsystems.push_back(new IOSubSystem());
   m_Subsystems.push_back(new MassBalanceSubsystem());
   m_Subsystems.push_back(new ExternalReactionSubsystem());
+  m_Subsystems.push_back(new GroundReactionsSubsystem());
   // create the gtk objects inside
   for (const auto &i : m_Subsystems)
   {
