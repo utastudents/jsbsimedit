@@ -2,8 +2,8 @@
 
 namespace JSBEdit{
 
-GainComponent::GainComponent(const std::string &name, ComponentType &type)
-    : IComponentCommon(name, type)
+GainComponent::GainComponent(const std::string &name)
+    : IComponentCommon(name, ComponentType::GAIN)
 {
 }
 

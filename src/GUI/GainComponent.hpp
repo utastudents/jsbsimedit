@@ -7,7 +7,7 @@ class GainComponent : public IComponentCommon
 {
 
 public:
-    GainComponent(const std::string& name, ComponentType& type);
+    GainComponent(const std::string& name);
     ~GainComponent() = default;
 
     void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;
