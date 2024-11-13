@@ -6,6 +6,8 @@ GroundReactionsSubsystem::GroundReactionsSubsystem() {
     std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
 }
 
+// deleted destructor
+
 void GroundReactionsSubsystem::Create() {
     std :: cout << "in GroundReactionsSubsystem::Create" << std :: endl;
 
