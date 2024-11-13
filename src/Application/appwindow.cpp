@@ -29,6 +29,7 @@
 #include "GeneralInformation/GeneralInformationSubsystem.hpp"
 #include "GroundReactions/GroundReactionsSubsystem.hpp"
 
+
 AppWindow::AppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
 : Gtk::ApplicationWindow(cobject),
