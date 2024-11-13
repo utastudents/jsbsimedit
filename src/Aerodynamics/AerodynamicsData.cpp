@@ -10,8 +10,9 @@ const std::vector<AerodynamicsNode> AerodynamicsData::getAerodynamicsNodes() con
     return t;
 }
 
-void AerodynamicsData::setAerodynamicsNodes(std::vector<AerodynamicsNode> AerodynamicsNodes)
+void AerodynamicsData::setAerodynamicsNodes(std::vector<AerodynamicsNode> nodes)
 {
+    AerodynamicsNodes = nodes;
 }
 
 void AerodynamicsData::fetchData()
