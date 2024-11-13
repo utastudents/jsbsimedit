@@ -1,4 +1,4 @@
-#include "Metrics.h"
+#include "Metrics.hpp"
 #include <iostream>
 
 // Constructor
@@ -30,10 +30,12 @@ double Metrics::Data_Unit::get_value() const {
     return the_value;
 }
 
+Metrics::Unit* Metrics::Data_Unit::get_its_unit(){ return its_unit.get(); }
+
 // Positive_Double class methods
 Metrics::Positive_Double::Positive_Double(double p_value, string_vector unit_bank)
     : Data_Unit(unit_bank) {
-    the_value = 0;  // Initialize to 0, actual value set outside
+    the_value = p_value;  // Initialize to 0, actual value set outside
 }
 
 void Metrics::Positive_Double::set_value(double p_value) {
@@ -44,7 +46,7 @@ void Metrics::Positive_Double::set_value(double p_value) {
 // Norm_Double class methods
 Metrics::Norm_Double::Norm_Double(double p_value, string_vector unit_bank)
     : Data_Unit(unit_bank) {
-    the_value = 0;  // Initialize to 0, actual value set outside
+    the_value = p_value;  // Initialize to 0, actual value set outside
 }
 
 void Metrics::Norm_Double::set_value(double p_value) {
@@ -53,7 +55,12 @@ void Metrics::Norm_Double::set_value(double p_value) {
 
 // Vertex_Unit class methods
 Metrics::Vertex_Unit::Vertex_Unit(double p_x, double p_y, double p_z, string_vector unit_bank)
-    : Data_Unit(unit_bank), x(p_x), y(p_y), z(p_z) {}
+    : x(p_x), y(p_y), z(p_z)
+{
+    its_unit = std::make_unique<Unit>(unit_bank);
+}
+
+Metrics::Unit* Metrics::Vertex_Unit::get_its_unit() { return its_unit.get(); }
 
 void Metrics::Vertex_Unit::set_x(double p_x) { x = p_x; }
 void Metrics::Vertex_Unit::set_y(double p_y) { y = p_y; }
@@ -71,51 +78,101 @@ void Metrics::activate() {
 void Metrics::init() {
     std::cout << "Metrics::init() has been called" << std::endl;
 
-    string_vector unit_bank = { "FT2", "M2", "FT", "M", "Deg", "In" };
+    std::map<std::string, string_vector> unit_map{
+        {"wingarea", {"FT2", "M2"}},
+        {"wingspan", {"FT", "M"}},
+        {"wing_incidence", {"FT", "M"}},
+        {"chord", {"DEG"}},
+        {"htailarea", {"FT2", "M2"}},
+        {"htailarm", {"FT", "M"}},
+        {"vtailarea", {"FT2", "M2"}},
+        {"vtailarm", {"FT", "M"}},
+        {"location", {"IN", "FT", "M"}}};
 
     // Create and initialize Positive_Double instances
-    auto wingarea = std::make_unique<Positive_Double>(0.0, unit_bank);
-    wingarea->set_value(75.0);
-    positive_data_unit["Wingarea"] = std::move(wingarea);
+    std::string node_name{""};
 
-    auto wingspan = std::make_unique<Positive_Double>(0.0, unit_bank);
-    wingspan->set_value(76.0);
-    positive_data_unit["Wingspan"] = std::move(wingspan);
+    node_name = "wingarea";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto chord = std::make_unique<Positive_Double>(0.0, unit_bank);
-    chord->set_value(77.0);
-    positive_data_unit["Chord"] = std::move(chord);
+    node_name = "wingspan";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(76.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto htailarea = std::make_unique<Positive_Double>(0.0, unit_bank);
-    htailarea->set_value(78.0);
-    positive_data_unit["Htailarea"] = std::move(htailarea);
+    node_name = "chord";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto htailarm = std::make_unique<Positive_Double>(0.0, unit_bank);
-    htailarm->set_value(79.0);
-    positive_data_unit["Htailarm"] = std::move(htailarm);
+    node_name = "htailarea";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto vtailarea = std::make_unique<Positive_Double>(0.0, unit_bank);
-    vtailarea->set_value(80.0);
-    positive_data_unit["Vtailarea"] = std::move(vtailarea);
+    node_name = "htailarm";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto vtailarm = std::make_unique<Positive_Double>(0.0, unit_bank);
-    vtailarm->set_value(81.0);
-    positive_data_unit["Vtailarm"] = std::move(vtailarm);
+    node_name = "vtailarea";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
+    node_name = "vtailarm";
+    positive_data_unit[node_name] = std::make_unique<Positive_Double>(0.0, unit_map[node_name]);
+    positive_data_unit[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    positive_data_unit[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO positive_data_unit[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
     // Create and initialize Norm_Double instance
-    auto wing_incidence = std::make_unique<Norm_Double>(0.0, unit_bank);
-    wing_incidence->set_value(37.0);
-    normal_data_units["Wing Incidence"] = std::move(wing_incidence);
+    node_name = "wing_incidence";
+    normal_data_units[node_name] = std::make_unique<Norm_Double>(0.0, unit_map[node_name]);
+    normal_data_units[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
+    normal_data_units[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO normal_data_units[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
     // Create and initialize Vertex_Unit instances
-    auto aerodynamic_reference_point = std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_bank);
-    vertex_data_units["Aerodynamic Reference Point"] = std::move(aerodynamic_reference_point);
+    node_name = "AERORP";
+    vertex_data_units[node_name] =
+        std::make_unique<Vertex_Unit>(0.1, 0.2, 0.3, unit_map["location"]); // TODO Update from hardcoded values
+                                                                            // to info grabbed from xml
+    vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO vertex_data_units[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto eye_point = std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_bank);
-    vertex_data_units["Eye Point"] = std::move(eye_point);
+    node_name = "EYEPOINT";
+    vertex_data_units["node_name"] =
+        std::make_unique<Vertex_Unit>(0.4, 0.5, 0.6, unit_map["location"]); // TODO Update from hardcoded values
+                                                                            // to info grabbed from xml
+    vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO vertex_data_units[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
 
-    auto visual_reference_point = std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_bank);
-    vertex_data_units["Visual Reference Point"] = std::move(visual_reference_point);
+    node_name = "VRP";
+    vertex_data_units[node_name] =
+        std::make_unique<Vertex_Unit>(0.7, 0.8, 0.9, unit_map["location"]); // TODO Update from hardcoded values
+                                                                            // to info grabbed from xml
+    vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
+    // TODO SET TO vertex_data_units[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
+    // Otherwise read in current unit from XML and use that if it is valid.
+
 }
 

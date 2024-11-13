@@ -3,7 +3,7 @@
 #include "gtkmm.h"
 
 #include "Metrics/MetricsSubsystem.hpp"
-#include "Metrics/Metrics.h"
+#include "Metrics/Metrics.hpp"
 
 class MetricsSubsystem : public Subsystem
 {

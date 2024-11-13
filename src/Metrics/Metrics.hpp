@@ -41,6 +41,7 @@ private:
         virtual ~Data_Unit() = default;  // Virtual destructor
         virtual void set_value(double p_value) = 0;
         double get_value() const;
+        Unit* get_its_unit();
 
     protected:
         std::unique_ptr<Unit> its_unit;
@@ -67,22 +68,20 @@ private:
 
     ////////////////////////////////////////////////////////
 
-    class Vertex_Unit : public Data_Unit {
+    class Vertex_Unit{
     public:
         Vertex_Unit(double p_x, double p_y, double p_z, string_vector unit_bank);
-        ~Vertex_Unit() override = default;  // Virtual destructor
+        ~Vertex_Unit() = default;  // Virtual destructor
         void set_x(double p_x);
         void set_y(double p_y);
         void set_z(double p_z);
         double get_x() const;
         double get_y() const;
         double get_z() const;
-
-        void set_value(double p_value) override {
-            the_value = p_value;
-        }
+        Unit* get_its_unit();
 
     private:
+        std::unique_ptr<Unit> its_unit;
         double x{ 0 }, y{ 0 }, z{ 0 };
     };
 
