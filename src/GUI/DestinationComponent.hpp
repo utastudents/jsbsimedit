@@ -7,7 +7,7 @@ class DestinationComponent : public IComponentCommon
 {
 
 public:
-    DestinationComponent(const std::string& name, ComponentType& type);
+    DestinationComponent(const std::string& name);
     ~DestinationComponent() = default;
 
     void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;

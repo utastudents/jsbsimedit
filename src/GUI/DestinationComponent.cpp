@@ -2,8 +2,8 @@
 
 namespace JSBEdit{
 
-DestinationComponent::DestinationComponent(const std::string &name, ComponentType &type)
-    : IComponentCommon(name, type)
+DestinationComponent::DestinationComponent(const std::string &name)
+    : IComponentCommon(name, ComponentType::DESTINATION)
 {
 }
 
