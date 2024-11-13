@@ -9,7 +9,7 @@ class KinematicsComponent : public IComponentCommon
 {
 
 public:
-    KinematicsComponent(const std::string& name, ComponentType& type);
+    KinematicsComponent(const std::string& name);
     ~KinematicsComponent() = default;
 
     void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;
@@ -19,6 +19,8 @@ public:
     bool IsClipperEnabled = false;
     float MaxClip { 0.0f };
     float MinClip { 0.0f };
+
+    //==========================
     bool IsInputInverted = false;
     std::vector<std::pair<float, float>> table;
     bool IsInputScale = false;

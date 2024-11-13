@@ -2,8 +2,8 @@
 
 namespace JSBEdit{
 
-KinematicsComponent::KinematicsComponent(const std::string &name, ComponentType &type)
-    : IComponentCommon(name, type), table(40)
+KinematicsComponent::KinematicsComponent(const std::string &name)
+    : IComponentCommon(name, ComponentType::KINEMATIC), table(40)
 {
 }
 
