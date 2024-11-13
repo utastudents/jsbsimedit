@@ -6,10 +6,6 @@ GroundReactionsSubsystem::GroundReactionsSubsystem() {
     std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
 }
 
-GroundReactionsSubsystem::~GroundReactionsSubsystem() {
-
-}
-
 void GroundReactionsSubsystem::Create() {
     std :: cout << "in GroundReactionsSubsystem::Create" << std :: endl;
 

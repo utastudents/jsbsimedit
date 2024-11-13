@@ -8,7 +8,6 @@
 class GroundReactionsSubsystem : public Subsystem {
 public:
     GroundReactionsSubsystem();
-    ~GroundReactionsSubsystem();
     void Create();
 
 private:
