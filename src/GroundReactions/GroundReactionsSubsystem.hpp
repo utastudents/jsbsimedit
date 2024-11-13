@@ -7,7 +7,7 @@
 
 class GroundReactionsSubsystem : public Subsystem {
 public:
-    GroundReactionsSubsystem(); // deleted destructor
+    GroundReactionsSubsystem();
     void Create();
 
 private:
