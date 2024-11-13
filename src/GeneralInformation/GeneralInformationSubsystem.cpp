@@ -1,5 +1,69 @@
-#include <iostream>
 #include "GeneralInformationSubsystem.hpp"
+#include "XML/XMLLoad.hpp"
+#include "Aircraft.h"
+#include "User.h"
+#include "FileMetadata.h"
+#include "Config.h"
+#include "XML/XMLWriter.hpp"
+#include "Validation.h"
+
+void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
+  JSBEdit::XMLLoad xmlLoader;
+
+  auto xmlDoc = xmlLoader.Load(filePath);
+
+  Aircraft aircraft;
+  User user;
+  FileMetadata metadata;
+  Config config;
+
+  // Set values from XML
+  aircraft.setName(xmlDoc.GetNode("/GeneralInfo/AircraftName").GetText());
+  user.setAuthorName(xmlDoc.GetNode("/GeneralInfo/Author").GetText());
+  user.setEmail(xmlDoc.GetNode("/GeneralInfo/Email").GetText());
+  user.setOrganization(xmlDoc.GetNode("/GeneralInfo/Organization").GetText());
+  config.setReleaseLevel(xmlDoc.GetNode("/GeneralInfo/ReleaseLevel").GetText());
+  
+  // Populate GUI
+  m_AircraftNameEntry.set_text(aircraft.getName());
+  m_AuthorEntry.set_text(user.getAuthorName());
+  m_EmailEntry.set_text(user.getEmail());
+  m_OrganizationEntry.get_buffer()->set_text(user.getOrganization());
+  m_ReleaseLevelEntry.set_text(config.getReleaseLevel());
+}
+
+void GeneralInformationSubsystem::UpdateDataFromGUI(Aircraft& aircraft, User& user, Config& config) {
+  aircraft.setName(m_AircraftNameEntry.get_text());
+  user.setAuthorName(m_AuthorEntry.get_text());
+  user.setEmail(m_EmailEntry.get_text());
+  user.setOrganization(m_OrganizationEntry.get_buffer()->get_text());
+  config.setReleaseLevel(m_ReleaseLevelEntry.get_text());
+}
+
+void GeneralInformationSubsystem::ValidateAndSave() {
+  if (!Validation::validateAuthor(m_AuthorEntry.get_text())) {
+      std::cerr << "Invalid author name" << std::endl;
+      return;
+  }
+  if (!Validation::validateEmail(m_EmailEntry.get_text())) {
+      std::cerr << "Invalid email format" << std::endl;
+      return;
+  }
+  // Additional validations for each field
+}
+
+void GeneralInformationSubsystem::SaveToXML(const std::string& filePath, const Aircraft& aircraft, const User& user, const Config& config) {
+  JSBEdit::XMLDoc xmlDoc;                // Create a new XMLDoc instance
+  JSBEdit::XMLWriter xmlWriter(xmlDoc);  // Pass xmlDoc to XMLWriter
+
+  xmlDoc.GetNode("/GeneralInfo/AircraftName").SetText(aircraft.getName());
+  xmlDoc.GetNode("/GeneralInfo/Author").SetText(user.getAuthorName());
+  xmlDoc.GetNode("/GeneralInfo/Email").SetText(user.getEmail());
+  xmlDoc.GetNode("/GeneralInfo/Organization").SetText(user.getOrganization());
+  xmlDoc.GetNode("/GeneralInfo/ReleaseLevel").SetText(config.getReleaseLevel());
+
+  xmlWriter.Write(filePath);
+}
 
 GeneralInformationSubsystem::GeneralInformationSubsystem()
 {
@@ -55,51 +119,50 @@ void GeneralInformationSubsystem::Create()
   emailTextbox->set_text(""); // Load email here
 
   // Organization
-auto organizationLabel = Gtk::make_managed<Gtk::Label>("Organization");
-auto organizationTextView = Gtk::make_managed<Gtk::TextView>();
-auto organizationScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
-auto organizationFrame = Gtk::make_managed<Gtk::Frame>();
+  auto organizationLabel = Gtk::make_managed<Gtk::Label>("Organization");
+  auto organizationTextView = Gtk::make_managed<Gtk::TextView>();
+  auto organizationScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  auto organizationFrame = Gtk::make_managed<Gtk::Frame>();
 
-// Set up TextView content and appearance
-organizationTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+  // Set up TextView content and appearance
+  organizationTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
 
-// Configure the ScrolledWindow
-organizationScrolledWindow->set_min_content_height(100); // Set the height for the text area
-organizationScrolledWindow->set_min_content_width(300);  // Set the width for the text area
-organizationScrolledWindow->set_child(*organizationTextView);
-organizationScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+  // Configure the ScrolledWindow
+  organizationScrolledWindow->set_min_content_height(100); // Set the height for the text area
+  organizationScrolledWindow->set_min_content_width(300);  // Set the width for the text area
+  organizationScrolledWindow->set_child(*organizationTextView);
+  organizationScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
 
-// Add the ScrolledWindow to the Frame to give it a border
-organizationFrame->set_child(*organizationScrolledWindow);
-organizationFrame->set_margin_bottom(10);
+  // Add the ScrolledWindow to the Frame to give it a border
+  organizationFrame->set_child(*organizationScrolledWindow);
+  organizationFrame->set_margin_bottom(10);
 
-// Set TextView wrap mode
-organizationTextView->set_wrap_mode(Gtk::WrapMode::WORD);
-
+  // Set TextView wrap mode
+  organizationTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   // Description
-auto descriptionLabel = Gtk::make_managed<Gtk::Label>("description");
-auto descriptionTextView = Gtk::make_managed<Gtk::TextView>();
-auto descriptionScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
-auto descriptionFrame = Gtk::make_managed<Gtk::Frame>();
+  auto descriptionLabel = Gtk::make_managed<Gtk::Label>("Description");
+  auto descriptionTextView = Gtk::make_managed<Gtk::TextView>();
+  auto descriptionScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  auto descriptionFrame = Gtk::make_managed<Gtk::Frame>();
 
-// Set up TextView content and appearance
-descriptionTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+  // Set up TextView content and appearance
+  descriptionTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
 
-// Configure the ScrolledWindow
-descriptionScrolledWindow->set_min_content_height(100); // Set the height for the text area
-descriptionScrolledWindow->set_min_content_width(300);  // Set the width for the text area
-descriptionScrolledWindow->set_child(*descriptionTextView);
-descriptionScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+  // Configure the ScrolledWindow
+  descriptionScrolledWindow->set_min_content_height(100); // Set the height for the text area
+  descriptionScrolledWindow->set_min_content_width(300);  // Set the width for the text area
+  descriptionScrolledWindow->set_child(*descriptionTextView);
+  descriptionScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
 
-// Add the ScrolledWindow to the Frame to give it a border
-descriptionFrame->set_child(*descriptionScrolledWindow);
+  // Add the ScrolledWindow to the Frame to give it a border
+  descriptionFrame->set_child(*descriptionScrolledWindow);
 
-// Set TextView wrap mode
-descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
+  // Set TextView wrap mode
+  descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   // File Date
-  auto fileDateLabel = Gtk::make_managed<Gtk::Label>("FileDate");
+  auto fileDateLabel = Gtk::make_managed<Gtk::Label>("File Date");
   auto fileDateTextbox = Gtk::make_managed<Gtk::Entry>();
   fileDateTextbox->set_text(""); // Load FileDate name here
 
@@ -139,10 +202,10 @@ descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
   limitationsScrolledWindow->set_child(*limitationsTextView);
   limitationsScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
 
-// Add the ScrolledWindow to the Frame to give it a border
+  // Add the ScrolledWindow to the Frame to give it a border
   limitationsFrame->set_child(*limitationsScrolledWindow);
 
-// Set TextView wrap mode
+  // Set TextView wrap mode
   limitationsTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   // Notes
@@ -166,10 +229,6 @@ descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
   // Set TextView wrap mode
   notesTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
-
-
-
-
   // Attach widgets to the grid
   m_Grid.attach(*aircraftNameLabel, 0, row);
   m_Grid.attach(*aircraftNameTextbox, 1, row);
@@ -190,8 +249,6 @@ descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
 
   m_Grid.attach(*organizationLabel, 0, row);
   m_Grid.attach(*organizationFrame, 1, row, 1, 1); // Spans multiple columns for the text area
-
-
 
   m_Grid.attach(*descriptionLabel, 3, row);
   m_Grid.attach(*descriptionFrame, 4, row++, 1, 2);
@@ -214,5 +271,4 @@ descriptionTextView->set_wrap_mode(Gtk::WrapMode::WORD);
   m_Grid.attach(*notesLabel, 0, row);
   m_Grid.attach(*notesFrame, 1, row++, 8, 2);
   m_Grid.attach(*spacer, 0, row++);
-
 }
