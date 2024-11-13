@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 enum ComponentType

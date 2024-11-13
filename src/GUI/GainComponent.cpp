@@ -1,6 +1,6 @@
 #include "GainComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 GainComponent::GainComponent(const std::string &name)
     : IComponentCommon(name, ComponentType::GAIN)

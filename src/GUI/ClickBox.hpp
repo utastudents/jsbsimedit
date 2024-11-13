@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-namespace JSBEdit
+namespace DragDrop
 {
     //Could template this so it can be extended to floats/doubles etc..
     //But for this is fine.

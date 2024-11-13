@@ -8,7 +8,7 @@
 #include "ChannelCanvas.hpp"
 
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 	class FlightControlDemo : public Gtk::Box

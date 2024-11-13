@@ -8,7 +8,7 @@
 #include "ComponentTypeEnum.hpp"
 #include "ClickBox.hpp"
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 	class ComponentSprite : public IDrawable

@@ -5,6 +5,8 @@
 #include <string>
 #include <optional>
 
+namespace DragDrop{
+
 class DeadbandComponent {
 public:
     // Constructors
@@ -38,6 +40,8 @@ private:
 
     // Helper function to clip value within the specified limits
     double clipValue(double value);
+};
+
 };
 
 #endif // DEADBAND_COMPONENT_HPP

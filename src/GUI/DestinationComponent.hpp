@@ -1,7 +1,7 @@
 #pragma once
 #include "IComponentCommon.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 class DestinationComponent : public IComponentCommon
 {

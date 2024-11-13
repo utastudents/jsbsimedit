@@ -5,6 +5,8 @@
 #include <string>
 #include <optional>
 
+namespace DragDrop{
+
 class FilterComponent {
 public:
     // Constructors
@@ -38,6 +40,8 @@ private:
 
     // Helper function to clip value within the specified limits
     double clipValue(double value);
+};
+
 };
 
 #endif // FILTER_COMPONENT_HPP

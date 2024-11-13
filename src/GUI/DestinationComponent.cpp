@@ -1,6 +1,6 @@
 #include "DestinationComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 DestinationComponent::DestinationComponent(const std::string &name)
     : IComponentCommon(name, ComponentType::DESTINATION)

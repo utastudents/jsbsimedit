@@ -1,6 +1,6 @@
 #include "SummerComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 SummerComponent::SummerComponent(const std::string &name, ComponentType &type)
     : IComponentCommon(name, type)

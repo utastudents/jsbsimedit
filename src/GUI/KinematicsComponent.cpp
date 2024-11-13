@@ -1,6 +1,6 @@
 #include "KinematicsComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 KinematicsComponent::KinematicsComponent(const std::string &name)
     : IComponentCommon(name, ComponentType::KINEMATIC), table(40)

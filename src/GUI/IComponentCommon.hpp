@@ -4,7 +4,7 @@
 #include <iostream>
 #include "ComponentTypeEnum.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 class IComponentCommon
 {

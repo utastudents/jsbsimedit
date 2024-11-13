@@ -1,6 +1,6 @@
 #include "Channel.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 Channel::Channel(const Glib::RefPtr<Gtk::Application> &app, const std::string & channelName)
     : m_channelName(channelName)

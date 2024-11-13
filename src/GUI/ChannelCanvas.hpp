@@ -9,7 +9,7 @@
 #include "ComponentSprite.hpp"
 #include "Channel.hpp"
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 	class ChannelCanvas : public Gtk::DrawingArea

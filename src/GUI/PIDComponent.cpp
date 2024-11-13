@@ -1,6 +1,6 @@
 #include "PIDComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 PIDComponent::PIDComponent(const std::string &name)
     : IComponentCommon(name, ComponentType::PID)

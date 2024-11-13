@@ -1,6 +1,6 @@
 #include "ChannelCanvas.hpp"
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app)

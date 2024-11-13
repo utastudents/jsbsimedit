@@ -1,6 +1,8 @@
 #include "FilterComponent.hpp"
 #include <algorithm>
 
+namespace DragDrop{
+
 // Constructor
 FilterComponent::FilterComponent(const std::string& name, const std::string& input, double c1)
     : name(name), input(input), c1(c1), clipLimits(std::nullopt) {}
@@ -59,3 +61,5 @@ double FilterComponent::clipValue(double value) {
     }
     return value;
 }
+
+};

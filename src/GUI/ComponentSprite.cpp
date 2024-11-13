@@ -1,6 +1,6 @@
 #include "ComponentSprite.hpp"
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 //Having this allows to only load the sprite files once.

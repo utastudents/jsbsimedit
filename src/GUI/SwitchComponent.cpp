@@ -1,6 +1,8 @@
 #include "SwitchComponent.hpp"
 #include <algorithm>
 
+namespace DragDrop{
+
 // Constructor
 SwitchComponent::SwitchComponent(const std::string& name)
     : name(name), defaultValue(std::nullopt), clipLimits(std::nullopt) {}
@@ -72,3 +74,5 @@ double SwitchComponent::clipValue(double value) {
     }
     return value;
 }
+
+};

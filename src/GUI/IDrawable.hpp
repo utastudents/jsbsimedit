@@ -3,7 +3,7 @@
 #include <gtkmm.h>
 #include <string>
 
-namespace JSBEdit
+namespace DragDrop
 {
 	class IDrawable
 	{

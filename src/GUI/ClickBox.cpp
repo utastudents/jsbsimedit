@@ -1,6 +1,6 @@
 #include "ClickBox.hpp"
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 ClickBox::ClickBox(int x, int y, int width, int height)

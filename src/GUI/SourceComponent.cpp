@@ -1,6 +1,6 @@
 #include "SourceComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 SourceComponent::SourceComponent(const std::string &name, ComponentType &type)
     : IComponentCommon(name, type)

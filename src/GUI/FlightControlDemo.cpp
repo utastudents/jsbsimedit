@@ -1,6 +1,6 @@
 #include "FlightControlDemo.hpp"
 
-namespace JSBEdit {
+namespace DragDrop {
 
 FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app)
     : m_canvas(app)

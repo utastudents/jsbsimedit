@@ -1,6 +1,6 @@
 #include "SensorComponent.hpp"
 
-namespace JSBEdit{
+namespace DragDrop{
 
 SensorComponent::SensorComponent(const std::string &name)
     : IComponentCommon(name, ComponentType::SENSOR)

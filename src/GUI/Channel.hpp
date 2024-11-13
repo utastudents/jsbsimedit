@@ -11,7 +11,7 @@
 #include "PIDComponent.hpp"
 #include <random>
 
-namespace JSBEdit
+namespace DragDrop
 {
 
 	class Channel : public IDrawable

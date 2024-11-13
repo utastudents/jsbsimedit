@@ -3,7 +3,7 @@
 #include <vector>
 #include <utility>
 
-namespace JSBEdit{
+namespace DragDrop{
 
 class KinematicsComponent : public IComponentCommon
 {
