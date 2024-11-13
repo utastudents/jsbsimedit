@@ -7,7 +7,7 @@ class SensorComponent : public IComponentCommon
 {
 
 public:
-    SensorComponent(const std::string& name, ComponentType& type);
+    SensorComponent(const std::string& name);
     ~SensorComponent() = default;
 
     void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;

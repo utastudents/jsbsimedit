@@ -2,8 +2,8 @@
 
 namespace JSBEdit{
 
-SensorComponent::SensorComponent(const std::string &name, ComponentType &type)
-    : IComponentCommon(name, type)
+SensorComponent::SensorComponent(const std::string &name)
+    : IComponentCommon(name, ComponentType::SENSOR)
 {
 }
 
