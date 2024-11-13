@@ -34,6 +34,25 @@ void Channel::CreateDroppedComponent(ComponentType type, int x, int y)
 //Maybe TODO: change this later for partial redraws if its a problem.
 void Channel::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
 {
+    //Creating a pango layout & font stuff
+    auto layout = Pango::Layout::create(drawCont);
+    Pango::FontDescription fontDesc{};
+    fontDesc.set_family("Sans");
+    fontDesc.set_size(10 * Pango::SCALE);
+    layout->set_font_description(fontDesc);
+    drawCont->set_source_rgb(0,0,0);
+    for(auto& spritePair : m_spriteComponents)
+    {
+        layout->set_text(spritePair.first);
+        //Position is oriented center, this goes to the bottom middle of box
+        auto pos = spritePair.second.GetPosition();
+        auto bounds = spritePair.second.GetBounds();
+        int textWidth, textHeight {};
+        layout->get_pixel_size(textWidth, textHeight); // For centering seen below V
+        drawCont->move_to((-.5f * textWidth + pos.first), (.5f * bounds.second + pos.second));
+        layout->show_in_cairo_context(drawCont);
+    }
+
     //Draw every sprite.
     for(auto& spritePair : m_spriteComponents)
         spritePair.second.Draw(drawCont);
