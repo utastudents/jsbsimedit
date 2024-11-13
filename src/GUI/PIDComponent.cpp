@@ -135,7 +135,7 @@ void PIDComponent::SaveVariableChanges()
   //Set the component trigger if not empty
   auto trigEntered = m_trigEntry->get_text();
   if(!trigEntered.empty())
-    m_componentName = trigEntered;
+    Trigger = trigEntered;
 
   //Set the value of the inverted check
   InputInverted = m_invertButton->get_active();
