@@ -79,13 +79,13 @@ void Channel::addDefaultComponent(ComponentType type, const std::string & name)
     switch(type)
     {
         case ComponentType::GAIN:
-            m_components.insert({name, new GainComponent{name, type}});
+            m_components.insert({name, new GainComponent{name}});
             break;
         case ComponentType::PID:
             m_components.insert({name, new PIDComponent{name}});
             break;
         default:
-            m_components.insert({name, new GainComponent{name, type}});
+            m_components.insert({name, new GainComponent{name}});
             break;
     }
 }
