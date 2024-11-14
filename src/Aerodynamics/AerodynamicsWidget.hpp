@@ -4,7 +4,7 @@
 #include "HierarchyPanel.hpp"
 #include "MenuPanel.hpp"
 
-class AerodynamicsWidget : public Gtk::Box {
+class AerodynamicsWidget : public Gtk::Paned {
 private:
     Gtk::Paned paned;
     HierarchyPanel hierarchyPanel;
