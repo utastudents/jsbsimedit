@@ -42,7 +42,7 @@ MetricsSubsystem::MetricsSubsystem()
   // TODO SET TO data_units[node_name]->get_its_unit()->get_unit_bank()[0] if no unit can be found in XML.
   // Otherwise read in current unit from XML and use that if it is valid.
 
-  node_name = "htailrea";
+  node_name = "htailarea";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
   data_units[node_name]->set_value(75.0); // TODO GET INFO FROM XML. IF NODE NOT FOUND, SET TO 0
   data_units[node_name]->get_its_unit()->set_current_unit("");
