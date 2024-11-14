@@ -105,10 +105,10 @@ void PIDComponent::CreateCommonTab(Gtk::Notebook& note)
   note.append_page(tabContainer, "PID");
 }
 
-//When the Inverted button is active => Do something (as of now, I have no clue what Invert does)
 void PIDComponent::HandleInvertLogic()
 {
-  bool status = m_invertButton->get_active();
+  //When the Inverted button is active => Do something (as of now, I have no clue what Invert does)
+  //bool status = m_invertButton->get_active();
 }
 
 void PIDComponent::SaveVariableChanges()
