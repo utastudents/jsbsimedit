@@ -3,20 +3,19 @@
 #include <gtkmm.h>
 
 class HierarchyPanel : public Gtk::ScrolledWindow {
-private:
+public:
     class ModelColumns : public Gtk::TreeModel::ColumnRecord {
     public:
         ModelColumns() { add(columnName); }
         Gtk::TreeModelColumn<Glib::ustring> columnName;
     };
-
+    ModelColumns columns;
+    HierarchyPanel();
+    void populateTree(Glib::RefPtr<Gtk::TreeStore> treeStore);
+    void changeMenu();
+    const ModelColumns& getColumns();
+private:
     Gtk::TreeView treeView;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
-    ModelColumns columns;
-
-public:
-    HierarchyPanel();
-    void populateTree();
-    void changeMenu();
 };
 
