@@ -9,6 +9,7 @@
 #include "ComponentSprite.hpp"
 #include "GainComponent.hpp"
 #include "PIDComponent.hpp"
+#include "KinematicsComponent.hpp"
 #include <random>
 
 namespace DragDrop

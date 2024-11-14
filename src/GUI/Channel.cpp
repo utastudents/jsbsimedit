@@ -103,6 +103,9 @@ void Channel::addDefaultComponent(ComponentType type, const std::string & name)
         case ComponentType::PID:
             m_components.insert({name, new PIDComponent{name}});
             break;
+        case ComponentType::KINEMATIC:
+            m_components.insert({name, new KinematicsComponent{name}});
+            break;
         default:
             m_components.insert({name, new GainComponent{name}});
             break;
