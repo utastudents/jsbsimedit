@@ -3,7 +3,7 @@
 namespace DragDrop{
 
 KinematicsComponent::KinematicsComponent(const std::string &name)
-    : IComponentCommon(name, ComponentType::KINEMATIC), table(101)
+    : IComponentCommon(name, ComponentType::KINEMATIC), table(42)
 {
 }
 
@@ -52,9 +52,9 @@ void KinematicsComponent::CreateCommonTab(Gtk::Notebook& note)
   g.attach(Column3,2,0);
 
   int row;
-  float a =0;
+  //float a =0;
 
-  for(row = 1; row < 100; row++)
+  for(row = 1; row < 40; row++)
   {
     Gtk::Label rowNum {std::to_string(row)};
 
