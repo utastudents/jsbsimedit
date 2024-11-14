@@ -27,6 +27,16 @@ void PropulsionSubsystem::Create() {
     "Create Tank", "Tank Details", "Delete Tank"};
 
   int nameIndex = 0;
+  
+  // Define the unique actions for each button in lambdas
+  std::vector<std::function<void()>> buttonActions = {
+    [this]() { m_PropManager.showEngineThrusterSetup(); },
+    [this]() { m_PropManager.showEngineThrusterSetup(); },
+    [this]() { m_PropManager.confirmDeletePair(); },
+    [this]() { m_PropManager.showTankSetup(); },
+    [this]() { m_PropManager.showTankSetup(); },
+    [this]() { m_PropManager.confirmDeleteTank(); }
+  };
 
   // i is length # j is height #
   for (int i = 0; i < 2; i++) {
@@ -39,24 +49,9 @@ void PropulsionSubsystem::Create() {
         // Store Buttons in map for accessability 
         buttonMap[{i, j}] = pButton;
                 
-        // Assign specific actions based on button position
-        // Engine/Thruster specific buttons
-        if (i == 0 && j == 0) { // "Create Engine/Thruster Pair"
-          std::cout << "Create Engine/Thruster Pair" << std::endl;
-        } else if (i == 0 && j == 1) { // "Engine/Thruster Pair Details"
-          std::cout << "Engine/Thruster Pair Details" << std::endl;
-        }else if (i == 0 && j == 2) { // "Delete Engine/Thruster Pair"
-          std::cout << "Delete Engine/Thruster Pair" << std::endl;
-        }
+        // Connect each button's signal to its specific lambda function
+        pButton->signal_clicked().connect(buttonActions[nameIndex]);
 
-        // Tank specific buttons
-        if (i == 1 && j == 0) { // "Create Tank"
-          std::cout << "Create Tank" << std::endl;
-        } else if (i == 1 && j == 1) { // "Tank Details"
-          std::cout << "Tank Details" << std::endl;
-        } else if (i == 1 && j == 2) { // "Delete Tank"
-          std::cout << "Delete Tank" << std::endl;
-        }
 
         // Move to the next name
         nameIndex++;
@@ -64,3 +59,4 @@ void PropulsionSubsystem::Create() {
     }
   }
 }
+
