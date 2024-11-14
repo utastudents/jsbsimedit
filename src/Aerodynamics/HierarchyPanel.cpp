@@ -3,6 +3,7 @@
 HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
 {
     treeView.append_column("Aerodynamics", columns.columnName);
+    treeView.set_headers_visible(false);
 
     //configure this window
     set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
