@@ -3,7 +3,7 @@
 #include <map>  // For buttonMap
 #include <utility> // For std::pair
 #include "PropulsionSubsystem.hpp"
-#include "MainWindow.hpp"
+#include "PropulsionManager.hpp"
 
 PropulsionSubsystem::PropulsionSubsystem() {
     m_Name = "Propulsion";
@@ -17,7 +17,6 @@ void PropulsionSubsystem::Create() {
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
-  // Replace ButtonType with the actual type of pButton
   std::map<std::pair<int, int>, Gtk::ToggleButton*> buttonMap; 
 
   // Seperated line of code for readability 
@@ -39,7 +38,7 @@ void PropulsionSubsystem::Create() {
 
         // Store Buttons in map for accessability 
         buttonMap[{i, j}] = pButton;
-        
+                
         // Assign specific actions based on button position
         // Engine/Thruster specific buttons
         if (i == 0 && j == 0) { // "Create Engine/Thruster Pair"
@@ -58,12 +57,10 @@ void PropulsionSubsystem::Create() {
         } else if (i == 1 && j == 2) { // "Delete Tank"
           std::cout << "Delete Tank" << std::endl;
         }
-        
 
         // Move to the next name
         nameIndex++;
       } 
-
     }
   }
 }
