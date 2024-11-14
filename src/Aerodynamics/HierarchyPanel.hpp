@@ -2,7 +2,7 @@
 
 #include <gtkmm.h>
 
-class HierarchyPanel : public Gtk::Box {
+class HierarchyPanel : public Gtk::ScrolledWindow {
 private:
     class ModelColumns : public Gtk::TreeModel::ColumnRecord {
     public:
@@ -12,7 +12,6 @@ private:
 
     Gtk::TreeView treeView;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
-    Gtk::ScrolledWindow scrolledWindow;
     ModelColumns columns;
 
 public:

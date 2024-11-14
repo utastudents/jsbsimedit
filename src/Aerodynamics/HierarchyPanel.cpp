@@ -1,17 +1,16 @@
 #include "HierarchyPanel.hpp"
 
-HierarchyPanel::HierarchyPanel() : Gtk::Box(Gtk::Orientation::VERTICAL)
+HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
 {
+    //configure this window
+    set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+    set_child(treeView);
+    set_vexpand(true);
+
     treeStore = Gtk::TreeStore::create(columns);
     treeView.set_model(treeStore);
 
     treeView.append_column("Aerodynamics", columns.columnName);
-
-    scrolledWindow.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
-    scrolledWindow.set_child(treeView);
-
-    append(scrolledWindow);
-    scrolledWindow.set_vexpand(true);
 
     // Populate tree with sample data
     populateTree();
