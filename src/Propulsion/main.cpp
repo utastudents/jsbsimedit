@@ -4,7 +4,7 @@
 #include "Thruster.hpp"
 #include "EngineThrusterDialog.hpp"
 #include "TankDialog.hpp"
-#include "MainWindow.hpp"
+#include "PropulsionManager.hpp"
 
 
 
