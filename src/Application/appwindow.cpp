@@ -28,7 +28,7 @@
 #include "ExternalReactions/ExternalReactionSubsystem.hpp"
 #include "GeneralInformation/GeneralInformationSubsystem.hpp"
 #include "GroundReactions/GroundReactionsSubsystem.hpp"
-
+#include "Systems/FlightControlsSubsystem.hpp"
 
 AppWindow::AppWindow(BaseObjectType* cobject,
   const Glib::RefPtr<Gtk::Builder>& refBuilder)
@@ -122,8 +122,6 @@ AppWindow::AppWindow(BaseObjectType* cobject,
   m_Notebook->set_expand();
 
   // create the Subsystems objects
-  //    The key is the title used in the tab. 
-  //    Maybe a better way to get the name, perhaps add it to Subsystem?
   m_Subsystems.push_back(new GeneralInformationSubsystem());
   m_Subsystems.push_back(new AeroDynamicsSubsystem());
   m_Subsystems.push_back(new BuoyantForcesSubsystem());
@@ -133,6 +131,9 @@ AppWindow::AppWindow(BaseObjectType* cobject,
   m_Subsystems.push_back(new MassBalanceSubsystem());
   m_Subsystems.push_back(new ExternalReactionSubsystem());
   m_Subsystems.push_back(new GroundReactionsSubsystem());
+  //m_Subsystems.push_back(new FlightControlsSubsystem(this));
+  m_Subsystems.push_back(new FlightControlsSubsystem());
+
   // create the gtk objects inside
   for (const auto &i : m_Subsystems)
   {

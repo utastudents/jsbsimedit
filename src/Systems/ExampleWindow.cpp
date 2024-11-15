@@ -1,3 +1,4 @@
+#if 0
 #include "ExampleWindow.hpp"
 #include <iostream>
 
@@ -139,3 +140,4 @@ void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
 }
 
 };
+#endif

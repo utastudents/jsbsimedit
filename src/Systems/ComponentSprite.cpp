@@ -98,7 +98,7 @@ void ComponentSprite::LoadSpriteComponents()
         , "filter.bmp", "func.bmp", "gain.bmp", "kinemat.bmp"
         , "pid.bmp", "sensor.bmp", "source.bmp", "summer.bmp", "switch.bmp"
     };
-    std::string pathPrefix = "componentImg/"; //Only because i didnt wanna manually type it yay lazy
+    std::string pathPrefix = "../../../assets/componentImg/"; //Only because i didnt wanna manually type it yay lazy
 
     //Create the pixel_bufs
     for(auto& i : filenames)
