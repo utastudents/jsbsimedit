@@ -17,6 +17,7 @@ ComponentSprite::ComponentSprite(const ComponentType &comp, int x, int y)
 
 void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
 {
+    std::cout << "In ComponentSprite::Draw()" << std::endl;
     size_t spriteIndex = static_cast<std::size_t>(m_componentType);
     //Should probably do a resize check here in case another sprite scaled it before hand
     //TODO Determine width/height at a later date.
@@ -88,6 +89,7 @@ void ComponentSprite::SetPosition(int x, int y)
 
 void ComponentSprite::LoadSpriteComponents()
 {
+    std::cout << "calling LoadSpriteComponents()" << std::endl;
     //Check if we already loaded sprites, if so return
     if(!spriteTable.empty())
         return;
@@ -99,7 +101,6 @@ void ComponentSprite::LoadSpriteComponents()
         , "pid.bmp", "sensor.bmp", "source.bmp", "summer.bmp", "switch.bmp"
     };
     std::string pathPrefix = "../../../assets/componentImg/"; //Only because i didnt wanna manually type it yay lazy
-
     //Create the pixel_bufs
     for(auto& i : filenames)
     {
@@ -107,7 +108,10 @@ void ComponentSprite::LoadSpriteComponents()
         if(!sprite)
             std::cerr <<"Error loading component sprite:" + pathPrefix + i + "\n";
         else
+        {
+            std::cout << "creating sprite " << pathPrefix + i << std::endl;
             spriteTable.push_back(sprite);
+        }
     }
 }
 

@@ -12,7 +12,7 @@ namespace JSBEdit
     }
     int Application::Run(int argc,char *argv[])
     {
-        if (argc)
+        if (argc>1)
         {
             std::cout << "the first arg is " << argv[1] << std::endl;
             // note this is where the filename can be taken when the 
