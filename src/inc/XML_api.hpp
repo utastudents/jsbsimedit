@@ -1,5 +1,5 @@
 #include <XML/XMLDoc.hpp>
 
 
-XMLDoc* xmlptr();
+JSBEdit::XMLDoc* xmlptr();
 

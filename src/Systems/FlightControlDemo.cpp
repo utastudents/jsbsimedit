@@ -8,7 +8,7 @@ FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app)
     set_orientation(Gtk::Orientation::VERTICAL);
     try
     {
-        m_refBuilder = Gtk::Builder::create_from_file("flightControl.xml");
+        m_refBuilder = Gtk::Builder::create_from_file("../../../flightControl.xml");
     }
     catch (const Glib::Error& ex)
     {

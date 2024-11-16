@@ -1,9 +1,9 @@
-#include "XML_Api.hpp"
+#include "inc/XML_api.hpp"
 
 // hide the pointer
-static XMLDoc* docptr = nullptr;
+static JSBEdit::XMLDoc* docptr = nullptr;
 
-XMLDoc* xmlptr()
+JSBEdit::XMLDoc* xmlptr()
 {
     return docptr;
 }
