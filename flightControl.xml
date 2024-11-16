@@ -8,7 +8,7 @@
     <property name='vexpand'>False</property>
     <child>
       <object class="GtkImage" id="source">
-        <property name="file">componentImg/source.bmp</property>
+        <property name="file">../../../assets/componentImg/source.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -17,7 +17,7 @@
     </child>
     <child>
       <object class="GtkImage" id="destination">
-        <property name="file">componentImg/destination.bmp</property>
+        <property name="file">../../../assets/componentImg/destination.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -26,7 +26,7 @@
     </child>
     <child>
       <object class="GtkImage" id="summer">
-        <property name="file">componentImg/summer.bmp</property>
+        <property name="file">../../../assets/componentImg/summer.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -35,7 +35,7 @@
     </child>
     <child>
       <object class="GtkImage" id="gain">
-        <property name="file">componentImg/gain.bmp</property>
+        <property name="file">../../../assets/componentImg/gain.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -44,7 +44,7 @@
     </child>
     <child>
       <object class="GtkImage" id="filter">
-        <property name="file">componentImg/filter.bmp</property>
+        <property name="file">../../../assets/componentImg/filter.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -53,7 +53,7 @@
     </child>
     <child>
       <object class="GtkImage" id="pid">
-        <property name="file">componentImg/pid.bmp</property>
+        <property name="file">../../../assets/componentImg/pid.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -62,7 +62,7 @@
     </child>
     <child>
       <object class="GtkImage" id="deadband">
-        <property name="file">componentImg/deadband.bmp</property>
+        <property name="file">../../../assets/componentImg/deadband.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -71,7 +71,7 @@
     </child>
     <child>
       <object class="GtkImage" id="switch">
-        <property name="file">componentImg/switch.bmp</property>
+        <property name="file">../../../assets/componentImg/switch.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -80,7 +80,7 @@
     </child>
     <child>
       <object class="GtkImage" id="kinemat">
-        <property name="file">componentImg/kinemat.bmp</property>
+        <property name="file">../../../assets/componentImg/kinemat.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
@@ -89,7 +89,7 @@
     </child>
     <child>
       <object class="GtkImage" id="func">
-        <property name="file">componentImg/func.bmp</property>
+        <property name="file">../../../assets/componentImg/func.bmp</property>
         <property name="margin-bottom">2</property>
         <property name="margin-end">2</property>
         <property name="margin-start">2</property>
