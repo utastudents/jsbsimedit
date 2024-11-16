@@ -33,6 +33,7 @@ namespace JSBEdit
         XMLNode GetNode(std::string search);
         std::vector<XMLNode> GetNodes(std::string search);
         bool SaveToFile(const std::filesystem::path &path);
+        void Print();
 
     };
 
