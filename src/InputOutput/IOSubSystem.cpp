@@ -21,15 +21,15 @@ void IOSubSystem::Create()
   m_Grid.set_row_spacing(15);
   m_Grid.set_column_spacing(20);
     
-  // call constructor
-  
+  // call MainWindow constructor
+  MainWindow mainWindow(m_Grid);
     
   // auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
   // auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
   // m_Grid.attach(*nameLabel, 0, 0);
   // m_Grid.attach(*nameTextbox, 1, 0);
 
-  
+  /*
   nameEntry.set_text("Name(*) : ");
   m_Grid.attach(nameEntry, 1, 0);
   m_Grid.attach(nameTextBox, 2, 0);
@@ -41,6 +41,7 @@ void IOSubSystem::Create()
   rateEntry.set_text("Rate(*) : ");
   m_Grid.attach(rateEntry, 1, 2);
   m_Grid.attach(rateTextBox, 2, 2);
+   */
 
 
 

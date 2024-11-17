@@ -1,13 +1,14 @@
 #pragma once
 #include "inc/Subsystem.hpp"
-#include "MainWindow.hpp"
+// #include "MainWindow.hpp"
 #include <gtkmm.h>
 
-class IOSubSystem : public Subsystem, public MainWindow
+class IOSubSystem : public Subsystem
 {
   public:
     IOSubSystem();
-    void Create(); 
+    void Create();
+  /*
   private:
     Gtk::Button chooseButton;
     Gtk::Button addButton; // we will display an error message if the user tries to add a configuration without
@@ -30,9 +31,8 @@ class IOSubSystem : public Subsystem, public MainWindow
     Gtk::ComboBoxText typeDropDownList;
     Gtk::Entry rateTextBox;
     Gtk::Entry customProperty;
-
     Gtk::Label nameEntry;
     Gtk::Label typeEntry;
     Gtk::Label rateEntry;
-    
+  */
 };
