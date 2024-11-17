@@ -20,7 +20,7 @@ void IOSubSystem::Create()
   m_Grid.set_column_spacing(10);
     
   // call constructor
-  MainWindow mainWindow;
+  MainWindow mainWindow(m_Grid);
     
   // creates name label and text box, then attaches them to the grid
   /*
