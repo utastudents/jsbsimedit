@@ -1,14 +1,15 @@
 #pragma once
 
+#include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 
 class MainWindow {
     public:
-        MainWindow();
-        ~MainWindow();
+        MainWindow(Gtk::Grid& m_Grid);
     protected:
+        void textboxesAndLists(Gtk::Grid& m_Grid);
         void onCheckBoxToggle();
-        void onButtonClicked();
+        void onButtonClicked(Gtk::Grid& m_Grid);
     private:
         Gtk::Box totalArea;
         Gtk::Box propertyDisplayArea;

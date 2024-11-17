@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.92.1 -->
+<interface>
+  <!-- interface-name flightcontrol.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkBox" id="componentBox">
+    <property name='hexpand'>True</property>
+    <property name='vexpand'>False</property>
+    <child>
+      <object class="GtkImage" id="source">
+        <property name="file">../../../assets/componentImg/source.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="destination">
+        <property name="file">../../../assets/componentImg/destination.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="summer">
+        <property name="file">../../../assets/componentImg/summer.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="gain">
+        <property name="file">../../../assets/componentImg/gain.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="filter">
+        <property name="file">../../../assets/componentImg/filter.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="pid">
+        <property name="file">../../../assets/componentImg/pid.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="deadband">
+        <property name="file">../../../assets/componentImg/deadband.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="switch">
+        <property name="file">../../../assets/componentImg/switch.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="kinemat">
+        <property name="file">../../../assets/componentImg/kinemat.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="func">
+        <property name="file">../../../assets/componentImg/func.bmp</property>
+        <property name="margin-bottom">2</property>
+        <property name="margin-end">2</property>
+        <property name="margin-start">2</property>
+        <property name="margin-top">2</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkBox" id="dividerBox">
+    <child>
+      <object class="GtkSeparator" id="divider">
+        <property name="focus-on-click">False</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">False</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkBox" id="canvasBox">
+  </object>
+</interface>

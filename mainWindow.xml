@@ -1,0 +1,88 @@
+<interface>
+  <menu id='menubar'>
+    <submenu>
+      <attribute name='label' translatable='yes'>_File</attribute>
+      <item>
+        <attribute name='label' translatable='yes'>_New</attribute>
+        <attribute name='action'>example.new</attribute>
+        <attribute name='accel'>&lt;Primary&gt;n</attribute>
+      </item>
+
+    <item>
+        <attribute name='label' translatable='yes'>_Save</attribute>
+        <attribute name='action'>example.save</attribute>
+        <attribute name='accel'>&lt;Primary&gt;s</attribute>
+      </item>
+
+      <item>
+        <attribute name='label' translatable='yes'>File _Dialog</attribute>
+        <attribute name='action'>example.files-dialog</attribute>
+        <attribute name='accel'>&lt;Primary&gt;o</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Quit</attribute>
+        <attribute name='action'>example.quit</attribute>
+        <attribute name='accel'>&lt;Primary&gt;q</attribute>
+      </item>
+    </submenu>
+  </menu>
+  <object class='GtkBox' id='toolbar'>
+    <property name='can_focus'>False</property>
+    <child>
+      <object class='GtkButton' id='toolbutton_new'>
+        <property name='can_focus'>False</property>
+        <property name='tooltip_text' translatable='yes'>New</property>
+        <property name='action_name'>example.new</property>
+        <property name='icon_name'>document-new</property>
+        <property name='hexpand'>False</property>
+        <property name='vexpand'>False</property>
+      </object>
+    </child>
+
+
+<child>
+      <object class='GtkButton' id='toolbutton_save'>
+        <property name='can_focus'>False</property>
+        <property name='tooltip_text' translatable='yes'>Save</property>
+        <property name='action_name'>example.save</property>
+        <property name='icon_name'>document-save</property>
+        <property name='hexpand'>False</property>
+        <property name='vexpand'>False</property>
+      </object>
+    </child>
+
+<child>
+  <object class='GtkButton' id='toolbutton_open'>
+        <property name='can_focus'>False</property>
+        <property name='tooltip_text' translatable='yes'>Open</property>
+        <property name='action_name'>example.open</property>
+        <property name='icon_name'>document-open</property>
+        <property name='hexpand'>False</property>
+        <property name='vexpand'>False</property>
+      </object>
+    </child>
+
+
+    <child>
+      <object class='GtkButton' id='toolbutton_quit'>
+        <property name='can_focus'>False</property>
+        <property name='tooltip_text' translatable='yes'>Quit</property>
+        <property name='action_name'>example.quit</property>
+        <property name='icon_name'>application-exit</property>
+        <property name='hexpand'>False</property>
+        <property name='vexpand'>False</property>
+      </object>
+    </child>
+  </object>
+  <object class='GtkBox' id='tabBox'>
+    <property name='hexpand'>True</property>
+    <property name='vexpand'>False</property>
+    <child>
+    
+    </child>
+  </object>
+  <object class='GtkBox' id='tabContents'>
+    <property name='hexpand'>True</property>
+    <property name='vexpand'>True</property>
+  </object>
+</interface>
