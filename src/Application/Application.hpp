@@ -1,6 +1,5 @@
 #pragma once
 
-#include <gtkmm.h>
 #include <gtkmm/application.h>
 
 namespace JSBEdit
