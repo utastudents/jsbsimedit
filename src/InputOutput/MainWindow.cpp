@@ -36,7 +36,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
     // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
     // then attaches it to the grid
     auto configTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_Grid.attach(*configTextbox, 0, 3, 5);
+    m_Grid.attach(*configTextbox, 0, 3);
     
 }
 
