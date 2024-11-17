@@ -10,6 +10,7 @@
 #include "GainComponent.hpp"
 #include "PIDComponent.hpp"
 #include "KinematicsComponent.hpp"
+#include "SummerComponent.hpp"
 #include <random>
 
 namespace DragDrop
