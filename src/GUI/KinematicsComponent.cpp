@@ -54,7 +54,7 @@ void KinematicsComponent::CreateCommonTab(Gtk::Notebook& note)
   int row;
   //float a =0;
 
-  for(row = 1; row < 40; row++)
+  for(row = 1; row < 41; row++)
   {
     Gtk::Label rowNum {std::to_string(row)};
 
