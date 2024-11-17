@@ -8,7 +8,7 @@ class MainWindow {
         MainWindow(Gtk::Grid& m_Grid);
     protected:
         void textboxesAndLists(Gtk::Grid& m_Grid);
-        void onCheckBoxToggle();
+        void onCheckBoxToggle(Gtk::Grid& m_Grid);
         void onButtonClicked();
     private:
         Gtk::Box totalArea;
