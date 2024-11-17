@@ -3,6 +3,7 @@
 // constructor - manage main window
 MainWindow::MainWindow(Gtk::Grid& m_Grid) {
     textboxesAndLists(m_Grid);
+    onButtonClicked(m_Grid);
 }
 
 // create and manage textboxes and drop down lists
@@ -35,7 +36,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
     // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
     // then attaches it to the grid
     auto configTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_Grid.attach(*configTextbox, 0, 9, 5);
+    m_Grid.attach(*configTextbox, 0, 3, 5);
     
 }
 
@@ -43,4 +44,19 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
 void MainWindow::onCheckBoxToggle() {}
 
 // create and manage buttons
-void MainWindow::onButtonClicked() {}
+void MainWindow::onButtonClicked(Gtk::Grid& m_Grid) {
+    // creates choose button
+    auto chooseLabel = Glib::ustring::compose("Choose");
+    auto chooseButton = Gtk::make_managed<Gtk::ToggleButton>(chooseLabel);
+    m_Grid.attach(*chooseButton, 1, 3);
+
+    // creates add button
+    auto addLabel = Glib::ustring::compose("Add");
+    auto addButton = Gtk::make_managed<Gtk::ToggleButton>(addLabel);
+    m_Grid.attach(*addButton, 2, 3);
+    
+    // creates delete button
+    auto deleteLabel = Glib::ustring::compose("Delete");
+    auto deleteButton = Gtk::make_managed<Gtk::ToggleButton>(deleteLabel);
+    m_Grid.attach(*deleteButton, 3, 3);
+}
