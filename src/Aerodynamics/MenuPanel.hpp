@@ -28,6 +28,8 @@ public:
     FunctionMenu(std::shared_ptr<AerodynamicsNode> node);
 private:
     std::shared_ptr<Function> function;
+    Gtk::Entry* nameEntry;
+    Gtk::Entry* descriptionEntry;
 };
 
 class TableMenu : public MenuPanel {
@@ -40,7 +42,7 @@ private:
 class ValueMenu : public MenuPanel {
 public:
     ValueMenu(std::shared_ptr<AerodynamicsNode> node);
-private: 
+private:
     Gtk::Label* inputLabel;
     Gtk::Entry* inputEntry;
     std::shared_ptr<Value> value;
@@ -85,20 +87,20 @@ private:
     Gtk::Entry* currentPlaceholder;
     Gtk::ScrolledWindow m_ScrolledWindow;
     Gtk::Grid m_Grid;
-    Gtk::ScrolledWindow scrolledWindow; 
+    Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView propertyTreeView;
     Gtk::Label filterLabel;
     Gtk::Window propertiesScrolledWindow;
-    Gtk::Label currentPropertyValue; 
-    Gtk::Entry filterTextBox; 
-    Gtk::Button filterButton; 
-    Gtk::Button showAllButton; 
-    Gtk::Button okButton; 
-    Gtk::Button cancelButton; 
+    Gtk::Label currentPropertyValue;
+    Gtk::Entry filterTextBox;
+    Gtk::Button filterButton;
+    Gtk::Button showAllButton;
+    Gtk::Button okButton;
+    Gtk::Button cancelButton;
     Gtk::Button closeButton;
-    int visibleProperties; 
-    int hiddenProperties; 
-    
+    int visibleProperties;
+    int hiddenProperties;
+
     //Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
     //Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
 
@@ -114,7 +116,7 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
             add(comments);
         }
     // Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
-        
+
         Gtk::TreeModelColumn<int> index;  // Use int for the "No." column
         Gtk::TreeModelColumn<Glib::ustring> propertyName;
         Gtk::TreeModelColumn<Glib::ustring> description;
