@@ -37,6 +37,9 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_refActionGroup->add_action("save",
     sigc::mem_fun(*this, &ExampleWindow::on_menu_file_save)); //save
 
+    
+    m_refActionGroup->add_action("open",
+    sigc::mem_fun(*this, &ExampleWindow::on_menu_file_open)); //save
 
 
     //A menu item to open the file dialog:
@@ -55,6 +58,8 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     app->set_accel_for_action("example.new", "<Primary>n");
     app->set_accel_for_action("example.files-dialog", "<Primary>o");
     app->set_accel_for_action("example.quit", "<Primary>q");
+    app->set_accel_for_action("example.save", "<Primary>s");
+
 
 
 
@@ -163,7 +168,12 @@ void ExampleWindow::on_menu_file_new()
 
 void ExampleWindow::on_menu_file_save()
 {
-    std::cout << "File Save" << std::endl;
+    std::cout << "File Save initiated" << std::endl;
+}
+
+void ExampleWindow::on_menu_file_open() 
+{
+    std::cout << "Open Button initiated" << std::endl; //open file
 }
 
 
