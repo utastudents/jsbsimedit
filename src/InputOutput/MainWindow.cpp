@@ -1,7 +1,12 @@
 #include "MainWindow.hpp"
 
-// constructor - create and manage main window
+// constructor - manage main window
 MainWindow::MainWindow(Gtk::Grid& m_Grid) {
+    textboxesAndLists(m_Grid);
+}
+
+// create and manage textboxes and drop down lists
+void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
     // creates name label and text box, then attaches them to the grid
     auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
     auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
