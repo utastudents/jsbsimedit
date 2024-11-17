@@ -43,11 +43,11 @@ void SummerComponent::CreateCommonTab(Gtk::Notebook& note)
   Gtk::Grid g{};
   //Name layout.
   
-  //the grid size is 11x9, where it starts from 0 
+  g.set_margin_top(15);
   g.set_row_spacing(12);
   g.set_column_spacing(10);
 
-  Gtk::Label display{"INPUTS"};
+  Gtk::Label display{"INPUT Table:"};
   g.attach(display,0,0);
 
   // == This box dispays the input and output 
@@ -87,8 +87,8 @@ void SummerComponent::CreateCommonTab(Gtk::Notebook& note)
   m_cancelButton = Glib::RefPtr<Gtk::Button>(new Gtk::Button{"Cancel"});
   m_cancelButton->signal_clicked().connect(sigc::mem_fun(*this, &SummerComponent::DeleteWidgetData), false);
 
-  g.attach(*m_acceptButton,1,8);
-  g.attach(*m_cancelButton,2,8);
+  g.attach(*m_acceptButton,0,8);
+  g.attach(*m_cancelButton,1,8);
 
   tabContainer.append(g);
 
