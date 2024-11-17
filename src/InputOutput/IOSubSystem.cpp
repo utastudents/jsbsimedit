@@ -1,6 +1,6 @@
 #include <iostream>
-
 #include "IOSubSystem.hpp"
+#include "MainWindow.hpp"
 
 IOSubSystem::IOSubSystem()
 {
@@ -19,12 +19,16 @@ void IOSubSystem::Create()
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
     
-  // creates name label and text box, then attaches them to the grid
+  // call constructor
+  MainWindow mainWindow(m_Grid);
     
+  // creates name label and text box, then attaches them to the grid
+  /*
   auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
   auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
   m_Grid.attach(*nameLabel, 0, 0);
   m_Grid.attach(*nameTextbox, 1, 0);
+  */
 
   /*
   this simply creates a grid of toggle buttons

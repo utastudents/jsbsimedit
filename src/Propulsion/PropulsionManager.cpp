@@ -1,7 +1,9 @@
 #include "PropulsionManager.hpp"
+#include "EngineThrusterDialog.hpp"
 #include <iostream>
 
 void PropulsionManager::showEngineThrusterSetup() { 
+    EngineThrusterDialog dialog;
     // TODO: Confirm if 1st time setup
     // TODO: Implement engine/thruster setup display
     std::cout << "Displaying engine/thruster setup..." << std::endl;

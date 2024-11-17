@@ -25,28 +25,28 @@ AerodynamicsNode::Type AerodynamicsNode::getType() const
     return type;
 }
 
-Property::Property()
+AeroProperty::AeroProperty()
 {
     type = PROPERTY;
     
 }
 
-const std::string &Property::getDescription() const
+const std::string &AeroProperty::getDescription() const
 {
     return description;
 }
 
-const std::string &Property::getUnit() const
+const std::string &AeroProperty::getUnit() const
 {
     return unit;
 }
 
-const std::string &Property::getAccess() const
+const std::string &AeroProperty::getAccess() const
 {
     return access;
 }
 
-const std::string &Property::getComment() const
+const std::string &AeroProperty::getComment() const
 {
     return comment;
 }
@@ -106,12 +106,12 @@ const std::string &Table::getColumnProperty() const
     return columnProperty;
 }
 
-const std::vector<double> &Table::getTableData() const
+const std::string &Table::getTableData() const
 {
     return tableData;
 }
 
-void Table::setTableData(const std::vector<double> &tableData)
+void Table::setTableData(const std::string &tableData)
 {
     this->tableData = tableData;
 }
@@ -121,12 +121,12 @@ Axis::Axis()
     type = AXIS;
 }
 
-Axis::AxisName Axis::getname() const
+Axis::AxisName Axis::getName() const
 {
     return name;
 }
 
-void Axis::setAxisName(AxisName name)
+void Axis::setName(AxisName name)
 {
     this->name = name;
 }
@@ -140,3 +140,39 @@ void Axis::setUnit(UnitName unit)
 {
     this->unit = unit;
 }
+
+// Initializing static maps
+std::map<Axis::AxisName, std::string> Axis::axisNameToString = {
+    { DRAG, "DRAG" },
+    { SIDE, "SIDE" },
+    { LIFT, "LIFT" },
+    { ROLL, "ROLL" },
+    { PITCH, "PITCH" },
+    { YAW, "YAW" },
+    { FORWARD, "FORWARD" },
+    { RIGHT, "RIGHT" },
+    { DOWN, "DOWN" }
+};
+std::map<std::string, Axis::AxisName> Axis::stringToAxisName = {
+    { "DRAG", DRAG },
+    { "SIDE", SIDE },
+    { "LIFT", LIFT },
+    { "ROLL", ROLL },
+    { "PITCH", PITCH },
+    { "YAW", YAW },
+    { "FORWARD", FORWARD },
+    { "RIGHT", RIGHT },
+    { "DOWN", DOWN }
+};
+std::map<Axis::UnitName, std::string> Axis::unitNameToString = {
+    { LBS, "LBS" },
+    { N, "N" },
+    { LBSFT, "LBSFT" },
+    { NM, "NM" }
+};
+std::map<std::string, Axis::UnitName> Axis::stringToUnitName = {
+    { "LBS", LBS },
+    { "N", N },
+    { "LBSFT", LBSFT },
+    { "NM", NM }
+};
