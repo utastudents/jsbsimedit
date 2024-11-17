@@ -1,17 +1,10 @@
 #include "MainWindow.hpp"
 
 // constructor - create and manage main window
-MainWindow::MainWindow(Gtk::Grid& m_Grid) {
-    // creates name label and text box, then attaches them to the grid
-    auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
-    auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_Grid.attach(*nameLabel, 0, 0);
-    m_Grid.attach(*nameTextbox, 1, 0);
+MainWindow::MainWindow() 
+{
     
-    auto rateLabel = Gtk::make_managed<Gtk::Label>("Rate(*)");
-    auto rateTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_Grid.attach(*rateLabel, 0, 1);
-    m_Grid.attach(*rateTextbox, 1, 1);
+    
 }
 
 // create and manage checkboxes

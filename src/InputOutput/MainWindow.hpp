@@ -5,7 +5,7 @@
 
 class MainWindow {
     public:
-        MainWindow(Gtk::Grid& m_Grid);
+        MainWindow();
     protected:
         void onCheckBoxToggle();
         void onButtonClicked();
