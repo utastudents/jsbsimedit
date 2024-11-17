@@ -1,9 +1,9 @@
 #include "inc/XML_api.hpp"
 
-// hide the pointer
-static JSBEdit::XMLDoc* docptr = nullptr;
+// hide the object
+static JSBEdit::XMLDoc docptr;
 
 JSBEdit::XMLDoc* xmlptr()
 {
-    return docptr;
+    return &docptr;
 }

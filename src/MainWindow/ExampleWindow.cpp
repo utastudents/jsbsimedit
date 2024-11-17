@@ -1,6 +1,7 @@
 #include "ExampleWindow.hpp"
 #include <iostream>
 
+#include "inc/XML_api.hpp"
 
 #include "Aerodynamics/AeroDynamicsSubsystem.hpp"
 #include "BuoyantForces/BuoyantForcesSubsystem.hpp"
@@ -19,9 +20,9 @@ namespace JSBEdit {
 ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     : m_Box(Gtk::Orientation::VERTICAL),
     m_refRecentManager(Gtk::RecentManager::get_default()),
-    m_tab1(app, "HI TAB1"), m_tab2(app, "HI TAB2"), m_fcDemo(app)
+    m_tab1(app, "HI TAB1"), m_tab2(app, "TAB2"), m_fcDemo(app)
 {
-    set_title("Recent files example");
+    set_title("JSBSim Commander");
     set_default_size(300, 150);
     //We can put a PopoverMenuBar at the top of the box and other stuff below it.
     set_child(m_Box);
@@ -32,6 +33,15 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     //File menu:
     m_refActionGroup->add_action("new",
     sigc::mem_fun(*this, &ExampleWindow::on_menu_file_new));
+
+
+    m_refActionGroup->add_action("save",
+    sigc::mem_fun(*this, &ExampleWindow::on_menu_file_save)); //save
+
+    
+    m_refActionGroup->add_action("open",
+    sigc::mem_fun(*this, &ExampleWindow::on_menu_file_open)); //save
+
 
     //A menu item to open the file dialog:
     m_refActionGroup->add_action("files-dialog",
@@ -49,8 +59,15 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     app->set_accel_for_action("example.new", "<Primary>n");
     app->set_accel_for_action("example.files-dialog", "<Primary>o");
     app->set_accel_for_action("example.quit", "<Primary>q");
+    app->set_accel_for_action("example.save", "<Primary>s");
 
-
+    // There are a lot of reasons this is the wrong place to open
+    // up the xml file.  But to get work progressing, this is a 
+    // start.
+    xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
+    // when do the subsystems read the file?  when the objects are created? or ??
+    // how does opening up a new file work? are all the subsystems destroyed and
+    // then created.  hard problems, not for me to solve now.
 
     m_Notebook = new Gtk::Notebook();
     set_child(*m_Notebook);
@@ -139,7 +156,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_Notebook->append_page(m_Box,"Systems");
 }
 
-bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app)
+bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app) //tabs
 {
     m_stack.add(m_tab1, "Tab1", "Tab1");
     m_stack.add(m_tab2, "Tab2", "Tab2");
@@ -154,6 +171,17 @@ void ExampleWindow::on_menu_file_new()
 {
     std::cout << " New File" << std::endl;
 }
+
+void ExampleWindow::on_menu_file_save()
+{
+    std::cout << "File Save initiated" << std::endl;
+}
+
+void ExampleWindow::on_menu_file_open() 
+{
+    std::cout << "Open Button initiated" << std::endl; //open file
+}
+
 
 void ExampleWindow::on_menu_file_quit()
 {

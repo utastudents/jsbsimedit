@@ -23,6 +23,10 @@ namespace JSBEdit
 		void on_menu_file_files_dialog();
 		void on_menu_file_quit();
 		void on_menu_file_new();
+		void on_menu_file_save(); //save
+		
+		void on_menu_file_open(); //open
+
 		void on_dialog_finish(Glib::RefPtr<Gio::AsyncResult> &result);
         void on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num);
 

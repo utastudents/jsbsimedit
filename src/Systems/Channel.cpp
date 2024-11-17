@@ -106,6 +106,9 @@ void Channel::addDefaultComponent(ComponentType type, const std::string & name)
         case ComponentType::KINEMATIC:
             m_components.insert({name, new KinematicsComponent{name}});
             break;
+        case ComponentType::SUMMER:
+            m_components.insert({name, new SummerComponent{name}});
+            break;
         default:
             m_components.insert({name, new GainComponent{name}});
             break;
