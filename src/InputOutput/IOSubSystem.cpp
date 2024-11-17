@@ -19,8 +19,9 @@ void IOSubSystem::Create()
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
     
-  // create instance of MainWindow
-  MainWindow::MainWindow();
+  // add grid to window and show all widgets
+  add(Subsystem::m_Grid);
+  show_all_children();
     
   // creates name label and text box, then attaches them to the grid
   /*
