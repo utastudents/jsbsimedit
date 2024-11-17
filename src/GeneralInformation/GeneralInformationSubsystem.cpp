@@ -1,5 +1,7 @@
 #include <iostream>
 #include "GeneralInformationSubsystem.hpp"
+#include "inc/XML_api.hpp"
+
 
 GeneralInformationSubsystem::GeneralInformationSubsystem()
 {
@@ -16,6 +18,15 @@ void GeneralInformationSubsystem::Create()
 
   // Row tracking variable
   int row = 0;
+
+#warning temp code here
+  // an example of accessing the xml file
+  //
+  // fetch the ptr to the open xml document
+  auto node = xmlptr()->GetNode("fdm_config");
+  // extract a std::pair with the name
+  std::cout << "Read from file " << node.GetAttribute("name").second << std::endl;
+#warning end of temp code
 
   // Aircraft Name
   auto aircraftNameLabel = Gtk::make_managed<Gtk::Label>("Aircraft Name");

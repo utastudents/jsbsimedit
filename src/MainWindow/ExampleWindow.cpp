@@ -1,6 +1,7 @@
 #include "ExampleWindow.hpp"
 #include <iostream>
 
+#include "inc/XML_api.hpp"
 
 #include "Aerodynamics/AeroDynamicsSubsystem.hpp"
 #include "BuoyantForces/BuoyantForcesSubsystem.hpp"
@@ -60,8 +61,13 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     app->set_accel_for_action("example.quit", "<Primary>q");
     app->set_accel_for_action("example.save", "<Primary>s");
 
-
-
+    // There are a lot of reasons this is the wrong place to open
+    // up the xml file.  But to get work progressing, this is a 
+    // start.
+    xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
+    // when do the subsystems read the file?  when the objects are created? or ??
+    // how does opening up a new file work? are all the subsystems destroyed and
+    // then created.  hard problems, not for me to solve now.
 
     m_Notebook = new Gtk::Notebook();
     set_child(*m_Notebook);
