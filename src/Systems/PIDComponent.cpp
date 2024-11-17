@@ -44,8 +44,9 @@ void PIDComponent::CreateCommonTab(Gtk::Notebook& note)
   //Name layout.
   
   //the grid size is 11x9, where it starts from 0 
-  g.set_row_spacing(11);
-  g.set_column_spacing(9);
+  g.set_margin_top(15);
+  g.set_hexpand(true);
+  g.set_vexpand(true);
 
   //KP label and Entry =============
   Gtk::Label KPlabel{"KP:"};
@@ -96,8 +97,11 @@ void PIDComponent::CreateCommonTab(Gtk::Notebook& note)
   m_cancelButton = Glib::RefPtr<Gtk::Button>(new Gtk::Button{"Cancel"});
   m_cancelButton->signal_clicked().connect(sigc::mem_fun(*this, &PIDComponent::DeleteWidgetData), false);
 
-  g.attach(*m_acceptButton,1,7);
-  g.attach(*m_cancelButton,2,7);
+  g.attach(*m_acceptButton,0,7);
+  g.attach(*m_cancelButton,1,7);
+
+  m_acceptButton->set_margin_top(20); // Adds spacing above the Accept button
+  m_cancelButton->set_margin_top(20); // Adds spacing above the Accept button
 
   //Add grid to box
   tabContainer.append(g);
