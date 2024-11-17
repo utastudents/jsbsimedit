@@ -37,8 +37,6 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
     // then attaches it to the grid
     auto configTextbox = Gtk::make_managed<Gtk::Entry>();
     m_Grid.attach(*configTextbox, 0, 3);
-    
-}
 
 // create and manage checkboxes
 void MainWindow::onCheckBoxToggle() {}

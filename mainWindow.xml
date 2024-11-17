@@ -7,6 +7,13 @@
         <attribute name='action'>example.new</attribute>
         <attribute name='accel'>&lt;Primary&gt;n</attribute>
       </item>
+
+    <item>
+        <attribute name='label' translatable='yes'>_Save</attribute>
+        <attribute name='action'>example.save</attribute>
+        <attribute name='accel'>&lt;Primary&gt;s</attribute>
+      </item>
+
       <item>
         <attribute name='label' translatable='yes'>File _Dialog</attribute>
         <attribute name='action'>example.files-dialog</attribute>
@@ -31,6 +38,22 @@
         <property name='vexpand'>False</property>
       </object>
     </child>
+
+
+<child>
+      <object class='GtkButton' id='toolbutton_save'>
+        <property name='can_focus'>False</property>
+        <property name='tooltip_text' translatable='yes'>Save</property>
+        <property name='action_name'>example.save</property>
+        <property name='icon_name'>document-save</property>
+        <property name='hexpand'>False</property>
+        <property name='vexpand'>False</property>
+      </object>
+    </child>
+
+
+
+
     <child>
       <object class='GtkButton' id='toolbutton_quit'>
         <property name='can_focus'>False</property>
