@@ -1,5 +1,6 @@
 #include <iostream>
 #include "IOSubSystem.hpp"
+#include "MainWindow.hpp"
 
 IOSubSystem::IOSubSystem()
 {
@@ -19,7 +20,7 @@ void IOSubSystem::Create()
   m_Grid.set_column_spacing(10);
     
   // create instance of MainWindow
-  MainWindow mainWindow;
+  MainWindow::MainWindow();
     
   // creates name label and text box, then attaches them to the grid
   /*
