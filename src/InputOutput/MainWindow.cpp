@@ -27,6 +27,8 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
     // creates rate label and text box, then attaches them to the grid
     auto rateLabel = Gtk::make_managed<Gtk::Label>("Rate(*)");
     auto rateTextbox = Gtk::make_managed<Gtk::Entry>();
+    // set rate default to 60 (seconds)
+    rateTextbox->set_text("60");
     m_Grid.attach(*rateLabel, 0, 2);
     m_Grid.attach(*rateTextbox, 1, 2);
     
