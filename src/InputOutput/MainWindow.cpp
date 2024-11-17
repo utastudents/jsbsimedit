@@ -32,10 +32,6 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
     m_Grid.attach(*rateLabel, 0, 2);
     m_Grid.attach(*rateTextbox, 1, 2);
     
-    // creates a spacer to move the config textbox to the bottom of the window
-    Gtk::Label spacer;
-    m_Grid.attach(spacer, 0, 8, 1, 1);
-    
     // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
     // then attaches it to the grid
     auto configTextbox = Gtk::make_managed<Gtk::Entry>();
