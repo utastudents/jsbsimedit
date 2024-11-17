@@ -1,11 +1,11 @@
 #pragma once
 
+#include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 
 class MainWindow {
     public:
         MainWindow();
-        ~MainWindow();
     protected:
         void onCheckBoxToggle();
         void onButtonClicked();
