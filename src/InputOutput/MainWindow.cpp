@@ -1,5 +1,4 @@
 #include "MainWindow.hpp"
-#include "IOSubSystem.hpp"
 
 // constructor - create and manage main window
 MainWindow::MainWindow() {
