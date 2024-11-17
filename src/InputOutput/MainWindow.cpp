@@ -69,5 +69,10 @@ void MainWindow::onChooseButtonClicked() {
     auto popUp = new Gtk::Window();
     popUp->set_title("Properties");
     popUp->set_default_size(1000, 700); //can be adjusted
+    
+      // Create a grid for the popup content
+	auto popUpGrid = Gtk::make_managed<Gtk::Grid>();
+	popUp->set_child(*popUpGrid);
+
     popUp->show(); // Show the popup window
 }
