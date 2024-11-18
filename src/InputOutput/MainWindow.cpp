@@ -1,3 +1,4 @@
+#include "PopUpWindow.hpp"
 #include "MainWindow.hpp"
 #include <vector>
 #include <string>
@@ -112,6 +113,7 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid) {
 
 // Function to handle "Choose" button click
 void MainWindow::onChooseButtonClicked() {
+    /*
     auto popUp = new Gtk::Window();
     popUp->set_title("Properties");
     popUp->set_default_size(1000, 700); //can be adjusted
@@ -119,6 +121,9 @@ void MainWindow::onChooseButtonClicked() {
       // Create a grid for the popup content
 	auto popUpGrid = Gtk::make_managed<Gtk::Grid>();
 	popUp->set_child(*popUpGrid);
+    */
+    
+    auto popUpWindow = new PopUpWindow();
 
-    popUp->show(); // Show the popup window
+    popUpWindow->show(); // Show the popup window
 }
