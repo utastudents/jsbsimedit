@@ -10,9 +10,14 @@ class MetricsSubsystem : public Subsystem
 {
   public:
     MetricsSubsystem();
+
     void Create();
 
     void add_data_unit(std::string tab_name, Metrics::string_vector units, int horozontal_position, int vertical_position); 
+
+    void add_vertex_data_unit(std::string tab_name, Metrics::string_vector units, int vertical_position, int horizontal_position);
+
+    static double update_text(std::string data);
 
   private:
     std::map<std::string, std::unique_ptr<Metrics::Data_Unit>> data_units;

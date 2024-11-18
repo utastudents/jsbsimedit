@@ -8,9 +8,9 @@ namespace Metrics
     public:
         Vertex_Unit(double p_x, double p_y, double p_z, string_vector unit_bank);
         ~Vertex_Unit() = default;  // Virtual destructor
-        void set_x(double p_x);
-        void set_y(double p_y);
-        void set_z(double p_z);
+        void set_x(double data);
+        void set_y(double data);
+        void set_z(double data);
         double get_x() const;
         double get_y() const;
         double get_z() const;

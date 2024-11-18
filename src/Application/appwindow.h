@@ -67,4 +67,4 @@ protected:
   std::vector<Subsystem*> m_Subsystems;
 };
 
-#endif  GTKMM_JSBWINDOW_ 
+#endif //GTKMM_JSBWINDOW_

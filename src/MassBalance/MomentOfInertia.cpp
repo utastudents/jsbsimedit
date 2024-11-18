@@ -1,4 +1,4 @@
-#include "MomentOfInteria.h"
+#include "MomentOfInteria.hpp"
 #include <iostream>
 
 //Fuselage constructor

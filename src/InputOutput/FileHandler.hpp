@@ -4,7 +4,9 @@
 #include <vector>
 #include "MainWindow.hpp"
 
-class FileHandler : public MainWindow {
+
+// class FileHandler : public MainWindow {
+class FileHandler {
 public:
     // Constructor that initializes the FileHandler object with a file path
     explicit FileHandler(const std::string& filePath);
