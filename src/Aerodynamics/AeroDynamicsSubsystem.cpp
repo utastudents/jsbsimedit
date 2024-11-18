@@ -1,10 +1,11 @@
 #include <iostream>
 
 #include "AeroDynamicsSubsystem.hpp"
+#include "AerodynamicsWidget.hpp"
 
 AeroDynamicsSubsystem::AeroDynamicsSubsystem()
 {
-    m_Name = "AeroDynamics";
+    m_Name = "Aerodynamics";
     std::cout << "In AeroDynamicsSubsystem contructor" << std::endl; 
 }
 
@@ -19,15 +20,7 @@ void AeroDynamicsSubsystem::Create()
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
-  /* this simply creates a grid of toggle buttons
-   * to demonstrate the scrolled window. */
-  for (int i = 0; i < 10; i++)
-  {
-    for (int j = 0; j < 10; j++)
-    {
-      auto s = Glib::ustring::compose("button (%1,%2)", i, j);
-      auto pButton = Gtk::make_managed<Gtk::ToggleButton>(s);
-      m_Grid.attach(*pButton, i, j);
-    }
-  }
+  auto aerodynamicsWidget = Gtk::make_managed<AerodynamicsWidget>();
+  aerodynamicsWidget->set_expand(true);
+  m_Grid.attach(*aerodynamicsWidget,0,0);
 }

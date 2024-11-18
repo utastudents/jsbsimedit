@@ -29,7 +29,7 @@ void MassBalanceSubsystem::Create() {
     combo_units->set_active(0); // Default to "lbs"
     m_Grid.attach(*combo_units, 2, 1, 1, 1);
 
-    // test boxes for coords
+    
     auto pBoxX = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
     auto pBoxY = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
     auto pBoxZ = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);

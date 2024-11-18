@@ -113,7 +113,18 @@ std::string Aircraft::getNotes() const {
 
 // Save the Aircraft data to a file
 void Aircraft::saveToFile() {
-    
+     std::ofstream outFile("aircraft_data.txt");
+     // need to change the file name as we want. 
+
+    if (!outFile) {
+        std::cout << "Error file!" << std::endl;
+        return;
+    }
+
+    // put the data for the file such as....  outFile << "Name: " << name << "\n";
+
+    outFile.close();
+    std::cout << "Data saved successfully." << std::endl;
 }
 
 // Load the Aircraft data from a file
