@@ -155,7 +155,7 @@ void PropulsionSubsystem::Create() {
 
                 // Store Buttons in map for accessibility
                 buttonMap[{i, j}] = pButton;
-
+                
                 // Connect each button's signal to its specific lambda function
                 pButton->signal_clicked().connect(buttonActions[nameIndex]);
 
@@ -184,12 +184,12 @@ bool PropulsionSubsystem::checkSelect(const std::string& inp) {
     // If checkSelect returns False one of the users inputs is invalid and must be changed
     // TODO: Make popup if user inputs invalid selection 
 
-    if (inp == "No Selection") {
+    if ((inp == "No Selection") || (inp == "")) {
         // TODO: Make popup if user inputs invalid selection 
         std::cout << "Invalid Selection for button, Please reselect!" << std::endl;
         return false;
     } else {
-        std::cout << "Valid Selection for button!" << std::endl;
+        std::cout << "Input:" << inp << "Valid Selection for button!" << std::endl;
         return true;
     }
 

@@ -3,7 +3,7 @@
 #define PROPULSIONSUBSYSTEM_HPP
 
 #include "inc/Subsystem.hpp"
-#include "gtkmm.h"  // Ensure you have the right include for GTKmm
+#include "gtkmm.h"  
 #include "PropulsionManager.hpp"
 
 // Inherit from both Subsystem and Gtk::Window
