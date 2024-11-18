@@ -9,11 +9,11 @@ ExampleTab::ExampleTab(const Glib::RefPtr<Gtk::Application>& app
 {
     try
     {
-        m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
+        m_refBuilder = Gtk::Builder::create_from_file("../mainWindow.xml");
     }
     catch (const Glib::Error& ex)
     {
-        std::cerr << "Error loading mainWindow.xml " << ex.what();
+        std::cerr << "Error loading mainWindow.xml " << ex.what() << std::endl;
     }
     append(l);
 }
