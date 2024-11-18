@@ -1,6 +1,6 @@
 #include <iostream>
 #include "MassBalanceSubsystem.hpp"
-#include "Location.hpp" // Include location class
+#include "Location.hpp" 
 
 MassBalanceSubsystem::MassBalanceSubsystem() {
     m_Name = "Mass Balance";
@@ -13,23 +13,35 @@ void MassBalanceSubsystem::Create() {
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
 
-    // Adding three Gtk::Box widgets for x, y, and z values
+    // empty weight label
+    auto label_empty_weight = Gtk::make_managed<Gtk::Label>("Empty Weight:");
+    m_Grid.attach(*label_empty_weight, 0, 1, 1, 1);
+
+    // box to view weight
+    auto entry_empty_weight = Gtk::make_managed<Gtk::Entry>();
+    entry_empty_weight->set_editable(false);
+    m_Grid.attach(*entry_empty_weight, 1, 1, 1, 1);
+
+    // dropdown to choose lbs or kg for empty mass
+    auto combo_units = Gtk::make_managed<Gtk::ComboBoxText>();
+    combo_units->append("lbs");
+    combo_units->append("kgs");
+    combo_units->set_active(0); // Default to "lbs"
+    m_Grid.attach(*combo_units, 2, 1, 1, 1);
+
+    // test boxes for coords
     auto pBoxX = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
     auto pBoxY = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
     auto pBoxZ = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
-    // Add labels to display x, y, z values (assuming x, y, z are stored in a location object)
-    Location loc; // Create a location object to hold x, y, z values
-    Gtk::Label xLabel("X: " + std::to_string(loc.getX()));
-    Gtk::Label yLabel("Y: " + std::to_string(loc.getY()));
-    Gtk::Label zLabel("Z: " + std::to_string(loc.getZ()));
+    Gtk::Label xLabel("X: \t test");
+    Gtk::Label yLabel("Y: \t test");
+    Gtk::Label zLabel("Z: \t test");
 
-    // Attach the labels to each corresponding box using append
     pBoxX->append(xLabel);
     pBoxY->append(yLabel);
     pBoxZ->append(zLabel);
 
-    // Attach these boxes to the grid layout
     m_Grid.attach(*pBoxX, 0, 10, 1, 1);
     m_Grid.attach(*pBoxY, 1, 10, 1, 1);
     m_Grid.attach(*pBoxZ, 2, 10, 1, 1);
