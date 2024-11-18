@@ -11,15 +11,15 @@ EngineThrusterDialog::EngineThrusterDialog() {
     set_default_size(400, 400);
 
     // Create the dialog window
-    dialog = new Gtk::Dialog("Engine/Thruster Setup", *this);
-    dialog->set_modal(true);
+    dialogEng = new Gtk::Dialog("Engine/Thruster Setup", *this);
+    dialogEng->set_modal(true);
 
     // Use GTK_RESPONSE_ACCEPT for OK and GTK_RESPONSE_REJECT for Cancel
-    dialog->add_button("OK", GTK_RESPONSE_ACCEPT);  // OK button
-    dialog->add_button("Cancel", GTK_RESPONSE_REJECT);  // Cancel button
+    dialogEng->add_button("OK", GTK_RESPONSE_ACCEPT);  // OK button
+    dialogEng->add_button("Cancel", GTK_RESPONSE_REJECT);  // Cancel button
 
     // Create a Gtk::Box to hold the grid (as the content area)
-    Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialog->get_content_area());
+    Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialogEng->get_content_area());
     if (content_area) {
         // Add the grid to the content area using pack_start
         content_area->append(grid);  // In GTKmm 4, append() is used instead of pack_start
@@ -159,10 +159,12 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*thruster_orient_dropdown, 1, 25, 1, 1);
 
     // Show the dialog window
-    dialog->show();
+    dialogEng->show();
 
     // Connect to the response signal
-    dialog->signal_response().connect(sigc::mem_fun(*this, &EngineThrusterDialog::onResponse));
+    // TODO: Check if values are empty or not
+    // TODO: Fix buttons so the close dialog if check passes
+    dialogEng->signal_response().connect(sigc::mem_fun(*this, &EngineThrusterDialog::onResponse));
 }
 
 

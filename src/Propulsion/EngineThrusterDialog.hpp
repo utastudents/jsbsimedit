@@ -20,7 +20,7 @@ protected:
 
 private:
     // Widgets
-    Gtk::Dialog* dialog;
+    Gtk::Dialog* dialogEng;
     Gtk::Grid grid;
 
     Gtk::Entry* engine_name_entry;
