@@ -88,7 +88,6 @@ void ComponentSprite::SetPosition(int x, int y)
 
 void ComponentSprite::LoadSpriteComponents()
 {
-    std::cout << "calling LoadSpriteComponents()" << std::endl;
     //Check if we already loaded sprites, if so return
     if(!spriteTable.empty())
         return;
@@ -100,16 +99,17 @@ void ComponentSprite::LoadSpriteComponents()
         , "pid.bmp", "sensor.bmp", "source.bmp", "summer.bmp", "switch.bmp"
     };
     std::string pathPrefix = "../../../assets/componentImg/"; //Only because i didnt wanna manually type it yay lazy
-    //std::string pathPrefix = "componentImg/"; //Only because i didnt wanna manually type it yay lazy
+
     //Create the pixel_bufs
     for(auto& i : filenames)
     {
         Glib::RefPtr<Gdk::Pixbuf> sprite = Gdk::Pixbuf::create_from_file(pathPrefix+i); 
         if(!sprite)
+        {
             std::cerr <<"Error loading component sprite:" + pathPrefix + i + "\n";
+        }
         else
         {
-            std::cout << "creating sprite " << pathPrefix + i << std::endl;
             spriteTable.push_back(sprite);
         }
     }

@@ -40,6 +40,7 @@ void KinematicsComponent::CreateCommonTab(Gtk::Notebook& note)
 
   //Make grid, the hexpand allowes the scroll to work
   Gtk::Grid g{};
+  g.set_margin_top(15);
   g.set_hexpand(true);
   g.set_vexpand(true);
 
@@ -54,7 +55,7 @@ void KinematicsComponent::CreateCommonTab(Gtk::Notebook& note)
   int row;
   //float a =0;
 
-  for(row = 1; row < 40; row++)
+  for(row = 1; row < 41; row++)
   {
     Gtk::Label rowNum {std::to_string(row)};
 
@@ -66,6 +67,7 @@ void KinematicsComponent::CreateCommonTab(Gtk::Notebook& note)
     g.attach(*m_timeEntry, 2, row);
     /*
     SOMETHING MUST BE POITING TO USER ENTRY to SAVE USER INPUT
+    MUST BE FIXED BEFORE END OF SEMESTER
     a = std::stof(m_positionEntry->get_text());
     positionsHold.push_back(a);
     a = std::stof(m_timeEntry->get_text());

@@ -6,6 +6,7 @@
 #include "Config.h"
 #include "XML/XMLWriter.hpp"
 #include "Validation.h"
+#include "inc/XML_api.hpp"
 
 void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
   JSBEdit::XMLLoad xmlLoader;
@@ -80,7 +81,18 @@ void GeneralInformationSubsystem::Create()
 
   // Row tracking variable
   int row = 0;
-
+#ifndef _WIN32
+#warning temp code here
+#endif
+  // an example of accessing the xml file
+  //
+  // fetch the ptr to the open xml document
+  auto node = xmlptr()->GetNode("fdm_config");
+  // extract a std::pair with the name
+  std::cout << "Read from file " << node.GetAttribute("name").second << std::endl;
+#ifndef _WIN32
+#warning end of temp code
+#endif
   // Aircraft Name
   auto aircraftNameLabel = Gtk::make_managed<Gtk::Label>("Aircraft Name");
   auto aircraftNameTextbox = Gtk::make_managed<Gtk::Entry>();

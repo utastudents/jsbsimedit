@@ -9,8 +9,10 @@ ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app)
 
     set_draw_func(sigc::mem_fun(*this, &ChannelCanvas::Draw));
     signal_show().connect([=](){ queue_draw(); });
-    set_content_height(400);
-    set_content_width(600);
+    //set_content_height(400);
+    //set_content_width(600);
+    set_hexpand(true);
+    set_vexpand(true); // allowes default size to fix itself
 
     //Connecting the dnd handler..
     auto dropController = Gtk::DropTarget::create(G_TYPE_INT, Gdk::DragAction::COPY);
