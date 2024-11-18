@@ -1,4 +1,7 @@
 #include "MainWindow.hpp"
+#include <vector>
+#include <string>
+
 
 // constructor - manage main window
 MainWindow::MainWindow(Gtk::Grid& m_Grid) {
@@ -32,11 +35,54 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
 	rateTextbox->set_text("60");
 	m_Grid.attach(*rateLabel, 0, 2);
 	m_Grid.attach(*rateTextbox, 1, 2);
+
+    // auto simuLabel = Gtk::make_managed<Gtk::Label>("Simulation");
+    // m_Grid.attach(*simuLabel, 0, 3);
+	// m_Grid.attach(checkboxSimulation, 1, 3);
+
+    
+    // Vector to store labels for each checkbox
+    std::vector<std::string> checkboxLabels = 
+    {
+        "Simulation", "Atmosphere", "Massprops", "Aerosurfaces", 
+        "Rates", "Velocities", "Forces", "Moments", 
+        "Position", "Coefficients", "Ground Reactions", 
+        "FCS", "Propulsion"
+    };
+
+    // Vector to store the CheckButtons
+    std::vector<Gtk::CheckButton*> checkboxes;
+
+    int row = 3; // Start row for checkboxes
+    int col = 0; // Start column for checkboxes
+
+    // Create and attach labels and checkboxes
+    for (const auto& labelText : checkboxLabels) 
+    {
+
+        // Create and manage a label
+        auto label = Gtk::make_managed<Gtk::Label>(labelText);
+        m_Grid.attach(*label, col * 2, row); // Place label in the column
+
+        // Create and manage a checkbox
+        auto checkbox = Gtk::make_managed<Gtk::CheckButton>();
+        checkboxes.push_back(checkbox); // Store checkbox pointer if needed for later access
+        m_Grid.attach(*checkbox, col * 2 + 1, row); // Place checkbox next to label
+
+        // Update column and row counters
+        col++;
+        if (col >= 4) 
+        { // Move to the next row after 4 columns
+            col = 0;
+            row++;
+        }
+    }
+
     
 	// creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
 	auto configTextbox = Gtk::make_managed<Gtk::Entry>();
-	m_Grid.attach(*configTextbox, 0, 3);
+	m_Grid.attach(*configTextbox, 0, 8);
 }
 
 // create and manage checkboxes
@@ -47,7 +93,7 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid) {
 	// creates choose button
 	auto chooseLabel = Glib::ustring::compose("Choose");
 	auto chooseButton = Gtk::make_managed<Gtk::ToggleButton>(chooseLabel);
-	m_Grid.attach(*chooseButton, 1, 3);
+	m_Grid.attach(*chooseButton, 1, 8);
 	
 	// Connect the "Choose" button's signal to onChooseButtonClicked
     chooseButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::onChooseButtonClicked));
@@ -55,12 +101,12 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid) {
 	// creates add button
 	auto addLabel = Glib::ustring::compose("Add");
 	auto addButton = Gtk::make_managed<Gtk::ToggleButton>(addLabel);
-	m_Grid.attach(*addButton, 2, 3);
+	m_Grid.attach(*addButton, 2, 8);
     
 	// creates delete button
 	auto deleteLabel = Glib::ustring::compose("Delete");
 	auto deleteButton = Gtk::make_managed<Gtk::ToggleButton>(deleteLabel);
-	m_Grid.attach(*deleteButton, 3, 3);
+	m_Grid.attach(*deleteButton, 3, 8);
 }
 
 
