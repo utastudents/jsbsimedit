@@ -20,7 +20,7 @@ void AeroDynamicsSubsystem::Create()
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
- AerodynamicsWidget aerodynamicsWidget;
- aerodynamicsWidget.set_expand(true);
- m_Grid.attach(aerodynamicsWidget,0,0);
+  auto aerodynamicsWidget = Gtk::make_managed<AerodynamicsWidget>();
+  aerodynamicsWidget->set_expand(true);
+  m_Grid.attach(*aerodynamicsWidget,0,0);
 }
