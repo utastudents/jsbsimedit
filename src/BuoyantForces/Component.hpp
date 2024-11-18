@@ -9,26 +9,51 @@ class Component
     public:
         Component();
         virtual ~Component() = default;
+
+        enum GasType {AIR = 0, HELIUM = 1, HYDROGEN = 2};
+        enum class Unit {
+            /*
+                Dimensions Elements
+            */
+            WIDTH,              // Width
+            RADIUS,             // Radius
+
+            /* 
+                Max Overpressure Units
+            */
+            PA,                 // PA
+            PSI,                // PSI
+
+            /*
+                Measurement Units (Location & ) 
+                Measurement Units (Location & Dimensions) 
+            */
+            M,                  // Meters
+            IN,                 // Inches
+
+            /* 
+                Valve Coefficient Units
+            */
+            FT4_SEC_SLUG,       // ft^4 * sec / slug
+            M4_SEC_KG,          // m^4 * sec / kg
+            
+            /*
+                Heat Transfer Coefficent Units
+            */
+            LBS_FT_SEC,         // lbs ft / sec
+            LB_FT_SEC_R,        // lb ft / (sec R)
+
+            /* 
+                Blower Input Units
+            */
+            FT3_SEC            // ft^3 / sec
+        };
+
         void setLocation(double locationX, double locationY, double locationZ);
         void setDimensions(double x, double y, double z);
         void setOverpressure(double overpressure);
         void setValveCoefficient(double valveCoefficient);
         void setInitialFullness(double initFullness);
-
-        enum GasType {HELIUM, HYDROGEN, AIR};
-        enum class Unit {
-            WIDTH,              // Width
-            RADIUS,             // Radius
-            PSI,                // PSI
-            M,                  // Meters
-            IN,                 // Inches
-            PA,                 // PA
-            M4_SEC_KG,          // m^4 * sec / kg
-            FT4_SEC_SLUG,       // ft^4 * sec / slug
-            LB_FT_SEC_R,        // lb ft / (sec R)
-            LBS_FT_SEC,         // lbs ft / sec
-            FT3_SEC             // ft^3 / sec
-        };
 
         static std::string unitToString(Unit unit);
         static int getBallonetCount();

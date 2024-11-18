@@ -17,7 +17,7 @@ void PropulsionSubsystem::Create() {
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
 
-    std::map<std::pair<int, int>, Gtk::ToggleButton*> buttonMap;
+    std::map<std::pair<int, int>, Gtk::Button*> buttonMap;
 
     // Separated line of code for readability
     std::vector<std::string> buttonNames = {
@@ -31,12 +31,12 @@ void PropulsionSubsystem::Create() {
 
     // Define the unique actions for each button in lambdas
     std::vector<std::function<void()>> buttonActions = {
-        [this]() { m_PropManager.showEngineThrusterSetup(); },
-        [this]() { m_PropManager.showEngineThrusterSetup(); },
-        [this]() { m_PropManager.confirmDeletePair(); },
-        [this]() { m_PropManager.showTankSetup(); },
-        [this]() { m_PropManager.showTankSetup(); },
-        [this]() { m_PropManager.confirmDeleteTank(); }
+        [this]() { m_PropManager.showEngineThrusterSetup(); }, // "Create Engine/Thruster Pair"
+        [this]() { m_PropManager.showEngineThrusterSetup(); }, // "Engine/Thruster Pair Details"
+        [this]() { m_PropManager.confirmDeletePair(); }, // "Delete Engine/Thruster Pair"
+        [this]() { m_PropManager.showTankSetup(); }, // "Create Tank"
+        [this]() { m_PropManager.showTankSetup(); }, // "Tank Details"
+        [this]() { m_PropManager.confirmDeleteTank(); } // "Delete Tank"
     };
 
     // Create a label for the engine selection dropdown
@@ -44,6 +44,7 @@ void PropulsionSubsystem::Create() {
 
     // Create the ComboBoxText (dropdown menu) for engine selection
     Gtk::ComboBoxText* pComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
+    // TODO: Replace with xml logic to find 
     pComboBox->append("AJ26-33A");
     pComboBox->append("GE-CF6-80C2-B1F");
     pComboBox->append("electric_1mw");
@@ -55,18 +56,18 @@ void PropulsionSubsystem::Create() {
     pComboBox->signal_changed().connect([this, pComboBox]() {
         std::string selectedEngine = pComboBox->get_active_text();
         std::cout << "Selected Engine: " << selectedEngine << std::endl;
-        });
+    });
 
     // Attach the label and ComboBoxText to the grid (Place the label at row 0, column 3, and the ComboBox at row 1, column 3)
-    m_Grid.attach(*pLabel, 3, 0, 2, 1);  // Label: row 0, column 3
-    m_Grid.attach(*pComboBox, 3, 1, 2, 1);  // ComboBox: row 1, column 3
+    m_Grid.attach(*pLabel, 0, 0, 1, 1);  // Label: row 0, column 0
+    m_Grid.attach(*pComboBox, 0, 1, 1, 1);  // ComboBox: row 1, column 0
 
     // i is length #, j is height #
-    for (int i = 0; i < 2; i++) {
+    for (int i = 1; i < 3; i++) { // Shifts buttons to columns 1 and 2
         for (int j = 0; j < 3; j++) {
             if (nameIndex < buttonNames.size()) {
                 // Create each button with a unique name
-                auto pButton = Gtk::make_managed<Gtk::ToggleButton>(buttonNames[nameIndex]);
+                auto pButton = Gtk::make_managed<Gtk::Button>(buttonNames[nameIndex]);
                 m_Grid.attach(*pButton, i, j);  // Place in grid (i, j) to fill bottom-right
 
                 // Store Buttons in map for accessibility
@@ -81,9 +82,7 @@ void PropulsionSubsystem::Create() {
         }
     }
 
-    // Instead of using show_all_children(), explicitly show each widget
     m_Grid.show();  // Show the grid container
-
     // Show each individual widget explicitly
     pLabel->show();  // Show the label
     pComboBox->show();  // Show the combo box
