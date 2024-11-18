@@ -96,7 +96,8 @@ void GeneralInformationSubsystem::Create()
   // Aircraft Name
   auto aircraftNameLabel = Gtk::make_managed<Gtk::Label>("Aircraft Name");
   auto aircraftNameTextbox = Gtk::make_managed<Gtk::Entry>();
-  aircraftNameTextbox->set_text("Place holder."); // load aircraft name here
+  // aircraftNameTextbox->set_text("Place holder."); // load aircraft name here
+  aircraftNameTextbox->set_text( node.GetAttribute("name").second );
 
   // File Path
   auto filePathLabel = Gtk::make_managed<Gtk::Label>("File Path");
