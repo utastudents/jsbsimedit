@@ -33,11 +33,11 @@ namespace JSBEdit
         AttributeKV GetAttribute(std::string attributeName);
 
         // adds additional attributes to the element node XML046
-        void AddAttributes(std::vector<AttributeKV>& attributes);
+        bool AddAttributes(std::vector<AttributeKV>& attributes);
         // adds an additional attribute to the element node XML047
         void AddAttribute(AttributeKV attribute);
         // Sets multiple attributes and overrides attributes in the element node
-        void SetAttributes(std::vector<AttributeKV>& attributes);
+        bool SetAttributes(std::vector<AttributeKV>& attributes);
         // Sets an attribute and overrides attributes in the element node
         void SetAttribute(AttributeKV attribute);
         // changes the value of an attribute without deleting and appending back attributes XML045
@@ -55,7 +55,7 @@ namespace JSBEdit
         void SetText(std::string text);
 
         std::string GetName();
-        void SetName(std::string name);
+        bool SetName(std::string name);
 
         // find the relative child with that name and returns it, else returns a null XMLNode. Return
         // returns to first match
@@ -64,9 +64,9 @@ namespace JSBEdit
         XMLNode GetChild(size_t index);
         std::vector<XMLNode> GetChildren();
         void AddChild(XMLNode child);
-        void AddChildren(std::vector<XMLNode>& children);
-        void RemoveChild(int index);
-        void RemoveChild(XMLNode& child);
+        bool AddChildren(std::vector<XMLNode>& children);
+        bool RemoveChild(int index);
+        bool RemoveChild(XMLNode& child);
         void RemoveChildren();
         XMLNode GetParent();
 
