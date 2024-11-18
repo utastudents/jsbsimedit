@@ -56,7 +56,7 @@ bool JSBEdit::XMLNode::AddAttributes(std::vector<AttributeKV> &attributes)
     bool allAttributesAdded = true;
     for(auto& attribute: attributes)
     {
-        pugi::xml_node returnedNode = append_attribute(attribute.first.c_str()) = attribute.second.c_str();
+        pugi::xml_node returnedNode = m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str();
 
         if (returnedNode.empty())
             allAttributesAdded = false;
