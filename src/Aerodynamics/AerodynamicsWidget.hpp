@@ -28,6 +28,8 @@ private:
     void saveData();
     void appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit::XMLNode> children); // Helper function that appends child nodes to a tree
 
+    void on_row_activated(std::shared_ptr<AerodynamicsNode> node);
+
 public:
     // Constructor for AerodynamicsWidget
     AerodynamicsWidget();

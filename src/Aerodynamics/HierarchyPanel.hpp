@@ -26,8 +26,15 @@ public:
     // Getter for the ModelColumns
     const ModelColumns& getColumns();
 
+    // Signal type that takes a reference to the selected AerodynamicsNode
+    using RowActivatedSignal = sigc::signal<void(std::shared_ptr<AerodynamicsNode>)>;
+    RowActivatedSignal row_activated_signal;
+
 private:
     Gtk::TreeView treeView;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
     ModelColumns columns;
+
+    // Method to handle row selection
+    void on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
 };

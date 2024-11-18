@@ -8,11 +8,49 @@ AerodynamicsWidget::AerodynamicsWidget()
     aerodynamicsNodes = Gtk::TreeStore::create(columns);
     fetchData();
 
+    // Connect to the row_activated_signal from HierarchyPanel
+    hierarchyPanel.row_activated_signal.connect(sigc::mem_fun(*this, &AerodynamicsWidget::on_row_activated));
+
     // Set the hierarchy panel
     set_start_child(hierarchyPanel);
     hierarchyPanel.populateTree(aerodynamicsNodes);
 
     set_end_child(menuPanel);
+}
+
+// Changes the menu to edit the selected node
+void AerodynamicsWidget::on_row_activated(std::shared_ptr<AerodynamicsNode> node) {
+    MenuPanel* newMenu = nullptr;
+
+    if (node != nullptr) {
+        switch (node->getType()) {
+            case AerodynamicsNode::Type::PROPERTY:
+                newMenu = Gtk::make_managed<MenuPanel>();
+                newMenu->setName("Show property menu");
+                break;
+            case AerodynamicsNode::Type::VALUE:
+                newMenu = Gtk::make_managed<MenuPanel>();
+                newMenu->setName("Show value menu");
+                break;
+            case AerodynamicsNode::Type::FUNCTION:
+                newMenu = Gtk::make_managed<MenuPanel>();
+                newMenu->setName("Show function menu");
+                break;
+            case AerodynamicsNode::Type::TABLE:
+                newMenu = Gtk::make_managed<MenuPanel>();
+                newMenu->setName("Show table menu");
+                break;
+            case AerodynamicsNode::Type::AXIS:
+                newMenu = Gtk::make_managed<MenuPanel>();
+                newMenu->setName("Show axis menu");
+                break;
+            default:
+                break;
+        }
+    }
+    if (newMenu) {
+        set_end_child(*newMenu);
+    }
 }
 
 // Fetches the aerodynamics data from XML and populates the tree
@@ -26,6 +64,7 @@ void AerodynamicsWidget::fetchData()
     // Create the root row for the tree
     auto parent = *(aerodynamicsNodes->append());
     parent[columns.columnName] = aerodynamics.GetName();
+    parent[columns.node] = nullptr;
 
     // Recursively append children nodes to the tree
     appendChildren(parent, children);

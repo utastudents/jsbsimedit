@@ -10,5 +10,6 @@ private:
 
 public:
     MenuPanel();
+    void setName(std::string name);
 };
 
