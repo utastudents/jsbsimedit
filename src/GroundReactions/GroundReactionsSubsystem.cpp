@@ -143,14 +143,10 @@ void GroundReactionsSubsystem::Create() {
 
     // Retractable
     auto retractableLabel = Gtk::make_managed<Gtk::Label>("Retractable =");
-
-    auto retractableUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
-    retractableUnitDropDown->append("YES");
-    retractableUnitDropDown->append("NO"); 
-    retractableUnitDropDown->set_active(0);
+    auto retractableCheckbox = Gtk::make_managed<Gtk::CheckButton>();
 
     m_Grid.attach(*retractableLabel, 0, row);
-    m_Grid.attach(*retractableUnitDropDown, 1, row++);
+    m_Grid.attach(*retractableCheckbox, 1, row++);
 
     // Ok and Cancel Buttons
     auto Ok = Glib::ustring::compose("OK");
