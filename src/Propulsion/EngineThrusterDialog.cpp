@@ -4,6 +4,9 @@
 #include "EngineThrusterDialog.hpp"
 
 EngineThrusterDialog::EngineThrusterDialog() {
+    // TODO: Make check to see if new engine thruster pair
+    // TODO: If existing pair make sure changes are included in dialog box
+
     // Set the title and default size for the parent window
     set_title("Engine/Thruster Setup");
     set_default_size(400, 400);
