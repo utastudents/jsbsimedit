@@ -76,11 +76,11 @@ MetricsSubsystem::MetricsSubsystem()
   node_name = "Visual Reference Point";
   vertex_data_units[node_name] = std::make_unique<Metrics::Vertex_Unit>(0.0, 0.0, 0.0, unit_map["location"]);
   vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
-  }
+}
 
 
-  void MetricsSubsystem::Create()
-  {
+void MetricsSubsystem::Create()
+{
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
@@ -99,12 +99,12 @@ MetricsSubsystem::MetricsSubsystem()
     add_vertex_data_unit(cit->first, cit->second->get_its_unit()->get_unit_bank(), row, 0);
     row += 2;
   }
-  }
+}
 
 
-  void MetricsSubsystem::add_vertex_data_unit
+void MetricsSubsystem::add_vertex_data_unit
   (std::string tab_name, Metrics::string_vector units, int vertical_position, int horizontal_position)
-  {
+{
   auto section_label = Gtk::make_managed<Gtk::Label>(tab_name);
   m_Grid.attach(*section_label, horizontal_position, vertical_position++, 6, 1);
 
@@ -127,7 +127,6 @@ MetricsSubsystem::MetricsSubsystem()
     m_Grid.attach(*entry_boxes.back(), horizontal_position++, vertical_position, 1, 1);
   }
 
-
   // Linking to X
   auto the_x = entry_boxes.at(0);
   the_x->set_text(std::to_string(vertex_data_units[tab_name]->get_x()));
@@ -136,7 +135,6 @@ MetricsSubsystem::MetricsSubsystem()
     vertex_data_units[tab_name]->set_x(update_text(the_x->get_text()));
     the_x->set_text(std::to_string(vertex_data_units[tab_name]->get_x()));
   });
-
 
   // Linking to Y
   auto the_y = entry_boxes.at(1);
@@ -147,7 +145,6 @@ MetricsSubsystem::MetricsSubsystem()
     the_y->set_text(std::to_string(vertex_data_units[tab_name]->get_z()));
   });
 
-
   // Linking to Z
   auto the_z = entry_boxes.at(2);
   the_z->set_text(std::to_string(vertex_data_units[tab_name]->get_z()));
@@ -157,63 +154,41 @@ MetricsSubsystem::MetricsSubsystem()
     the_z->set_text(std::to_string(vertex_data_units[tab_name]->get_z()));
   });
 
-
   // Add the unit dropdown
   auto unit_label = Gtk::make_managed<Gtk::Label>("Unit: ");
   m_Grid.attach(*unit_label, horizontal_position++, vertical_position, 1, 1);
-
 
   auto dropdown_bank = Gtk::StringList::create({});
   for (auto cit = units.cbegin(); cit != units.cend(); cit++) {
     dropdown_bank->append(*cit);
   }
 
-
   auto drop_down = Gtk::make_managed<Gtk::DropDown>();
   drop_down->set_model(dropdown_bank);
   drop_down->set_show_arrow(true);
   m_Grid.attach(*drop_down, horizontal_position++, vertical_position, 1, 1);
-  // TODO CONNECT UNITS TO SETTERS!
 
-    // Connect dropdown signal to a handler
-    drop_down->property_selected().signal_changed().connect(
-        [this, tab_name, drop_down, dropdown_bank, entry_boxes]() { 
-            auto selected = drop_down->get_selected();
-            if (selected != -1) {
-                auto selected_unit = dropdown_bank->get_string(selected);
-                vertex_data_units[tab_name]->get_its_unit()->set_current_unit(selected_unit);
-                std::cout << "Selected unit for " << tab_name << ": " << selected_unit << std::endl;
+  // Connect dropdown signal to a handler
+  drop_down->property_selected().signal_changed().connect(
+    [this, tab_name, drop_down, dropdown_bank]() { 
+      auto selected = drop_down->get_selected();
+      if (selected != -1) {
+          auto selected_unit = dropdown_bank->get_string(selected);
+          vertex_data_units[tab_name]->get_its_unit()->set_current_unit(selected_unit);
+      }
+    });
+}
 
-                // Update the entry boxes with the current values and new unit
-                for (size_t i = 0; i < entry_boxes.size(); ++i) {
-                    double value = 0.0; // Get the appropriate coordinate value (x, y, or z)
-                    switch (i) {
-                        case 0: value = vertex_data_units[tab_name]->get_x(); break;
-                        case 1: value = vertex_data_units[tab_name]->get_y(); break;
-                        case 2: value = vertex_data_units[tab_name]->get_z(); break;
-                    }
-                    entry_boxes[i]->set_text(std::to_string(value) + " " + selected_unit);
-                }
-            }
-        });
-
-
-  }
-
-
-  void MetricsSubsystem::add_data_unit(std::string tab_name, Metrics::string_vector units, int vertical_position, int horozontal_position)
-  {
+void MetricsSubsystem::add_data_unit(std::string tab_name, Metrics::string_vector units, int vertical_position, int horozontal_position)
+{
   auto entry_label = Gtk::make_managed<Gtk::Label>(tab_name);
 
-
   m_Grid.attach(*entry_label, horozontal_position++, vertical_position);
-
 
   auto entry_number = Gtk::make_managed<Gtk::Entry>();
   entry_number->set_expand(false);
   entry_number->set_input_purpose(Gtk::InputPurpose::NUMBER);
   entry_number->set_text(std::to_string(data_units[tab_name]->get_value()));
-
 
   entry_number->signal_activate().connect([this,entry_number,tab_name]()
   {
@@ -221,27 +196,20 @@ MetricsSubsystem::MetricsSubsystem()
     entry_number->set_text(std::to_string(data_units[tab_name]->get_value()));
   });
 
-
   m_Grid.attach(*entry_number, horozontal_position++, vertical_position);
-
 
   auto unit_label = Gtk::make_managed<Gtk::Label>("Unit: ");
 
-
   m_Grid.attach(*unit_label, horozontal_position++, vertical_position);
 
-
   auto dropdown_bank = Gtk::StringList::create({});
-
 
   for (auto cit = units.cbegin(); cit != units.cend(); cit++)
   {
     dropdown_bank->append(*cit);
   }
 
-
   auto drop_down = Gtk::make_managed<Gtk::DropDown>();
-
 
   drop_down->set_model(dropdown_bank);
   // drop_down->set_selected(1);
@@ -250,31 +218,21 @@ MetricsSubsystem::MetricsSubsystem()
 
 
   m_Grid.attach(*drop_down, horozontal_position++, vertical_position);
-  // TODO CONNECT UNITS TO SETTERS!
 
-    // Connect dropdown signal to a handler
-    drop_down->property_selected().signal_changed().connect(
-        [this, tab_name, drop_down, dropdown_bank, entry_number]() {
-            auto selected = drop_down->get_selected();
-            if (selected != -1) {
-                auto selected_unit = dropdown_bank->get_string(selected);
-                data_units[tab_name]->get_its_unit()->set_current_unit(selected_unit);
-                std::cout << "Selected unit for " << tab_name << ": " << selected_unit << std::endl;
-
-                // Update the entry box with the current value and new unit
-                entry_number->set_text(std::to_string(data_units[tab_name]->get_value()) + " " + selected_unit);
-            }
-        });
+  // Connect dropdown signal to a handler
+  drop_down->property_selected().signal_changed().connect(
+    [this, tab_name, drop_down, dropdown_bank]() {
+      auto selected = drop_down->get_selected();
+      if (selected != -1) {
+          auto selected_unit = dropdown_bank->get_string(selected);
+          data_units[tab_name]->get_its_unit()->set_current_unit(selected_unit);
+      }
+    });
+}
 
 
-  }
-
-
-  double MetricsSubsystem::update_text(std::string data)
-  {
+double MetricsSubsystem::update_text(std::string data) {
   try { return std::stod(data); }
-
-
   catch (const std::exception& e) { return 0.0; }
-  }
+}
 
