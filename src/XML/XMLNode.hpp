@@ -70,6 +70,10 @@ namespace JSBEdit
         void RemoveChildren();
         XMLNode GetParent();
 
+        // find the root of the node
+        // returns null if no root was found
+        XMLNode GetRoot();
+
         // returns true if the node has text and children elements
         bool IsMixedContent();
         // returns true if the node is not null
