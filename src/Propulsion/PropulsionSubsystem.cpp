@@ -39,32 +39,74 @@ void PropulsionSubsystem::Create() {
         [this]() { m_PropManager.confirmDeleteTank(); } // "Delete Tank"
     };
 
-    // Create a label for the engine selection dropdown
-    Gtk::Label* pLabel = Gtk::make_managed<Gtk::Label>("Select Engine:");
-
+    // Engine UI
+    Gtk::Label* pLabelEng = Gtk::make_managed<Gtk::Label>("Select Engine:");
     // Create the ComboBoxText (dropdown menu) for engine selection
-    Gtk::ComboBoxText* pComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
-    // TODO: Replace with xml logic to find 
-    pComboBox->append("AJ26-33A");
-    pComboBox->append("GE-CF6-80C2-B1F");
-    pComboBox->append("electric_1mw");
+    Gtk::ComboBoxText* pComboBoxEng = Gtk::make_managed<Gtk::ComboBoxText>();
+    // TODO: Replace with xml logic to find engines
+    pComboBoxEng->append("AJ26-33A");
+    pComboBoxEng->append("GE-CF6-80C2-B1F");
+    pComboBoxEng->append("electric_1mw");
 
     // Set default selection
-    pComboBox->set_active(0); // Default to first option "AJ26-33A"
+    pComboBoxEng->set_active(0); // Default to first option "AJ26-33A"
 
     // Connect signal to handle dropdown changes
-    pComboBox->signal_changed().connect([this, pComboBox]() {
-        std::string selectedEngine = pComboBox->get_active_text();
+    pComboBoxEng->signal_changed().connect([this, pComboBoxEng]() {
+        std::string selectedEngine = pComboBoxEng->get_active_text();
         std::cout << "Selected Engine: " << selectedEngine << std::endl;
     });
+    m_Grid.attach(*pLabelEng, 0, 0, 1, 1);  // Label: row 0, column 0
+    m_Grid.attach(*pComboBoxEng, 0, 1, 1, 1);  // ComboBox: row 1, column 0
+    
+    
+    // Thruster UI
+    Gtk::Label* pLabelThr = Gtk::make_managed<Gtk::Label>("Select Thruster:");
+    // Create the ComboBoxText (dropdown menu) for thruster selection
+    Gtk::ComboBoxText* pComboBoxThr = Gtk::make_managed<Gtk::ComboBoxText>();
+    // TODO: Replace with xml logic to find Thrusters
+    pComboBoxThr->append("PLACEHOLDER_Thruster");
+    pComboBoxThr->append("PLACEHOLDER_Thruster");
+    pComboBoxThr->append("PLACEHOLDER_Thruster");
 
-    // Attach the label and ComboBoxText to the grid (Place the label at row 0, column 3, and the ComboBox at row 1, column 3)
-    m_Grid.attach(*pLabel, 0, 0, 1, 1);  // Label: row 0, column 0
-    m_Grid.attach(*pComboBox, 0, 1, 1, 1);  // ComboBox: row 1, column 0
+    // Set default selection
+    pComboBoxThr->set_active(0); 
+
+    // Connect signal to handle dropdown changes
+    pComboBoxThr->signal_changed().connect([this, pComboBoxThr]() {
+        std::string selectedThruster = pComboBoxThr->get_active_text();
+        std::cout << "Selected Thruster: " << selectedThruster << std::endl;
+    });
+    m_Grid.attach(*pLabelThr, 0, 2, 1, 1);  // Label: row 0, column 0
+    m_Grid.attach(*pComboBoxThr, 0, 3, 1, 1);  // ComboBox: row 1, column 0
+    
+
+
+    // Tank UI
+    Gtk::Label* pLabelTK = Gtk::make_managed<Gtk::Label>("Select Tank:");
+    // Create the ComboBoxText (dropdown menu) for Tank selection
+    Gtk::ComboBoxText* pComboBoxTK = Gtk::make_managed<Gtk::ComboBoxText>();
+    // TODO: Replace with xml logic to find Tanks
+    // Placeholders
+    pComboBoxTK->append("FULL TANK 1000 GALLONS");
+    pComboBoxTK->append("NFULL TANK 1000 GALLONS");
+    pComboBoxTK->append("PLACEHOLDER");
+
+    // Set default selection
+    pComboBoxTK->set_active(0); 
+
+    // Connect signal to handle dropdown changes
+    pComboBoxTK->signal_changed().connect([this, pComboBoxTK]() {
+        std::string selectedTank = pComboBoxTK->get_active_text();
+        std::cout << "Selected Tank: " << selectedTank << std::endl;
+    });
+    m_Grid.attach(*pLabelTK, 1, 0, 1, 1);  // Label: row 1, column 0
+    m_Grid.attach(*pComboBoxTK, 1, 1, 1, 1);  // ComboBox: row 1, column 1
+
 
     // i is length #, j is height #
-    for (int i = 1; i < 3; i++) { // Shifts buttons to columns 1 and 2
-        for (int j = 0; j < 3; j++) {
+    for (int i = 2; i < 4; i++) { // Shifts buttons to columns 2 and 3
+        for (int j = 1; j < 4; j++) { // Lowered buttons to row 1 through 3
             if (nameIndex < buttonNames.size()) {
                 // Create each button with a unique name
                 auto pButton = Gtk::make_managed<Gtk::Button>(buttonNames[nameIndex]);
@@ -84,8 +126,14 @@ void PropulsionSubsystem::Create() {
 
     m_Grid.show();  // Show the grid container
     // Show each individual widget explicitly
-    pLabel->show();  // Show the label
-    pComboBox->show();  // Show the combo box
+    pLabelEng->show();  // Show the label
+    pLabelThr->show();  // Show the label
+    pLabelTK->show();  // Show the label
+
+    pComboBoxEng->show();  // Show the combo box
+    pComboBoxThr->show();  // Show the combo box
+    pComboBoxTK->show();  // Show the combo box
+
     for (auto& buttonPair : buttonMap) {
         buttonPair.second->show();  // Show each button in the map
     }
