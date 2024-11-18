@@ -20,6 +20,7 @@ void ExternalReactionSubsystem :: Create(){
     m_Grid.attach(*nameLabel, 0, row);
     m_Grid.attach(*nameTextbox, 1, row);
 
+
     //frame dropdown window
     auto frameLabel = Gtk:: make_managed<Gtk::Label>("FRAME");
     auto frameDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
