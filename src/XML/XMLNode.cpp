@@ -56,13 +56,13 @@ bool JSBEdit::XMLNode::AddAttributes(std::vector<AttributeKV> &attributes)
     bool allAttributesAdded = true;
     for(auto& attribute: attributes)
     {
-        pugi::xml_node returnedNode append_attribute(attribute.first.c_str()) = attribute.second.c_str();
-        
-        if (returnedNode == pugi::node_null)
+        pugi::xml_node returnedNode = append_attribute(attribute.first.c_str()) = attribute.second.c_str();
+
+        if (returnedNode.empty())
             allAttributesAdded = false;
     }
 
-    return aallAttributesAdded;
+    return allAttributesAdded;
 }
 
 void JSBEdit::XMLNode::AddAttribute(AttributeKV attribute)
@@ -143,7 +143,7 @@ bool JSBEdit::XMLNode::AddChildren(std::vector<XMLNode> &children)
     {
         pugi::xml_node returnedNode = this->m_Node.append_move(node.m_Node);
 
-        if (returnedNode == pugi::node_null)
+        if (returnedNode.empty())
             allChildrenAdded = false;
     }
 
@@ -198,7 +198,7 @@ bool JSBEdit::XMLNode::RemoveChild(int index)
     pugi::xml_node_iterator iter = m_Node.begin();
     size_t curIdx = 0;
 
-    if (iter = m_Node.end())
+    if (iter == m_Node.end())
         return false;
 
     while (iter != m_Node.end())
@@ -219,7 +219,7 @@ bool JSBEdit::XMLNode::RemoveChild(JSBEdit::XMLNode& child)
     //question
     pugi::xml_node_iterator iter = m_Node.begin();
 
-    if (iter = m_Node.end())
+    if (iter == m_Node.end())
         return false;
     
     return m_Node.remove_child(child.m_Node);
