@@ -4,8 +4,8 @@
 #include "HierarchyPanel.hpp"
 #include "MenuPanel.hpp"
 #include "AerodynamicsNode.hpp"
-#include "XML/XMLDoc.hpp"
 #include "XML/XMLNode.hpp"
+#include "inc/XML_api.hpp"
 
 class AerodynamicsWidget : public Gtk::Paned {
 private:

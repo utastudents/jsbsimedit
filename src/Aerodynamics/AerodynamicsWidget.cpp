@@ -14,10 +14,7 @@ AerodynamicsWidget::AerodynamicsWidget()
 
 void AerodynamicsWidget::fetchData()
 {
-    JSBEdit::XMLDoc doc;
-    //TODO: change to the program's working file
-    doc.LoadFileAndParse({"../../../data/aircraft/737/737.xml"});
-    JSBEdit::XMLNode aerodynamics = doc.GetNodes("fdm_config/aerodynamics")[0];
+    JSBEdit::XMLNode aerodynamics = xmlptr()->GetNodes("fdm_config/aerodynamics")[0];
 
     std::vector<JSBEdit::XMLNode> children = aerodynamics.GetChildren();
 
