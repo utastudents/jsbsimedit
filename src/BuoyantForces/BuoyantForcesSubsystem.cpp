@@ -108,21 +108,21 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   AddUnitsDropDown(p_grid, "Dimensions", 0, 6);
 
   // Entry Texts for Dimensions
-  auto input_dimension_x=AddEntry(p_grid, "x", 0, 7, false);
+  auto input_dimension_x=AddEntry(p_grid, "x", 0, 7, true);
   input_dimension_x->signal_changed().connect([this,input_dimension_x]()
   {
     double dimensionX= std:: stod(input_dimension_x->get_text());
   
   });
 
-  auto input_dimension_y=AddEntry(p_grid, "y", 0, 8, false);
+  auto input_dimension_y=AddEntry(p_grid, "y", 0, 8, true);
   input_dimension_y->signal_changed().connect([this,input_dimension_y]()
   {
     double dimensionY= std:: stod(input_dimension_y->get_text());
   
   });
 
-  auto input_dimension_z=AddEntry(p_grid, "z", 0, 9, false);
+  auto input_dimension_z=AddEntry(p_grid, "z", 0, 9, true);
   input_dimension_z->signal_changed().connect([this,input_dimension_z]()
   {
     double dimensionZ= std:: stod(input_dimension_z->get_text());
