@@ -88,8 +88,15 @@ void GeneralInformationSubsystem::Create()
   //
   // fetch the ptr to the open xml document
   auto node = xmlptr()->GetNode("fdm_config");
+  auto node_flightModel = xmlptr()->GetNode("/fdm_config/fileheader/version");
+  auto node_author = xmlptr()->GetNode("/fdm_config/fileheader/author");
+  auto node_fileDate = xmlptr()->GetNode("/fdm_config/fileheader/filecreationdate");
+
   // extract a std::pair with the name
   std::cout << "Read from file " << node.GetAttribute("name").second << std::endl;
+  std::cout << "Read from file " << node.GetAttribute("version").second << std::endl;
+  std::cout << "Read from file " << node.GetAttribute("release").second << std::endl;
+  // std::cout << node.GetText() << std::endl;
 #ifndef _WIN32
 #warning end of temp code
 #endif
@@ -102,7 +109,8 @@ void GeneralInformationSubsystem::Create()
   // File Path
   auto filePathLabel = Gtk::make_managed<Gtk::Label>("File Path");
   auto filePathTextbox = Gtk::make_managed<Gtk::Entry>();
-  filePathTextbox->set_text("Place holder."); // load file path here
+  // filePathTextbox->set_text("Place holder."); // load file path here
+  filePathTextbox->set_text("Path Implement needed");
 
   // Release Level (Drop-down)
   auto releaseLevelLabel = Gtk::make_managed<Gtk::Label>("Release Level");
@@ -111,20 +119,21 @@ void GeneralInformationSubsystem::Create()
   releaseLevelDropDown->append("BETA");
   releaseLevelDropDown->set_active(0); // sets ALPHA default
 
-  // Configuration Version
+  // Configuration Version 
   auto configVersionLabel = Gtk::make_managed<Gtk::Label>("Configuration Version");
   auto configVersionTextbox = Gtk::make_managed<Gtk::Entry>();
-  configVersionTextbox->set_text(""); // Load configuration version here
+  configVersionTextbox->set_text( node.GetAttribute("version").second ); // Load configuration version here
 
+  
   // Flight Model Version
   auto flightModelVersionLabel = Gtk::make_managed<Gtk::Label>("Flight Model Version");
   auto flightModelVersionTextbox = Gtk::make_managed<Gtk::Entry>();
-  configVersionTextbox->set_text(""); // Load flight model version here
+  flightModelVersionTextbox->set_text(node_flightModel.GetText()); // Load flight model version here
 
   // Author
   auto authorLabel = Gtk::make_managed<Gtk::Label>("Author");
   auto authorTextbox = Gtk::make_managed<Gtk::Entry>();
-  authorTextbox->set_text(""); // Load author name here
+  authorTextbox->set_text( node_author.GetText() ); // Load author name here
 
   //Email
   auto emailLabel = Gtk::make_managed<Gtk::Label>("Email");
@@ -177,7 +186,7 @@ void GeneralInformationSubsystem::Create()
   // File Date
   auto fileDateLabel = Gtk::make_managed<Gtk::Label>("File Date");
   auto fileDateTextbox = Gtk::make_managed<Gtk::Entry>();
-  fileDateTextbox->set_text(""); // Load FileDate name here
+  fileDateTextbox->set_text( node_fileDate.GetText() ); // Load FileDate name here
 
   // References
   auto referencesLabel = Gtk::make_managed<Gtk::Label>("References");
@@ -241,6 +250,7 @@ void GeneralInformationSubsystem::Create()
 
   // Set TextView wrap mode
   notesTextView->set_wrap_mode(Gtk::WrapMode::WORD);
+
 
   // Attach widgets to the grid
   m_Grid.attach(*aircraftNameLabel, 0, row);
