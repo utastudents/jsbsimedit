@@ -143,6 +143,18 @@ void MetricsSubsystem::loadMetricsFromXML(const std::string& filepath) {
             double y = std::stod(locationNode.FindChild("y").GetText());
             double z = std::stod(locationNode.FindChild("z").GetText());
 
+            if (name == "AERORP"){
+              name = "Aerodynamic Reference Point";
+            } else if (name == "EYEPOINT"){
+              name = "Eye Point";
+            } else if (name == "VRP"){
+              name = "Visual Reference Point";
+            }
+
+            // Debug print for locations
+            std::cout << "Location: " << name << " (" << unit << ")" << std::endl;
+            std::cout << "  x = " << x << ", y = " << y << ", z = " << z << std::endl;
+
             if (vertex_data_units.find(name) != vertex_data_units.end()) {
                 vertex_data_units[name]->set_vertex(x, y, z);
                 vertex_data_units[name]->get_its_unit()->set_current_unit(unit);
