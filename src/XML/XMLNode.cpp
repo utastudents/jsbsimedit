@@ -225,9 +225,9 @@ bool JSBEdit::XMLNode::RemoveChild(JSBEdit::XMLNode& child)
     return m_Node.remove_child(child.m_Node);
 }
 
-void JSBEdit::XMLNode::RemoveChildren()
+bool JSBEdit::XMLNode::RemoveChildren()
 {
-    m_Node.remove_children();
+    return m_Node.remove_children();
 }
 
 JSBEdit::XMLNode JSBEdit::XMLNode::GetParent()
