@@ -67,7 +67,7 @@ namespace JSBEdit
         bool AddChildren(std::vector<XMLNode>& children);
         bool RemoveChild(int index);
         bool RemoveChild(XMLNode& child);
-        void RemoveChildren();
+        bool RemoveChildren();
         XMLNode GetParent();
 
         // find the root of the node
