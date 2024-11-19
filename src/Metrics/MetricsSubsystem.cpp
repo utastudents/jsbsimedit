@@ -83,6 +83,9 @@ MetricsSubsystem::MetricsSubsystem()
 
 void MetricsSubsystem::Create()
 {
+  //load metrics from XML file
+  loadMetricsFromXML("/home/anteneh/Documents/Projects/jsbsimedit/jsbsimedit/src/Metrics/f16.xml");
+
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
@@ -104,32 +107,56 @@ void MetricsSubsystem::Create()
 }
 
 void MetricsSubsystem::loadMetricsFromXML(const std::string& filepath) {
-    JSBEdit::XMLDoc doc;
-    doc.LoadFileAndParse("f16.xml"));
+  JSBEdit::XMLDoc doc;
+  doc.LoadFileAndParse(filepath);
 
-    // Get metrics node
-    JSBEdit::XMLNode metricsNode = doc.GetNode("/fdm_config/metrics");
+  // Get metrics node
+  JSBEdit::XMLNode metricsNode = doc.GetNode("/fdm_config/metrics");
 
-    if (!metricsNode) {
-        std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
-        return;
-    }
+  if (!metricsNode) {
+      std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
+      return;
+  }
 
-    // Extract specific metric nodes
-    std::vector<std::string> metricNames = {"wingarea", "wingspan", "chord", "htailarea", "htailarm", "vtailarea", "vtailarm"};
-    for (const auto& metric : metricNames) {
-        JSBEdit::XMLNode node = metricsNode.FindChild(metric);
-        if (node) {
-            double value = std::stod(node.GetText());
-            std::string unit = node.GetAttribute("unit").second;
+  // Extract specific metric nodes
+  std::vector<std::string> metricNames = {"wingarea", "wingspan", "chord", "htailarea", "htailarm", "vtailarea", "vtailarm"};
+  for (const auto& metric : metricNames) {
+      JSBEdit::XMLNode node = metricsNode.FindChild(metric);
+      if (node) {
+          double value = std::stod(node.GetText());
+          std::string unit = node.GetAttribute("unit").second;
 
-            // Update data_units
-            if (data_units.find(metric) != data_units.end()) {
-                data_units[metric]->set_value(value);
-                data_units[metric]->get_its_unit()->set_current_unit(unit);
-            }
-        }
-    }
+          // Update data_units
+          if (data_units.find(metric) != data_units.end()) {
+              data_units[metric]->set_value(value);
+              data_units[metric]->get_its_unit()->set_current_unit(unit);
+          }
+      }
+  }
+
+  // Extract location nodes
+  std::vector<JSBEdit::XMLNode> locationNodes = metricsNode.GetChildren();
+  for (const auto& locationNode : locationNodes) {
+      if (locationNode.GetName() == "location") {
+          std::string name = locationNode.GetAttribute("name").second; // e.g., AERORP, EYEPOINT, VRP
+          std::string unit = locationNode.GetAttribute("unit").second; // e.g., IN
+
+          // Get x, y, z coordinates
+          double x = std::stod(locationNode.FindChild("x").GetText());
+          double y = std::stod(locationNode.FindChild("y").GetText());
+          double z = std::stod(locationNode.FindChild("z").GetText());
+
+          // Output to verify correctness (or update vertex_data_units if applicable)
+          std::cout << "Location: " << name << " (" << unit << ")" << std::endl;
+          std::cout << "  x = " << x << ", y = " << y << ", z = " << z << std::endl;
+
+          // Update vertex_data_units for this location if applicable
+          if (vertex_data_units.find(name) != vertex_data_units.end()) {
+              vertex_data_units[name]->set_vertex(x, y, z);
+              vertex_data_units[name]->get_its_unit()->set_current_unit(unit);
+          }
+      }
+  }
 }
 
 
