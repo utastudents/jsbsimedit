@@ -5,6 +5,7 @@
 #include "Metrics/MetricsSubsystem.hpp"
 #include "Metrics/Data_Unit.hpp"
 #include "Metrics/Vertex_Unit.hpp"
+#include "XML/XMLDoc.hpp"
 
 class MetricsSubsystem : public Subsystem
 {
@@ -12,6 +13,8 @@ class MetricsSubsystem : public Subsystem
     MetricsSubsystem();
 
     void Create();
+
+    void loadMetricsFromXML(const std::string& filepath);
 
     void add_data_unit(std::string tab_name, Metrics::string_vector units, int horozontal_position, int vertical_position); 
 

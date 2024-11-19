@@ -1,5 +1,7 @@
 #include <iostream>
 #include "MetricsSubsystem.hpp"
+#include "XML/XMLDoc.hpp"
+#include "XML/XMLNode.hpp"
 #include <gtkmm.h>
 
 
@@ -99,6 +101,35 @@ void MetricsSubsystem::Create()
     add_vertex_data_unit(cit->first, cit->second->get_its_unit()->get_unit_bank(), row, 0);
     row += 2;
   }
+}
+
+void MetricsSubsystem::loadMetricsFromXML(const std::string& filepath) {
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse("f16.xml"));
+
+    // Get metrics node
+    JSBEdit::XMLNode metricsNode = doc.GetNode("/fdm_config/metrics");
+
+    if (!metricsNode) {
+        std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
+        return;
+    }
+
+    // Extract specific metric nodes
+    std::vector<std::string> metricNames = {"wingarea", "wingspan", "chord", "htailarea", "htailarm", "vtailarea", "vtailarm"};
+    for (const auto& metric : metricNames) {
+        JSBEdit::XMLNode node = metricsNode.FindChild(metric);
+        if (node) {
+            double value = std::stod(node.GetText());
+            std::string unit = node.GetAttribute("unit").second;
+
+            // Update data_units
+            if (data_units.find(metric) != data_units.end()) {
+                data_units[metric]->set_value(value);
+                data_units[metric]->get_its_unit()->set_current_unit(unit);
+            }
+        }
+    }
 }
 
 
