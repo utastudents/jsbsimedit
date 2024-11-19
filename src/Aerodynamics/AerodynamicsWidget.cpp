@@ -42,10 +42,10 @@ void AerodynamicsWidget::on_row_activated(std::shared_ptr<AerodynamicsNode> node
             default:
                 break;
         }
-    }
-    if (newMenu) {
-        set_end_child(*newMenu);
-        newMenu->update_signal.connect(sigc::mem_fun(*this, &AerodynamicsWidget::on_update));
+        if (newMenu) {
+            set_end_child(*newMenu);
+            newMenu->update_signal.connect(sigc::mem_fun(*this, &AerodynamicsWidget::on_update));
+        }
     }
 }
 
