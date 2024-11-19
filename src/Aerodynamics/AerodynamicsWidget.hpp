@@ -15,7 +15,7 @@ private:
 
     // Panels for displaying hierarchy and menu
     HierarchyPanel hierarchyPanel;
-    MenuPanel menuPanel;
+    MenuPanel* menuPanel;
 
     // Pointer to the currently selected aerodynamics node
     AerodynamicsNode* selectedNode;
@@ -25,6 +25,9 @@ private:
 
     // Private methods for managing data
     void fetchData();
+    void on_update();
+    void updateData();
+    void updateData(Gtk::TreeRow parent);
     void saveData();
     void appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit::XMLNode> children); // Helper function that appends child nodes to a tree
 
