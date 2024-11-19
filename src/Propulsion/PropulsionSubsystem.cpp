@@ -3,7 +3,7 @@
 #include <map>     // For buttonMap
 #include <utility> // For std::pair
 #include <filesystem> // For file operations
-#include <cstdlib>
+#include <cstdlib> // For GetCurrentPlatform
 
 #include "PropulsionSubsystem.hpp"
 #include "PropulsionManager.hpp"
@@ -54,7 +54,6 @@ void PropulsionSubsystem::Create() {
     // if Mac: MacOS-Arm64-Clang-Debug
     // if Windows: Windows-x64-Clang-Debug
     // if Linux: Linux-x64-GCC-Debug
-
     
     // Find the position of the part to remove
     size_t pos = dirpath.find(toRemove);
@@ -264,20 +263,3 @@ std::string PropulsionSubsystem::GetCurrentPlatform() {
         return "Unknown";
     #endif
 }
-
-/*
-std::string GetCurrentPlatform() {
-    // Check the platform and return the corresponding debug string
-    if (defined(__APPLE__)) {
-        return "MacOS-Arm64-Clang-Debug";
-    }
-    else if( defined(_WIN32) || defined(_WIN64) ) {
-        return "Windows-x64-Clang-Debug";
-    }
-    else if( defined(__linux__)) {
-        return "Linux-x64-GCC-Debug";
-    }
-    else {
-        return "Unknown";  // Fallback case
-    }
-}*/
