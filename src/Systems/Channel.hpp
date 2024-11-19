@@ -11,6 +11,7 @@
 #include "PIDComponent.hpp"
 #include "KinematicsComponent.hpp"
 #include "SummerComponent.hpp"
+#include "DeadbandComponent.hpp"
 #include <random>
 
 namespace DragDrop

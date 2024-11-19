@@ -109,6 +109,9 @@ void Channel::addDefaultComponent(ComponentType type, const std::string & name)
         case ComponentType::SUMMER:
             m_components.insert({name, new SummerComponent{name}});
             break;
+        case ComponentType::DEADBAND:
+            m_components.insert({name, new DeadbandComponent{name}});
+            break;
         default:
             m_components.insert({name, new GainComponent{name}});
             break;
