@@ -13,6 +13,7 @@ public:
     void Create();          // Method to create and display the UI elements
     void on_button_clicked();  // Callback for button click events
     bool checkSelect(const std::string& inp); 
+    std::string GetCurrentPlatform();
 
     std::string selectedEngine;
     std::string selectedThruster;
