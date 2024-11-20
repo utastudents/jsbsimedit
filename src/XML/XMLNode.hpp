@@ -46,7 +46,7 @@ namespace JSBEdit
         // removes all attributes from the node element
         bool RemoveAttributes();
         // searches and removes the attributes if found
-        void RemoveAttribute(std::string attribute);
+        bool RemoveAttribute(std::string attribute);
         
         // returns data in-between the start tag and end tag for the element. This will return
         // an empty string if there is no data here

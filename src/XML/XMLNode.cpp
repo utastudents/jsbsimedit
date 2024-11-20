@@ -102,9 +102,27 @@ bool JSBEdit::XMLNode::RemoveAttributes()
     return m_Node.remove_attributes();
 }
 
-void JSBEdit::XMLNode::RemoveAttribute(std::string attribute)
+bool JSBEdit::XMLNode::RemoveAttribute(std::string attribute)
 {
-    m_Node.remove_attribute(attribute.c_str());
+    // returns true if attribute was removed
+    try {
+        if (m_Node.remove_attribute(attribute.c_str())) {
+            return true;
+        }
+        else {
+            throw("Attribute not Removed");
+        }
+    }
+    // catches known errors and returns false
+    catch (const std::string& e) {
+        std::cerr << "RemoveAttributes Error: " << e << std::endl;
+        return false;
+    }
+    // catches unknown errors and returns false
+    catch (...) {
+        std::cerr << "RemoveAttributes Error: Unhandled Error" << std::endl;
+        return false;
+    }
 }
 
 std::string JSBEdit::XMLNode::GetText()
