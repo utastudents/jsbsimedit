@@ -1,6 +1,9 @@
 #pragma once
 
 #include "inc/Subsystem.hpp"
+#include "inc/XML_api.hpp"
+
+#include "XML/XMLDoc.hpp"
 #include <gtkmm.h>
 
 class MainWindow {
@@ -12,6 +15,11 @@ class MainWindow {
     	void onButtonClicked(Gtk::Grid& m_Grid);
     	void onChooseButtonClicked(); // Adding this declaration
 	private:
+		//File Handling fields
+		JSBEdit::XMLDoc xmlFile;
+		Gtk::Label nameEntry;
+		
+
     	Gtk::Box totalArea;
     	Gtk::Box propertyDisplayArea;
     	Gtk::Button chooseButton;
@@ -35,5 +43,7 @@ class MainWindow {
     	Gtk::ComboBoxText typeDropDownList;
     	Gtk::Entry rateTextBox;
     	Gtk::Entry customProperty;
+
+		
 };
 

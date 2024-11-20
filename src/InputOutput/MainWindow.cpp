@@ -1,22 +1,44 @@
 #include "PopUpWindow.hpp"
 #include "MainWindow.hpp"
+#include "inc/XML_api.hpp"
+#include "XML/XMLDoc.hpp"
+#include "XML/XMLNode.hpp"
+#include "XML/XMLLoad.hpp"
+#include "XML/XMLParser.hpp"
+
+#include <pugixml.hpp>
 #include <vector>
 #include <string>
 
 
 // constructor - manage main window
-MainWindow::MainWindow(Gtk::Grid& m_Grid) {
+MainWindow::MainWindow(Gtk::Grid& m_Grid) 
+{
 	textboxesAndLists(m_Grid);
 	onButtonClicked(m_Grid);
+	
 }
 
 // create and manage textboxes and drop down lists
-void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) {
+void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) 
+{
+	xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
+	JSBEdit::XMLNode node = xmlFile.GetNode("fdm_config/output");
+
+  auto attr = node.GetAttribute("name");
+
+	
 	// creates name label and text box, then attaches them to the grid
-	auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
-	auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
-	m_Grid.attach(*nameLabel, 0, 0);
-	m_Grid.attach(*nameTextbox, 1, 0);
+	// auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
+	// auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
+	// nameTextbox->set_text(attr.second);
+	// m_Grid.attach(*nameLabel, 0, 0);
+	// m_Grid.attach(*nameTextbox, 1, 0);
+
+  nameEntry.set_text("Name(*) : ");
+  m_Grid.attach(nameEntry, 0, 0);
+  nameTextBox.set_text(attr.second);
+  m_Grid.attach(nameTextBox, 1, 0);
     
 	// creates type label and drop down list, then attaches them to the grid
 	auto typeLabel = Gtk::make_managed<Gtk::Label>("Type(*)");

@@ -12,7 +12,7 @@ IOSubSystem::IOSubSystem()
 
 void IOSubSystem::Create()
 {
-  std::cout << "in IOSubsystem::Create" << std::endl;
+  std::cout << "\nin IOSubsystem::Create\n" << std::endl;
 
   //These widgets can come from a ui file or direct from code
   //
