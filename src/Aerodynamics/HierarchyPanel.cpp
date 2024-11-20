@@ -6,6 +6,7 @@ HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
     // Set up the tree view and connect a signal
     treeView.append_column("Aerodynamics", columns.columnName);
     treeView.set_headers_visible(false);
+    treeView.set_activate_on_single_click(true);
     treeView.signal_row_activated().connect(sigc::mem_fun(*this, &HierarchyPanel::on_row_activated));
 
     // Configuring this window

@@ -112,10 +112,24 @@ std::string JSBEdit::XMLNode::GetText()
     return m_Node.text().as_string();
 }
 
-void JSBEdit::XMLNode::SetText(std::string text)
+bool JSBEdit::XMLNode::SetText(std::string text)
 {
-    // todo: handle bool
-    m_Node.text().set(text.c_str());
+    // returns true for setting text or throws error when there is a failure in setting text
+    try{
+        if (m_Node.text().set(text.c_str()))
+            return true;
+        else
+            throw("Text not set");
+    }
+    // catches known errors and returns false
+    catch (const std::string& e) {
+        std::cerr << "SetText Error: " << e << std::endl;
+    }
+    // catches any unknown errors and returns false
+    catch (...) {
+        std::cerr << "SetText Error: Unhandled Error" << std::endl;
+        return false;
+    }
 }
 
 std::string JSBEdit::XMLNode::GetName()
@@ -130,11 +144,12 @@ bool JSBEdit::XMLNode::SetName(std::string name)
 
 bool JSBEdit::XMLNode::AddChild(XMLNode child)
 {
+    // returns true when child is added
     try {
-        // todo handle returnedNode
         pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
         return true;
     }
+    // catches any unknown errors and returns false
     catch (...) {
         std::cerr << "Cannot add child: Unhandled Error";
         return false;
@@ -234,7 +249,26 @@ bool JSBEdit::XMLNode::RemoveChild(JSBEdit::XMLNode& child)
 
 bool JSBEdit::XMLNode::RemoveChildren()
 {
-    return m_Node.remove_children();
+    // returns true when children are removed or throws error when child is not removed
+    try {
+        if (m_Node.remove_children()) {
+            return true;
+        }
+        else {
+            throw("Child not removed");
+        }
+    }
+    // catches known errors and returns false
+    catch (const std::string& e) {
+        std::cerr << "RemoveChildren Error: " << e << std::endl;
+        return false;
+    }
+    // catches unknown errors and returns false
+    catch (...) {
+        std::cerr << "RemoveChildren Error: Unhandled Error" << std::endl;
+        return false;
+    }
+    
 }
 
 JSBEdit::XMLNode JSBEdit::XMLNode::GetParent()
