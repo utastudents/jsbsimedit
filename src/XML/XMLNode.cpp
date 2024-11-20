@@ -128,10 +128,15 @@ bool JSBEdit::XMLNode::SetName(std::string name)
     return m_Node.set_name(name.c_str());
 }
 
-void JSBEdit::XMLNode::AddChild(XMLNode child)
+bool JSBEdit::XMLNode::AddChild(XMLNode child)
 {
-    // todo handle returnedNode
-    pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
+    try {
+        // todo handle returnedNode
+        pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
+    }
+    catch (...) {
+        std::cerr << "Cannot add child: Unhandled Error";
+    }
     
 }
 
