@@ -35,7 +35,7 @@ namespace JSBEdit
         // adds additional attributes to the element node XML046
         bool AddAttributes(std::vector<AttributeKV>& attributes);
         // adds an additional attribute to the element node XML047
-        void AddAttribute(AttributeKV attribute);
+        bool AddAttribute(AttributeKV attribute);
         // Sets multiple attributes and overrides attributes in the element node
         void SetAttributes(std::vector<AttributeKV>& attributes);
         // Sets an attribute and overrides attributes in the element node

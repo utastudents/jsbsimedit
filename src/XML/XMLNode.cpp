@@ -65,9 +65,27 @@ bool JSBEdit::XMLNode::AddAttributes(std::vector<AttributeKV> &attributes)
     return allAttributesAdded;
 }
 
-void JSBEdit::XMLNode::AddAttribute(AttributeKV attribute)
+bool JSBEdit::XMLNode::AddAttribute(AttributeKV attribute)
 {
-    m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str();
+    // returns true if attribute is added
+    try {
+        if (m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str()) {
+            return true;
+        }
+        else {
+            throw("Attribute not added");
+        }
+    }
+    // catches known errors and returns false
+    catch(const std::string& e) {
+        std::cerr << "AddAttribute Error: " << e << std::endl;
+        return false;
+    }
+    // catches unknown errors and returns false
+    catch (...) {
+        std::cerr << "AddAtribute Error: Unknown Error" << std::endl;
+    }
+
 }
 
 void JSBEdit::XMLNode::SetAttributes(std::vector<AttributeKV> &attributes)
