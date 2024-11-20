@@ -17,6 +17,11 @@ void MassBalanceSubsystem::Create() {
     auto label_empty_weight = Gtk::make_managed<Gtk::Label>("Empty Weight:");
     m_Grid.attach(*label_empty_weight, 0, 1, 1, 1);
 
+    //location label
+    auto label_location = Gtk::make_managed<Gtk::Label>("Location:");
+    m_Grid.attach(*label_location, 0, 2, 1, 1);
+    label_location->set_halign(Gtk::Align::START);
+
     // box to view weight
     auto entry_empty_weight = Gtk::make_managed<Gtk::Entry>();
     entry_empty_weight->set_editable(false);
