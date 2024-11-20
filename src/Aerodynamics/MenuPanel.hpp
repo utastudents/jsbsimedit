@@ -4,17 +4,16 @@
 #include "AerodynamicsNode.hpp"
 #include <iostream>
 
-class MenuPanel : public Gtk::Grid {
+class MenuPanel : public Gtk::Box {
 private:
     Gtk::Label* header;
 public:
-    MenuPanel()
+    MenuPanel() : Gtk::Box(Gtk::Orientation::VERTICAL)
     {
-        set_row_spacing(10);
-        set_column_spacing(10);
         // Creates a header for the menu
         header = Gtk::make_managed<Gtk::Label>();
-        attach(*header,0,0);
+        header->set_halign(Gtk::Align::CENTER);
+        append(*header);
     }
     ~MenuPanel(){}
 
