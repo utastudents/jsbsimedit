@@ -34,6 +34,27 @@ void ExternalReactionSubsystem :: Create(){
     auto locationLabel = Gtk:: make_managed <Gtk::Label> ("LOCATION");
     m_Grid.attach(*locationLabel, 0, row + 2 );
 
+    auto xTextbox = Gtk::make_managed<Gtk::Entry>();
+    xTextbox->set_text("X.");
+
+    auto yTextbox = Gtk::make_managed<Gtk::Entry>();
+    yTextbox->set_text("Y.");
+
+    auto zTextbox = Gtk::make_managed<Gtk::Entry>();
+    zTextbox->set_text("Z.");
+
+    auto LocationUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
+    LocationUnitDropDown->append("IN");
+    LocationUnitDropDown->append("FT");
+    LocationUnitDropDown->append("M");
+    LocationUnitDropDown->set_active(0);
+    m_Grid.attach(*LocationUnitDropDown, 5, row + 2 );
+
+    m_Grid.attach(*xTextbox, 1, row + 2);
+    m_Grid.attach(*yTextbox, 3, row + 2);
+    m_Grid.attach(*zTextbox, 4, row + 2);
+
+
     //direction
     auto directionLabel = Gtk:: make_managed <Gtk::Label> ("DIRECTION");
     m_Grid.attach(*directionLabel, 0, row + 4 );
