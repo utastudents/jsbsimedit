@@ -4,6 +4,12 @@ PopUpWindow::PopUpWindow() {
     set_title("Properties");
     set_default_size(800, 600);
 
+    //Set up the grid layout
+    gridLayout.set_row_spacing(50);
+    gridLayout.set_column_spacing(50);
+    gridLayout.set_margin(10);
+    set_child(gridLayout);
+
     scrolledWindowV.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
     set_child(scrolledWindowV); 
 

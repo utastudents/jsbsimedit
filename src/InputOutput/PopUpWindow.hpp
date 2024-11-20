@@ -30,6 +30,8 @@ private:
     Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
     Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
     Gtk::TreeView propertyTreeView;
+    Gtk::Grid m_grid;
+    Gtk::Grid gridLayout;
 
 
 // Define property columns model

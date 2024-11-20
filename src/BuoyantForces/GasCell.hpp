@@ -5,7 +5,7 @@
 class GasCell : public Component
 {
     public:
-        GasCell(double v, double t, double p, double m);
+        GasCell();
         ~GasCell();
 
     private:
