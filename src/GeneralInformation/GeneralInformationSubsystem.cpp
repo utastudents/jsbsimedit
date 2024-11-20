@@ -10,7 +10,7 @@
 
 GeneralInformationSubsystem::GeneralInformationSubsystem()
 {
-    m_Name = "GeneralInformation";
+    m_Name = "General Information";
 }
 
 void GeneralInformationSubsystem::Create()
