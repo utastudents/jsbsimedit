@@ -25,87 +25,82 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
 	xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
 	JSBEdit::XMLNode node = xmlFile.GetNode("fdm_config/output");
 
-  auto attr = node.GetAttribute("name");
-
-	
 	// creates name label and text box, then attaches them to the grid
-	// auto nameLabel = Gtk::make_managed<Gtk::Label>("Name(*)");
-	// auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
-	// nameTextbox->set_text(attr.second);
-	// m_Grid.attach(*nameLabel, 0, 0);
-	// m_Grid.attach(*nameTextbox, 1, 0);
-
-  nameEntry.set_text("Name(*) : ");
-  m_Grid.attach(nameEntry, 0, 0);
-  nameTextBox.set_text(attr.second);
+  name.set_text("Name(*) : ");
+  m_Grid.attach(name, 0, 0);
+  // Get the attribute from the XML File
+  auto nameField = node.GetAttribute("name");
+  nameTextBox.set_text(nameField.second);
   m_Grid.attach(nameTextBox, 1, 0);
     
 	// creates type label and drop down list, then attaches them to the grid
-	auto typeLabel = Gtk::make_managed<Gtk::Label>("Type(*)");
-	auto typeDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
-	// adds "CSV" and "Tabular" options to the drop down list
-	typeDropDownList->append("CSV");
-	typeDropDownList->append("Tabular");
-	// defaults to "CSV" for the drop down list
-	typeDropDownList->set_active(0);
-	m_Grid.attach(*typeLabel, 0, 1);
-	m_Grid.attach(*typeDropDownList, 1, 1);
+	type.set_text("Type(*) : ");
+	typeDropDownList.append("CSV");
+	typeDropDownList.append("TABULAR");
+  // Get the attribute from the XML File
+  auto typeField = node.GetAttribute("type");
+	// Choose default based on what's in the XML File
+  // If TABULAR, put that or else CSV is default
+	if(typeField.second == "TABULAR")
+  {
+    typeDropDownList.set_active(1);
+  }
+  else
+  {
+    typeDropDownList.set_active(0);
+  }
+	m_Grid.attach(type, 0, 1);
+	m_Grid.attach(typeDropDownList, 1, 1);
     
 	// creates rate label and text box, then attaches them to the grid
-	auto rateLabel = Gtk::make_managed<Gtk::Label>("Rate(*)");
-	auto rateTextbox = Gtk::make_managed<Gtk::Entry>();
-	// set rate default to 60 (seconds)
-	rateTextbox->set_text("60");
-	m_Grid.attach(*rateLabel, 0, 2);
-	m_Grid.attach(*rateTextbox, 1, 2);
-
-    // auto simuLabel = Gtk::make_managed<Gtk::Label>("Simulation");
-    // m_Grid.attach(*simuLabel, 0, 3);
-	// m_Grid.attach(checkboxSimulation, 1, 3);
+  rate.set_text("Rate(*) : ");
+	// Get the attribute from the XML File
+  auto rateFiled = node.GetAttribute("rate");
+  rateTextBox.set_text(rateFiled.second);
+	m_Grid.attach(rate, 0, 2);
+	m_Grid.attach(rateTextBox, 1, 2);
 
     
-    // Vector to store labels for each checkbox
-    std::vector<std::string> checkboxLabels = 
-    {
-        "Simulation", "Atmosphere", "Massprops", "Aerosurfaces", 
-        "Rates", "Velocities", "Forces", "Moments", 
-        "Position", "Coefficients", "Ground Reactions", 
-        "FCS", "Propulsion"
-    };
+  // Vector to store labels for each checkbox
+  std::vector<std::string> checkboxLabels = 
+  {
+    "Simulation", "Atmosphere", "Massprops", "Aerosurfaces", 
+    "Rates", "Velocities", "Forces", "Moments", 
+    "Position", "Coefficients", "Ground Reactions", 
+    "FCS", "Propulsion"
+  };
 
-    // Vector to store the CheckButtons
-    std::vector<Gtk::CheckButton*> checkboxes;
+  // Vector to store the CheckButtons
+  std::vector<Gtk::CheckButton*> checkboxes;
 
-    int row = 3; // Start row for checkboxes
-    int col = 0; // Start column for checkboxes
+  int row = 3; // Start row for checkboxes
+  int col = 0; // Start column for checkboxes
 
-    // Create and attach labels and checkboxes
-    for (const auto& labelText : checkboxLabels) 
-    {
+  // Create and attach labels and checkboxes
+  for (const auto& labelText : checkboxLabels) 
+  {
+    // Create and manage a label
+    auto label = Gtk::make_managed<Gtk::Label>(labelText);
+    m_Grid.attach(*label, col * 2, row); // Place label in the column
 
-        // Create and manage a label
-        auto label = Gtk::make_managed<Gtk::Label>(labelText);
-        m_Grid.attach(*label, col * 2, row); // Place label in the column
+    // Create and manage a checkbox
+    auto checkbox = Gtk::make_managed<Gtk::CheckButton>();
+    checkboxes.push_back(checkbox); // Store checkbox pointer if needed for later access
+    m_Grid.attach(*checkbox, col * 2 + 1, row); // Place checkbox next to label
 
-        // Create and manage a checkbox
-        auto checkbox = Gtk::make_managed<Gtk::CheckButton>();
-        checkboxes.push_back(checkbox); // Store checkbox pointer if needed for later access
-        m_Grid.attach(*checkbox, col * 2 + 1, row); // Place checkbox next to label
-
-        // Update column and row counters
-        col++;
-        if (col >= 4) 
-        { // Move to the next row after 4 columns
-            col = 0;
-            row++;
-        }
+    // Update column and row counters
+    col++;
+    if (col >= 4) 
+    { // Move to the next row after 4 columns
+      col = 0;
+      row++;
     }
+  }
 
     
 	// creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
-	auto configTextbox = Gtk::make_managed<Gtk::Entry>();
-	m_Grid.attach(*configTextbox, 0, 8);
+	m_Grid.attach(customProperty, 0, 8);
 }
 
 // create and manage checkboxes

@@ -15,18 +15,19 @@ class MainWindow {
     	void onButtonClicked(Gtk::Grid& m_Grid);
     	void onChooseButtonClicked(); // Adding this declaration
 	private:
-		//File Handling fields
+		//XML File Handling fields
 		JSBEdit::XMLDoc xmlFile;
-		Gtk::Label nameEntry;
 		
-
-    	Gtk::Box totalArea;
-    	Gtk::Box propertyDisplayArea;
-    	Gtk::Button chooseButton;
-    	Gtk::Button addButton; // we will display an error message if the user tries to add a configuration without
-    	// selecting at least one data type
-    	Gtk::Button deleteButton;
-    	Gtk::CheckButton checkboxSimulation;
+		//Name, Type, Rate
+		Gtk::Label name;
+		Gtk::Label type;
+		Gtk::Label rate;
+		Gtk::Entry nameTextBox; // we will validate the input and display error message for invalid input
+		Gtk::ComboBoxText typeDropDownList;
+    	Gtk::Entry rateTextBox;
+    	
+		//CheckBoxes
+		Gtk::CheckButton checkboxSimulation;
     	Gtk::CheckButton checkboxAtmosphere;
     	Gtk::CheckButton checkboxMassprops;
     	Gtk::CheckButton checkboxAerosurfaces;
@@ -39,10 +40,20 @@ class MainWindow {
     	Gtk::CheckButton checkboxGroundReactions;
     	Gtk::CheckButton checkboxFCS;
     	Gtk::CheckButton checkboxPropulsion;
-    	Gtk::Entry nameTextBox; // we will validate the input and display error message for invalid input
-    	Gtk::ComboBoxText typeDropDownList;
-    	Gtk::Entry rateTextBox;
+
+		//Output Area
+    	Gtk::Box totalArea;
+    	Gtk::Box propertyDisplayArea;
+    	
+		//Buttons
+		Gtk::Button chooseButton;
+    	Gtk::Button addButton; // we will display an error message if the user tries to add a configuration without
+    	// selecting at least one data type
+    	Gtk::Button deleteButton;
+    	
+		//Entry for custom property
     	Gtk::Entry customProperty;
+    	
 
 		
 };
