@@ -13,6 +13,8 @@ class GainComponentWindow : public ComponentWindowCommon
     private:
         void CreateOtherTabs();
         void SaveInfo();
+        void AeroSurface();
+        void Scheduled();
 };
 
 };
