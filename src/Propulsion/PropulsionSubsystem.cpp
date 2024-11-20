@@ -2,9 +2,14 @@
 #include <vector>  // For buttonNames
 #include <map>     // For buttonMap
 #include <utility> // For std::pair
+#include <filesystem> // For file operations
+#include <cstdlib> // For GetCurrentPlatform
+
 #include "PropulsionSubsystem.hpp"
 #include "PropulsionManager.hpp"
 #include "EngineSelectorWindow.hpp"
+
+namespace fs = std::filesystem;
 
 PropulsionSubsystem::PropulsionSubsystem() {
     m_Name = "Propulsion";
@@ -29,17 +34,67 @@ void PropulsionSubsystem::Create() {
 
     int nameIndex = 0;
 
-
     // Engine UI
     Gtk::Label* pLabelEng = Gtk::make_managed<Gtk::Label>("Select Engine:");
     // Create the ComboBoxText (dropdown menu) for engine selection
     Gtk::ComboBoxText* pComboBoxEng = Gtk::make_managed<Gtk::ComboBoxText>();
-    // TODO: Replace with xml logic to find engines
-    pComboBoxEng->append("No Selection");
-    pComboBoxEng->append("AJ26-33A");
-    pComboBoxEng->append("GE-CF6-80C2-B1F");
-    pComboBoxEng->append("electric_1mw");
 
+    // Rudimentary File Logic to get names of files in data/engine
+    // NOTE: NOT XML LOGIC
+    // TODO: Function to check if Engine or Thruster
+    // Path to the directory
+    std::string basePath = fs::current_path().string();
+    std::string dirpath = basePath + "/jsbsimedit/data/engine";
+
+    // Define the part to remove from the path
+    std::string toRemove = "/jsbsimedit/out/build/";
+
+    toRemove += GetCurrentPlatform();
+
+    // if Mac: MacOS-Arm64-Clang-Debug
+    // if Windows: Windows-x64-Clang-Debug
+    // if Linux: Linux-x64-GCC-Debug
+    
+    // Find the position of the part to remove
+    size_t pos = dirpath.find(toRemove);
+    if (pos != std::string::npos) {
+        // Remove the specified part from the path
+        dirpath.erase(pos, toRemove.length());
+    }
+
+    // Now you can use this path to access the directory
+    if (fs::exists(dirpath) && fs::is_directory(dirpath)) {
+        for (const auto& entry : fs::directory_iterator(dirpath)) {
+            if (entry.is_regular_file()) {
+                std::cout << "File: " << entry.path().filename() << std::endl;
+            }
+        }
+    } else {
+        std::cerr << "Directory does not exist: " << dirpath << std::endl;
+    }
+    
+
+    pComboBoxEng->append("No Selection");
+
+    if (fs::exists(dirpath) && fs::is_directory(dirpath)) {
+        for (const auto& entry : fs::directory_iterator(dirpath)) {
+            if (entry.is_regular_file()) {
+                // Get the filename as a string
+                std::string filename = entry.path().filename().string();
+                
+                // Check if the filename ends with ".xml" and remove it
+                if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".xml") {
+                    filename = filename.substr(0, filename.size() - 4);  // Remove the ".xml" extension
+                }
+
+                // Add the filename (without .xml) to the dropdown
+                pComboBoxEng->append(filename);
+            }
+        }
+    } else {
+        std::cerr << "Directory does not exist: " << dirpath << std::endl;
+    }
+    
     // Set default selection
     pComboBoxEng->set_active(0); // Default to first option "No Selection"
 
@@ -195,4 +250,16 @@ bool PropulsionSubsystem::checkSelect(const std::string& inp) {
 
 
     return false;
+}
+
+std::string PropulsionSubsystem::GetCurrentPlatform() {
+    #ifdef _WIN32
+        return "Windows-x64-Clang-Debug"; // Windows
+    #elif defined(__APPLE__) && defined(__MACH__)
+        return "MacOS-Arm64-Clang-Debug"; // macOS
+    #elif defined(__linux__)
+        return "Linux-x64-GCC-Debug"; // Linux
+    #else
+        return "Unknown";
+    #endif
 }

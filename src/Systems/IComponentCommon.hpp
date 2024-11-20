@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "ComponentTypeEnum.hpp"
+#include "inc/XML_api.hpp"
 
 namespace DragDrop{
 
@@ -12,16 +13,23 @@ public:
     IComponentCommon(const std::string& compName, const ComponentType& type);
     std::string GetName() const;
     ComponentType GetComponentType() const;
+    float GetClipperMax() const;
+    float GetClipperMin() const;
+    bool IsClipperEnabled() const;
+    void SetClipperState(bool enable);
+    void SetClipperMax(float max);
+    void SetClipperMin(float min);
     void SetName(const std::string& newName);
     virtual void LoadGUI(Glib::RefPtr<Gtk::Application>& app) = 0;
 
 protected:
-    Glib::RefPtr<Gtk::Window> CreateWindow();
-    
     //Member Variables;
     std::string m_componentName {};
     ComponentType m_componentType;
-    const static std::string COMMON_TAB;
+    bool m_isClipperEnabled {};
+    float m_clipperMax {};
+    float m_clipperMin {};
+
 
 private:
 };

@@ -128,10 +128,17 @@ bool JSBEdit::XMLNode::SetName(std::string name)
     return m_Node.set_name(name.c_str());
 }
 
-void JSBEdit::XMLNode::AddChild(XMLNode child)
+bool JSBEdit::XMLNode::AddChild(XMLNode child)
 {
-    // todo handle returnedNode
-    pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
+    try {
+        // todo handle returnedNode
+        pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
+        return true;
+    }
+    catch (...) {
+        std::cerr << "Cannot add child: Unhandled Error";
+        return false;
+    }
     
 }
 
@@ -225,9 +232,9 @@ bool JSBEdit::XMLNode::RemoveChild(JSBEdit::XMLNode& child)
     return m_Node.remove_child(child.m_Node);
 }
 
-void JSBEdit::XMLNode::RemoveChildren()
+bool JSBEdit::XMLNode::RemoveChildren()
 {
-    m_Node.remove_children();
+    return m_Node.remove_children();
 }
 
 JSBEdit::XMLNode JSBEdit::XMLNode::GetParent()

@@ -63,11 +63,11 @@ namespace JSBEdit
 
         XMLNode GetChild(size_t index);
         std::vector<XMLNode> GetChildren();
-        void AddChild(XMLNode child);
+        bool AddChild(XMLNode child);
         bool AddChildren(std::vector<XMLNode>& children);
         bool RemoveChild(int index);
         bool RemoveChild(XMLNode& child);
-        void RemoveChildren();
+        bool RemoveChildren();
         XMLNode GetParent();
 
         // find the root of the node

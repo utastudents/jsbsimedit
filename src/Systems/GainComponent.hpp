@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponentCommon.hpp"
+#include "GainComponentWindow.hpp"
 
 namespace DragDrop{
 
@@ -17,25 +18,8 @@ public:
     std::string Input {};
     bool IsTableEnabled = false;
     float Gain { 0.0f };
-    bool IsClipperEnabled = false;
-    float MaxClip { 0.0f };
-    float MinClip { 0.0f };
 
 private:
-    //Member functions
-    void CreateCommonTab(Gtk::Notebook& note);
-    void HandleClipperLogic();
-    void SaveVariableChanges();
-    void DeleteWidgetData();
-
-    //Member Variables
-    Glib::RefPtr<Gtk::Window> m_window;
-    Glib::RefPtr<Gtk::Entry> m_nameEntry{};
-    Glib::RefPtr<Gtk::Entry> m_maxEntry{};
-    Glib::RefPtr<Gtk::Entry> m_minEntry{};
-    Glib::RefPtr<Gtk::CheckButton> m_clipperButton;
-    Glib::RefPtr<Gtk::Button> m_acceptButton{};
-    Glib::RefPtr<Gtk::Button> m_cancelButton{};
 
  };
 
