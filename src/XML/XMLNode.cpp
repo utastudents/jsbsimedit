@@ -133,9 +133,11 @@ bool JSBEdit::XMLNode::AddChild(XMLNode child)
     try {
         // todo handle returnedNode
         pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
+        return true;
     }
     catch (...) {
         std::cerr << "Cannot add child: Unhandled Error";
+        return false;
     }
     
 }
