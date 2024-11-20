@@ -68,7 +68,7 @@ void ChannelCanvas::SetCurrentChannelName(const std::string &channelName)
 void ChannelCanvas::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int width, int height)
 {
     //Drawing the back ground this color cause why not.
-    drawCont->set_source_rgb(1.0, 1.0, 0);
+    drawCont->set_source_rgb(0.54, 0.81, 0.94);
     drawCont->paint();
 
     auto result = m_channels.find(m_currentChannel);

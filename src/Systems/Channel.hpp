@@ -11,7 +11,10 @@
 #include "PIDComponent.hpp"
 #include "KinematicsComponent.hpp"
 #include "SummerComponent.hpp"
+#include "DeadbandComponent.hpp"
 #include <random>
+#include <set>
+#include <memory>
 
 namespace DragDrop
 {
@@ -33,13 +36,19 @@ namespace DragDrop
     private:
 		//Member Functions
 		std::string createName(ComponentType type);
-		void addDefaultComponent(ComponentType type, const std::string& name);
+		int generateUniqueId();
+		void addDefaultComponent(ComponentType type, const std::string& name, int uId);
 
 		//Member Variables
 		std::string m_channelName {};
-        std::unordered_map<std::string, IComponentCommon*> m_components {};
-		std::unordered_map<std::string, ComponentSprite> m_spriteComponents{};
+        std::unordered_map<int, std::shared_ptr<IComponentCommon>> m_components {};
+		std::unordered_map<int, ComponentSprite> m_spriteComponents{};
+		std::shared_ptr<std::set<std::string>> m_componentNameSet{};
+		std::set<int> m_uniqueIDSet{};
 		Glib::RefPtr<Gtk::Application> m_appRef;
+		std::mt19937 m_rng{ std::random_device{}() };
+		std::uniform_int_distribution<> m_distribuition{1,1000};
+		std::shared_ptr<Gtk::Window> m_winPtr;
 
 	};
 

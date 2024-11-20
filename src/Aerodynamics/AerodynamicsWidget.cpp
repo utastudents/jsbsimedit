@@ -15,41 +15,37 @@ AerodynamicsWidget::AerodynamicsWidget()
     set_start_child(hierarchyPanel);
     hierarchyPanel.populateTree(aerodynamicsNodes);
 
-    set_end_child(menuPanel);
+    // Set the default width of the split menu
+    set_position(500);
 }
 
 // Changes the menu to edit the selected node
 void AerodynamicsWidget::on_row_activated(std::shared_ptr<AerodynamicsNode> node) {
-    MenuPanel* newMenu = nullptr;
-
+    MenuPanel* newMenu;
     if (node != nullptr) {
         switch (node->getType()) {
             case AerodynamicsNode::Type::PROPERTY:
-                newMenu = Gtk::make_managed<MenuPanel>();
-                newMenu->setName("Show property menu");
+                newMenu = Gtk::make_managed<PropertyMenu>(node);
                 break;
             case AerodynamicsNode::Type::VALUE:
-                newMenu = Gtk::make_managed<MenuPanel>();
-                newMenu->setName("Show value menu");
+                newMenu = Gtk::make_managed<ValueMenu>(node);
                 break;
             case AerodynamicsNode::Type::FUNCTION:
-                newMenu = Gtk::make_managed<MenuPanel>();
-                newMenu->setName("Show function menu");
+                newMenu = Gtk::make_managed<FunctionMenu>(node);
                 break;
             case AerodynamicsNode::Type::TABLE:
-                newMenu = Gtk::make_managed<MenuPanel>();
-                newMenu->setName("Show table menu");
+                newMenu = Gtk::make_managed<TableMenu>(node);
                 break;
             case AerodynamicsNode::Type::AXIS:
-                newMenu = Gtk::make_managed<MenuPanel>();
-                newMenu->setName("Show axis menu");
+                newMenu = Gtk::make_managed<AxisMenu>(node);
                 break;
             default:
                 break;
         }
-    }
-    if (newMenu) {
-        set_end_child(*newMenu);
+        if (newMenu) {
+            set_end_child(*newMenu);
+            newMenu->update_signal.connect(sigc::mem_fun(*this, &AerodynamicsWidget::on_update));
+        }
     }
 }
 
@@ -164,6 +160,32 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
 
             appendChildren(row, i.GetChildren());
         }
+    }
+}
+
+void AerodynamicsWidget::on_update()
+{
+    updateData();
+}
+
+void AerodynamicsWidget::updateData()
+{
+    auto children = aerodynamicsNodes->children();
+    for(auto i : children){
+        updateData(i);
+    }
+}
+
+void AerodynamicsWidget::updateData(Gtk::TreeRow parent)
+{
+    auto children = parent.children();
+    for(auto i : children){
+        std::shared_ptr<AerodynamicsNode> node = i[columns.node];
+        if(node->getType() == AerodynamicsNode::VALUE) {
+            auto value = std::dynamic_pointer_cast<Value>(node);
+            i[columns.columnName] = std::to_string(value->getInput());
+        }
+        updateData(i);
     }
 }
 

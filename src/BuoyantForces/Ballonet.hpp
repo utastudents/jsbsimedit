@@ -6,11 +6,14 @@ class Ballonet : public Component
 {
     public:
         Ballonet(const std::string& name, Component::GasType gastype);
+        Ballonet(const std::string& name);
         ~Ballonet();
-        std::string getName();
-        void inputBlowerValue(double blowerValue);
+        void setBlowerValue(double blowerValue);
+        void setBlowerUnit(Component::Unit type);
+        double getBlowerValue() const;
+        Component::Unit getBlowerUnit() const;
     
     private:
-        std::string name;
         double blowerValue;
+        Component::Unit blowerUnits;
 };
