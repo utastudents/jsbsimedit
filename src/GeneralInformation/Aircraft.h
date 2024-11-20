@@ -1,6 +1,4 @@
-
-#ifndef AIRCRAFT_H
-#define AIRCRAFT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -17,10 +15,11 @@ private:
     Config config;
 
     std::string Description;
+    std::string Organization;
 
     std::vector<References> references; 
-    std::string limitations;                //Nam Ho handles
-    std::string notes;                      //Nam Ho handles
+    std::string limitations;                
+    std::string notes;                      
 
 public:
     Aircraft();
@@ -48,14 +47,19 @@ public:
     void setNotes(const std::string& notes);
     std::string getNotes() const;
 
-    bool setLimitations(std::string limitations);
+    void setLimitations(std::string limitations);
     std::string getLimitations();
 
-    bool setNotes(std::string notes);
+    void setNotes(std::string notes);
     std::string getNotes();
 
     void saveToFile();
     Aircraft loadFromFile();
+
+    void setOrganization(std::string organization);
+    std::string getOrganization() const;
+
 };
 
-#endif // AIRCRAFT_H
+
+

@@ -158,3 +158,9 @@ bool JSBEdit::XMLDoc::SaveToFile(const std::filesystem::path &path)
     }
     return false;   
 }
+
+//prints the nodes out to stdout
+void JSBEdit::XMLDoc::Print()
+{
+    doc.print(std::cout);
+}

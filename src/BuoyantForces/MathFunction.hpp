@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <vector>
 
@@ -10,8 +11,8 @@ class MathFunction
         void addFunction(std::string function);
         void addProperty(std::string property);
         void addValue(double value);
-        double radiation(double emissivity, double surfaceArea, double stefanConst);
-        double conduction(double surfaceArea, double conductivity);
+        void radiation(double emissivity, double surfaceArea, double stefanConst);
+        void conduction(double surfaceArea, double conductivity);
         void del();     // delete method
 
     private:

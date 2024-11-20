@@ -1,7 +1,7 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include "Component.hpp"
+
+#include "GasCell.hpp"
+#include "Ballonet.hpp"
 
 class BuoyantForces 
 {

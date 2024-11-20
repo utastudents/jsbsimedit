@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <XML/XMLDoc.hpp>
 namespace JSBEdit

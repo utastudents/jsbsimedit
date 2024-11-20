@@ -51,12 +51,18 @@ AttributeKV JSBEdit::XMLNode::GetAttribute(std::string attributeName)
     return AttributeKV(attributeName, m_Node.attribute(attributeName.c_str()).as_string());
 }
 
-void JSBEdit::XMLNode::AddAttributes(std::vector<AttributeKV> &attributes)
+bool JSBEdit::XMLNode::AddAttributes(std::vector<AttributeKV> &attributes)
 {
+    bool allAttributesAdded = true;
     for(auto& attribute: attributes)
     {
-        m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str();
+        pugi::xml_attribute returnedNode = m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str();
+
+        if (returnedNode.empty())
+            allAttributesAdded = false;
     }
+
+    return allAttributesAdded;
 }
 
 void JSBEdit::XMLNode::AddAttribute(AttributeKV attribute)
@@ -91,9 +97,9 @@ bool JSBEdit::XMLNode::ChangeAttributeValue(AttributeKV attribute)
     
 }
 
-void JSBEdit::XMLNode::RemoveAttributes()
+bool JSBEdit::XMLNode::RemoveAttributes()
 {
-    m_Node.remove_attributes();
+    return m_Node.remove_attributes();
 }
 
 void JSBEdit::XMLNode::RemoveAttribute(std::string attribute)
@@ -117,10 +123,9 @@ std::string JSBEdit::XMLNode::GetName()
     return m_Node.name();
 }
 
-void JSBEdit::XMLNode::SetName(std::string name)
+bool JSBEdit::XMLNode::SetName(std::string name)
 {
-    // Todo handle the bool 
-    m_Node.set_name(name.c_str());
+    return m_Node.set_name(name.c_str());
 }
 
 void JSBEdit::XMLNode::AddChild(XMLNode child)
@@ -130,13 +135,19 @@ void JSBEdit::XMLNode::AddChild(XMLNode child)
     
 }
 
-void JSBEdit::XMLNode::AddChildren(std::vector<XMLNode> &children)
+bool JSBEdit::XMLNode::AddChildren(std::vector<XMLNode> &children)
 {
+    //question
+    bool allChildrenAdded = true;
     for(auto& node: children)
     {
-        // todo handle returnedNode
         pugi::xml_node returnedNode = this->m_Node.append_move(node.m_Node);
+
+        if (returnedNode.empty())
+            allChildrenAdded = false;
     }
+
+    return allChildrenAdded;
 }
 
 JSBEdit::XMLNode JSBEdit::XMLNode::FindChild(std::string name)
@@ -181,39 +192,52 @@ std::vector<JSBEdit::XMLNode> JSBEdit::XMLNode::GetChildren()
     return nodes;
 }
 
-void JSBEdit::XMLNode::RemoveChild(int index)
+bool JSBEdit::XMLNode::RemoveChild(int index)
 {
+    //question
     pugi::xml_node_iterator iter = m_Node.begin();
     size_t curIdx = 0;
+
+    if (iter == m_Node.end())
+        return false;
+
     while (iter != m_Node.end())
     {
         if(curIdx == index)
         {
-            // todo: return the bool here
-            m_Node.remove_child(*iter);
+            return m_Node.remove_child(*iter);
         }
         iter++;
         curIdx++;
     }
+
+    return false;
 }
 
-void JSBEdit::XMLNode::RemoveChild(JSBEdit::XMLNode& child)
+bool JSBEdit::XMLNode::RemoveChild(JSBEdit::XMLNode& child)
 {
+    //question
     pugi::xml_node_iterator iter = m_Node.begin();
+
+    if (iter == m_Node.end())
+        return false;
     
-    // todo: return the bool here
-    m_Node.remove_child(child.m_Node);
-   
+    return m_Node.remove_child(child.m_Node);
 }
 
-void JSBEdit::XMLNode::RemoveChildren()
+bool JSBEdit::XMLNode::RemoveChildren()
 {
-    m_Node.remove_children();
+    return m_Node.remove_children();
 }
 
 JSBEdit::XMLNode JSBEdit::XMLNode::GetParent()
 {
     return JSBEdit::XMLNode(m_Node.parent());
+}
+
+JSBEdit::XMLNode JSBEdit::XMLNode::GetRoot()
+{
+    return XMLNode(m_Node.root());
 }
 
 bool JSBEdit::XMLNode::IsMixedContent()

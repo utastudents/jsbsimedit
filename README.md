@@ -34,8 +34,8 @@ JSBSimEdit is the spiritual successor to [JSBSimCommander](https://github.com/JS
 2. Download cmake ```sudo apt install cmake```
 3. Download gtkmm ```sudo apt install libgtkmm-4.0-dev```
 4. Clone source ```git clone https://github.com/utastudents/jsbsimedit.git```
-5. cd into directory and generator build files ```cmake --preset Linux-x64-Clang-Debug .``` make sure to note if you are using clang or gcc, you will need to change the preset
-6. Use CMake to build ```cmake --build out/build/Linux-x64-Clang-Debug```
+5. cd into directory and generator build files ```cmake --preset Linux-x64-GCC-Debug .``` make sure to note if you are using clang or gcc, you will need to change the preset
+6. Use CMake to build ```cmake --build out/build/Linux-x64-GCC-Debug```
 #### Windows
 Building on Windows Requires the following. Clang tooling is optional if you don't want to target llvm, the cl compiler will work just fine.
 - [Visual Studio 2022 community or VS build tools](https://visualstudio.microsoft.com/vs/community/)

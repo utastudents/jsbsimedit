@@ -1,37 +1,63 @@
 #pragma once
+
 #include <iostream>
 #include <vector>
 #include "MathFunction.hpp"
 
-// Forward declaration of Ballonet class
-class Ballonet;
 class Component
 {
     public:
         Component();
         virtual ~Component() = default;
-        void setLocation(double x, double y, double z);
-        void setDimensions(double x, double y, double z);
-        void inputOverpressure(double overpressure);
-        void inputValveCoefficient(double valveCoefficient);
-        void inputInitialFullness(double initFullness);
 
-        enum GasType {HELIUM, HYDROGEN, AIR};
+        enum GasType {AIR = 0, HELIUM = 1, HYDROGEN = 2};
         enum class Unit {
+            /*
+                Dimensions Elements
+            */
             WIDTH,              // Width
             RADIUS,             // Radius
+
+            /* 
+                Max Overpressure Units
+            */
+            PA,                 // PA
             PSI,                // PSI
+
+            /*
+                Measurement Units (Location & ) 
+                Measurement Units (Location & Dimensions) 
+            */
             M,                  // Meters
             IN,                 // Inches
-            PA,                 // PA
-            M4_SEC_KG,          // m^4 * sec / kg
+
+            /* 
+                Valve Coefficient Units
+            */
             FT4_SEC_SLUG,       // ft^4 * sec / slug
-            LB_FT_SEC_R,        // lb ft / (sec R)
+            M4_SEC_KG,          // m^4 * sec / kg
+            
+            /*
+                Heat Transfer Coefficent Units
+            */
             LBS_FT_SEC,         // lbs ft / sec
-            FT3_SEC             // ft^3 / sec
+            LB_FT_SEC_R,        // lb ft / (sec R)
+
+            /* 
+                Blower Input Units
+            */
+            FT3_SEC            // ft^3 / sec
         };
 
+        void setLocation(double locationX, double locationY, double locationZ);
+        void setDimensions(double x, double y, double z);
+        void setOverpressure(double overpressure);
+        void setValveCoefficient(double valveCoefficient);
+        void setInitialFullness(double initFullness);
+
         static std::string unitToString(Unit unit);
+        static int getBallonetCount();
+        static void setBallonetCount(int count);
 
     protected:
         GasType gasType;
@@ -46,29 +72,7 @@ class Component
         double mass;
         bool hasHeat;
         std::vector<MathFunction> heatFunctions;
+        static int ballonetCount;
+        
 };
 
-class GasCell : public Component
-{
-    public:
-        GasCell(double v, double t, double p, double m);
-        ~GasCell();
-
-    private:
-        std::vector<Ballonet> ballonets;
-};
-
-class Ballonet : public Component
-{
-    public:
-        Ballonet(const std::string& name, GasType gastype);
-        ~Ballonet();
-        int getBallonetNumber();
-        void createBallonetTab(int tabIndex);
-        void inputBlowerValue(double blowerValue);
-    
-    private:
-        std::string name;
-        int ballonetCount;
-        double blowerValue;
-};

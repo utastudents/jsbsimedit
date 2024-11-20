@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 class AerodynamicsNode {
 public:
@@ -12,6 +13,7 @@ public:
         TABLE,
         AXIS
     };
+    virtual ~AerodynamicsNode() = default;
 
     const std::string& getName() const;
     void setName(const std::string& name);
@@ -20,14 +22,14 @@ public:
     void setPath(const std::string& path);
     
     Type getType() const;
-private:
+protected:
     std::string name, path;
     Type type;
 };
 
-class Property: public AerodynamicsNode {
+class AeroProperty: public AerodynamicsNode {
 public:
-    Property();
+    AeroProperty();
 
     const std::string& getDescription() const;
     const std::string& getUnit() const;
@@ -70,14 +72,14 @@ public:
     const std::string& getColumnProperty() const;
     void setColumnProperty(const std::string& columnProperty);
 
-    const std::vector<double>& getTableData() const;
-    void setTableData(const std::vector<double>& tableData);
+    const std::string& getTableData() const;
+    void setTableData(const std::string& tableData);
 private:
     std::string rowProperty, columnProperty;
-    std::vector<double> tableData;
+    std::string tableData;
 };
 
-class Axis: public AerodynamicsNode {
+class Axis : public AerodynamicsNode {
 public:
     Axis();
 
@@ -92,15 +94,19 @@ public:
         RIGHT,
         DOWN
     };
+    static std::map<AxisName, std::string> axisNameToString;
+    static std::map<std::string, AxisName> stringToAxisName;
     enum UnitName {
         LBS,
         N,
         LBSFT,
         NM
     };
+    static std::map<UnitName, std::string> unitNameToString;
+    static std::map<std::string, UnitName> stringToUnitName;
 
-    AxisName getname() const;
-    void setAxisName(AxisName name);
+    AxisName getName() const;
+    void setName(AxisName name);
 
     UnitName getUnit() const;
     void setUnit(UnitName unit);

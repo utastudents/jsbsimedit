@@ -25,6 +25,7 @@ namespace JSBEdit
         bool ParseData();
     public:
         XMLDoc();
+        XMLDoc(pugi::xml_document&& newDoc) : doc {std::move(newDoc)} {} 
         ~XMLDoc();
         void LoadFileAndParse(const std::filesystem::path &path);
         void LoadStringAndParse(const std::string& xmlstring);
@@ -32,6 +33,7 @@ namespace JSBEdit
         XMLNode GetNode(std::string search);
         std::vector<XMLNode> GetNodes(std::string search);
         bool SaveToFile(const std::filesystem::path &path);
+        void Print();
 
     };
 

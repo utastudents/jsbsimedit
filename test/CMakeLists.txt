@@ -7,27 +7,28 @@ project(JSBSimEdit_Testing)
 
 
 # get the files recursively so that programmers don't have to touch this file
-file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/XML/*.cpp)
+#file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
 
 # filter out main.cpp
 list(FILTER SIMEDIT_SOURCES EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/src/Application/main.cpp")
 
-file(GLOB ADMIN_TESTS Administrative/*.cpp )
-file(GLOB AERO_TESTS Aerodynamics/*.cpp )
-file(GLOB BOUYANT_TESTS BouyantForces/*.cpp )
-file(GLOB ENGINE_TESTS Engines/*.cpp )
-file(GLOB EXTERNAL_RE_TESTS External-Reactions/*.cpp )
-file(GLOB FLIGHT_CONTROL_TESTS Flight-Control-Systems/*.cpp )
-file(GLOB GROUND_TESTS Ground-Reactions/*.cpp )
-file(GLOB INPUT_OUTPUT_TESTS Input-Output/*.cpp )
-file(GLOB MASS_BALANCE_TESTS Mass-Balance/*.cpp )
-file(GLOB METRICS_TESTS Metrics/*.cpp )
-file(GLOB PLOT_EDITING_TESTS Plot-Editing/*.cpp )
-file(GLOB PROPULSION_TESTS Propulsion/*.cpp )
-file(GLOB SYSTEM_TESTS System/*.cpp )
+#file(GLOB GENERAL_INFO_TESTS GeneralInformation/*.cpp )
+#file(GLOB AERO_TESTS Aerodynamics/*.cpp )
+#file(GLOB BOUYANT_TESTS BouyantForces/*.cpp )
+#file(GLOB ENGINE_TESTS Engines/*.cpp )
+#file(GLOB EXTERNAL_RE_TESTS External-Reactions/*.cpp )
+#file(GLOB FLIGHT_CONTROL_TESTS Flight-Control-Systems/*.cpp )
+#file(GLOB GROUND_TESTS Ground-Reactions/*.cpp )
+#file(GLOB INPUT_OUTPUT_TESTS Input-Output/*.cpp )
+#file(GLOB MASS_BALANCE_TESTS Mass-Balance/*.cpp )
+#file(GLOB METRICS_TESTS Metrics/*.cpp )
+#file(GLOB PLOT_EDITING_TESTS Plot-Editing/*.cpp )
+#file(GLOB PROPULSION_TESTS Propulsion/*.cpp )
+#file(GLOB SYSTEM_TESTS System/*.cpp )
 file(GLOB XML_TESTS XML/*.cpp )
 
-add_executable(${PROJECT_NAME}  ${ADMIN_TESTS} ${AERO_TESTS} ${BOUYANT_TESTS}
+add_executable(${PROJECT_NAME}  ${GENERAL_INFO_TESTS} ${AERO_TESTS} ${BOUYANT_TESTS}
  ${ENGINE_TESTS} ${EXTERNAL_RE_TESTS} ${FLIGHT_CONTROL_TESTS} ${GROUND_TESTS}
  ${INPUT_OUTPUT_TESTS} ${MASS_BALANCE_TESTS} ${METRICS_TESTS} ${PLOT_EDITING_TESTS}
  ${PROPULSION_TESTS} ${SYSTEM_TESTS} ${XML_TESTS} ${SIMEDIT_SOURCES}
