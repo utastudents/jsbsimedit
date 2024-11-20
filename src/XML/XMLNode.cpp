@@ -65,9 +65,27 @@ bool JSBEdit::XMLNode::AddAttributes(std::vector<AttributeKV> &attributes)
     return allAttributesAdded;
 }
 
-void JSBEdit::XMLNode::AddAttribute(AttributeKV attribute)
+bool JSBEdit::XMLNode::AddAttribute(AttributeKV attribute)
 {
-    m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str();
+    // returns true if attribute is added
+    try {
+        if (m_Node.append_attribute(attribute.first.c_str()) = attribute.second.c_str()) {
+            return true;
+        }
+        else {
+            throw("Attribute not added");
+        }
+    }
+    // catches known errors and returns false
+    catch(const std::string& e) {
+        std::cerr << "AddAttribute Error: " << e << std::endl;
+        return false;
+    }
+    // catches unknown errors and returns false
+    catch (...) {
+        std::cerr << "AddAtribute Error: Unknown Error" << std::endl;
+    }
+
 }
 
 void JSBEdit::XMLNode::SetAttributes(std::vector<AttributeKV> &attributes)
@@ -102,9 +120,27 @@ bool JSBEdit::XMLNode::RemoveAttributes()
     return m_Node.remove_attributes();
 }
 
-void JSBEdit::XMLNode::RemoveAttribute(std::string attribute)
+bool JSBEdit::XMLNode::RemoveAttribute(std::string attribute)
 {
-    m_Node.remove_attribute(attribute.c_str());
+    // returns true if attribute was removed
+    try {
+        if (m_Node.remove_attribute(attribute.c_str())) {
+            return true;
+        }
+        else {
+            throw("Attribute not Removed");
+        }
+    }
+    // catches known errors and returns false
+    catch (const std::string& e) {
+        std::cerr << "RemoveAttributes Error: " << e << std::endl;
+        return false;
+    }
+    // catches unknown errors and returns false
+    catch (...) {
+        std::cerr << "RemoveAttributes Error: Unhandled Error" << std::endl;
+        return false;
+    }
 }
 
 std::string JSBEdit::XMLNode::GetText()
