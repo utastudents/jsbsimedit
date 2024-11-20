@@ -2,9 +2,11 @@
 
 AxisMenu::AxisMenu(std::shared_ptr<AerodynamicsNode> node)
 {
+    // Make changes to this object vvv
     this->axis = std::dynamic_pointer_cast<Axis>(node);
     this->setHeader("Axis");
 
+    // Attach UI elements to this grid
     auto grid = Gtk::make_managed<Gtk::Grid>();
     grid->set_column_spacing(10);
     grid->set_row_spacing(10);

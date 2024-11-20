@@ -52,7 +52,7 @@ namespace JSBEdit
         // an empty string if there is no data here
         std::string GetText();
         // sets data in-between the start tag and end tag for the element.
-        void SetText(std::string text);
+        bool SetText(std::string text);
 
         std::string GetName();
         bool SetName(std::string name);
