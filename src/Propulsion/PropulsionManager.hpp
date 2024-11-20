@@ -8,6 +8,8 @@ class PropulsionManager {
 public:
     void showEngineThrusterSetup();
     void showTankSetup();
+    void createPair();
+    void createTank();
     void confirmDeletePair();
     void confirmDeleteTank();
     void handleEngineThrusterSelection();
