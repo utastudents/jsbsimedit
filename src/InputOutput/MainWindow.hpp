@@ -46,10 +46,13 @@ class MainWindow {
     	Gtk::Box propertyDisplayArea;
     	
 		//Buttons
-		Gtk::Button chooseButton;
-    	Gtk::Button addButton; // we will display an error message if the user tries to add a configuration without
-    	// selecting at least one data type
-    	Gtk::Button deleteButton;
+		// Gtk::ToggleButton chooseButton;
+    	// Gtk::ToggleButton addButton; // we will display an error message if the user tries to add a configuration without
+    	// // selecting at least one data type
+    	// Gtk::ToggleButton 	deleteButton;
+		// Glib::ustring 		chooseLabel;
+		// Glib::ustring  		addLabel;
+		// Glib::ustring  		deleteLabel;
     	
 		//Entry for custom property
     	Gtk::Entry customProperty;

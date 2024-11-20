@@ -22,7 +22,8 @@ MainWindow::MainWindow(Gtk::Grid& m_Grid)
 // create and manage textboxes and drop down lists
 void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) 
 {
-	xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
+	// Load the xml file and get the starting node
+  xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
 	JSBEdit::XMLNode node = xmlFile.GetNode("fdm_config/output");
 
 	// creates name label and text box, then attaches them to the grid
@@ -101,14 +102,18 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
 	// creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
 	m_Grid.attach(customProperty, 0, 8);
+
+ 
+
 }
 
 // create and manage checkboxes
 void MainWindow::onCheckBoxToggle() {}
 
-// create and manage buttons
-void MainWindow::onButtonClicked(Gtk::Grid& m_Grid) {
-	// creates choose button
+// Manage buttons when clicked
+void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
+{
+  // creates choose button
 	auto chooseLabel = Glib::ustring::compose("Choose");
 	auto chooseButton = Gtk::make_managed<Gtk::ToggleButton>(chooseLabel);
 	m_Grid.attach(*chooseButton, 1, 8);
@@ -125,22 +130,24 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid) {
 	auto deleteLabel = Glib::ustring::compose("Delete");
 	auto deleteButton = Gtk::make_managed<Gtk::ToggleButton>(deleteLabel);
 	m_Grid.attach(*deleteButton, 3, 8);
+
 }
 
 
 // Function to handle "Choose" button click
-void MainWindow::onChooseButtonClicked() {
-    /*
-    auto popUp = new Gtk::Window();
-    popUp->set_title("Properties");
-    popUp->set_default_size(1000, 700); //can be adjusted
-    
-      // Create a grid for the popup content
+void MainWindow::onChooseButtonClicked() 
+{
+  /*
+  auto popUp = new Gtk::Window();
+  popUp->set_title("Properties");
+  popUp->set_default_size(1000, 700); //can be adjusted
+  
+  // Create a grid for the popup content
 	auto popUpGrid = Gtk::make_managed<Gtk::Grid>();
 	popUp->set_child(*popUpGrid);
-    */
+  */
+  auto popUpWindow = new PopUpWindow();
+  popUpWindow->show(); // Show the popup window
     
-    auto popUpWindow = new PopUpWindow();
-
-    popUpWindow->show(); // Show the popup window
+    
 }
