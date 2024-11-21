@@ -64,7 +64,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     // There are a lot of reasons this is the wrong place to open
     // up the xml file.  But to get work progressing, this is a 
     // start.
-    xmlptr()->LoadFileAndParse({"../data/aircraft/f16/f16.xml"});
+    xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
     // when do the subsystems read the file?  when the objects are created? or ??
     // how does opening up a new file work? are all the subsystems destroyed and
     // then created.  hard problems, not for me to solve now.
@@ -105,7 +105,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
 
     try
     {
-        m_refBuilder = Gtk::Builder::create_from_file("../mainWindow.xml");
+        m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
     }
     catch (const Glib::Error& ex)
     {

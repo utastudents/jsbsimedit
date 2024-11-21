@@ -9,7 +9,7 @@ ExampleTab::ExampleTab(const Glib::RefPtr<Gtk::Application>& app
 {
     try
     {
-        m_refBuilder = Gtk::Builder::create_from_file("../mainWindow.xml");
+        m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
     }
     catch (const Glib::Error& ex)
     {
