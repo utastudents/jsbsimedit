@@ -16,11 +16,18 @@ protected:
     void onCancelButtonClicked();
     void loadPropertiesFromFile(const std::string& fileName);
 
+   // Helper methods
+    void applyFilter();
+    
 private:
-    Gtk::TreeModelColumn<int> index;
+    // Widgets
+    Gtk::Grid gridLayout;
+    Gtk::ScrolledWindow scrolledWindow; 
+    Gtk::TreeView propertyTreeView;
+    Gtk::Label filterLabel;
     Gtk::Label currentPropertyValue; // Displays currently selected property
-    Gtk::Button filterButton; // Button to filter the list of properties
     Gtk::Entry filterTextBox; // Input field for filtering properties
+    Gtk::Button filterButton; // Button to filter the list of properties
     Gtk::Button showAllButton; // Button to reset and show all properties
     Gtk::Button okButton; // OK button, confirms selection and closes pop-up
     Gtk::Button cancelButton; // Cancel button, discards changes and closes pop-up
@@ -29,10 +36,6 @@ private:
     int hiddenProperties; // Count of hidden properties after filtering
     Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
     Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
-    Gtk::TreeView propertyTreeView;
-    Gtk::Grid m_grid;
-    Gtk::Grid gridLayout;
-
 
 // Define property columns model
 class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
@@ -49,5 +52,6 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
     };
 
     PropertyColumns propertyColumns;
+    Glib::RefPtr<Gtk::ListStore> listStore;
     
 };
