@@ -36,11 +36,13 @@ PopUpWindow::PopUpWindow() {
 
 
     // Buttons
-    Gtk::Button filterButton{"Filter"};
+    Gtk::Button filterButton{"Filter"}; // Filter Button
     gridLayout.attach(filterButton, 0, 6, 2, 1);    // Row 7, 2 columns wide
     filterButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onFilterButtonClicked));
     
-
+    Gtk::Button showAllButton{"Show All"}; //Show All Button
+    gridLayout.attach(showAllButton, 2, 7, 2, 1);  // Row 7, next to filterButton
+    showAllButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onShowAllButtonClicked));
    
 }
 
