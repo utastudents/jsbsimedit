@@ -11,10 +11,9 @@ class GainComponentWindow : public ComponentWindowCommon
         GainComponentWindow(std::shared_ptr<IComponentCommon> comp, 
             std::shared_ptr<std::set<std::string>> setOfNames);
     private:
-        void CreateOtherTabs();
-        void SaveInfo();
         void AeroSurface();
         void Scheduled();
+        void SaveInfo();
 };
 
 };

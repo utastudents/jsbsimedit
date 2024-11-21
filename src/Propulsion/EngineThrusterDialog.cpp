@@ -33,6 +33,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*engine_header, 0, 0, 2, 1);
 
     // Engine Name Field
+    // TODO: Change name to selected engine name from dropdown 
     Gtk::Label* engine_name_label = new Gtk::Label("Engine Name:");
     engine_name_entry = new Gtk::Entry();
     grid.attach(*engine_name_label, 0, 1, 1, 1);
@@ -98,6 +99,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*feed_display, 1, 13, 1, 1);
 
     // Thruster Section
+    // TODO: Change name to selected thruster name from dropdown 
     Gtk::Label* thruster_header = new Gtk::Label("Thruster");
     grid.attach(*thruster_header, 0, 14, 2, 1);
 

@@ -18,6 +18,16 @@ void PropulsionManager::showTankSetup() {
     std::cout << "Displaying tank setup..." << std::endl;
 }
 
+void PropulsionManager::createPair() {
+    // TODO: Implement confirmation for creating a pair
+    std::cout << "Confirming created pair..." << std::endl;
+}
+
+void PropulsionManager::createTank() {
+    // TODO: Implement confirmation for creating a pair
+    std::cout << "Confirming created Tank..." << std::endl;
+}
+
 void PropulsionManager::confirmDeletePair() {
     // TODO: Implement confirmation for deleting a pair
     std::cout << "Confirming delete pair..." << std::endl;
