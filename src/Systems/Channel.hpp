@@ -12,6 +12,8 @@
 #include "KinematicsComponent.hpp"
 #include "SummerComponent.hpp"
 #include "DeadbandComponent.hpp"
+#include "GainComponentWindow.hpp"
+#include "KinematicsComponentWindow.hpp"
 #include <random>
 #include <set>
 #include <memory>
