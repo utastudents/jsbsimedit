@@ -23,7 +23,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_tab1(app, "HI TAB1"), m_tab2(app, "TAB2"), m_fcDemo(app)
 {
     set_title("JSBSim Commander");
-    set_default_size(300, 150);
+    set_default_size(800, 600);
     //We can put a PopoverMenuBar at the top of the box and other stuff below it.
     set_child(m_Box);
 
@@ -37,10 +37,6 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
 
     m_refActionGroup->add_action("save",
     sigc::mem_fun(*this, &ExampleWindow::on_menu_file_save)); //save
-
-    
-    m_refActionGroup->add_action("open",
-    sigc::mem_fun(*this, &ExampleWindow::on_menu_file_open)); //save
 
 
     //A menu item to open the file dialog:
@@ -64,9 +60,13 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     // There are a lot of reasons this is the wrong place to open
     // up the xml file.  But to get work progressing, this is a 
     // start.
-    xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
+
+
+    xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"}); //loading xml data
+
+    
     // when do the subsystems read the file?  when the objects are created? or ??
-    // how does opening up a new file work? are all the subsystems destroyed and
+    // how does opening up a new file work? are all the subsystems destroyed and   
     // then created.  hard problems, not for me to solve now.
 
     m_Notebook = new Gtk::Notebook();
@@ -86,31 +86,23 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_Subsystems.push_back(new ExternalReactionSubsystem());
     m_Subsystems.push_back(new GroundReactionsSubsystem());
 
-    // create the gtk objects inside
-    for (const auto &i : m_Subsystems)
-    {
-      i->Create();
-    }
+    
 
-    // make the pages part of the notebook
-    for (const auto &i : m_Subsystems)
-    {
-      m_Notebook->append_page(i->m_Grid,i->m_Name);
-    }
+    m_Notebook->append_page(m_Box,"Flight Control"); 
+    
+        // Call Create() for all subsystems
+        for (const auto &i : m_Subsystems) 
+        {
+            i->Create();
+        }
 
-    // connect the switch page callbook 
-    m_Notebook->signal_switch_page().connect(sigc::mem_fun(*this,
-              &ExampleWindow::on_notebook_switch_page) );
+        // Add subsystem pages to the notebook
+        for (const auto &i : m_Subsystems) {
+            m_Notebook->append_page(i->m_Grid, i->m_Name);
+        }
+    
 
-
-    try
-    {
-        m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
-    }
-    catch (const Glib::Error& ex)
-    {
-        std::cerr << "Error loading mainWindow.xml" << ex.what();
-    }
+    
     //Get the menubar and toolbar widgets, and add them to a container widget:
     //auto object = m_refBuilder->get_object("menubar");
     //auto gmenu = std::dynamic_pointer_cast<Gio::Menu>(object);
@@ -122,6 +114,15 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     //}
     //else
     //    g_warning("GMenu not found");
+
+    try
+    {
+        m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
+    }
+    catch (const Glib::Error& ex)
+    {
+        std::cerr << "Error loading mainWindow.xml" << ex.what();
+    }
 
     auto pToolbar = m_refBuilder->get_widget<Gtk::Box>("toolbar");
     if (pToolbar)
@@ -153,13 +154,12 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     else
         g_warning("tabbox not found");
 
-    m_Notebook->append_page(m_Box,"Systems");
 }
 
 bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app) //tabs
 {
-    m_stack.add(m_tab1, "Tab1", "Tab1");
-    m_stack.add(m_tab2, "Tab2", "Tab2");
+    //m_stack.add(m_tab1, "Tab1", "Tab1");
+    //m_stack.add(m_tab2, "Tab2", "Tab2");
     m_stack.add(m_fcDemo, "Flight Control", "Flight Control");
     m_stackSwitcher.set_stack(m_stack);
     m_stackSwitcher.set_visible(true);
@@ -169,24 +169,27 @@ bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app) //tabs
 
 void ExampleWindow::on_menu_file_new()
 {
-    std::cout << " New File" << std::endl;
-}
+if (!m_refFileDialog)
+    {
+        m_refFileDialog = Gtk::FileDialog::create();
+        m_refFileDialog->set_modal(true);
+    }
+    m_refFileDialog->open(*this, sigc::mem_fun(*this, &ExampleWindow::on_dialog_finish));
+    }
 
-void ExampleWindow::on_menu_file_save()
+void ExampleWindow::on_menu_file_save() //implement save function to over-write the xml
 {
-    std::cout << "File Save initiated" << std::endl;
-}
+std::cout << "Saving data..." << std::endl;
+    // Example logic: Save data to a file
+    std::ofstream file("output.txt");
+    if (file.is_open()) {
+        file << "Your data goes here.\n";
+        file.close();
+        std::cout << "Data saved successfully." << std::endl;
+    } else {
+        std::cerr << "Failed to open file for saving." << std::endl; //saving data to txt file
+    }}
 
-void ExampleWindow::on_menu_file_open() 
-{
-    std::cout << "Open Button initiated" << std::endl; //open file
-}
-
-
-void ExampleWindow::on_menu_file_quit()
-{
-    set_visible(false); //Closes the main window to stop the app->make_window_and_run().
-}
 
 void ExampleWindow::on_menu_file_files_dialog()
 {
@@ -197,6 +200,13 @@ void ExampleWindow::on_menu_file_files_dialog()
     }
     m_refFileDialog->open(*this, sigc::mem_fun(*this, &ExampleWindow::on_dialog_finish));
 }
+
+void ExampleWindow::on_menu_file_quit()
+{
+    set_visible(false); //Closes the main window to stop the app->make_window_and_run().
+}
+
+
 
 void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
 {
@@ -224,3 +234,5 @@ void ExampleWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_
 }
 
 };
+
+
