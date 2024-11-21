@@ -15,6 +15,7 @@ class BuoyantForcesSubsystem : public Subsystem
     void Create(); 
 
   protected:
+    Component::Unit GetUnitFromString(const std::string& unit_string) const;
     void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
     void on_dropdown_changed(const std::string& dropdown_name);
     void on_entry_activate(const std::string& key);

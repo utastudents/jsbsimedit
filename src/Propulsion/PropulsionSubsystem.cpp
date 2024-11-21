@@ -49,8 +49,9 @@ void PropulsionSubsystem::Create() {
     // Define the part to remove from the path
     std::string toRemove = "/jsbsimedit/out/build/";
 
-    toRemove += GetCurrentPlatform();
+    toRemove += GetCurrentPlatformDebug();
 
+    // TEMP SOLUTION FIX BEFORE LAUNCH
     // if Mac: MacOS-Arm64-Clang-Debug
     // if Windows: Windows-x64-Clang-Debug
     // if Linux: Linux-x64-GCC-Debug
@@ -178,20 +179,10 @@ void PropulsionSubsystem::Create() {
         }, 
         [this]() { // "Create Tank"
             // TODO: When tank is created append it to list of tank options
-            if (checkSelect(selectedTank)==true) {
-                m_PropManager.showTankSetup(); 
-            } else if (checkSelect(selectedTank)!=true){
-                // TODO: Reselect popup goes here
-                std::cout << "Reselect popup goes here" << std::endl;
-            }        
+            m_PropManager.showTankSetup(); 
         }, 
         [this]() { // "Tank Details"
-            if (checkSelect(selectedTank)==true) {
-                m_PropManager.showTankSetup(); 
-            } else if (checkSelect(selectedTank)!=true){
-                // TODO: Reselect popup goes here
-                std::cout << "Reselect popup goes here" << std::endl;
-            }
+            m_PropManager.showTankSetup(); 
         },
         [this]() { // "Delete Tank"
             // TODO: When tank is deleted remove it from list of tank options
@@ -251,8 +242,9 @@ bool PropulsionSubsystem::checkSelect(const std::string& inp) {
 
     return false;
 }
-
-std::string PropulsionSubsystem::GetCurrentPlatform() {
+// TEMP SOLUTION FIX BEFORE LAUNCH
+// Gets Debug version on an OS basis
+std::string PropulsionSubsystem::GetCurrentPlatformDebug() {
     #ifdef _WIN32
         return "Windows-x64-Clang-Debug"; // Windows
     #elif defined(__APPLE__) && defined(__MACH__)

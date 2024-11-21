@@ -1,10 +1,19 @@
 #pragma once
+
+#include <string>
+#include "Aircraft.h"
+#include "User.h"
+#include "Config.h"
 #include "inc/Subsystem.hpp"
 
 class GeneralInformationSubsystem : public Subsystem {
 public:
     GeneralInformationSubsystem();
     void Create();
+    void LoadFromXML(const std::string& filePath);
+    void UpdateDataFromGUI(Aircraft& aircraft, User& user, Config& config);
+    void ValidateAndSave();
+    void SaveToXML(const std::string& filePath, const Aircraft& aircraft, const User& user, const Config& config);
 
 private:
     // Define attributes to hold references to input widgets
