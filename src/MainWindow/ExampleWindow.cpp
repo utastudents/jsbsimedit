@@ -9,7 +9,7 @@
 #include "Propulsion/PropulsionSubsystem.hpp"
 #include "InputOutput/IOSubSystem.hpp"
 #include "MassBalance/MassBalanceSubsystem.hpp"
-#include "ExternalReactions/ExternalReactionSubsystem.hpp"
+#include "ExternalReactions/ExternalReactionsSubsystem.hpp"
 #include "GeneralInformation/GeneralInformationSubsystem.hpp"
 #include "GroundReactions/GroundReactionsSubsystem.hpp"
 
@@ -83,7 +83,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_Subsystems.push_back(new PropulsionSubsystem());
     m_Subsystems.push_back(new IOSubSystem());
     m_Subsystems.push_back(new MassBalanceSubsystem());
-    m_Subsystems.push_back(new ExternalReactionSubsystem());
+    m_Subsystems.push_back(new ExternalReactionsSubsystem());
     m_Subsystems.push_back(new GroundReactionsSubsystem());
 
     // create the gtk objects inside

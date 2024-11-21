@@ -5,7 +5,7 @@
 
 class ExternalReactionsSubsystem : public Subsystem {
     public:
-        std::string m_Name;
+        // std::string m_Name;
         ExternalReactionsSubsystem();
         void Create();
         void tabSetup(Gtk::Grid& ex_grid);

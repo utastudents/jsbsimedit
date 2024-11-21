@@ -1,17 +1,24 @@
 #include <iostream>
-#include "ExternalReactionSubsystem.hpp"
+#include "ExternalReactionsSubsystem.hpp"
 
-ExternalReactionSubsystem :: ExternalReactionSubsystem(){
+ExternalReactionsSubsystem :: ExternalReactionsSubsystem(){
     m_Name = "External Reactions";
-    std :: cout << "In ExternalReactionSubsystem constuctor" << std :: endl;
+    std :: cout << "In ExternalReactionsSubsystem constuctor" << std :: endl;
 }
 
-void ExternalReactionSubsystem :: Create(){
-    std :: cout << "in ExternalReactionSubsystem::Create" << std :: endl;
+void ExternalReactionsSubsystem :: Create(){
+    std :: cout << "in ExternalReactionsSubsystem::Create" << std :: endl;
 
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
     int row = 1;
+
+    m_notebook.set_margin(10);
+    m_notebook.set_expand();
+    m_Grid.attach(m_notebook, 0, 0);
+    m_pages.push_back(std::make_unique<Gtk::Grid>());
+    //tabSetup(*m_pages.back());
+    m_notebook.append_page(*m_pages.back(), "Force 1");
     
     //Force Name takes in a user input string
     auto nameLabel = Gtk::make_managed<Gtk::Label>("FORCE NAME");
@@ -58,4 +65,14 @@ void ExternalReactionSubsystem :: Create(){
     //direction
     auto directionLabel = Gtk:: make_managed <Gtk::Label> ("DIRECTION");
     m_Grid.attach(*directionLabel, 0, row + 4 );
+}
+
+
+void tabSetup(Gtk::Grid& ex_grid)
+{
+    //m_metricList = Gtk::StringList::create({"in, "})
+
+    auto forceLabel = Gtk::make_managed<Gtk::Label>("Force 1");
+
+
 }
