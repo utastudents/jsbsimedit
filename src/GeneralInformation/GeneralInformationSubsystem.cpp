@@ -183,45 +183,45 @@ void GeneralInformationSubsystem::Create()
 
   // Attach widgets to the grid
   m_Grid.attach(*aircraftNameLabel, 0, row);
-  m_Grid.attach(*aircraftNameTextbox, 1, row);
+  m_Grid.attach(*aircraftNameTextbox, 1, row, 2);
   m_Grid.attach(*filePathLabel, 3, row);
-  m_Grid.attach(m_filePathTextbox, 4, row++, 5);
+  m_Grid.attach(m_filePathTextbox, 4, row++, 40);
 
   m_Grid.attach(*releaseLevelLabel, 0, row);
-  m_Grid.attach(*releaseLevelDropdown, 1, row);
+  m_Grid.attach(*releaseLevelDropdown, 1, row, 1);
   m_Grid.attach(*configVersionLabel, 3, row);
   m_Grid.attach(*configVersionTextbox, 4, row);
-  m_Grid.attach(*flightModelVersionLabel, 5, row);
-  m_Grid.attach(*flightModelVersionTextbox, 6, row++);
+  m_Grid.attach(*flightModelVersionLabel, 9, row);
+  m_Grid.attach(*flightModelVersionTextbox, 10, row++, 20);
   
   m_Grid.attach(*authorLabel, 0, row);
-  m_Grid.attach(*authorTextbox, 1, row);
-  m_Grid.attach(*emailLabel, 3, row);
-  m_Grid.attach(*emailTextbox, 4, row++);
+  m_Grid.attach(*authorTextbox, 1, row, 3);
+  m_Grid.attach(*emailLabel, 4, row, 1);
+  m_Grid.attach(*emailTextbox, 5, row++, 39);
 
   m_Grid.attach(*organizationLabel, 0, row);
-  m_Grid.attach(*organizationFrame, 1, row, 1, 1); // Spans multiple columns for the text area
+  m_Grid.attach(*organizationFrame, 1, row, 3, 1); // Spans multiple columns for the text area
 
-  m_Grid.attach(*descriptionLabel, 3, row);
-  m_Grid.attach(*descriptionFrame, 4, row++, 1, 2);
+  m_Grid.attach(*descriptionLabel, 4, row);
+  m_Grid.attach(*descriptionFrame, 5, row++, 39, 2);
 
   m_Grid.attach(*fileDateLabel, 0, row);
-  m_Grid.attach(*fileDateTextbox, 1, row);
+  m_Grid.attach(*fileDateTextbox, 1, row, 3);
 
   auto spacer = Gtk::make_managed<Gtk::Label>();
   spacer->set_size_request(-1, 10);  // Set height to 10 pixels
   m_Grid.attach(*spacer, 0, row++);
 
   m_Grid.attach(*referencesLabel, 0, row);
-  m_Grid.attach(*referencesFrame, 1, row++, 8, 2);
+  m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
   m_Grid.attach(*spacer, 0, row++);
 
   m_Grid.attach(*limitationsLabel, 0, row);
-  m_Grid.attach(*limitationsFrame, 1, row++, 8, 2);
+  m_Grid.attach(*limitationsFrame, 1, row++, 43, 2);
   m_Grid.attach(*spacer, 0, row++);
 
   m_Grid.attach(*notesLabel, 0, row);
-  m_Grid.attach(*notesFrame, 1, row++, 8, 2);
+  m_Grid.attach(*notesFrame, 1, row++, 43, 2);
   m_Grid.attach(*spacer, 0, row++);
 }
 
