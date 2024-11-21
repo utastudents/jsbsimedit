@@ -1,4 +1,3 @@
-
 #include "PopUpWindow.hpp"
 
 PopUpWindow::PopUpWindow() {
@@ -34,6 +33,12 @@ PopUpWindow::PopUpWindow() {
     gridLayout.attach(filterLabel, 0, 6, 2, 1); // Row 6, spans 2 columns
     */
     gridLayout.attach(filterTextBox, 2, 6, 6, 1); // Row 6, spans 6 columns
+
+
+    // Buttons
+    Gtk::Button filterButton{"Filter"};
+    gridLayout.attach(filterButton, 0, 6, 2, 1);    // Row 7, 2 columns wide
+    filterButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onFilterButtonClicked));
     
 
    
