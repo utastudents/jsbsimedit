@@ -1,17 +1,49 @@
 #pragma once
+#ifndef SWITCH_COMPONENT_HPP
+#define SWITCH_COMPONENT_HPP
 
-#include "ComponentWindowCommon.hpp"
+#include <string>
+#include <vector>
+#include <optional>
+#include <utility>
 
-namespace DragDrop {
+class SwitchComponent {
+public:
+    // Constructors
+    SwitchComponent(const std::string& name);
 
-    class SwitchComponentWindow : public ComponentWindowCommon {
-    public:
-        SwitchComponentWindow(std::shared_ptr<IComponentCommon> comp,
-                              std::shared_ptr<std::set<std::string>> setOfNames);
+    // Setters and Getters
+    void setName(const std::string& name);
+    const std::string& getName() const;
 
-    private:
-        void CreateSwitchTab();
-        void SaveInfo(); // Saves user inputs
-    };
+    void setInput(const std::string& input);
+    const std::string& getInput() const;
 
+    void setDefault(double defaultValue);
+    std::optional<double> getDefault() const;
+
+    void addTestCondition(double testValue, double resultValue);
+    const std::vector<std::pair<double, double>>& getTestConditions() const;
+
+    void setClipLimits(double min, double max);
+    std::optional<std::pair<double, double>> getClipLimits() const;
+
+    void setOutput(const std::string& output);
+    const std::string& getOutput() const;
+
+    // Method to apply switch logic based on conditions
+    double applySwitch(double inputValue);
+
+private:
+    std::string name;
+    std::string input;
+    std::optional<double> defaultValue;
+    std::vector<std::pair<double, double>> testConditions;
+    std::optional<std::pair<double, double>> clipLimits;
+    std::string output;
+
+    // Helper function to clip value within the specified limits
+    double clipValue(double value);
 };
+
+#endif // SWITCH_COMPONENT_HPP
