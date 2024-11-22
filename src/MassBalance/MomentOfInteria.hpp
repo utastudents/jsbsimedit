@@ -1,5 +1,7 @@
 #pragma once
 
+namespace MassBalance{
+
 // Fuselage Class
 class Fuselage {
 public:
@@ -88,3 +90,5 @@ private:
     Wing rightWing;
     Tail tail;
 };
+
+}

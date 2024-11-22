@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace MassBalance{
+
 class Location {
 private:
     float x, y, z;           // Coordinates
@@ -23,4 +25,4 @@ public:
 
 };
 
-
+}

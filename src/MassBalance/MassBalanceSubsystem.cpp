@@ -3,6 +3,7 @@
 #include "Location.hpp" 
 #include <vector>
 
+
 MassBalanceSubsystem::MassBalanceSubsystem() {
     m_Name = "Mass Balance";
     std::cout << "In MassBalanceSubsystem constructor" << std::endl; 
@@ -10,6 +11,11 @@ MassBalanceSubsystem::MassBalanceSubsystem() {
 
 void MassBalanceSubsystem::Create() {
     std::cout << "In MassBalanceSubsystem::Create" << std::endl;
+
+    //test values for location object
+    m_Location.setLocation(1.0f, 2.0f, 3.0f);
+    
+    
 
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
@@ -44,6 +50,7 @@ void MassBalanceSubsystem::Create() {
     auto entry_x = Gtk::make_managed<Gtk::Entry>();
     entry_x->set_editable(false);
     m_Grid.attach(*entry_x, 1, 4);
+    entry_x->set_text(std::to_string(m_Location.getX()));
 
     //y coord label
     auto label_y = Gtk::make_managed<Gtk::Label>("y=");
@@ -53,15 +60,17 @@ void MassBalanceSubsystem::Create() {
     auto entry_y = Gtk::make_managed<Gtk::Entry>();
     entry_x->set_editable(false);
     m_Grid.attach(*entry_y, 3, 4);
+    entry_y->set_text(std::to_string(m_Location.getY()));
 
     //z coord label
-    auto label_z = Gtk::make_managed<Gtk::Label>("\tz=\t\t");
+    auto label_z = Gtk::make_managed<Gtk::Label>("z=");
     m_Grid.attach(*label_z, 4, 4);
 
     //z box
     auto entry_z = Gtk::make_managed<Gtk::Entry>();
     entry_x->set_editable(false);
     m_Grid.attach(*entry_z, 5, 4);
+    entry_z->set_text(std::to_string(m_Location.getZ()));
 
     // location units dropdown
     auto combo_loc_units = Gtk::make_managed<Gtk::ComboBoxText>();
@@ -130,3 +139,4 @@ void MassBalanceSubsystem::Create() {
         m_Grid.attach(*button_del_mass, 4, 14, 4, 1); 
 
 }
+

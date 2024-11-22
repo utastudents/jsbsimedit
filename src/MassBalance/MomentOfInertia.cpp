@@ -1,6 +1,8 @@
 #include "MomentOfInteria.hpp"
 #include <iostream>
 
+namespace MassBalance{
+
 //Fuselage constructor
 Fuselage::Fuselage(double mass, double length, double radius) 
     : mass(mass), length(length), radius(radius) {}
@@ -74,3 +76,5 @@ double Airplane::totalInertiaAboutVerticalAxis() const {
              + rightWing.inertiaAboutSpanwiseAxis()
              + tail.inertiaAboutCenterAxis();
     }
+
+}

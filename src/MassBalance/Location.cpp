@@ -1,6 +1,8 @@
 #include "Location.hpp"
 #include <iostream>
 
+namespace MassBalance{
+
 // Constructor 
 Location::Location(float x, float y, float z, const std::string& units) 
     : x(x), y(y), z(z), units(units) {}
@@ -34,3 +36,4 @@ std::string Location::getUnits() const {
     return units;
 }
 
+}
