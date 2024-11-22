@@ -10,6 +10,13 @@ Tank::Tank(int fuelType, double tankCapacity, double tankFillValue)
     : fuelType(fuelType), tankCapacity(tankCapacity), tankFillValue(tankFillValue) {
     // Constructor implementation can include validation or logging if necessary
 }
+/*Tank::Tank(int fuelType, double tankCapacity, double tankFillValue)
+    : fuelType_(fuelType), tankCapacity_(tankCapacity), tankFillValue_(tankFillValue) {}
+*/
+/*void Tank::loadTankFromXML() {
+    // Implement the logic for loading tank data from XML
+    std::cout << "Loading tank data from XML..." << std::endl;
+}*/
 
 // Method to load tank data from an XML file
 // This method will be implemented to parse an XML file and initialize the tank attributes.
@@ -35,4 +42,18 @@ double Tank::getTankCapacity() const {
 // Returns the current fill level of the tank.
 double Tank::getTankFillValue() const {
     return tankFillValue;
+}
+
+
+//Setters
+void Tank::setFuelType(int type) {
+    fuelType = type;
+}
+
+void Tank::setTankCapacity(double capacity) {
+    tankCapacity = capacity;
+}
+
+void Tank::setTankFillValue(double fillValue) {
+    tankFillValue = fillValue;
 }
