@@ -3,11 +3,12 @@
 
 #include <string>
 #include <list>
+#include <gtkmm.h> 
+#include "Tank.hpp"
 
 class PropulsionManager {
 public:
-    void showEngineThrusterSetup();
-    void showTankSetup();
+
     void createPair();
     void createTank();
     void confirmDeletePair();
@@ -19,6 +20,8 @@ public:
     void displayTankDetails();
     void saveEngineThrusterData();
     void saveTankData();
+    void showEngineThrusterSetup(); 
+    void showTankSetup();
 
 };
 
