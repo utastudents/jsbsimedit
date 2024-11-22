@@ -46,11 +46,17 @@ PopUpWindow::PopUpWindow() {
     gridLayout.attach(showAllButton, 2, 7, 2, 1);  // Row 7, next to filterButton
     showAllButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onShowAllButtonClicked));
    
-   //Adding Ok button
+   //Added Ok button
     Gtk::Button okButton{"OK"};
     gridLayout.attach(okButton, 6, 7, 2, 1); 
     okButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onOkButtonClicked));
+    
+    //Added Cancel button
+    Gtk::Button cancelButton{"Cancel"};
+    gridLayout.attach(cancelButton, 8, 7, 2, 1);  
+    cancelButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onCancelButtonClicked));
 }
+
 
 
 PopUpWindow::~PopUpWindow() {}
