@@ -49,6 +49,7 @@ PopUpWindow::PopUpWindow() {
    //Adding Ok button
     Gtk::Button okButton{"OK"};
     gridLayout.attach(okButton, 6, 7, 2, 1); 
+    okButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onOkButtonClicked));
 }
 
 
