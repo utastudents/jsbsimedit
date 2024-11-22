@@ -2,6 +2,8 @@
 #include <cmath>
 #include <algorithm>
 
+namespace DragDrop{
+
 // Constructor
 DeadbandComponent::DeadbandComponent(const std::string& name, const std::string& input, double width)
     : name(name), input(input), width(width), clipLimits(std::nullopt) {}
@@ -60,3 +62,5 @@ double DeadbandComponent::clipValue(double value) {
     }
     return value;
 }
+
+};
