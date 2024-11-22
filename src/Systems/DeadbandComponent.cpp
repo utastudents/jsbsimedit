@@ -1,104 +1,67 @@
-#include "DeadbandComponent.hpp"
+#include "DeadbandComponentWindow.hpp"
 
-namespace DragDrop{
+namespace DragDrop {
 
-DeadbandComponent::DeadbandComponent(const std::string& name)
-    : IComponentCommon(name, ComponentType::DEADBAND)
-{
+DeadbandComponentWindow::DeadbandComponentWindow(std::shared_ptr<IComponentCommon> comp, 
+                                                 std::shared_ptr<std::set<std::string>> setOfNames)
+    : ComponentWindowCommon(comp, setOfNames) {
+    CreateCommonTab();
+    CreateDeadbandTab();
 }
 
-void DeadbandComponent::LoadGUI(Glib::RefPtr<Gtk::Application>& app)
-{
-    //Load GUI here, add signal handlers and callbacks to uiBox.
-    //create the window
-    m_window = Glib::RefPtr<Gtk::Window>(new Gtk::Window());
-    m_window->set_size_request(300, 400);
-    m_window->set_title(this->m_componentName);
-    //Makes its so you can't interact with other windows but this
-    m_window->set_modal(true);
+void DeadbandComponentWindow::CreateDeadbandTab() {
+    Gtk::Box container;
+    container.set_vexpand(true);
+    container.set_hexpand(true);
 
-    //Contains window contents..
-    Gtk::Box windowContainer{};
-    windowContainer.set_vexpand(true);
-    windowContainer.set_hexpand(true);
-    //Notebook for our tabs
-    Gtk::Notebook noteBook{};
-    CreateCommonTab(noteBook); //Make commontab
-    windowContainer.append(noteBook);
-    
-    //Add window container, then show the window
-    m_window->set_child(windowContainer);
-    app->add_window(*m_window);
-    m_window->show();
+    Gtk::Grid grid{};
+    grid.set_margin_top(15);
+    grid.set_hexpand(true);
+    grid.set_vexpand(true);
+
+    // Scrollable area
+    Gtk::ScrolledWindow scrolled;
+    scrolled.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+    scrolled.set_child(grid);
+    container.append(scrolled);
+
+    // Title
+    Gtk::Label title{"Deadband Component"};
+    grid.attach(title, 0, 0, 2);
+
+    // Name input
+    Gtk::Label nameLabel{"Name:"};
+    Gtk::Entry nameEntry{};
+    nameEntry.set_placeholder_text("Enter component name");
+    nameEntry.set_hexpand(true);
+    grid.attach(nameLabel, 0, 1);
+    grid.attach(nameEntry, 1, 1);
+
+    // Width and Gain
+    Gtk::Label widthLabel{"Width:"};
+    Gtk::Label gainLabel{"Gain:"};
+    Gtk::Entry widthEntry{};
+    Gtk::Entry gainEntry{};
+    grid.attach(widthLabel, 0, 2);
+    grid.attach(widthEntry, 1, 2);
+    grid.attach(gainLabel, 0, 3);
+    grid.attach(gainEntry, 1, 3);
+
+    // OK and Cancel buttons
+    Gtk::Button okButton{"OK"};
+    Gtk::Button cancelButton{"Cancel"};
+    grid.attach(okButton, 0, 4);
+    grid.attach(cancelButton, 1, 4);
+
+    m_noteBook.append_page(container, "Deadband");
 }
 
-void DeadbandComponent::CreateCommonTab(Gtk::Notebook& note)
-{                                       
-  //Tabs contents in the box
-  Gtk::Box tabContainer{};
-  tabContainer.set_vexpand(true);
-  tabContainer.set_hexpand(true);
-
-  //Make grid
-  Gtk::Grid g{};
-  //Name layout.
-  
-  //the grid size is 11x9, where it starts from 0 
-  g.set_margin_top(25);
-  g.set_hexpand(true);
-  g.set_vexpand(true);
-
-  Gtk::Label width{"Width: "};
-  Gtk::Label gain{"Gain: "};
-
-  m_widthEntry = Glib::RefPtr<Gtk::Entry>(new Gtk::Entry);
-  m_widthEntry->set_text(std::to_string(WIDTH));
-  
-  g.attach(width,0,1);
-  g.attach(*m_widthEntry,1,1);
-
-
-  m_gainEntry = Glib::RefPtr<Gtk::Entry>(new Gtk::Entry);
-  m_gainEntry->set_text(std::to_string(GAIN));
-
-  g.attach(gain,0,2);
-  g.attach(*m_gainEntry,1,2);
-  
-  
-  m_acceptButton = Glib::RefPtr<Gtk::Button>(new Gtk::Button{"Accept"});
-  m_acceptButton->signal_clicked().connect(sigc::mem_fun(*this, &DeadbandComponent::SaveVariableChanges), false);
-  m_cancelButton = Glib::RefPtr<Gtk::Button>(new Gtk::Button{"Cancel"});
-  m_cancelButton->signal_clicked().connect(sigc::mem_fun(*this, &DeadbandComponent::DeleteWidgetData), false);
-  
-  g.attach(*m_acceptButton,0,7);
-  g.attach(*m_cancelButton,1,7);
-  
-  m_acceptButton->set_margin_top(20); // Adds spacing above the Accept button
-  m_cancelButton->set_margin_top(20);
-
-  //Add grid to box
-  tabContainer.append(g);
-  //Add tab to notebook
-  note.append_page(tabContainer, "Deadband");
+void DeadbandComponentWindow::HandleRadioSelection() {
+    // Handle the selection logic for DB-16 and DB-17
 }
 
-void DeadbandComponent::SaveVariableChanges()
-{
-  //Close up
-  DeleteWidgetData();
-}
-
-void DeadbandComponent::DeleteWidgetData()
-{
-  if(m_acceptButton)
-    m_acceptButton.reset();
-  if(m_cancelButton)
-    m_cancelButton.reset();
-  if(m_window)
-  {
-    m_window->close();
-    m_window.reset();
-  }
+void DeadbandComponentWindow::SaveInfo() {
+    // Logic to save user inputs
 }
 
 };
