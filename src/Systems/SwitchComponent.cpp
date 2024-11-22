@@ -1,78 +1,59 @@
 #include "SwitchComponent.hpp"
-#include <algorithm>
 
-namespace DragDrop{
+namespace DragDrop {
 
-// Constructor
-SwitchComponent::SwitchComponent(const std::string& name)
-    : name(name), defaultValue(std::nullopt), clipLimits(std::nullopt) {}
-
-// Setters and Getters
-void SwitchComponent::setName(const std::string& name) {
-    this->name = name;
+SwitchComponentWindow::SwitchComponentWindow(std::shared_ptr<IComponentCommon> comp, 
+                                             std::shared_ptr<std::set<std::string>> setOfNames)
+    : ComponentWindowCommon(comp, setOfNames) {
+    CreateCommonTab();
+    CreateSwitchTab();
 }
 
-const std::string& SwitchComponent::getName() const {
-    return name;
+void SwitchComponentWindow::CreateSwitchTab() {
+    Gtk::Box container;
+    container.set_vexpand(true);
+    container.set_hexpand(true);
+
+    Gtk::Grid grid{};
+    grid.set_margin_top(15);
+    grid.set_hexpand(true);
+    grid.set_vexpand(true);
+
+    // Scrollable area
+    Gtk::ScrolledWindow scrolled;
+    scrolled.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+    scrolled.set_child(grid);
+    container.append(scrolled);
+
+    // Title
+    Gtk::Label title{"Switch Component"};
+    grid.attach(title, 0, 0, 2);
+
+    // Name input
+    Gtk::Label nameLabel{"Name:"};
+    Gtk::Entry nameEntry{};
+    nameEntry.set_placeholder_text("Enter component name");
+    nameEntry.set_hexpand(true);
+    grid.attach(nameLabel, 0, 1);
+    grid.attach(nameEntry, 1, 1);
+
+    // Add & Remove Buttons
+    Gtk::Button addButton{"Add"};
+    Gtk::Button removeButton{"Remove"};
+    grid.attach(addButton, 0, 2);
+    grid.attach(removeButton, 1, 2);
+
+    // OK and Cancel buttons
+    Gtk::Button okButton{"OK"};
+    Gtk::Button cancelButton{"Cancel"};
+    grid.attach(okButton, 0, 3);
+    grid.attach(cancelButton, 1, 3);
+
+    m_noteBook.append_page(container, "Switch");
 }
 
-void SwitchComponent::setInput(const std::string& input) {
-    this->input = input;
-}
-
-const std::string& SwitchComponent::getInput() const {
-    return input;
-}
-
-void SwitchComponent::setDefault(double defaultValue) {
-    this->defaultValue = defaultValue;
-}
-
-std::optional<double> SwitchComponent::getDefault() const {
-    return defaultValue;
-}
-
-void SwitchComponent::addTestCondition(double testValue, double resultValue) {
-    testConditions.emplace_back(testValue, resultValue);
-}
-
-const std::vector<std::pair<double, double>>& SwitchComponent::getTestConditions() const {
-    return testConditions;
-}
-
-void SwitchComponent::setClipLimits(double min, double max) {
-    clipLimits = std::make_pair(min, max);
-}
-
-std::optional<std::pair<double, double>> SwitchComponent::getClipLimits() const {
-    return clipLimits;
-}
-
-void SwitchComponent::setOutput(const std::string& output) {
-    this->output = output;
-}
-
-const std::string& SwitchComponent::getOutput() const {
-    return output;
-}
-
-// Apply switch logic based on test conditions
-double SwitchComponent::applySwitch(double inputValue) {
-    for (const auto& condition : testConditions) {
-        if (inputValue == condition.first) {
-            return clipValue(condition.second);
-        }
-    }
-    // Return default if no condition is met
-    return defaultValue.has_value() ? clipValue(defaultValue.value()) : 0.0;
-}
-
-// Clip value within limits
-double SwitchComponent::clipValue(double value) {
-    if (clipLimits) {
-        return std::clamp(value, clipLimits->first, clipLimits->second);
-    }
-    return value;
+void SwitchComponentWindow::SaveInfo() {
+    // Logic to save user inputs
 }
 
 };
