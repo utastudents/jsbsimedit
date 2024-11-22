@@ -1,4 +1,4 @@
-#include "DeadbandComponentWindow.hpp"
+#include "DeadbandComponent.hpp"
 
 namespace DragDrop {
 
