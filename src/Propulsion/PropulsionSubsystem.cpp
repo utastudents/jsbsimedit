@@ -250,7 +250,7 @@ std::string PropulsionSubsystem::GetCurrentPlatformDebug() {
     #elif defined(__APPLE__) && defined(__MACH__)
         return "MacOS-Arm64-Clang-Debug"; // macOS
     #elif defined(__linux__)
-        return "Linux-x64-GCC-Debug"; // Linux
+        return "Linux-x64-Clang-Debug"; // Linux
     #else
         return "Unknown";
     #endif
