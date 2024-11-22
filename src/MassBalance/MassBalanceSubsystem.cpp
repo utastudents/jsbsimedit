@@ -15,6 +15,7 @@ void MassBalanceSubsystem::Create() {
     //test values for location object
     m_Location.setLocation(1.0f, 2.0f, 3.0f);
     
+    m_Emptymass.setEmptyMass(50.0f);
     
 
     m_Grid.set_row_spacing(10);
@@ -30,6 +31,7 @@ void MassBalanceSubsystem::Create() {
     auto entry_empty_weight = Gtk::make_managed<Gtk::Entry>();
     entry_empty_weight->set_editable(false);
     m_Grid.attach(*entry_empty_weight, 1, 0);
+    entry_empty_weight->set_text(std::to_string(m_Emptymass.getEmptyMass()));
 
     // dropdown to choose lbs or kg for empty mass
     auto combo_units = Gtk::make_managed<Gtk::ComboBoxText>();
