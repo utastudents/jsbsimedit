@@ -16,7 +16,7 @@ namespace JSBEdit
 	public:
 		ExampleWindow(const Glib::RefPtr<Gtk::Application> &app);
 		~ExampleWindow() = default;
- 
+		  void someFunction(); 
 	protected:
 		// Signal handlers:
 		bool load_stack(const Glib::RefPtr<Gtk::Application> &app);

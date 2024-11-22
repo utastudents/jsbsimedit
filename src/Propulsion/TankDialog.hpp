@@ -1,4 +1,4 @@
-#ifndef TANK_DIALOG_HPP
+/*#ifndef TANK_DIALOG_HPP
 #define TANK_DIALOG_HPP
 #include <map>
 #include <string>
@@ -28,4 +28,33 @@ private:
 
 };
 
-#endif // TANK_DIALOG_HPP
+#endif // TANK_DIALOG_HPP*/
+
+#pragma once
+#ifndef TANK_DIALOG_H
+#define TANK_DIALOG_H
+
+#include <gtkmm.h>
+#include "Tank.hpp"
+
+class TankDialog : public Gtk::Dialog {
+public:
+    TankDialog(Gtk::Window& parent, Tank& tank);
+    bool run_dialog(); 
+    void showReselectPopup();
+    Dialog set_modal();
+    Dialog show();
+
+private:
+    Tank& tank_; // Reference to the Tank object
+    Gtk::Grid grid;
+    Gtk::ComboBoxText typeComboBox;
+    Gtk::Entry capacityEntry;
+    Gtk::Button createButton;
+
+    bool isValidSelection(); // Validate user input
+    //void showReselectPopup(); // Show error popup
+    void onCreateButtonClicked(); // Handle Create button click
+};
+
+#endif // TANKDIALOG_HPP

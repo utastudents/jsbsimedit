@@ -11,10 +11,14 @@
 
 namespace fs = std::filesystem;
 
-PropulsionSubsystem::PropulsionSubsystem() {
+/*PropulsionSubsystem::PropulsionSubsystem() {
     m_Name = "Propulsion";
     std::cout << "In PropulsionSubsystem constructor" << std::endl;
-}
+}*/
+
+PropulsionSubsystem::PropulsionSubsystem(Gtk::Window& parent) 
+    : Gtk::Window(), m_PropManager(parent) {}
+
 
 void PropulsionSubsystem::Create() {
     std::cout << "in PropulsionSubsystem::Create" << std::endl;
@@ -179,7 +183,9 @@ void PropulsionSubsystem::Create() {
         [this]() { // "Create Tank"
             // TODO: When tank is created append it to list of tank options
             if (checkSelect(selectedTank)==true) {
-                m_PropManager.showTankSetup(); 
+                //Tank myTank(fuelType, tankCapacity, tankFillValue);  // Replace with actual values
+                m_PropManager.showTankSetup();         // Pass the required arguments
+
             } else if (checkSelect(selectedTank)!=true){
                 // TODO: Reselect popup goes here
                 std::cout << "Reselect popup goes here" << std::endl;
@@ -263,3 +269,4 @@ std::string PropulsionSubsystem::GetCurrentPlatform() {
         return "Unknown";
     #endif
 }
+

@@ -1,4 +1,4 @@
-#include <gtkmm.h>
+/*#include <gtkmm.h>
 #include <iostream>
 #include <map>
 #include "TankDialog.hpp"
@@ -66,4 +66,94 @@ void TankDialog::defaultValueFill(){
     // TODO: Implement defaultValueFill logic
     std::cout << "Unable to fill tank dialog box..." << std::endl;
 }
+*/
 
+#include "TankDialog.hpp"
+#include <gtkmm.h>
+#include <iostream>
+#include <string>
+#include <map>
+#include "Tank.hpp"
+
+
+// Constructor
+TankDialog::TankDialog(Gtk::Window& parent, Tank& tank)
+    : Gtk::Dialog("Tank Setup", parent), tank_(tank) {
+    set_default_size(400, 200);
+
+    // Configure grid layout
+    grid.set_column_spacing(10);
+    grid.set_row_spacing(10);
+    get_content_area()->append(grid);
+
+    // Add ComboBox for selecting tank type
+    typeComboBox.append("FUEL");
+    typeComboBox.append("WATER");
+    typeComboBox.set_active_text(tank.getFuelType() == 0 ? "FUEL" : "WATER");
+    grid.attach(*Gtk::make_managed<Gtk::Label>("Type:"), 0, 0);
+    grid.attach(typeComboBox, 1, 0);
+
+    // Add input field for tank capacity
+    grid.attach(*Gtk::make_managed<Gtk::Label>("Capacity (LBS):"), 0, 1);
+    capacityEntry.set_text(std::to_string(tank.getTankCapacity()));
+    grid.attach(capacityEntry, 1, 1);
+
+    // Add Create button
+    createButton.set_label("Create");
+    createButton.set_sensitive(false); // Disable until valid selection is made
+    createButton.signal_clicked().connect(sigc::mem_fun(*this, &TankDialog::onCreateButtonClicked));
+    grid.attach(createButton, 1, 2);
+
+    // Enable button only if the selection is valid
+    typeComboBox.signal_changed().connect([this]() {
+        createButton.set_sensitive(isValidSelection());
+    });
+}
+
+// Validate the tank dialog fields
+bool TankDialog::isValidSelection() {
+    return !typeComboBox.get_active_text().empty() && !capacityEntry.get_text().empty();
+}
+
+// Show a popup for invalid input
+/*void TankDialog::showReselectPopup() {
+    Gtk::MessageDialog dialog(*this, "Invalid Input", false, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK);
+    dialog.set_secondary_text("Please ensure all fields are filled out correctly.");
+    dialog.run();
+}*/
+
+// Handle Create button click
+void TankDialog::onCreateButtonClicked() {
+    if (!isValidSelection()) {
+        showReselectPopup();
+        return;
+    }
+
+    // Save data to the Tank object
+    tank_.setFuelType(typeComboBox.get_active_text() == "FUEL" ? 0 : 1);
+    tank_.setTankCapacity(std::stod(capacityEntry.get_text()));
+
+    std::cout << "Tank configuration saved successfully!" << std::endl;
+    close(); // Close the dialog
+}
+
+void TankDialog::showReselectPopup() {
+    Gtk::MessageDialog dialog(*this, "Invalid Selection", false, Gtk::MessageType::ERROR);
+    Dialog :set_modal(true); // Make it modal
+    Dialog :show();          // Show the dialog
+}
+
+// Fix: Provide arguments for Tank object
+void PropulsionManager::showTankSetup(Gtk::Window& parentWindow) {
+    Tank selectedTank(0, 100.0, 50.0); // Initialize with valid arguments
+    TankDialog dialog(parentWindow, selectedTank);
+
+    dialog.present(); // Replace run() with present()
+}
+
+class TankDialog : public Gtk::Dialog {
+public:
+    void run_dialog() {
+        show(); // Or any specific functionality for running your dialog
+    }
+};
