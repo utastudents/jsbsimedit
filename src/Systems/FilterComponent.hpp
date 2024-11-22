@@ -1,47 +1,20 @@
 #pragma once
-#ifndef FILTER_COMPONENT_HPP
-#define FILTER_COMPONENT_HPP
 
-#include <string>
-#include <optional>
+#include "ComponentWindowCommon.hpp"
 
-namespace DragDrop{
+namespace DragDrop {
 
-class FilterComponent {
+class FilterComponentWindow : public ComponentWindowCommon {
 public:
-    // Constructors
-    FilterComponent(const std::string& name, const std::string& input, double c1);
+    FilterComponentWindow(std::shared_ptr<IComponentCommon> comp, 
+                          std::shared_ptr<std::set<std::string>> setOfNames);
 
-    // Setters and Getters
-    void setName(const std::string& name);
-    const std::string& getName() const;
-
-    void setInput(const std::string& input);
-    const std::string& getInput() const;
-
-    void setCoefficient(double c1);
-    double getCoefficient() const;
-
-    void setClipLimits(double min, double max);
-    std::optional<std::pair<double, double>> getClipLimits() const;
-
-    void setOutput(const std::string& output);
-    const std::string& getOutput() const;
-
-    // Methods
-    double applyFilter(double inputValue);
-    
 private:
-    std::string name;
-    std::string input;
-    double c1;
-    std::optional<std::pair<double, double>> clipLimits;
-    std::string output;
+    bool checkboxState = false;  // Tracks the state of FC-21 checkbox
 
-    // Helper function to clip value within the specified limits
-    double clipValue(double value);
+    void CreateFilterTab();
+    void HandleRadioSelection(); // Handles radio button logic for FC-16 and FC-17
+    void SaveInfo();             // Saves user inputs
 };
 
 };
-
-#endif // FILTER_COMPONENT_HPP
