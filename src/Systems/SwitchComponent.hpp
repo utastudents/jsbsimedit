@@ -7,6 +7,8 @@
 #include <optional>
 #include <utility>
 
+namespace DragDrop{
+
 class SwitchComponent {
 public:
     // Constructors
@@ -44,6 +46,8 @@ private:
 
     // Helper function to clip value within the specified limits
     double clipValue(double value);
+};
+
 };
 
 #endif // SWITCH_COMPONENT_HPP
