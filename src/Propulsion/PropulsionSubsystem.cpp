@@ -114,11 +114,29 @@ void PropulsionSubsystem::Create() {
     std::vector<std::function<void()>> buttonActions = {
         [this]() { /* Create Engine/Thruster Pair Logic */ },
         [this]() { /* Engine/Thruster Pair Details Logic */ },
-        [this]() { /* Delete Engine/Thruster Pair Logic */ },
+        [this]() { 
+            // **NEW: Delete Engine/Thruster Pair with Confirmation Dialog**
+            auto dialog = Gtk::make_managed<Gtk::MessageDialog>(
+                "Are you sure you want to delete the selected engine/thruster pair?",
+                false, Gtk::MessageType::QUESTION, Gtk::ButtonsType::YES_NO, true);
+            dialog->set_title("Delete Engine/Thruster Pair Confirmation");
+
+            dialog->signal_response().connect([this, dialog](int response_id) {
+                if (response_id == Gtk::ResponseType::YES) {
+                    m_PropManager.confirmDeletePair();
+                    std::cout << "Engine/Thruster pair deleted successfully!" << std::endl;
+                } else {
+                    std::cout << "Engine/Thruster pair deletion canceled." << std::endl;
+                }
+                dialog->close();
+            });
+
+            dialog->show();
+        },
         [this]() { m_PropManager.showTankSetup(); },
         [this]() { m_PropManager.showTankSetup(); },
         [this]() { 
-            // **NEW: Delete Tank with Confirmation Dialog**
+            // Delete Tank with Confirmation Dialog
             auto dialog = Gtk::make_managed<Gtk::MessageDialog>(
                 "Are you sure you want to delete the selected tank?",
                 false, Gtk::MessageType::QUESTION, Gtk::ButtonsType::YES_NO, true);
