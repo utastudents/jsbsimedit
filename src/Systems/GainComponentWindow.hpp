@@ -14,6 +14,7 @@ class GainComponentWindow : public ComponentWindowCommon
         void AeroSurface();
         void Scheduled();
         void SaveInfo();
+        std::string selectedOption{}; //xml must store info here to show options
 };
 
 };

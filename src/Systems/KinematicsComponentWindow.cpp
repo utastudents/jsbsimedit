@@ -40,7 +40,7 @@ void KinematicsComponentWindow::Kinematic()
 
   int row;
 
-  for(row = 1; row < 101; row++)
+  for(row = 1; row < 100; row++)
   {
     // Only creates Number values
     Gtk::Label rowNum {std::to_string(row)};
