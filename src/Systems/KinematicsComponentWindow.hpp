@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ComponentWindowCommon.hpp"
-//#include "KinematicsComponent.hpp"
+#include "KinematicsComponent.hpp"
 
 namespace DragDrop{
 

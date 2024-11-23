@@ -1,6 +1,5 @@
 #pragma once
 #include "IComponentCommon.hpp"
-#include "KinematicsComponentWindow.hpp"
 
 namespace DragDrop{
 
