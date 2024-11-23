@@ -3,7 +3,8 @@
 namespace DragDrop
 {
 
-ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app)
+ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app, const std::string& sysName)
+    : m_systemName(sysName)
 {
     m_refApp = app;
 
@@ -34,16 +35,37 @@ ChannelCanvas::ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app)
 
 
     ComponentSprite::LoadSpriteComponents();
-
-    //Making a default channel for testing functionallity
-    m_currentChannel = "test";
-    m_channels.insert({m_currentChannel, Channel{m_refApp, m_currentChannel}});
 }
 
 ChannelCanvas::~ChannelCanvas()
 {
 }
 
+bool ChannelCanvas::CreateNewChannel(const std::string & name, bool fromXmlFile)
+{
+    //Blank channel names not allowed.
+    if(name.empty())
+        return false;
+    //If channel exists, then ignore. Could consider a update function if called from XML
+    if(m_channels.contains(name))
+        return false;
+
+    Channel newChannel { m_refApp, name };
+    
+    //if from Xml file call channel load from xmlfile.
+    //if(fromXmlFile)
+    
+
+    m_channels.insert({ name, newChannel });
+    std::cout << "Created new channel: " << name << ".\n";
+
+    //If this is the only channel, then lets make it current.
+    if(!CurrentChannelExists())
+        m_currentChannel = name;
+    return true;
+}
+
+//In the event somehow the channel is deleted and the current channel string is set to it?
 bool ChannelCanvas::CurrentChannelExists()
 {
     if (m_currentChannel.empty())

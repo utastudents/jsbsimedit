@@ -20,7 +20,7 @@ namespace JSBEdit {
 ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     : m_Box(Gtk::Orientation::VERTICAL),
     m_refRecentManager(Gtk::RecentManager::get_default()),
-    m_tab1(app, "HI TAB1"), m_tab2(app, "TAB2"), m_fcDemo(app)
+    m_tab1(app, "HI TAB1"), m_tab2(app, "TAB2"), m_fcDemo(app, "flight_control")
 {
     set_title("JSBSim Commander");
     set_default_size(800, 600);
@@ -68,6 +68,12 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     // when do the subsystems read the file?  when the objects are created? or ??
     // how does opening up a new file work? are all the subsystems destroyed and   
     // then created.  hard problems, not for me to solve now.
+
+    //Drag drop team just saying hi we want to connect to load the file so we are doing so here
+    //Feel free to move this to wherever you solve the above^^^^^^^^
+    m_fcDemo.LoadXMLData();
+
+
 
     m_Notebook = new Gtk::Notebook();
     set_child(*m_Notebook);

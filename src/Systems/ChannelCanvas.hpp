@@ -14,15 +14,15 @@ namespace DragDrop
 	class ChannelCanvas : public Gtk::DrawingArea
 	{
 	public:
-		ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app);
+		ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app, const std::string& sysName);
 		~ChannelCanvas();
 
+		bool CreateNewChannel(const std::string& name, bool fromXmlFile = false);
 		bool CurrentChannelExists();
 		const std::string GetCurrentChannelName() const;
 		void SetCurrentChannelName(const std::string& channelName);
 
 		void Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int width, int height);
-
 		//Signal Handlers that should probably be private
 		bool OnDropEnd(const Glib::ValueBase& value, double x, double y);
 		void OnClickRelease(int numClick, double x, double y);
@@ -36,6 +36,7 @@ namespace DragDrop
 		Glib::RefPtr<Gtk::Application> m_refApp;
 		std::string m_currentChannel {};
 		std::unordered_map<std::string, Channel> m_channels{};
+		std::string m_systemName;
 	};
 
 };
