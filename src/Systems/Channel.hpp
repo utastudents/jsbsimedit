@@ -7,13 +7,17 @@
 #include <unordered_map>
 #include "IComponentCommon.hpp"
 #include "ComponentSprite.hpp"
+
 #include "GainComponent.hpp"
 #include "PIDComponent.hpp"
 #include "KinematicsComponent.hpp"
 #include "SummerComponent.hpp"
 #include "DeadbandComponent.hpp"
+
+#include "PIDComponentWindow.hpp"
 #include "GainComponentWindow.hpp"
 #include "KinematicsComponentWindow.hpp"
+
 #include <random>
 #include <set>
 #include <memory>

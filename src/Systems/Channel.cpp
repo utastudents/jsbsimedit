@@ -95,6 +95,11 @@ void Channel::HandleDoubleClick(int x, int y)
                     m_appRef->add_window(*m_winPtr);
                     break;
 
+                case ComponentType::PID:
+                    m_winPtr = std::make_shared<PIDComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+
                 default:
                     m_winPtr = std::make_shared<GainComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
