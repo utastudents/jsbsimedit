@@ -17,6 +17,7 @@
 #include "PIDComponentWindow.hpp"
 #include "GainComponentWindow.hpp"
 #include "KinematicsComponentWindow.hpp"
+#include "DeadbandComponentWindow.hpp"
 
 #include <random>
 #include <set>
