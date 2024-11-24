@@ -1,11 +1,11 @@
 #include "GeneralInformationSubsystem.hpp"
 #include "XML/XMLLoad.hpp"
-#include "Aircraft.h"
-#include "User.h"
-#include "FileMetadata.h"
-#include "Config.h"
+#include "Aircraft.hpp"
+#include "User.hpp"
+#include "FileMetadata.hpp"
+#include "Config.hpp"
 #include "XML/XMLWriter.hpp"
-#include "Validation.h"
+#include "Validation.hpp"
 #include "inc/XML_api.hpp"
 
 void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
