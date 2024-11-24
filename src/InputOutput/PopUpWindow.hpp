@@ -21,7 +21,7 @@ protected:
     
 private:
     // Widgets
-    Gtk::Grid gridLayout;
+    // Gtk::Grid gridLayout;,,,not needed
     Gtk::Box m_VBox;
     Gtk::ScrolledWindow m_ScrolledWindow;
     Gtk::Grid m_Grid;
@@ -53,7 +53,14 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
             add(access);
             add(comments);
         }
-        Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
+    // Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
+        
+        Gtk::TreeModelColumn<int> index;  // Use int for the "No." column
+        Gtk::TreeModelColumn<Glib::ustring> propertyName;
+        Gtk::TreeModelColumn<Glib::ustring> description;
+        Gtk::TreeModelColumn<Glib::ustring> unit;
+        Gtk::TreeModelColumn<Glib::ustring> access;
+        Gtk::TreeModelColumn<Glib::ustring> comments;
     };
 
     PropertyColumns propertyColumns;
