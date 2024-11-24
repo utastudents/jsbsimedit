@@ -5,7 +5,8 @@ PopUpWindow::PopUpWindow()
       showAllButton("Show All"),
       okButton("OK"),
       cancelButton("Cancel"),
-      m_VBox(Gtk::Orientation::VERTICAL, 10) {
+      m_VBox(Gtk::Orientation::VERTICAL, 10),
+      currentPlaceholder(Gtk::make_managed<Gtk::Entry>()) { // Initialize currentPlaceholder
 
     set_title("Properties");
     set_default_size(800, 600);
@@ -13,6 +14,17 @@ PopUpWindow::PopUpWindow()
     // Main vertical box container
     set_child(m_VBox);
     m_VBox.set_margin(10);
+
+    // Add container for the scrolled window and current label
+    auto scrolledContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL, 5);
+    
+    // Added current label
+    auto currentHBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 5);
+    currentLabel.set_text("Current:");
+    currentLabel.set_margin(5);
+    currentHBox->append(currentLabel);
+    
+    scrolledContainer->append(*currentHBox);
 
     // Scrolled window for the property list
     m_ScrolledWindow.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
@@ -31,7 +43,17 @@ PopUpWindow::PopUpWindow()
 
     // Add the TreeView to the ScrolledWindow
     m_ScrolledWindow.set_child(propertyTreeView);
-    
+
+    // Add the scrolled window to the container
+    scrolledContainer->append(m_ScrolledWindow);
+
+    // Add the container to the main VBox
+    m_VBox.append(*scrolledContainer);
+
+    // Connect the selection signal to update the current label
+    auto selection = propertyTreeView.get_selection();
+    selection->signal_changed().connect(sigc::mem_fun(*this, &PopUpWindow::onPropertySelected));
+
     // Temporary data population for testing
     std::vector<std::string> propertyNames; // Placeholder vector for property names
     for (int i = 1; i <= 850; ++i) {
@@ -44,29 +66,20 @@ PopUpWindow::PopUpWindow()
         row[propertyColumns.propertyName] = propertyNames[i]; // Placeholder property names
     }
 
-    // Create a Frame for properties
-    auto propertiesFrame = Gtk::make_managed<Gtk::Frame>("");
-    propertiesFrame->set_child(m_ScrolledWindow);
-    m_VBox.append(*propertiesFrame);
-
     // Create a Grid for filter buttons and show all button
     auto filterGrid = Gtk::make_managed<Gtk::Grid>();
     filterGrid->set_row_spacing(10);  
     filterGrid->set_column_spacing(10); 
-
 
     // Set the expand property for the widgets in the grid
     filterTextBox.set_hexpand(true);  
     filterButton.set_hexpand(false);  
     showAllButton.set_hexpand(false);  
 
-
-
     // Place the filter text box and buttons in the grid
     filterGrid->attach(filterTextBox, 1, 0, 7, 1);  
     filterGrid->attach(filterButton, 0, 0, 1, 1);   
     filterGrid->attach(showAllButton, 8, 0, 1, 1);  
-
 
     // Add filter grid to the vertical box (m_VBox)
     m_VBox.append(*filterGrid);
@@ -118,3 +131,14 @@ void PopUpWindow::applyFilter() {
     listStore->clear();
     // Filter logic here
 }
+
+// Function to handle property selection
+void PopUpWindow::onPropertySelected() {
+    auto selection = propertyTreeView.get_selection();
+    if (auto iter = selection->get_selected()) {
+        auto row = *iter;
+        Glib::ustring propertyName = row[propertyColumns.propertyName];
+        currentPlaceholder->set_text(propertyName); // Update placeholder with selected property
+    }
+}
+
