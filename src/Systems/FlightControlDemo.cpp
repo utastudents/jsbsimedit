@@ -2,6 +2,8 @@
 
 namespace DragDrop {
 
+
+
 FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app,
     const std::string& sysName)
     : m_canvas(app, sysName), m_systemName(sysName)
@@ -75,8 +77,11 @@ void FlightControlDemo::LoadXMLData()
                     std::cout << "Error loading: " << m_systemName << "\n";
                     continue;
                 }
-                if(m_canvas.CreateNewChannel(nameAtt.second, true))
+                if(m_canvas.CreateNewChannel(nameAtt.second))
+                {
                     CreateNewTab(nameAtt.second);
+                    m_canvas.LoadChannelFromXml(nameAtt.second, i);
+                }
             }
             else
                 std::cout << i.GetText() << "\n";

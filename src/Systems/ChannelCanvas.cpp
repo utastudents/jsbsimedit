@@ -41,7 +41,7 @@ ChannelCanvas::~ChannelCanvas()
 {
 }
 
-bool ChannelCanvas::CreateNewChannel(const std::string & name, bool fromXmlFile)
+bool ChannelCanvas::CreateNewChannel(const std::string & name)
 {
     //Blank channel names not allowed.
     if(name.empty())
@@ -51,10 +51,6 @@ bool ChannelCanvas::CreateNewChannel(const std::string & name, bool fromXmlFile)
         return false;
 
     Channel newChannel { m_refApp, name };
-    
-    //if from Xml file call channel load from xmlfile.
-    //if(fromXmlFile)
-    
 
     m_channels.insert({ name, newChannel });
     std::cout << "Created new channel: " << name << ".\n";
@@ -83,6 +79,11 @@ void ChannelCanvas::SetCurrentChannelName(const std::string &channelName)
     m_currentChannel = channelName;
     //Changed the channel so we should recall draw
     queue_draw();
+}
+
+void ChannelCanvas::LoadChannelFromXml(const std::string & channelName, JSBEdit::XMLNode & node)
+{
+    m_channels.at(channelName).LoadFromXmlFile(node);
 }
 
 void ChannelCanvas::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int width, int height)

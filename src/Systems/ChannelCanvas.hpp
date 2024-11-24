@@ -17,10 +17,11 @@ namespace DragDrop
 		ChannelCanvas(const Glib::RefPtr<Gtk::Application> &app, const std::string& sysName);
 		~ChannelCanvas();
 
-		bool CreateNewChannel(const std::string& name, bool fromXmlFile = false);
+		bool CreateNewChannel(const std::string& name);
 		bool CurrentChannelExists();
 		const std::string GetCurrentChannelName() const;
 		void SetCurrentChannelName(const std::string& channelName);
+		void LoadChannelFromXml(const std::string& channelName, JSBEdit::XMLNode& node);
 
 		void Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int width, int height);
 		//Signal Handlers that should probably be private
