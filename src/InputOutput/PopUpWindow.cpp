@@ -1,19 +1,27 @@
 #include "PopUpWindow.hpp"
 
-PopUpWindow::PopUpWindow() {
+PopUpWindow::PopUpWindow()
+    : filterButton("Filter"),
+      showAllButton("Show All"),
+      okButton("OK"),
+      cancelButton("Cancel"),
+      m_VBox(Gtk::Orientation::VERTICAL, 10) {
+
     set_title("Properties");
     set_default_size(800, 600);
 
-    // Set up the grid layout
-    gridLayout.set_row_spacing(50);
-    gridLayout.set_column_spacing(50);
-    gridLayout.set_margin(10);
-    set_child(gridLayout);
+    // Main vertical box container
+    set_child(m_VBox);
+    m_VBox.set_margin(10);
 
-    // Create the TreeView with scrollbars
-    auto listStore = Gtk::ListStore::create(propertyColumns);
+    // Scrolled window for the property list
+    m_ScrolledWindow.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+    m_ScrolledWindow.set_expand();
+
+    // Set up the TreeView
+    listStore = Gtk::ListStore::create(propertyColumns);
     propertyTreeView.set_model(listStore);
-    
+
     propertyTreeView.append_column("No.", propertyColumns.index);
     propertyTreeView.append_column("Property Name", propertyColumns.propertyName);
     propertyTreeView.append_column("Description", propertyColumns.description);
@@ -21,43 +29,58 @@ PopUpWindow::PopUpWindow() {
     propertyTreeView.append_column("Access", propertyColumns.access);
     propertyTreeView.append_column("Comments", propertyColumns.comments);
 
-    scrolledWindow.set_child(propertyTreeView);
-    scrolledWindow.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+    // Add the TreeView to the ScrolledWindow
+    m_ScrolledWindow.set_child(propertyTreeView);
 
-    // Add widgets to the grid
-    gridLayout.attach(scrolledWindow, 0, 0, 10, 6); // TreeView spans 10 columns and 6 rows
+    // Create a Frame for properties
+    auto propertiesFrame = Gtk::make_managed<Gtk::Frame>("");
+    propertiesFrame->set_child(m_ScrolledWindow);
+    m_VBox.append(*propertiesFrame);
 
-    // Filter label and text box
-
-    /*Gtk::Label filterLabel{"Filter Level"};
-    gridLayout.attach(filterLabel, 0, 6, 2, 1); // Row 6, spans 2 columns
-    */
-    gridLayout.attach(filterTextBox, 2, 6, 6, 1); // Row 6, spans 6 columns
+    // Create a Grid for filter buttons and show all button
+    auto filterGrid = Gtk::make_managed<Gtk::Grid>();
+    filterGrid->set_row_spacing(10);  
+    filterGrid->set_column_spacing(10); 
 
 
-    // Buttons
-    //Adding filter button
-    Gtk::Button filterButton{"Filter"}; // Filter Button
-    gridLayout.attach(filterButton, 0, 6, 2, 1);    // Row 7, 2 columns wide
+    // Set the expand property for the widgets in the grid
+    filterTextBox.set_hexpand(true);  
+    filterButton.set_hexpand(false);  
+    showAllButton.set_hexpand(false);  
+
+
+
+    // Place the filter text box and buttons in the grid
+    filterGrid->attach(filterTextBox, 1, 0, 7, 1);  
+    filterGrid->attach(filterButton, 0, 0, 1, 1);   
+    filterGrid->attach(showAllButton, 8, 0, 1, 1);  
+
+
+    // Add filter grid to the vertical box (m_VBox)
+    m_VBox.append(*filterGrid);
+
+    // Create a Grid for OK and Cancel buttons
+    auto buttonGrid = Gtk::make_managed<Gtk::Grid>();
+    buttonGrid->set_row_spacing(10);   
+    buttonGrid->set_column_spacing(10); 
+
+    // Add OK and Cancel buttons
+    buttonGrid->attach(okButton, 0, 0, 1, 1);  
+    buttonGrid->attach(cancelButton, 1, 0, 1, 1);     
+
+    // Make both buttons expand horizontally to take equal space
+    okButton.set_hexpand(true);  
+    cancelButton.set_hexpand(true);  
+
+    // Add the button grid to the vertical box (m_VBox)
+    m_VBox.append(*buttonGrid);
+
+    // Signal connections for buttons
     filterButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onFilterButtonClicked));
-    
-    //Adding Show All button
-    Gtk::Button showAllButton{"Show All"}; //Show All Button
-    gridLayout.attach(showAllButton, 2, 7, 2, 1);  // Row 7, next to filterButton
     showAllButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onShowAllButtonClicked));
-   
-   //Added Ok button
-    Gtk::Button okButton{"OK"};
-    gridLayout.attach(okButton, 6, 7, 2, 1); 
     okButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onOkButtonClicked));
-    
-    //Added Cancel button
-    Gtk::Button cancelButton{"Cancel"};
-    gridLayout.attach(cancelButton, 8, 7, 2, 1);  
     cancelButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onCancelButtonClicked));
 }
-
-
 
 PopUpWindow::~PopUpWindow() {}
 
@@ -81,5 +104,5 @@ void PopUpWindow::onCancelButtonClicked() {
 void PopUpWindow::applyFilter() {
     Glib::ustring filterText = filterTextBox.get_text().lowercase();
     listStore->clear();
-
+    // Filter logic here
 }
