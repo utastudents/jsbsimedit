@@ -31,6 +31,18 @@ PopUpWindow::PopUpWindow()
 
     // Add the TreeView to the ScrolledWindow
     m_ScrolledWindow.set_child(propertyTreeView);
+    
+    // Temporary data population for testing
+    std::vector<std::string> propertyNames; // Placeholder vector for property names
+    for (int i = 1; i <= 850; ++i) {
+        propertyNames.push_back("Property_" + std::to_string(i)); // Simulated property names
+    }
+    // Populate the list store
+    for (size_t i = 0; i < propertyNames.size(); ++i) {
+        auto row = *(listStore->append());
+        row[propertyColumns.index] = i + 1;                   // Serial numbers starting from 1
+        row[propertyColumns.propertyName] = propertyNames[i]; // Placeholder property names
+    }
 
     // Create a Frame for properties
     auto propertiesFrame = Gtk::make_managed<Gtk::Frame>("");
