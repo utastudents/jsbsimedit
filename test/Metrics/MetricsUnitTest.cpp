@@ -15,17 +15,25 @@
     {"vtailarm", {"FT", "M"}},
     {"location", {"IN", "FT", "M"}}}*/
 
-TEST_CASE("MetricsSubsystem Initialization")
+TEST_CASE("Verify Metrics Interface Opens and Stays Open")
 {
    MetricsSubsystem metrics;
 
    //simulate opening the Metrics tab
-   metrixs.create();
+   metrics.Create();
 
    //Check initial data units
   REQUIRE(metrics.data_units.size() == 8); //8 data units fields
   REQUIRE(metrics.vertex_data_units.size() == 3); //3 vertex unit fields
+}
 
+TEST_CASE("Verify eight data unit windows are displayed")
+{
+    MetricsSubsystem metrics;
+
+    //simulate opening the Metrics tab
+    metrics.Create();
+    
   //validate specific data units
   REQUIRE(metrics.data_units["wingarea"]->get_its_unit()->get_unit_bank().size() == 2); //FT2, M2
   REQUIRE(metrics.data_units["wingarea"]->get_its_unit()->get_current_unit() == "");
@@ -50,7 +58,15 @@ TEST_CASE("MetricsSubsystem Initialization")
 
   REQUIRE(metrics.data_units["vtailarm"]->get_its_unit()->get_unit_bank().size() == 2); //FT, M
   REQUIRE(metrics.data_units["vtailarm"]->get_its_unit()->get_current_unit() == "");
-   
+}
+
+TEST_CASE("Verify three vertex data units are displayed")
+{
+    MetricsSubsystem metrics;
+
+    //simulate opening the Metrics tab
+    metrics.Create();
+    
   //validate speficic vertex data units
   REQUIRE(metrics.vertex_data_units["Eye Point"]->get_its_unit()->get_unit_bank().size() == 3); //IN, FT, M
   REQUIRE(metrics.vertex_data_units["Eye Point"]->get_its_unit()->get_current_unit() == "");
