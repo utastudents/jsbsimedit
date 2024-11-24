@@ -15,7 +15,7 @@ protected:
     void onOkButtonClicked();
     void onCancelButtonClicked();
     void loadPropertiesFromFile(const std::string& fileName);
-
+    void onPropertySelected();
    // Helper methods
     void applyFilter();
     
@@ -23,6 +23,8 @@ private:
     // Widgets
     // Gtk::Grid gridLayout;,,,not needed
     Gtk::Box m_VBox;
+    Gtk::Label currentLabel;
+    Gtk::Entry* currentPlaceholder;
     Gtk::ScrolledWindow m_ScrolledWindow;
     Gtk::Grid m_Grid;
     Gtk::ScrolledWindow scrolledWindow; 
