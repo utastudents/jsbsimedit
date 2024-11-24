@@ -24,6 +24,12 @@ PopUpWindow::PopUpWindow()
     currentLabel.set_margin(5);
     currentHBox->append(currentLabel);
     
+    // Added box to show selected property
+    currentPlaceholder->set_text("");
+    currentPlaceholder->set_editable(false);
+    currentPlaceholder->set_width_chars(20);
+    currentHBox->append(*currentPlaceholder);
+    
     scrolledContainer->append(*currentHBox);
 
     // Scrolled window for the property list
