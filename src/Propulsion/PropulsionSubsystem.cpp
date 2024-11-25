@@ -2,7 +2,7 @@
 #include <vector>  // For buttonNames
 #include <map>     // For buttonMap
 #include <utility> // For std::pair
-#include <filesystem> // For file operations
+#include <filesystem> // For `operations
 #include <cstdlib> // For GetCurrentPlatform
 
 #include "inc/XML_api.hpp"
@@ -41,6 +41,11 @@ void PropulsionSubsystem::Create() {
     // Create the ComboBoxText (dropdown menu) for engine selection
     Gtk::ComboBoxText* pComboBoxEng = Gtk::make_managed<Gtk::ComboBoxText>();
 
+    // Thruster UI
+    Gtk::Label* pLabelThr = Gtk::make_managed<Gtk::Label>("Select Thruster:");
+    // Create the ComboBoxText (dropdown menu) for thruster selection
+    Gtk::ComboBoxText* pComboBoxThr = Gtk::make_managed<Gtk::ComboBoxText>();    
+
     // Rudimentary File Logic to get names of files in data/engine
     // NOTE: NOT XML LOGIC
     // TODO: Function to check if Engine or Thruster
@@ -76,31 +81,65 @@ void PropulsionSubsystem::Create() {
         std::cerr << "Directory does not exist: " << dirpath << std::endl;
     }
     
+    std::vector<std::string> combinedList = {
+        "piston_engine",
+        "rocket_engine",
+        "turboprop_engine",
+        "electric_engine",
+        "turbine_engine",
+        "propeller",
+        "FG_NOZZLE",
+        "FG_ROCKET",
+        "rotor",
+        "nozzle"
+    };
 
     pComboBoxEng->append("No Selection");
+    pComboBoxThr->append("No Selection");
 
     if (fs::exists(dirpath) && fs::is_directory(dirpath)) {
         for (const auto& entry : fs::directory_iterator(dirpath)) {
             if (entry.is_regular_file()) {
                 // Get the filename as a string
-                std::string filename = entry.path().filename().string();
-                
-                // Check if the filename ends with ".xml" and remove it
-                if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".xml") {
-                    filename = filename.substr(0, filename.size() - 4);  // Remove the ".xml" extension
+                std::string filepath = entry.path().string();
+
+                // XML Logic
+                // Parse the XML file
+                xmlptr()->LoadFileAndParse(filepath);
+        
+                JSBEdit::XMLNode rootNode = xmlptr()->GetNode(""); // Get the document's root node
+                rootNode = rootNode.GetParent(); // Traverse up to the root node
+                // Extract the name of the root element
+                std::string rootElement = rootNode.GetName();
+                size_t index = 0;  // Index for iterating through the list
+
+                while (rootElement == "" && index < combinedList.size()) {
+                    rootNode = xmlptr()->GetNode(combinedList[index]);  // Set rootElement to the current item in the list
+                    rootElement = rootNode.GetName();
+                    index++;  // Move to the next item in the list
                 }
 
-                // Add the filename (without .xml) to the dropdown
-                pComboBoxEng->append(filename);
+                std::cout << "rootElement: " << rootElement << std::endl;
+                std::string type = EngineOrThruster(rootElement);
+
+                // Handle the result from EngineOrThruster
+                if (type == "engine") {
+                    std::cout << "Added to engine dropdown: " << entry.path().stem().string() << std::endl;
+                    pComboBoxEng->append(entry.path().stem().string()); // Add filename without extension
+                } else if (type == "thruster") {
+                    std::cout << "Added to thruster dropdown: " << entry.path().stem().string() << std::endl;
+                    pComboBoxThr->append(entry.path().stem().string()); // Add filename without extension
+                } else {
+                    std::cout << "File does not match any known type: " << entry.path().stem().string() << std::endl;
+                }
             }
         }
     } else {
         std::cerr << "Directory does not exist: " << dirpath << std::endl;
     }
     
-    // Set default selection
+    // Engine dropdown
     pComboBoxEng->set_active(0); // Default to first option "No Selection"
-
     // Connect signal to handle dropdown changes
     pComboBoxEng->signal_changed().connect([this, pComboBoxEng]() {
         this->selectedEngine = pComboBoxEng->get_active_text();
@@ -109,20 +148,8 @@ void PropulsionSubsystem::Create() {
     m_Grid.attach(*pLabelEng, 0, 0, 1, 1);  // Label: row 0, column 0
     m_Grid.attach(*pComboBoxEng, 0, 1, 1, 1);  // ComboBox: row 1, column 0
     
-    
-    // Thruster UI
-    Gtk::Label* pLabelThr = Gtk::make_managed<Gtk::Label>("Select Thruster:");
-    // Create the ComboBoxText (dropdown menu) for thruster selection
-    Gtk::ComboBoxText* pComboBoxThr = Gtk::make_managed<Gtk::ComboBoxText>();
-    // TODO: Replace with xml logic to find Thrusters
-    pComboBoxThr->append("No Selection");
-    pComboBoxThr->append("PLACEHOLDER_Thruster");
-    pComboBoxThr->append("PLACEHOLDER_Thruster");
-    pComboBoxThr->append("PLACEHOLDER_Thruster");
-
-    // Set default selection
+    // Thruster dropdown
     pComboBoxThr->set_active(0); 
-
     // Connect signal to handle dropdown changes
     pComboBoxThr->signal_changed().connect([this, pComboBoxThr]() {
         this->selectedThruster = pComboBoxThr->get_active_text();
@@ -131,7 +158,6 @@ void PropulsionSubsystem::Create() {
     m_Grid.attach(*pLabelThr, 0, 2, 1, 1);  // Label: row 0, column 0
     m_Grid.attach(*pComboBoxThr, 0, 3, 1, 1);  // ComboBox: row 1, column 0
     
-
 
     // Tank UI
     Gtk::Label* pLabelTK = Gtk::make_managed<Gtk::Label>("Select Tank:");
@@ -285,6 +311,60 @@ void PropulsionSubsystem::Create() {
     for (auto& buttonPair : buttonMap) {
         buttonPair.second->show();  // Show each button in the map
     }
+}
+
+std::string PropulsionSubsystem::EngineOrThruster(const std::string& pulledInput) {
+    // List of engine types in xml
+    std::vector<std::string> enginetype = {
+        "piston_engine",
+        "rocket_engine",
+        "turboprop_engine",
+        "electric_engine",
+        "turbine_engine"
+    };
+
+    // List of thruster types in xml
+    std::vector<std::string> thrustertype = {
+        "propeller",
+        "FG_NOZZLE",
+        "FG_ROCKET",
+        "rotor",
+        "nozzle"
+    };
+
+    // Flag to indicate a match, True if match found
+    bool matchFound = false;
+    std::string output = "BLANK";
+
+    // Combined loop for both lists
+    for (const auto& engine : enginetype) {
+        if (pulledInput == engine) {
+            matchFound = true;
+            std::cout << "Match found in enginetype: " << engine << std::endl;
+            output = "engine";
+            return output;
+
+        }
+    }
+
+    if (!matchFound) {
+        for (const auto& thruster : thrustertype) {
+            if (pulledInput == thruster) {
+                matchFound = true;
+                std::cout << "Match found in thrustertype: " << thruster << std::endl;
+                output = "thruster";
+                return output;
+            }
+        }
+    }
+
+    else if (!matchFound) {
+        std::cout << "No match found.\n";
+        output = "BLANK";
+    }
+
+    // return either engine or thruster as string
+    return output;
 }
 
 bool PropulsionSubsystem::checkSelect(const std::string& inp) {
