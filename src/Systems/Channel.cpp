@@ -102,6 +102,11 @@ void Channel::HandleDoubleClick(int x, int y)
                     m_appRef->add_window(*m_winPtr);
                     break;
 
+                case ComponentType::SUMMER:
+                    m_winPtr = std::make_shared<SummerComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+
                 default:
                     m_winPtr = std::make_shared<GainComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
@@ -158,9 +163,9 @@ std::shared_ptr<IComponentCommon> Channel::createComponentFromType(ComponentType
         case ComponentType::SUMMER:
             component = std::make_shared<SummerComponent>(name);
             break;
-        // case ComponentType::DEADBAND:
-        //     component = std::make_shared<DeadbandComponent>(name);
-        //     break;
+        case ComponentType::DEADBAND:
+            component = std::make_shared<DeadbandComponent>(name);
+            break;
         default:
             component = std::make_shared<GainComponent>(name);
             break;

@@ -19,6 +19,7 @@
 #include "GainComponentWindow.hpp"
 #include "KinematicsComponentWindow.hpp"
 #include "DeadbandComponentWindow.hpp"
+#include "SummerComponentWindow.hpp"
 
 #include <random>
 #include <set>
