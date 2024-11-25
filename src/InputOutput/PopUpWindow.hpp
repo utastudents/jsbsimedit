@@ -15,24 +15,34 @@ protected:
     void onOkButtonClicked();
     void onCancelButtonClicked();
     void loadPropertiesFromFile(const std::string& fileName);
-
+    void onPropertySelected();
+   // Helper methods
+    void applyFilter();
+    
 private:
-    Gtk::TreeModelColumn<int> index;
-    Gtk::Label currentPropertyValue; // Displays currently selected property
-    Gtk::Button filterButton; // Button to filter the list of properties
-    Gtk::Entry filterTextBox; // Input field for filtering properties
-    Gtk::Button showAllButton; // Button to reset and show all properties
-    Gtk::Button okButton; // OK button, confirms selection and closes pop-up
-    Gtk::Button cancelButton; // Cancel button, discards changes and closes pop-up
-    Gtk::Button closeButton; // Close button, closes the pop-up window
-    int visibleProperties; // Count of visible properties after filtering
-    int hiddenProperties; // Count of hidden properties after filtering
-    Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
-    Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
+    // Widgets
+    // Gtk::Grid gridLayout;,,,not needed
+    Gtk::Box m_VBox;
+    Gtk::Label currentLabel;
+    Gtk::Entry* currentPlaceholder;
+    Gtk::ScrolledWindow m_ScrolledWindow;
+    Gtk::Grid m_Grid;
+    Gtk::ScrolledWindow scrolledWindow; 
     Gtk::TreeView propertyTreeView;
-    Gtk::Grid m_grid;
-    Gtk::Grid gridLayout;
-
+    Gtk::Label filterLabel;
+    Gtk::Window propertiesScrolledWindow;
+    Gtk::Label currentPropertyValue; 
+    Gtk::Entry filterTextBox; 
+    Gtk::Button filterButton; 
+    Gtk::Button showAllButton; 
+    Gtk::Button okButton; 
+    Gtk::Button cancelButton; 
+    Gtk::Button closeButton;
+    int visibleProperties; 
+    int hiddenProperties; 
+    
+    //Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
+    //Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
 
 // Define property columns model
 class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
@@ -45,9 +55,17 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
             add(access);
             add(comments);
         }
-        Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
+    // Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
+        
+        Gtk::TreeModelColumn<int> index;  // Use int for the "No." column
+        Gtk::TreeModelColumn<Glib::ustring> propertyName;
+        Gtk::TreeModelColumn<Glib::ustring> description;
+        Gtk::TreeModelColumn<Glib::ustring> unit;
+        Gtk::TreeModelColumn<Glib::ustring> access;
+        Gtk::TreeModelColumn<Glib::ustring> comments;
     };
 
     PropertyColumns propertyColumns;
+    Glib::RefPtr<Gtk::ListStore> listStore;
     
 };

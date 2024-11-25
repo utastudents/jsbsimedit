@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace MassBalance{
+
 class EmptyMass {
 private:
     float emptyMass;        // Mass value
@@ -21,3 +23,4 @@ public:
 
 };
 
+}

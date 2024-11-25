@@ -7,6 +7,7 @@ Channel::Channel(const Glib::RefPtr<Gtk::Application> &app, const std::string & 
 {
     m_appRef = app;
     m_componentNameSet = std::make_shared<std::set<std::string>>();
+    populateStringComponentMap();
 }
 
 bool Channel::ComponentNameExists(const std::string &name)
@@ -21,9 +22,6 @@ void Channel::CreateDroppedComponent(ComponentType type, int x, int y)
     ComponentSprite s {type, x, y};
     //Generate a unique name.
     auto name = createName(type);
-    while(ComponentNameExists(name))
-        name = createName(type);
-    m_componentNameSet->insert(name);
 
     //Generate a uniqueId
     int uId = generateUniqueId();
@@ -32,7 +30,7 @@ void Channel::CreateDroppedComponent(ComponentType type, int x, int y)
     //Insert the new sprite
     m_spriteComponents.insert({uId, s});
     //Insert the appropriate component, also takes care of adding the UID;
-    addDefaultComponent(type, name, uId);
+    m_components.insert({uId, createComponentFromType(type, name)});
 }
 
 //Maybe TODO: change this later for partial redraws if its a problem.
@@ -89,6 +87,25 @@ void Channel::HandleDoubleClick(int x, int y)
                     m_winPtr = std::make_shared<GainComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
                     break;
+                    
+                case ComponentType::KINEMATIC:
+                    m_winPtr = std::make_shared<KinematicsComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+
+                case ComponentType::PID:
+                    m_winPtr = std::make_shared<PIDComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+                case ComponentType::DEADBAND:
+                    m_winPtr = std::make_shared<DeadbandComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+
+                case ComponentType::SUMMER:
+                    m_winPtr = std::make_shared<SummerComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
 
                 default:
                     m_winPtr = std::make_shared<GainComponentWindow>(m_components.at(uid), m_componentNameSet);
@@ -100,15 +117,69 @@ void Channel::HandleDoubleClick(int x, int y)
     }
 }
 
+void Channel::LoadFromXmlFile(JSBEdit::XMLNode& node)
+{
+    int rowNum = 1;
+    int colNum = 1;
+    for(auto& i : node.GetChildren())
+    {
+        if(m_stringToComponentMap.contains(i.GetName()))
+        {
+            auto type = m_stringToComponentMap.at(i.GetName());
+            auto name = i.GetAttribute("name").second;
+            auto uId = generateUniqueId();
+            auto ptr = createComponentFromType(type, name);
+            rowNum++;
+            if(rowNum > 5)
+            {
+                colNum++;
+                rowNum = 1;
+            }
+            auto spr = ComponentSprite{type,rowNum * 150, colNum * 80};
+            m_components.insert({uId, ptr});
+            m_spriteComponents.insert({uId, spr});
+        }
+    }
+}
 void Channel::SetChannelName(const std::string channelName)
 {
     m_channelName = channelName;
 }
 
+std::shared_ptr<IComponentCommon> Channel::createComponentFromType(ComponentType type, const std::string& name)
+{
+    std::shared_ptr<IComponentCommon> component;
+    switch(type)
+    {
+        case ComponentType::GAIN:
+            component = std::make_shared<GainComponent>(name);
+            break;
+        case ComponentType::PID:
+            component = std::make_shared<PIDComponent>(name);
+            break;
+        case ComponentType::KINEMATIC:
+            component = std::make_shared<KinematicsComponent>(name);
+            break;
+        case ComponentType::SUMMER:
+            component = std::make_shared<SummerComponent>(name);
+            break;
+        case ComponentType::DEADBAND:
+            component = std::make_shared<DeadbandComponent>(name);
+            break;
+        default:
+            component = std::make_shared<GainComponent>(name);
+            break;
+    }
+    return component;
+}
+
 std::string Channel::createName(ComponentType type)
 {
-    //If theres over 1000 components in a channel we have bigger issues..
-    return std::string{COMPONENT_NAMES[static_cast<int>(type)] + std::to_string((generateUniqueId()))};
+    auto name {std::string{COMPONENT_NAMES[static_cast<int>(type)] + std::to_string((generateUniqueId()))}};
+    while(ComponentNameExists(name))
+        name = {std::string{COMPONENT_NAMES[static_cast<int>(type)] + std::to_string((generateUniqueId()))}};
+    m_componentNameSet->insert(name);
+    return name;
 }
 
 int Channel::generateUniqueId()
@@ -119,29 +190,17 @@ int Channel::generateUniqueId()
     return uId;
 }
 
-void Channel::addDefaultComponent(ComponentType type, const std::string & name, int uId)
+void Channel::populateStringComponentMap()
 {
-    switch(type)
-    {
-        case ComponentType::GAIN:
-            m_components.insert({uId, std::make_shared<GainComponent>(name)});
-            break;
-        case ComponentType::PID:
-            m_components.insert({uId, std::make_shared<PIDComponent>(name)});
-            break;
-        case ComponentType::KINEMATIC:
-            m_components.insert({uId, std::make_shared<KinematicsComponent>(name)});
-            break;
-        case ComponentType::SUMMER:
-            m_components.insert({uId, std::make_shared<SummerComponent>(name)});
-            break;
-        case ComponentType::DEADBAND:
-            m_components.insert({uId, std::make_shared<DeadbandComponent>(name)});
-            break;
-        default:
-            m_components.insert({uId, std::make_shared<GainComponent>(name)});
-            break;
-    }
+    //This whole thing should probably be static but oh well
+	m_stringToComponentMap.insert({"switch", ComponentType::SWITCH});
+	m_stringToComponentMap.insert({"pure_gain", ComponentType::GAIN});
+	m_stringToComponentMap.insert({"scheduled_gain", ComponentType::GAIN});
+	m_stringToComponentMap.insert({"kinematic", ComponentType::KINEMATIC});
+	m_stringToComponentMap.insert({"summer", ComponentType::SUMMER});
+	m_stringToComponentMap.insert({"pid", ComponentType::PID});
+    
 }
+
 
 };

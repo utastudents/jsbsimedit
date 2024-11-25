@@ -2,10 +2,10 @@
 
 #include <string>
 #include <vector>
-#include "User.h"
-#include "FileMetadata.h"
-#include "Config.h"
-#include "References.h"
+#include "User.hpp"
+#include "FileMetadata.hpp"
+#include "Config.hpp"
+#include "References.hpp"
 
 class Aircraft {
 private:

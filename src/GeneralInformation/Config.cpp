@@ -1,4 +1,4 @@
-#include "Config.h"
+#include "Config.hpp"
 
 //Default constructor
 Config::Config() : releaseLevel(""), configVersion(""), flightModelVersion("") {}

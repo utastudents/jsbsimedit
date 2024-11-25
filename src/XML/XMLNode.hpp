@@ -35,7 +35,7 @@ namespace JSBEdit
         // adds additional attributes to the element node XML046
         bool AddAttributes(std::vector<AttributeKV>& attributes);
         // adds an additional attribute to the element node XML047
-        void AddAttribute(AttributeKV attribute);
+        bool AddAttribute(AttributeKV attribute);
         // Sets multiple attributes and overrides attributes in the element node
         void SetAttributes(std::vector<AttributeKV>& attributes);
         // Sets an attribute and overrides attributes in the element node
@@ -46,13 +46,13 @@ namespace JSBEdit
         // removes all attributes from the node element
         bool RemoveAttributes();
         // searches and removes the attributes if found
-        void RemoveAttribute(std::string attribute);
+        bool RemoveAttribute(std::string attribute);
         
         // returns data in-between the start tag and end tag for the element. This will return
         // an empty string if there is no data here
         std::string GetText();
         // sets data in-between the start tag and end tag for the element.
-        void SetText(std::string text);
+        bool SetText(std::string text);
 
         std::string GetName();
         bool SetName(std::string name);

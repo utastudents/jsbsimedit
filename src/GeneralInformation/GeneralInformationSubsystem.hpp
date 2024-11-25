@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "Aircraft.h"
-#include "User.h"
-#include "Config.h"
+#include "Aircraft.hpp"
+#include "User.hpp"
+#include "Config.hpp"
 #include "inc/Subsystem.hpp"
 
 class GeneralInformationSubsystem : public Subsystem {
