@@ -8,10 +8,31 @@
 #include "Validation.h"
 #include "inc/XML_api.hpp"
 
+
 GeneralInformationSubsystem::GeneralInformationSubsystem()
 {
     m_Name = "General Information";
 }
+
+/////////
+struct ReferencesColumns : public Gtk::TreeModel::ColumnRecord {
+    Gtk::TreeModelColumn<int> id;
+    Gtk::TreeModelColumn<std::string> refID;
+    Gtk::TreeModelColumn<std::string> author;
+    Gtk::TreeModelColumn<std::string> title;
+    Gtk::TreeModelColumn<std::string> date;
+
+    ReferencesColumns() {
+        add(id);
+        add(refID);
+        add(author);
+        add(title);
+        add(date);
+    }
+};
+
+ // Create an instance
+////////
 
 void GeneralInformationSubsystem::Create()
 {
@@ -27,6 +48,7 @@ void GeneralInformationSubsystem::Create()
   auto node_flightModel = xmlptr()->GetNode("/fdm_config/fileheader/version");
   auto node_author = xmlptr()->GetNode("/fdm_config/fileheader/author");
   auto node_fileDate = xmlptr()->GetNode("/fdm_config/fileheader/filecreationdate");
+
 
   // Aircraft Name
   auto aircraftNameLabel = Gtk::make_managed<Gtk::Label>("Aircraft Name");
@@ -118,26 +140,58 @@ void GeneralInformationSubsystem::Create()
   auto fileDateTextbox = Gtk::make_managed<Gtk::Entry>();
   fileDateTextbox->set_text( node_fileDate.GetText() ); // Load FileDate name here
 
-  // References
-  auto referencesLabel = Gtk::make_managed<Gtk::Label>("References");
-  auto referencesTextView = Gtk::make_managed<Gtk::TextView>();
-  auto referencesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
-  auto referencesFrame = Gtk::make_managed<Gtk::Frame>();
+// References
+ReferencesColumns referencesColumns; //Initial reference Columns Object
+auto referencesLabel = Gtk::make_managed<Gtk::Label>("References");
+// Create ListStore and TreeView for references
+auto referencesStore = Gtk::ListStore::create(referencesColumns); // Define this model
+auto referencesTreeView = Gtk::make_managed<Gtk::TreeView>(referencesStore);
 
-  // Set up TextView content and appearance
-  referencesTextView->get_buffer()->set_text(""); // Placeholder text
+// Add columns to TreeView
+referencesTreeView->append_column("", referencesColumns.id);
+referencesTreeView->append_column("Ref ID.", referencesColumns.refID);
+referencesTreeView->append_column("Author", referencesColumns.author);
+referencesTreeView->append_column("Title", referencesColumns.title);
+referencesTreeView->append_column("Date", referencesColumns.date);
+// Create a scrolled window for the TreeView
+auto referencesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+// Create a frame to hold the table (optional)
+auto referencesFrame = Gtk::make_managed<Gtk::Frame>();
 
-  // Configure the ScrolledWindow
-  referencesScrolledWindow->set_min_content_height(100); // Set the height for the text area
-  referencesScrolledWindow->set_min_content_width(300);  // Set the width for the text area
-  referencesScrolledWindow->set_child(*referencesTextView);
-  referencesScrolledWindow->set_policy(Gtk::PolicyType::ALWAYS, Gtk::PolicyType::ALWAYS);
+referencesScrolledWindow->set_min_content_height(100); // Set the height for the table
+referencesScrolledWindow->set_min_content_width(300);  // Set the width for the table
+referencesScrolledWindow->set_child(*referencesTreeView);
+referencesScrolledWindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
 
-  // Add the ScrolledWindow to the Frame to give it a border
-  referencesFrame->set_child(*referencesScrolledWindow);
+referencesFrame->set_child(*referencesScrolledWindow);
 
-  // Set TextView wrap mode
-  referencesTextView->set_wrap_mode(Gtk::WrapMode::WORD);
+referencesTreeView->get_column(0)->set_fixed_width(50); // ID column
+referencesTreeView->get_column(1)->set_fixed_width(150); // Ref ID column
+referencesTreeView->get_column(2)->set_fixed_width(150); // Author column
+referencesTreeView->get_column(3)->set_fixed_width(300); // Title column
+referencesTreeView->get_column(4)->set_fixed_width(100); // Date column
+
+// Get the parent node
+auto parentNode = xmlptr()->GetNode("/fdm_config/fileheader");
+// Get all child nodes
+auto references = parentNode.GetChildren();
+
+int i = 1; // Row ID
+for (const auto& reference : references) {
+    // Create a mutable copy of the reference node
+    auto mutableReference = const_cast<JSBEdit::XMLNode&>(reference);
+
+    if (mutableReference.GetName() == "reference") { // Check if the node is a <reference>
+        auto tableRow = *(referencesStore->append());
+        
+        tableRow[referencesColumns.refID] = mutableReference.GetAttribute("refID").second;  // Extract ref ID
+        tableRow[referencesColumns.author] = mutableReference.GetAttribute("author").second;  // Extract author
+        tableRow[referencesColumns.title] = mutableReference.GetAttribute("title").second;  // Extract title
+        tableRow[referencesColumns.date] = mutableReference.GetAttribute("date").second;  // Extract date
+
+        tableRow[referencesColumns.id] = i++; // Increase index table by 1
+    }
+}
 
   // Limitations
   auto limitationsLabel = Gtk::make_managed<Gtk::Label>("Limitations");
@@ -212,9 +266,17 @@ void GeneralInformationSubsystem::Create()
   spacer->set_size_request(-1, 10);  // Set height to 10 pixels
   m_Grid.attach(*spacer, 0, row++);
 
-  m_Grid.attach(*referencesLabel, 0, row);
-  m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
+//////////////
+
+  // m_Grid.attach(*referencesLabel, 0, row);
+  // m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
+
+  // Attach to grid
+m_Grid.attach(*referencesLabel, 0, row);
+m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
   m_Grid.attach(*spacer, 0, row++);
+
+/////////////
 
   m_Grid.attach(*limitationsLabel, 0, row);
   m_Grid.attach(*limitationsFrame, 1, row++, 43, 2);
@@ -223,7 +285,9 @@ void GeneralInformationSubsystem::Create()
   m_Grid.attach(*notesLabel, 0, row);
   m_Grid.attach(*notesFrame, 1, row++, 43, 2);
   m_Grid.attach(*spacer, 0, row++);
+
 }
+
 
 void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
   JSBEdit::XMLLoad xmlLoader;
