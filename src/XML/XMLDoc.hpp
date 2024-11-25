@@ -20,6 +20,7 @@ namespace JSBEdit
     private:
         pugi::xml_document doc;
         std::string m_xmlData;
+        std::filesystem::path m_filePath;
 
         void GetFileContexts(const std::filesystem::path &path);
         bool ParseData();
@@ -35,6 +36,8 @@ namespace JSBEdit
         bool SaveToFile(const std::filesystem::path &path);
         void Print();
 
+        //Function to retrieve the file file path
+        std::filesystem::path GetFilePath() const;
     };
 
 };

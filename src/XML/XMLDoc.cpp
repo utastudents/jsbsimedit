@@ -104,6 +104,7 @@ JSBEdit::XMLDoc::~XMLDoc()
 
 void JSBEdit::XMLDoc::LoadFileAndParse(const std::filesystem::path& path)
 {
+    m_filePath = path;
     GetFileContexts(path);
     ParseData();
 }
@@ -163,4 +164,10 @@ bool JSBEdit::XMLDoc::SaveToFile(const std::filesystem::path &path)
 void JSBEdit::XMLDoc::Print()
 {
     doc.print(std::cout);
+}
+
+// Definition of GetFilePath method
+std::filesystem::path JSBEdit::XMLDoc::GetFilePath() const
+{
+    return m_filePath;
 }

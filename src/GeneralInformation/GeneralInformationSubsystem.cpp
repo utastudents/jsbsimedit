@@ -8,6 +8,8 @@
 #include "Validation.hpp"
 #include "inc/XML_api.hpp"
 
+#include <filesystem> // For `operations
+namespace fs = std::filesystem;
 
 GeneralInformationSubsystem::GeneralInformationSubsystem()
 {
@@ -42,6 +44,15 @@ void GeneralInformationSubsystem::Create()
   // Row tracking variable
   int row = 0;
 
+  // Extract file path from XMLDoc
+  fs::path xmlFilePath = xmlptr()->GetFilePath();
+  // Extract base path
+  fs::path basePath = fs::current_path();
+  // Get the direct file path by combining xmlFilePath and basePath
+  fs::path fullPath = basePath / xmlFilePath;
+  fullPath = fs::canonical(fullPath);
+
+
   // an example of accessing the xml file
   // fetch the ptr to the open xml document
   auto node = xmlptr()->GetNode("fdm_config");
@@ -61,7 +72,7 @@ void GeneralInformationSubsystem::Create()
     m_filePathTextbox.set_text(m_FilePath);
   } else {
     std::cerr << "Warning: m_FilePath is empty in Create()" << std::endl;
-    m_filePathTextbox.set_text("Enter file path here");
+    m_filePathTextbox.set_text(fullPath.string());
   }
 
   // Release Level (Drop-down)
