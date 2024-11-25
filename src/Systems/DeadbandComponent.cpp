@@ -12,4 +12,7 @@ void DeadbandComponent::LoadGUI(Glib::RefPtr<Gtk::Application>& app)
 {
 }
 
+void DeadbandComponent::LoadFromXml(JSBEdit::XMLNode &node)
+{
+}
 };
