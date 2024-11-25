@@ -208,24 +208,46 @@ void PropulsionSubsystem::Create() {
             m_PropManager.showTankSetup(); 
         }, 
         [this]() { // "Tank Details"
-            m_PropManager.showTankSetup(); 
+            if ((checkSelect(selectedTank)==true)) {// Tank select check
+                m_PropManager.showTankSetup(); 
+            } else if ((checkSelect(selectedTank)!=true)) {
+                auto reselectdialog = Gtk::make_managed<Gtk::MessageDialog>(
+                "Existing Tank not selected from dropdowns, please select before altering.",
+                false, Gtk::MessageType::WARNING, Gtk::ButtonsType::OK, true);
+                reselectdialog->set_title("Selection Required");
+                reselectdialog->signal_response().connect([reselectdialog](int) {
+                    reselectdialog->hide();
+                });
+                reselectdialog->show();
+            }   
         },
         [this]() { // "Delete Tank"
-            auto dialog = Gtk::make_managed<Gtk::MessageDialog>(
-                "Are you sure you want to delete the selected tank?",
-                false, Gtk::MessageType::QUESTION, Gtk::ButtonsType::YES_NO, true);
-            dialog->set_title("Delete Tank Confirmation");
-            dialog->signal_response().connect([this, dialog](int response_id) {
-                if (response_id == Gtk::ResponseType::YES) {
-                    m_PropManager.confirmDeleteTank();
-                    std::cout << "Tank deleted successfully!" << std::endl;
-                } else {
-                    std::cout << "Tank deletion canceled." << std::endl;
-                }
-                dialog->close();
-            });
-
-            dialog->show();
+            if ((checkSelect(selectedTank)==true)) { // Check confirming tank is selected vefore calling confirm Delete Tank
+                auto dialog = Gtk::make_managed<Gtk::MessageDialog>(
+                    "Are you sure you want to delete the selected tank?",
+                    false, Gtk::MessageType::QUESTION, Gtk::ButtonsType::YES_NO, true);
+                dialog->set_title("Delete Tank Confirmation");
+                dialog->signal_response().connect([this, dialog](int response_id) {
+                    if (response_id == Gtk::ResponseType::YES) {
+                        m_PropManager.confirmDeleteTank();
+                        std::cout << "Tank deleted successfully!" << std::endl;
+                    } else {
+                        std::cout << "Tank deletion canceled." << std::endl;
+                    }
+                    dialog->close();
+                });
+                dialog->show();
+            }
+            else if ((checkSelect(selectedTank)!=true)) {
+                auto reselectdialog = Gtk::make_managed<Gtk::MessageDialog>(
+                "Existing Tank not selected from dropdowns, please select before altering.",
+                false, Gtk::MessageType::WARNING, Gtk::ButtonsType::OK, true);
+                reselectdialog->set_title("Selection Required");
+                reselectdialog->signal_response().connect([reselectdialog](int) {
+                    reselectdialog->hide();
+                });
+                reselectdialog->show();
+            }   
         }
     };
 
