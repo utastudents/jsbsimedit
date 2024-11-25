@@ -14,6 +14,7 @@ public:
     void UpdateDataFromGUI(Aircraft& aircraft, User& user, Config& config);
     void ValidateAndSave();
     void SaveToXML(const std::string& filePath, const Aircraft& aircraft, const User& user, const Config& config);
+    void SetFilePath(const std::string& filePath);
 
 private:
     // Define attributes to hold references to input widgets
@@ -27,4 +28,7 @@ private:
     Gtk::Entry m_OrganizationEntry;
     Gtk::Entry m_Limitations;
     Gtk::Entry m_Notes;
+    Gtk::Entry m_filePathTextbox;
+    std::string m_FilePath;
+    Gtk::ComboBoxText* m_ReleaseLevelDropdown;
 };

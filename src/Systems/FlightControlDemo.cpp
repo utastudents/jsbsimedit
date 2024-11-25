@@ -15,7 +15,7 @@ FlightControlDemo::FlightControlDemo(const Glib::RefPtr<Gtk::Application> &app,
     }
     catch (const Glib::Error& ex)
     {
-        std::cerr << "Error loading flightControl.xml" << ex.what();
+        std::cerr << "Error loading flightControl.xml" << ex.what() << std::endl;
     }
 
 
