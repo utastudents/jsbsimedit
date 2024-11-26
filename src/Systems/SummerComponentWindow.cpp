@@ -34,7 +34,7 @@ void SummerComponentWindow::Summer()
 
   // The list will be filled if any input was previously saved
   //listInput = savedInput;
-
+  Gtk::TextView textBox;
   // the TextBuffer plays the role as the communicator
   textBuffer = Gtk::TextBuffer::create(); 
   textBox.set_buffer(textBuffer);
@@ -44,21 +44,24 @@ void SummerComponentWindow::Summer()
 
   g.attach(textBox,0,1,2,5);
 
-  positive.signal_toggled().connect(sigc::mem_fun(*this, &SummerComponentWindow::positiveToggled));
- 
-  negative.signal_toggled().connect(sigc::mem_fun(*this, &SummerComponentWindow::negativeToggled));
+  m_positive = Glib::RefPtr<Gtk::CheckButton>(new Gtk::CheckButton{"Positive"});  
+  m_positive->signal_toggled().connect(sigc::mem_fun(*this, &SummerComponentWindow::positiveToggled));
 
-  g.attach(positive,0,5);
-  g.attach(negative,1,5);
+  m_negative = Glib::RefPtr<Gtk::CheckButton>(new Gtk::CheckButton{"Negative"});  
+  m_negative->signal_toggled().connect(sigc::mem_fun(*this, &SummerComponentWindow::negativeToggled));
 
-  Gtk::Button buttonAdd{"Add"};
-  buttonAdd.signal_clicked().connect(sigc::mem_fun(*this, &SummerComponentWindow::AddInput), false);
+  g.attach(*m_positive,0,5);
+  g.attach(*m_negative,1,5);
+  //tabContainer.append(g);
 
-  Gtk::Button buttonRemove{"Remove"};
-  buttonRemove.signal_clicked().connect(sigc::mem_fun(*this, &SummerComponentWindow::RemoveInput), false);
+  buttonAdd = Glib::RefPtr<Gtk::Button>(new Gtk::Button{"Add"});
+  buttonAdd->signal_clicked().connect(sigc::mem_fun(*this, &SummerComponentWindow::AddInput), false);
 
-  g.attach(buttonAdd,0,7);
-  g.attach(buttonRemove,1,7);
+  buttonRemove = Glib::RefPtr<Gtk::Button>(new Gtk::Button{"Remove"});
+  buttonRemove->signal_clicked().connect(sigc::mem_fun(*this, &SummerComponentWindow::RemoveInput), false);
+
+  g.attach(*buttonAdd,0,7);
+  g.attach(*buttonRemove,1,7);
 
   m_noteBook.append_page(g, "Summer");
   
@@ -66,25 +69,26 @@ void SummerComponentWindow::Summer()
 
 void SummerComponentWindow::positiveToggled()
 {
-  if (positive.get_active())
+
+  if (m_positive->get_active())
   {
-    negative.set_active(false); // Uncheck the other button, nothing crazy
+    m_negative->set_active(false); // Uncheck the other button, nothing crazy
   }
 }
 
 void SummerComponentWindow::negativeToggled()
 {
-  if (negative.get_active())
+  if (m_negative->get_active())
   {
-    positive.set_active(false);
+    m_positive->set_active(false);
   }
 }
 
 void SummerComponentWindow::AddInput() {
-    // Add selected type to list
-    if (positive.get_active()) {
+    // Add selected type list
+    if (m_positive->get_active()) {
         listInput.push_back("positive(+)");
-    } else if (negative.get_active()) {
+    } else if (m_negative->get_active()) {
         listInput.push_back("negative(-)");
     } else {
         return; // Neither button is active, do nothing
