@@ -10,6 +10,9 @@
 #include "PropulsionSubsystem.hpp"
 #include "PropulsionManager.hpp"
 #include "EngineSelectorWindow.hpp"
+#include "EngineThrusterDialog.hpp"
+
+PropulsionManager m_PropManager;  // Propulsion manager instance
 
 namespace fs = std::filesystem;
 
@@ -17,7 +20,9 @@ PropulsionSubsystem::PropulsionSubsystem() {
     m_Name = "Propulsion";
     std::cout << "In PropulsionSubsystem constructor" << std::endl;
 }
-
+std::string PropulsionSubsystem::getSelectedEngine() const {
+    return selectedEngine;  // Assuming selectedEngine is a string member variable
+}
 void PropulsionSubsystem::Create() {
     std::cout << "in PropulsionSubsystem::Create" << std::endl;
 
