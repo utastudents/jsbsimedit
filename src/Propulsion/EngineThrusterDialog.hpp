@@ -5,10 +5,13 @@
 #include <iostream>
 #include <gtk/gtk.h>
 #include <gtkmm.h>
+#include "PropulsionSubsystem.hpp"
+
+class PropulsionSubsystem;
 
 class EngineThrusterDialog : public Gtk::Window {
 public:
-    EngineThrusterDialog();
+    EngineThrusterDialog(PropulsionSubsystem& propulsionSubsystem);
     void show(); // Show the dialog
 
 protected:
@@ -34,6 +37,7 @@ private:
     Gtk::ComboBoxText* thruster_location_dropdown;
     Gtk::Entry* thruster_roll_entry, * thruster_pitch_entry, * thruster_yaw_entry;
     Gtk::ComboBoxText* thruster_orient_dropdown;
+    PropulsionSubsystem& propulsionSubsystem;
 };
 
 #endif // ENGINE_THRUSTER_DIALOG_HPP
