@@ -5,6 +5,7 @@
 #include <list>
 #include <gtkmm.h> 
 #include "Tank.hpp"
+#include "PropulsionSubsystem.hpp"
 
 class PropulsionManager {
 public:
