@@ -1,13 +1,15 @@
 #include "PropulsionManager.hpp"
 #include "EngineThrusterDialog.hpp"
+#include "PropulsionSubsystem.hpp"
 #include "TankDialog.hpp"
 #include <iostream>
 
 void PropulsionManager::showEngineThrusterSetup() { 
     // TODO: Confirm if 1st time setup
     // TODO: Implement engine/thruster setup display
+    PropulsionSubsystem propulsionSubsystem;
     
-    EngineThrusterDialog dialogEng;
+    EngineThrusterDialog dialogEng(propulsionSubsystem);
     std::cout << "Displaying engine/thruster setup..." << std::endl;
 }
 
