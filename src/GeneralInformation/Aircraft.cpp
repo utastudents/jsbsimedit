@@ -79,7 +79,7 @@ void Aircraft::setDescription(std::string description) {
     this->Description = description;
 }
 
-std::string Aircraft::getDescription() {
+std::string Aircraft::getDescription() const{
     return Description;
 }
 

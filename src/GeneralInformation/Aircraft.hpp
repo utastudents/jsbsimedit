@@ -42,16 +42,13 @@ public:
     // void setLimitations(const std::string& limitations);
     // std::string getLimitations() const;
     void setDescription(std::string Description);
-    std::string getDescription();
-
-    void setNotes(const std::string& notes);
-    std::string getNotes() const;
+    std::string getDescription() const;
 
     void setLimitations(std::string limitations);
     std::string getLimitations();
 
     void setNotes(std::string notes);
-    std::string getNotes();
+    std::string getNotes() const;
 
     void saveToFile();
     Aircraft loadFromFile();
