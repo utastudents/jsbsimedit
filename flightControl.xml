@@ -3,6 +3,10 @@
 <interface>
   <!-- interface-name flightcontrol.ui -->
   <requires lib="gtk" version="4.0"/>
+  <object class="GtkBox" id="stackBox">
+    <property name='hexpand'>True</property>
+    <property name='vexpand'>False</property>
+  </object>
   <object class="GtkBox" id="componentBox">
     <property name='hexpand'>True</property>
     <property name='vexpand'>False</property>

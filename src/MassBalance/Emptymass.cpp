@@ -1,6 +1,6 @@
 #include "Emptymass.hpp"
 #include <iostream>
-
+namespace MassBalance{
 //constructor
 EmptyMass::EmptyMass(float massValue, const std::string& unitMeasure)
     : emptyMass(massValue), units(unitMeasure) {}
@@ -25,3 +25,4 @@ std::string EmptyMass::getUnits() const {
     return units;
 }
 
+}

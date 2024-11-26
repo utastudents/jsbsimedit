@@ -4,20 +4,22 @@
 #include "EngineThrusterDialog.hpp"
 
 EngineThrusterDialog::EngineThrusterDialog() {
+    // TODO: If existing pair make sure changes are included in dialog box
+
     // Set the title and default size for the parent window
     set_title("Engine/Thruster Setup");
     set_default_size(400, 400);
 
     // Create the dialog window
-    dialog = new Gtk::Dialog("Engine/Thruster Setup", *this);
-    dialog->set_modal(true);
+    dialogEng = new Gtk::Dialog("Engine/Thruster Setup", *this);
+    dialogEng->set_modal(true);
 
     // Use GTK_RESPONSE_ACCEPT for OK and GTK_RESPONSE_REJECT for Cancel
-    dialog->add_button("OK", GTK_RESPONSE_ACCEPT);  // OK button
-    dialog->add_button("Cancel", GTK_RESPONSE_REJECT);  // Cancel button
+    dialogEng->add_button("OK", GTK_RESPONSE_ACCEPT);  // OK button
+    dialogEng->add_button("Cancel", GTK_RESPONSE_REJECT);  // Cancel button
 
     // Create a Gtk::Box to hold the grid (as the content area)
-    Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialog->get_content_area());
+    Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialogEng->get_content_area());
     if (content_area) {
         // Add the grid to the content area using pack_start
         content_area->append(grid);  // In GTKmm 4, append() is used instead of pack_start
@@ -31,6 +33,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*engine_header, 0, 0, 2, 1);
 
     // Engine Name Field
+    // TODO: Change name to selected engine name from dropdown 
     Gtk::Label* engine_name_label = new Gtk::Label("Engine Name:");
     engine_name_entry = new Gtk::Entry();
     grid.attach(*engine_name_label, 0, 1, 1, 1);
@@ -96,6 +99,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*feed_display, 1, 13, 1, 1);
 
     // Thruster Section
+    // TODO: Change name to selected thruster name from dropdown 
     Gtk::Label* thruster_header = new Gtk::Label("Thruster");
     grid.attach(*thruster_header, 0, 14, 2, 1);
 
@@ -157,10 +161,12 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*thruster_orient_dropdown, 1, 25, 1, 1);
 
     // Show the dialog window
-    dialog->show();
+    dialogEng->show();
 
     // Connect to the response signal
-    dialog->signal_response().connect(sigc::mem_fun(*this, &EngineThrusterDialog::onResponse));
+    // TODO: Check if values are empty or not
+    // TODO: Fix buttons so the close dialog if check passes
+    dialogEng->signal_response().connect(sigc::mem_fun(*this, &EngineThrusterDialog::onResponse));
 }
 
 

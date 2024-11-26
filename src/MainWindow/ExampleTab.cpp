@@ -13,7 +13,7 @@ ExampleTab::ExampleTab(const Glib::RefPtr<Gtk::Application>& app
     }
     catch (const Glib::Error& ex)
     {
-        std::cerr << "Error loading mainWindow.xml " << ex.what();
+        std::cerr << "Error loading mainWindow.xml " << ex.what() << std::endl;
     }
     append(l);
 }

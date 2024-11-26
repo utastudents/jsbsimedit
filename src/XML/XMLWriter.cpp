@@ -1,6 +1,6 @@
 #include <XML/XMLWriter.hpp>
 
-JSBEdit::XMLWriter::XMLWriter(JSBEdit::XMLDoc doc) {
+JSBEdit::XMLWriter::XMLWriter(JSBEdit::XMLDoc& doc) {
 
 }
 JSBEdit::XMLWriter::~XMLWriter() {
