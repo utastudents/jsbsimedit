@@ -3,16 +3,27 @@
 // Constructor: Initializes the HierarchyPanel, sets up the tree view and window properties
 HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
 {   
-    // Set up the column for icons (with a cell renderer)
-    Gtk::TreeViewColumn* column_icon = Gtk::manage(new Gtk::TreeViewColumn());
-    column_icon->set_title("Icon");
-    treeView.append_column(*column_icon);
-    Gtk::CellRendererPixbuf* renderer_pixbuf = Gtk::manage(new Gtk::CellRendererPixbuf());
-    column_icon->pack_start(*renderer_pixbuf);
-    column_icon->add_attribute(renderer_pixbuf->property_pixbuf(), columns.icon);  // Bind to the icon column
 
-    // Set up the tree view and connect a signal
-    treeView.append_column("Aerodynamics", columns.columnName);
+    Gtk::TreeViewColumn* column = Gtk::manage(new Gtk::TreeViewColumn());
+    column->set_title("Hierarchy");
+    
+    // Create the cell renderers for the icon and the text
+    Gtk::CellRendererPixbuf* renderer_pixbuf = Gtk::manage(new Gtk::CellRendererPixbuf());
+    Gtk::CellRendererText* renderer_text = Gtk::manage(new Gtk::CellRendererText());
+    
+    // Add the renderers to the column
+    column->pack_start(*renderer_pixbuf, false);
+    column->pack_start(*renderer_text, true);
+
+    // Bind the columns to the model
+    column->add_attribute(renderer_pixbuf->property_pixbuf(), columns.icon);
+    column->add_attribute(renderer_text->property_text(), columns.columnName);
+    
+    // Set column properties
+    column->set_expand(true);
+
+    // Add column to TreeView
+    treeView.append_column(*column);
 
     treeView.set_headers_visible(false);
     treeView.set_activate_on_single_click(true);
