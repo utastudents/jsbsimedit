@@ -6,15 +6,19 @@ GroundReactionsSubsystem::GroundReactionsSubsystem() {
     std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
 }
 
-GroundReactionsSubsystem::LandingGearSetupWindow::LandingGearSetupWindow() {
+GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
+    set_modal(true);
+
     set_title("Landing Gear Setup");
-    set_default_size(715, 620); 
+    set_default_size(715, 620);
+
+    auto contentArea = get_content_area();
 
     // Create a grid for popup layout
     auto p_Grid = Gtk::make_managed<Gtk::Grid>();
     p_Grid->set_row_spacing(10);
     p_Grid->set_column_spacing(10);
-    set_child(*p_Grid);
+    contentArea->append(*p_Grid);
 
     int p_row = 0;
 
@@ -166,35 +170,35 @@ void GroundReactionsSubsystem::Create() {
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
 
-    // Contact buttons to open respective popup windows
+    // Contact buttons to open respective dialog popups
     auto buttonContact1 = Gtk::make_managed<Gtk::Button>("Contact 1 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
     buttonContact1->signal_clicked().connect([]() {
-        auto landingGearWindow1 = new LandingGearSetupWindow();
-        landingGearWindow1->show();
+        auto landingGearDialog1 = new LandingGearSetupDialog();
+        landingGearDialog1->show();
     });
 
     auto buttonContact2 = Gtk::make_managed<Gtk::Button>("Contact 2 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
     buttonContact2->signal_clicked().connect([]() {
-        auto landingGearWindow2 = new LandingGearSetupWindow();
-        landingGearWindow2->show();
+        auto landingGearDialog2 = new LandingGearSetupDialog();
+        landingGearDialog2->show();
     });
 
     auto buttonContact3 = Gtk::make_managed<Gtk::Button>("Contact 3 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
     buttonContact3->signal_clicked().connect([]() {
-        auto landingGearWindow3 = new LandingGearSetupWindow();
-        landingGearWindow3->show();
+        auto landingGearDialog3 = new LandingGearSetupDialog();
+        landingGearDialog3->show();
     });
 
     auto buttonContact4 = Gtk::make_managed<Gtk::Button>("Contact 4 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
     buttonContact4->signal_clicked().connect([]() {
-        auto landingGearWindow4 = new LandingGearSetupWindow();
-        landingGearWindow4->show();
+        auto landingGearDialog4 = new LandingGearSetupDialog();
+        landingGearDialog4->show();
     });
 
     auto buttonContact5 = Gtk::make_managed<Gtk::Button>("Contact 5 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
     buttonContact5->signal_clicked().connect([]() {
-        auto landingGearWindow5 = new LandingGearSetupWindow();
-        landingGearWindow5->show();
+        auto landingGearDialog5 = new LandingGearSetupDialog();
+        landingGearDialog5->show();
     });
 
     m_Grid.attach(*buttonContact1, 0, 0);
