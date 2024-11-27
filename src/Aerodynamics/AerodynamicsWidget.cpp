@@ -105,12 +105,17 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             Axis::UnitName unit = Axis::stringToUnitName[i.GetAttribute("unit").second];
             axis->setName(name);
             axis->setUnit(unit);
+            std::cout << "The unit for " << Axis::axisNameToString[axis->getName()] << " is " << axis->getUnit() << std::endl;
 
             // Create a row to represent the axis in the tree
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = Axis::axisNameToString[axis->getName()];
             row[columns.node] = axis;
 
+            // Append unit if available
+            if (axis->getUnit() != Axis::UnitName::NONE)
+                row[columns.columnName] = Axis::axisNameToString[axis->getName()] + " (" + Axis::unitNameToString[axis->getUnit()] + ")";
+                
             appendChildren(row, i.GetChildren());
         }
         else if (i.GetName() == "property") {
@@ -182,8 +187,19 @@ void AerodynamicsWidget::updateData(Gtk::TreeRow parent)
     for(auto i : children){
         std::shared_ptr<AerodynamicsNode> node = i[columns.node];
         if(node->getType() == AerodynamicsNode::VALUE) {
-            auto value = std::dynamic_pointer_cast<Value>(node);
-            i[columns.columnName] = std::to_string(value->getInput());
+        }
+        if(node->getType() == AerodynamicsNode::PROPERTY) {
+        }
+        if(node->getType() == AerodynamicsNode::TABLE) {
+        }
+        if(node->getType() == AerodynamicsNode::FUNCTION) {
+        }
+        if(node->getType() == AerodynamicsNode::AXIS) {
+            std::shared_ptr<Axis> axis = std::dynamic_pointer_cast<Axis>(node);
+            i[columns.columnName] = Axis::axisNameToString[axis->getName()];
+            // Append unit if available
+            if (axis->getUnit() != Axis::UnitName::NONE)
+                i[columns.columnName] = Axis::axisNameToString[axis->getName()] + " (" + Axis::unitNameToString[axis->getUnit()] + ")";
         }
         updateData(i);
     }

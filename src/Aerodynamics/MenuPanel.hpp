@@ -48,7 +48,16 @@ class AxisMenu : public MenuPanel {
 public:
     AxisMenu(std::shared_ptr<AerodynamicsNode> node);
 private:
+    void on_name_dropdown_selected();
+    void on_unit_dropdown_selected();
     std::shared_ptr<Axis> axis;
+    Gtk::Grid* grid;
+    Gtk::Label* nameDropdownLabel;
+    Gtk::DropDown* nameDropdown;
+    Gtk::Label* unitDropdownLabel;
+    Gtk::DropDown* unitDropdown;
+    std::shared_ptr<Gtk::StringList> name_list;
+    std::shared_ptr<Gtk::StringList> unit_list;
 };
 
 class PropertyMenu : public MenuPanel {
