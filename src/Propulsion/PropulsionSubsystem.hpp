@@ -1,4 +1,3 @@
-#pragma once
 #ifndef PROPULSIONSUBSYSTEM_HPP
 #define PROPULSIONSUBSYSTEM_HPP
 
@@ -18,6 +17,7 @@ public:
     std::string GetCurrentPlatformDebug();
     std::string EngineOrThruster(const std::string& pulledInput);
     std::string getSelectedEngine() const;
+    std::string getSelectedThruster() const;
 
     std::string selectedEngine;
     std::string selectedThruster;
