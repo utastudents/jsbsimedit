@@ -153,8 +153,16 @@ void PropertyMenu::onShowAllButtonClicked() {
 }
 
 void PropertyMenu::onOkButtonClicked() {
-    hide();
+    // Get the selected row from the TreeView
+    auto selection = propertyTreeView.get_selection();
+    if (auto iter = selection->get_selected()) {
+        Glib::ustring selectedPropertyName = (*iter)[propertyColumns.propertyName];
+        property->setName(selectedPropertyName);
+
+        update_signal.emit();
+    }
 }
+
 
 void PropertyMenu::onCancelButtonClicked() {
     hide();

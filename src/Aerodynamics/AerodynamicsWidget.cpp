@@ -200,6 +200,9 @@ void AerodynamicsWidget::updateData(Gtk::TreeRow parent)
         if(node->getType() == AerodynamicsNode::FUNCTION) {
             std::shared_ptr<Function> function = std::dynamic_pointer_cast<Function>(node);
             i[columns.columnName] = function->getName();
+            // Append description to name if available
+            if (!function->getDescription().empty())
+                i[columns.columnName] = function->getName() + " (" + function->getDescription() + ")";
         }
         if(node->getType() == AerodynamicsNode::AXIS) {
             std::shared_ptr<Axis> axis = std::dynamic_pointer_cast<Axis>(node);
