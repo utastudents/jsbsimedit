@@ -160,6 +160,7 @@ bool JSBEdit::XMLNode::SetText(std::string text)
     // catches known errors and returns false
     catch (const std::string& e) {
         std::cerr << "SetText Error: " << e << std::endl;
+        return false;
     }
     // catches any unknown errors and returns false
     catch (...) {

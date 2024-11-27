@@ -97,6 +97,7 @@ public:
     static std::map<AxisName, std::string> axisNameToString;
     static std::map<std::string, AxisName> stringToAxisName;
     enum UnitName {
+        NONE,
         LBS,
         N,
         LBSFT,

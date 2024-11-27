@@ -88,6 +88,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             // Create a row to represent the function in the tree
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = function->getName();
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-formula-30.png");
 
             // Append description to name if available
             if (!function->getDescription().empty())
@@ -110,7 +111,12 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = Axis::axisNameToString[axis->getName()];
             row[columns.node] = axis;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-axis-30.png");
 
+            // Append unit if available
+            if (axis->getUnit() != Axis::UnitName::NONE)
+                row[columns.columnName] = Axis::axisNameToString[axis->getName()] + " (" + Axis::unitNameToString[axis->getUnit()] + ")";
+                
             appendChildren(row, i.GetChildren());
         }
         else if (i.GetName() == "property") {
@@ -124,6 +130,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = property->getName();
             row[columns.node] = property;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-p-30.png");
 
             // Recursively add children of the property
             appendChildren(row, i.GetChildren());
@@ -141,6 +148,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = table->getName();
             row[columns.node] = table;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-table-30.png");
 
             appendChildren(row, i.GetChildren());
         }
@@ -157,6 +165,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = value->getName();
             row[columns.node] = value;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-v-30.png");
 
             appendChildren(row, i.GetChildren());
         }
@@ -182,8 +191,30 @@ void AerodynamicsWidget::updateData(Gtk::TreeRow parent)
     for(auto i : children){
         std::shared_ptr<AerodynamicsNode> node = i[columns.node];
         if(node->getType() == AerodynamicsNode::VALUE) {
-            auto value = std::dynamic_pointer_cast<Value>(node);
+            std::shared_ptr<Value> value = std::dynamic_pointer_cast<Value>(node);
             i[columns.columnName] = std::to_string(value->getInput());
+        }
+        if(node->getType() == AerodynamicsNode::PROPERTY) {
+            std::shared_ptr<AeroProperty> property = std::dynamic_pointer_cast<AeroProperty>(node);
+            i[columns.columnName] = property->getName();
+        }
+        if(node->getType() == AerodynamicsNode::TABLE) {
+            std::shared_ptr<Table> table = std::dynamic_pointer_cast<Table>(node);
+            i[columns.columnName] = table->getName();
+        }
+        if(node->getType() == AerodynamicsNode::FUNCTION) {
+            std::shared_ptr<Function> function = std::dynamic_pointer_cast<Function>(node);
+            i[columns.columnName] = function->getName();
+            // Append description to name if available
+            if (!function->getDescription().empty())
+                i[columns.columnName] = function->getName() + " (" + function->getDescription() + ")";
+        }
+        if(node->getType() == AerodynamicsNode::AXIS) {
+            std::shared_ptr<Axis> axis = std::dynamic_pointer_cast<Axis>(node);
+            i[columns.columnName] = Axis::axisNameToString[axis->getName()];
+            // Append unit if available
+            if (axis->getUnit() != Axis::UnitName::NONE)
+                i[columns.columnName] = Axis::axisNameToString[axis->getName()] + " (" + Axis::unitNameToString[axis->getUnit()] + ")";
         }
         updateData(i);
     }

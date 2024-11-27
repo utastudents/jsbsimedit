@@ -1,5 +1,6 @@
 #include "PropulsionManager.hpp"
 #include "EngineThrusterDialog.hpp"
+#include "PropulsionSubsystem.hpp"
 #include "TankDialog.hpp"
 #include <iostream>
 

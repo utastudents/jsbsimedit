@@ -40,15 +40,27 @@ private:
 class ValueMenu : public MenuPanel {
 public:
     ValueMenu(std::shared_ptr<AerodynamicsNode> node);
-private:
+private: 
+    Gtk::Label* inputLabel;
+    Gtk::Entry* inputEntry;
     std::shared_ptr<Value> value;
+    void on_text_changed();
 };
 
 class AxisMenu : public MenuPanel {
 public:
     AxisMenu(std::shared_ptr<AerodynamicsNode> node);
 private:
+    void on_name_dropdown_selected();
+    void on_unit_dropdown_selected();
     std::shared_ptr<Axis> axis;
+    Gtk::Grid* grid;
+    Gtk::Label* nameDropdownLabel;
+    Gtk::DropDown* nameDropdown;
+    Gtk::Label* unitDropdownLabel;
+    Gtk::DropDown* unitDropdown;
+    std::shared_ptr<Gtk::StringList> name_list;
+    std::shared_ptr<Gtk::StringList> unit_list;
 };
 
 class PropertyMenu : public MenuPanel {
@@ -56,4 +68,57 @@ public:
     PropertyMenu(std::shared_ptr<AerodynamicsNode> node);
 private:
     std::shared_ptr<AeroProperty> property;
+    void onButtonClicked(); // handler for button click actions
+    void onFilterButtonClicked();
+    void onShowAllButtonClicked();
+    void onOkButtonClicked();
+    void onCancelButtonClicked();
+    void loadPropertiesFromFile(const std::string& fileName);
+    void onPropertySelected();
+    void addProperty();
+   // Helper methods
+    void applyFilter();
+    void reloadList();
+private:
+    // Widgets
+    Gtk::Box m_VBox;
+    Gtk::Label currentLabel;
+    Gtk::Entry* currentPlaceholder;
+    Gtk::ScrolledWindow m_ScrolledWindow;
+    Gtk::Grid m_Grid;
+    Gtk::ScrolledWindow scrolledWindow; 
+    Gtk::TreeView propertyTreeView;
+    Gtk::Label filterLabel;
+    Gtk::Window propertiesScrolledWindow;
+    Gtk::Label currentPropertyValue; 
+    Gtk::Entry filterTextBox; 
+    Gtk::Button filterButton; 
+    Gtk::Button showAllButton; 
+    Gtk::Button okButton; 
+    Gtk::Button cancelButton; 
+    Gtk::Button closeButton;
+    int visibleProperties; 
+    int hiddenProperties; 
+
+// Define property columns model
+class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
+    public:
+        PropertyColumns() {
+            add(index);
+            add(propertyName);
+            add(description);
+            add(unit);
+            add(access);
+            add(comments);
+        }
+        Gtk::TreeModelColumn<int> index;  // Use int for the "No." column
+        Gtk::TreeModelColumn<Glib::ustring> propertyName;
+        Gtk::TreeModelColumn<Glib::ustring> description;
+        Gtk::TreeModelColumn<Glib::ustring> unit;
+        Gtk::TreeModelColumn<Glib::ustring> access;
+        Gtk::TreeModelColumn<Glib::ustring> comments;
+    };
+
+    PropertyColumns propertyColumns;
+    Glib::RefPtr<Gtk::ListStore> listStore;
 };

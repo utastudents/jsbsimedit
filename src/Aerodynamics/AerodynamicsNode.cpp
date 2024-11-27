@@ -165,12 +165,14 @@ std::map<std::string, Axis::AxisName> Axis::stringToAxisName = {
     { "DOWN", DOWN }
 };
 std::map<Axis::UnitName, std::string> Axis::unitNameToString = {
+    { NONE, "NONE" },
     { LBS, "LBS" },
     { N, "N" },
     { LBSFT, "LBSFT" },
     { NM, "NM" }
 };
 std::map<std::string, Axis::UnitName> Axis::stringToUnitName = {
+    { "NONE", NONE },
     { "LBS", LBS },
     { "N", N },
     { "LBSFT", LBSFT },

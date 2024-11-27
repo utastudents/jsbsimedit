@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include "EngineThrusterDialog.hpp"
+#include "PropulsionSubsystem.hpp"
 
 EngineThrusterDialog::EngineThrusterDialog() {
     // TODO: If existing pair make sure changes are included in dialog box
@@ -160,6 +161,9 @@ EngineThrusterDialog::EngineThrusterDialog() {
     thruster_orient_dropdown->append("RAD");
     grid.attach(*thruster_orient_dropdown, 1, 25, 1, 1);
 
+    // Fill default values before showing the dialog
+    defaultValueFill();
+
     // Show the dialog window
     dialogEng->show();
 
@@ -191,10 +195,10 @@ void EngineThrusterDialog::onCancel() {
     std::cout << "Canceled! No changes were applied." << std::endl;
 }
 
-// Default value filling (optional based on design)
 void EngineThrusterDialog::defaultValueFill() {
-    // Example: Set default values
-    engine_name_entry->set_text("Default Engine");
+    // Set default values for other fields (e.g., location, orientation, etc.)
+    PropulsionSubsystem propSubsystem;
+    engine_name_entry->set_text(propSubsystem.getSelectedEngine());
     x_entry->set_text("0.0");
     y_entry->set_text("0.0");
     z_entry->set_text("0.0");
@@ -203,4 +207,13 @@ void EngineThrusterDialog::defaultValueFill() {
     yaw_entry->set_text("0.0");
     location_dropdown->set_active(0);  // Default to "IN"
     orient_dropdown->set_active(0);  // Default to "DEG"
+    thruster_name_entry->set_text(propSubsystem.getSelectedThruster());
+    thruster_x_entry->set_text("0.0");
+    thruster_y_entry->set_text("0.0");
+    thruster_z_entry->set_text("0.0");
+    thruster_roll_entry->set_text("0.0");
+    thruster_pitch_entry->set_text("0.0");
+    thruster_yaw_entry->set_text("0.0");
+    thruster_location_dropdown->set_active(0);  // Default to "IN"
+    thruster_orient_dropdown->set_active(0);  // Default to "DEG"
 }
