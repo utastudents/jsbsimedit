@@ -61,26 +61,8 @@ PropertyMenu::PropertyMenu(std::shared_ptr<AerodynamicsNode> node)
     auto selection = propertyTreeView.get_selection();
     selection->signal_changed().connect(sigc::mem_fun(*this, &PropertyMenu::onPropertySelected));
 
-    // Open and load the XML document
-    JSBEdit::XMLDoc doc;
-    doc.LoadFileAndParse({"../../../properties.xml"});
-    JSBEdit::XMLNode propertyNode = doc.GetNodes("/properties")[0];
-    std::vector<JSBEdit::XMLNode> propertyNodes = propertyNode.GetChildren();
-
-    // Populate with property names
-    std::vector<std::string> propertyNames;
-    for (auto i : propertyNodes) {
-        auto text = i.GetText();
-        propertyNames.push_back(text.substr(1));
-    }
-
-    // Populate the list store
-    // TODO: check for information fo other columns
-    for (size_t i = 0; i < propertyNames.size(); ++i) {
-        auto row = *(listStore->append());
-        row[propertyColumns.index] = i + 1;                   // Serial numbers starting from 1
-        row[propertyColumns.propertyName] = propertyNames[i];
-    }
+    // Populate the list store and tree view
+    reloadList();
 
     // Select and scroll to the currently selected property if present
     bool containsProperty = false;
@@ -148,8 +130,29 @@ void PropertyMenu::onFilterButtonClicked() {
 }
 
 void PropertyMenu::onShowAllButtonClicked() {
-    listStore->clear();
+    reloadList();
     // Logic to reload the properties list
+}
+
+// Reloads the entire property list without any filters
+void PropertyMenu::reloadList() {
+    // Open and load the XML document
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse({"../../../properties.xml"});
+    JSBEdit::XMLNode propertyNode = doc.GetNodes("/properties")[0];
+    std::vector<JSBEdit::XMLNode> propertyNodes = propertyNode.GetChildren();
+
+    std::vector<std::string> propertyNames;
+    for (auto i : propertyNodes) {
+        auto text = i.GetText();
+        propertyNames.push_back(text.substr(1));
+    }
+
+    for (size_t i = 0; i < propertyNames.size(); ++i) {
+        auto row = *(listStore->append());
+        row[propertyColumns.index] = i + 1;                   // Serial numbers starting from 1
+        row[propertyColumns.propertyName] = propertyNames[i];
+    }
 }
 
 void PropertyMenu::onOkButtonClicked() {
@@ -170,8 +173,7 @@ void PropertyMenu::onCancelButtonClicked() {
 
 void PropertyMenu::applyFilter() {
     Glib::ustring filterText = filterTextBox.get_text().lowercase();
-    listStore->clear();
-    // Filter logic here
+    // TODO: filter list reults based on filterText
 }
 
 // Function to handle property selection

@@ -78,6 +78,7 @@ private:
     void addProperty();
    // Helper methods
     void applyFilter();
+    void reloadList();
 private:
     // Widgets
     Gtk::Box m_VBox;
