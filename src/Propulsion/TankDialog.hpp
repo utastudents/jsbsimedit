@@ -54,14 +54,15 @@ private:
     Gtk::Dialog* dialogTank;
 
     Gtk::Grid grid;
-    Gtk::ComboBoxText typeComboBox;
-    Gtk::Entry capacityEntry;
-    Gtk::Button cancelButton;
-    Gtk::Button createButton;
     Gtk::Entry* x_entry;
     Gtk::Entry* y_entry;
     Gtk::Entry* z_entry;
     Gtk::ComboBoxText* location_dropdown;
+    Gtk::ComboBoxText typeComboBox;
+    Gtk::Entry capacityEntry;
+    Gtk::Button cancelButton;
+    Gtk::Button createButton;
+
 
     Gtk::ComboBoxText unitComboBox;
     bool isValidSelection(); // Validate user input
