@@ -130,6 +130,7 @@ void PropertyMenu::onFilterButtonClicked() {
 }
 
 void PropertyMenu::onShowAllButtonClicked() {
+    listStore->clear();
     reloadList();
     // Logic to reload the properties list
 }
