@@ -4,7 +4,7 @@
 #include "EngineThrusterDialog.hpp"
 #include "PropulsionSubsystem.hpp"
 
-EngineThrusterDialog::EngineThrusterDialog(PropulsionSubsystem& propulsionSubsystem) : propulsionSubsystem(propulsionSubsystem) {
+EngineThrusterDialog::EngineThrusterDialog() {
     // TODO: If existing pair make sure changes are included in dialog box
 
     // Set the title and default size for the parent window
@@ -197,7 +197,8 @@ void EngineThrusterDialog::onCancel() {
 
 void EngineThrusterDialog::defaultValueFill() {
     // Set default values for other fields (e.g., location, orientation, etc.)
-    engine_name_entry->set_text(propulsionSubsystem.getSelectedEngine());
+    PropulsionSubsystem propSubsystem;
+    engine_name_entry->set_text(propSubsystem.getSelectedEngine());
     x_entry->set_text("0.0");
     y_entry->set_text("0.0");
     z_entry->set_text("0.0");
@@ -206,7 +207,7 @@ void EngineThrusterDialog::defaultValueFill() {
     yaw_entry->set_text("0.0");
     location_dropdown->set_active(0);  // Default to "IN"
     orient_dropdown->set_active(0);  // Default to "DEG"
-    thruster_name_entry->set_text("Default Thruster");
+    thruster_name_entry->set_text(propSubsystem.getSelectedThruster());
     thruster_x_entry->set_text("0.0");
     thruster_y_entry->set_text("0.0");
     thruster_z_entry->set_text("0.0");
