@@ -12,4 +12,9 @@ public:
 
 private:
     std::vector<Contact> contacts;
+
+    class LandingGearSetupWindow : public Gtk::Window {
+    public: 
+        LandingGearSetupWindow();
+    };
 };
