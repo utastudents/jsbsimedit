@@ -21,7 +21,10 @@ PropulsionSubsystem::PropulsionSubsystem() {
     std::cout << "In PropulsionSubsystem constructor" << std::endl;
 }
 std::string PropulsionSubsystem::getSelectedEngine() const {
-    return selectedEngine;  // Assuming selectedEngine is a string member variable
+    return std::string(selectedEngine);
+}
+std::string PropulsionSubsystem::getSelectedThruster() const {
+    return std::string(selectedThruster);
 }
 void PropulsionSubsystem::Create() {
     std::cout << "in PropulsionSubsystem::Create" << std::endl;
