@@ -2,9 +2,18 @@
 
 // Constructor: Initializes the HierarchyPanel, sets up the tree view and window properties
 HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
-{
+{   
+    // Set up the column for icons (with a cell renderer)
+    Gtk::TreeViewColumn* column_icon = Gtk::manage(new Gtk::TreeViewColumn());
+    column_icon->set_title("Icon");
+    treeView.append_column(*column_icon);
+    Gtk::CellRendererPixbuf* renderer_pixbuf = Gtk::manage(new Gtk::CellRendererPixbuf());
+    column_icon->pack_start(*renderer_pixbuf);
+    column_icon->add_attribute(renderer_pixbuf->property_pixbuf(), columns.icon);  // Bind to the icon column
+
     // Set up the tree view and connect a signal
     treeView.append_column("Aerodynamics", columns.columnName);
+
     treeView.set_headers_visible(false);
     treeView.set_activate_on_single_click(true);
     treeView.signal_row_activated().connect(sigc::mem_fun(*this, &HierarchyPanel::on_row_activated));

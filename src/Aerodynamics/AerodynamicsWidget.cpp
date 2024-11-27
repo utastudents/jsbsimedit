@@ -88,6 +88,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             // Create a row to represent the function in the tree
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = function->getName();
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-formula-30.png");
 
             // Append description to name if available
             if (!function->getDescription().empty())
@@ -110,6 +111,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = Axis::axisNameToString[axis->getName()];
             row[columns.node] = axis;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-axis-30.png");
 
             // Append unit if available
             if (axis->getUnit() != Axis::UnitName::NONE)
@@ -128,6 +130,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = property->getName();
             row[columns.node] = property;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-p-30.png");
 
             // Recursively add children of the property
             appendChildren(row, i.GetChildren());
@@ -145,6 +148,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = table->getName();
             row[columns.node] = table;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-table-30.png");
 
             appendChildren(row, i.GetChildren());
         }
@@ -161,6 +165,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             auto row = *(aerodynamicsNodes->append(parent.children()));
             row[columns.columnName] = value->getName();
             row[columns.node] = value;
+            row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-v-30.png");
 
             appendChildren(row, i.GetChildren());
         }
