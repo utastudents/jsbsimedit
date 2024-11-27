@@ -105,7 +105,6 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             Axis::UnitName unit = Axis::stringToUnitName[i.GetAttribute("unit").second];
             axis->setName(name);
             axis->setUnit(unit);
-            std::cout << "The unit for " << Axis::axisNameToString[axis->getName()] << " is " << axis->getUnit() << std::endl;
 
             // Create a row to represent the axis in the tree
             auto row = *(aerodynamicsNodes->append(parent.children()));

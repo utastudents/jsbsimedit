@@ -1,4 +1,6 @@
 #include "MenuPanel.hpp"
+#include "inc/XML_api.hpp"
+#include "NewPropertyPopup.hpp"
 
 PropertyMenu::PropertyMenu(std::shared_ptr<AerodynamicsNode> node)
     : filterButton("Filter"),
@@ -59,16 +61,45 @@ PropertyMenu::PropertyMenu(std::shared_ptr<AerodynamicsNode> node)
     auto selection = propertyTreeView.get_selection();
     selection->signal_changed().connect(sigc::mem_fun(*this, &PropertyMenu::onPropertySelected));
 
-    // Temporary data population for testing
-    std::vector<std::string> propertyNames; // Placeholder vector for property names
-    for (int i = 1; i <= 850; ++i) {
-        propertyNames.push_back("Property_" + std::to_string(i)); // Simulated property names
+    // Open and load the XML document
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse({"../../../properties.xml"});
+    JSBEdit::XMLNode propertyNode = doc.GetNodes("/properties")[0];
+    std::vector<JSBEdit::XMLNode> propertyNodes = propertyNode.GetChildren();
+
+    // Populate with property names
+    std::vector<std::string> propertyNames;
+    for (auto i : propertyNodes) {
+        auto text = i.GetText();
+        propertyNames.push_back(text.substr(1));
     }
+
     // Populate the list store
+    // TODO: check for information fo other columns
     for (size_t i = 0; i < propertyNames.size(); ++i) {
         auto row = *(listStore->append());
         row[propertyColumns.index] = i + 1;                   // Serial numbers starting from 1
-        row[propertyColumns.propertyName] = propertyNames[i]; // Placeholder property names
+        row[propertyColumns.propertyName] = propertyNames[i];
+    }
+
+    // Select and scroll to the currently selected property if present
+    bool containsProperty = false;
+    for (const auto& i : listStore->children()) {
+        Glib::ustring name = i[propertyColumns.propertyName];
+        if (name.raw() == property->getName()) {
+            selection->select(i.get_iter());
+            propertyTreeView.scroll_to_row(listStore->get_path(i.get_iter()));
+            containsProperty = true;
+            break;
+        }
+    }
+
+    // If we dont have the property in our XML file we open this dialog window
+    if(!containsProperty) {
+        NewPropertyPopup* popup = Gtk::make_managed<NewPropertyPopup>(property->getName());
+        popup->show();
+        popup->set_modal(true);
+        popup->addProperty.connect(sigc::mem_fun(*this, &PropertyMenu::addProperty));   // If the user confirms we go ahead and add the property
     }
 
     // Create a Grid for filter buttons and show all button
@@ -143,4 +174,23 @@ void PropertyMenu::onPropertySelected() {
         Glib::ustring propertyName = row[propertyColumns.propertyName];
         currentPlaceholder->set_text(propertyName); // Update placeholder with selected property
     }
+}
+
+// Function to add the unknown property into the tree view as well as adding it to properties.xml
+void PropertyMenu::addProperty() {
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse({"../../../properties.xml"});
+    auto propertyNode = doc.GetNodes("/properties")[0];
+    JSBEdit::XMLNode newProperty(doc);
+    newProperty.SetName("property");
+    newProperty.SetText("/" + property->getName());
+    propertyNode.AddChild(newProperty);
+    doc.SaveToFile({"../../../properties.xml"});
+
+    auto row = *(listStore->append());
+    row[propertyColumns.index] = listStore->children().size();
+    row[propertyColumns.propertyName] = property->getName();
+    auto selection = propertyTreeView.get_selection();
+    selection->select(row.get_iter());
+    propertyTreeView.scroll_to_row(listStore->get_path(row.get_iter()));
 }
