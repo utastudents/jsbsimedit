@@ -18,10 +18,16 @@ ValueMenu::ValueMenu(std::shared_ptr<AerodynamicsNode> node)
     grid->attach(*inputEntry, 1,0);
     inputEntry->set_text(std::to_string(value->getInput()));
     inputEntry->property_text().signal_changed().connect(sigc::mem_fun(*this,&ValueMenu::on_text_changed));
-
+    
 }
-// is to update text
+// is now only allowing #'s and no letters
 void ValueMenu::on_text_changed(){
-    value->setInput(std::stod(inputEntry->get_text()));
-    update_signal.emit();
+    try {
+        double value = std::stod(inputEntry->get_text());
+        this->value->setInput(value);
+        update_signal.emit();
+
+    }catch (...) {
+        inputEntry->set_text("");
+    }
 }
