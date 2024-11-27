@@ -58,6 +58,10 @@ private:
     Gtk::Entry capacityEntry;
     Gtk::Button cancelButton;
     Gtk::Button createButton;
+    Gtk::Entry* x_entry;
+    Gtk::Entry* y_entry;
+    Gtk::Entry* z_entry;
+    Gtk::ComboBoxText* location_dropdown;
 
     Gtk::ComboBoxText unitComboBox;
     bool isValidSelection(); // Validate user input
