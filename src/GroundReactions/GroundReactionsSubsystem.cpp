@@ -6,34 +6,36 @@ GroundReactionsSubsystem::GroundReactionsSubsystem() {
     std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
 }
 
-void GroundReactionsSubsystem::Create() {
-    std :: cout << "in GroundReactionsSubsystem::Create" << std :: endl;
+GroundReactionsSubsystem::LandingGearSetupWindow::LandingGearSetupWindow() {
+    set_title("Landing Gear Setup");
+    set_default_size(715, 620); 
 
-    m_Grid.set_row_spacing(10);
-    m_Grid.set_column_spacing(10);
+    // Create a grid for popup layout
+    auto p_Grid = Gtk::make_managed<Gtk::Grid>();
+    p_Grid->set_row_spacing(10);
+    p_Grid->set_column_spacing(10);
+    set_child(*p_Grid);
 
-    // Keep track of rows
-    int row = 0;
+    int p_row = 0;
 
     // Name
     auto nameLabel = Gtk::make_managed<Gtk::Label>("Name");
     auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
     nameTextbox->set_text("Name.");
-    m_Grid.attach(*nameLabel, 0, row);
-    m_Grid.attach(*nameTextbox, 1, row);
+    p_Grid->attach(*nameLabel, 0, p_row);
+    p_Grid->attach(*nameTextbox, 1, p_row);
 
     // Structure
     auto structureLabel = Gtk::make_managed<Gtk::Label>("Structure");
     auto structureTextbox = Gtk::make_managed<Gtk::Entry>();
     structureTextbox->set_text("Structure.");
-    m_Grid.attach(*structureLabel, 3, row);
-    m_Grid.attach(*structureTextbox, 4, row++);
+    p_Grid->attach(*structureLabel, 3, p_row);
+    p_Grid->attach(*structureTextbox, 4, p_row++);
 
     // Location
     auto locationLabel = Gtk::make_managed<Gtk::Label>("Location");
-    m_Grid.attach(*locationLabel, 0, row++);
+    p_Grid->attach(*locationLabel, 0, p_row++);
 
-    // Coordinates
     auto xLabel = Gtk::make_managed<Gtk::Label>("x =");
     auto xTextbox = Gtk::make_managed<Gtk::Entry>();
     xTextbox->set_text("X.");
@@ -52,13 +54,13 @@ void GroundReactionsSubsystem::Create() {
     coordinateUnitDropDown->append("M");
     coordinateUnitDropDown->set_active(0);
 
-    m_Grid.attach(*xLabel, 0, row);
-    m_Grid.attach(*xTextbox, 1, row);
-    m_Grid.attach(*yLabel, 2, row);
-    m_Grid.attach(*yTextbox, 3, row);
-    m_Grid.attach(*zLabel, 4, row);
-    m_Grid.attach(*zTextbox, 5, row);
-    m_Grid.attach(*coordinateUnitDropDown, 6, row++);
+    p_Grid->attach(*xLabel, 0, p_row);
+    p_Grid->attach(*xTextbox, 1, p_row);
+    p_Grid->attach(*yLabel, 2, p_row);
+    p_Grid->attach(*yTextbox, 3, p_row);
+    p_Grid->attach(*zLabel, 4, p_row);
+    p_Grid->attach(*zTextbox, 5, p_row);
+    p_Grid->attach(*coordinateUnitDropDown, 6, p_row++);
 
     // Spring Coefficient
     auto springCoefficientLabel = Gtk::make_managed<Gtk::Label>("Spring Coefficient =");
@@ -70,9 +72,9 @@ void GroundReactionsSubsystem::Create() {
     springCoefficientUnitDropDown->append("N/M");
     springCoefficientUnitDropDown->set_active(0);
 
-    m_Grid.attach(*springCoefficientLabel, 0, row);
-    m_Grid.attach(*springCoefficientTextbox, 1, row);
-    m_Grid.attach(*springCoefficientUnitDropDown, 2, row++);
+    p_Grid->attach(*springCoefficientLabel, 0, p_row);
+    p_Grid->attach(*springCoefficientTextbox, 1, p_row);
+    p_Grid->attach(*springCoefficientUnitDropDown, 2, p_row++);
 
     // Damping Coefficient
     auto dampingCoefficientLabel = Gtk::make_managed<Gtk::Label>("Damping Coefficient =");
@@ -84,33 +86,33 @@ void GroundReactionsSubsystem::Create() {
     dampingCoefficientUnitDropDown->append("N/M/SEC");
     dampingCoefficientUnitDropDown->set_active(0);
 
-    m_Grid.attach(*dampingCoefficientLabel, 0, row);
-    m_Grid.attach(*dampingCoefficientTextbox, 1, row);
-    m_Grid.attach(*dampingCoefficientUnitDropDown, 2, row++);
+    p_Grid->attach(*dampingCoefficientLabel, 0, p_row);
+    p_Grid->attach(*dampingCoefficientTextbox, 1, p_row);
+    p_Grid->attach(*dampingCoefficientUnitDropDown, 2, p_row++);
 
     // Static Friction
     auto staticFrictionLabel = Gtk::make_managed<Gtk::Label>("Static Friction =");
     auto staticFrictionTextbox = Gtk::make_managed<Gtk::Entry>();
     staticFrictionTextbox->set_text("Static Friction.");
 
-    m_Grid.attach(*staticFrictionLabel, 0, row);
-    m_Grid.attach(*staticFrictionTextbox, 1, row++);
+    p_Grid->attach(*staticFrictionLabel, 0, p_row);
+    p_Grid->attach(*staticFrictionTextbox, 1, p_row++);
 
     // Dynamic Friction
     auto dynamicFrictionLabel = Gtk::make_managed<Gtk::Label>("Dynamic Friction =");
     auto dynamicFrictionTextbox = Gtk::make_managed<Gtk::Entry>();
     dynamicFrictionTextbox->set_text("Dynamic Friction.");
 
-    m_Grid.attach(*dynamicFrictionLabel, 0, row);
-    m_Grid.attach(*dynamicFrictionTextbox, 1, row++);
+    p_Grid->attach(*dynamicFrictionLabel, 0, p_row);
+    p_Grid->attach(*dynamicFrictionTextbox, 1, p_row++);
 
     // Rolling Friction
     auto rollingFrictionLabel = Gtk::make_managed<Gtk::Label>("Rolling Friction =");
     auto rollingFrictionTextbox = Gtk::make_managed<Gtk::Entry>();
     rollingFrictionTextbox->set_text("Rolling Friction.");
 
-    m_Grid.attach(*rollingFrictionLabel, 0, row);
-    m_Grid.attach(*rollingFrictionTextbox, 1, row++);
+    p_Grid->attach(*rollingFrictionLabel, 0, p_row);
+    p_Grid->attach(*rollingFrictionTextbox, 1, p_row++);
 
     // Max Stear
     auto maxStearLabel = Gtk::make_managed<Gtk::Label>("Max Stear =");
@@ -122,9 +124,9 @@ void GroundReactionsSubsystem::Create() {
     maxStearUnitDropDown->append("RAD");
     maxStearUnitDropDown->set_active(0);    
 
-    m_Grid.attach(*maxStearLabel, 0, row);
-    m_Grid.attach(*maxStearTextbox, 1, row);
-    m_Grid.attach(*maxStearUnitDropDown, 2, row++);
+    p_Grid->attach(*maxStearLabel, 0, p_row);
+    p_Grid->attach(*maxStearTextbox, 1, p_row);
+    p_Grid->attach(*maxStearUnitDropDown, 2, p_row++);
 
     // Brake Group
     auto brakeGroupLabel = Gtk::make_managed<Gtk::Label>("Brake Group =");
@@ -138,22 +140,69 @@ void GroundReactionsSubsystem::Create() {
     brakeGroupUnitDropDown->append("TAIL");  
     brakeGroupUnitDropDown->set_active(0);
 
-    m_Grid.attach(*brakeGroupLabel, 0, row);
-    m_Grid.attach(*brakeGroupUnitDropDown, 1, row++);
+    p_Grid->attach(*brakeGroupLabel, 0, p_row);
+    p_Grid->attach(*brakeGroupUnitDropDown, 1, p_row++);
 
     // Retractable
     auto retractableLabel = Gtk::make_managed<Gtk::Label>("Retractable =");
     auto retractableCheckbox = Gtk::make_managed<Gtk::CheckButton>();
 
-    m_Grid.attach(*retractableLabel, 0, row);
-    m_Grid.attach(*retractableCheckbox, 1, row++);
+    p_Grid->attach(*retractableLabel, 0, p_row);
+    p_Grid->attach(*retractableCheckbox, 1, p_row++);
 
     // Ok and Cancel Buttons
-    auto Ok = Glib::ustring::compose("OK");
-    auto OkButton = Gtk::make_managed<Gtk::ToggleButton>(Ok);
-    m_Grid.attach(*OkButton, 0, row);
+    auto okButton = Gtk::make_managed<Gtk::Button>("OK");
+    okButton->signal_clicked().connect([this]() { this->close(); });
+    p_Grid->attach(*okButton, 0, p_row);
 
-    auto Cancel = Glib::ustring::compose("Cancel");
-    auto CancelButton = Gtk::make_managed<Gtk::ToggleButton>(Cancel);
-    m_Grid.attach(*CancelButton, 2, row);
+    auto cancelButton = Gtk::make_managed<Gtk::Button>("Cancel");
+    cancelButton->signal_clicked().connect([this]() { this->close(); });
+    p_Grid->attach(*cancelButton, 1, p_row++);
+}
+
+void GroundReactionsSubsystem::Create() {
+    std::cout << "in GroundReactionsSubsystem::Create" << std::endl;
+
+    m_Grid.set_row_spacing(10);
+    m_Grid.set_column_spacing(10);
+
+    // Contact buttons to open respective popup windows
+    auto buttonContact1 = Gtk::make_managed<Gtk::Button>("Contact 1 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+    buttonContact1->signal_clicked().connect([]() {
+        auto landingGearWindow1 = new LandingGearSetupWindow();
+        landingGearWindow1->show();
+    });
+
+    auto buttonContact2 = Gtk::make_managed<Gtk::Button>("Contact 2 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+    buttonContact2->signal_clicked().connect([]() {
+        auto landingGearWindow2 = new LandingGearSetupWindow();
+        landingGearWindow2->show();
+    });
+
+    auto buttonContact3 = Gtk::make_managed<Gtk::Button>("Contact 3 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+    buttonContact3->signal_clicked().connect([]() {
+        auto landingGearWindow3 = new LandingGearSetupWindow();
+        landingGearWindow3->show();
+    });
+
+    auto buttonContact4 = Gtk::make_managed<Gtk::Button>("Contact 4 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+    buttonContact4->signal_clicked().connect([]() {
+        auto landingGearWindow4 = new LandingGearSetupWindow();
+        landingGearWindow4->show();
+    });
+
+    auto buttonContact5 = Gtk::make_managed<Gtk::Button>("Contact 5 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+    buttonContact5->signal_clicked().connect([]() {
+        auto landingGearWindow5 = new LandingGearSetupWindow();
+        landingGearWindow5->show();
+    });
+
+    m_Grid.attach(*buttonContact1, 0, 0);
+    m_Grid.attach(*buttonContact2, 0, 1);
+    m_Grid.attach(*buttonContact3, 0, 2);
+    m_Grid.attach(*buttonContact4, 0, 3);
+    m_Grid.attach(*buttonContact5, 0, 4);
+
+    // Keep track of rows
+    int row = 1;
 }
