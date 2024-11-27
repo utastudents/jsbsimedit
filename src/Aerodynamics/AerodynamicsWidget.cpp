@@ -186,12 +186,20 @@ void AerodynamicsWidget::updateData(Gtk::TreeRow parent)
     for(auto i : children){
         std::shared_ptr<AerodynamicsNode> node = i[columns.node];
         if(node->getType() == AerodynamicsNode::VALUE) {
+            std::shared_ptr<Value> value = std::dynamic_pointer_cast<Value>(node);
+            i[columns.columnName] = std::to_string(value->getInput());
         }
         if(node->getType() == AerodynamicsNode::PROPERTY) {
+            std::shared_ptr<AeroProperty> property = std::dynamic_pointer_cast<AeroProperty>(node);
+            i[columns.columnName] = property->getName();
         }
         if(node->getType() == AerodynamicsNode::TABLE) {
+            std::shared_ptr<Table> table = std::dynamic_pointer_cast<Table>(node);
+            i[columns.columnName] = table->getName();
         }
         if(node->getType() == AerodynamicsNode::FUNCTION) {
+            std::shared_ptr<Function> function = std::dynamic_pointer_cast<Function>(node);
+            i[columns.columnName] = function->getName();
         }
         if(node->getType() == AerodynamicsNode::AXIS) {
             std::shared_ptr<Axis> axis = std::dynamic_pointer_cast<Axis>(node);
