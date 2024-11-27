@@ -7,9 +7,8 @@
 void PropulsionManager::showEngineThrusterSetup() { 
     // TODO: Confirm if 1st time setup
     // TODO: Implement engine/thruster setup display
-    PropulsionSubsystem propulsionSubsystem;
     
-    EngineThrusterDialog dialogEng(propulsionSubsystem);
+    EngineThrusterDialog dialogEng;
     std::cout << "Displaying engine/thruster setup..." << std::endl;
 }
 
