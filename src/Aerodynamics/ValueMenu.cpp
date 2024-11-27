@@ -20,6 +20,7 @@ ValueMenu::ValueMenu(std::shared_ptr<AerodynamicsNode> node)
     inputEntry->property_text().signal_changed().connect(sigc::mem_fun(*this,&ValueMenu::on_text_changed));
 
 }
+// is to update text
 void ValueMenu::on_text_changed(){
     value->setInput(std::stod(inputEntry->get_text()));
     update_signal.emit();
