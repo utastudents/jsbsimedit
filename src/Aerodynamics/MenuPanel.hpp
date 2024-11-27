@@ -40,8 +40,11 @@ private:
 class ValueMenu : public MenuPanel {
 public:
     ValueMenu(std::shared_ptr<AerodynamicsNode> node);
-private:
+private: 
+    Gtk::Label* inputLabel;
+    Gtk::Entry* inputEntry;
     std::shared_ptr<Value> value;
+    void on_text_changed();
 };
 
 class AxisMenu : public MenuPanel {
