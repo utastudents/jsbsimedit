@@ -187,7 +187,7 @@ bool JSBEdit::XMLNode::AddChild(XMLNode child)
     // returns true when child is added
     try {
         pugi::xml_node returnedNode = this->m_Node.append_move(child.m_Node);
-        return true;
+        return returnedNode;
     }
     // catches any unknown errors and returns false
     catch (...) {
