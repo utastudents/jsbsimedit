@@ -29,5 +29,6 @@ void ValueMenu::on_text_changed(){
 
     }catch (...) {
         inputEntry->set_text("");
-    }
+    } 
 }
+
