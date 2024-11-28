@@ -17,4 +17,5 @@ private:
   MassBalance::Wing m_leftWing;     // mass, span, chord
   MassBalance::Wing m_rightWing;    // mass, span, chord
   MassBalance::Tail m_tail;         // mass, span, chord
+  MassBalance::Airplane m_airplane;
 };

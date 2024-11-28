@@ -3,7 +3,15 @@
 #include <iostream>
 #include <vector>
 
-MassBalanceSubsystem::MassBalanceSubsystem() {
+MassBalanceSubsystem::MassBalanceSubsystem()
+    : m_fuselage(1000, 30,
+                 2), // Example values: mass=1000kg, length=30m, radius=2m
+      m_leftWing(500, 15, 1),  // Example values: mass=500kg, span=15m, chord=1m
+      m_rightWing(500, 15, 1), // Example values: mass=500kg, span=15m, chord=1m
+      m_tail(200, 5, 0.5), // Example values: mass=200kg, span=5m, chord=0.5m
+      m_airplane(m_fuselage, m_leftWing, m_rightWing,
+                 m_tail) // Initialize Airplane
+{
   m_Name = "Mass Balance";
   std::cout << "In MassBalanceSubsystem constructor" << std::endl;
 }
@@ -18,25 +26,6 @@ void MassBalanceSubsystem::Create() {
   // test values for empty mass
   m_Emptymass.setEmptyMass(50.0f);
   m_Emptymass.setUnits("lbs");
-
-  // test values for moment of inertia
-  m_fuselage.setMass(1000.0);
-  m_fuselage.setLength(30.0);
-  m_fuselage.setRadius(5.0);
-
-  m_leftWing.setMass(500.0);
-  m_leftWing.setSpan(20.0);
-  m_leftWing.setChord(5.0);
-
-  m_rightWing.setMass(500.0);
-  m_rightWing.setSpan(20.0);
-  m_rightWing.setChord(5.0);
-
-  m_tail.setMass(200.0);
-  m_tail.setSpan(10.0);
-  m_tail.setChord(4.0);
-
-  MassBalance::Airplane m_airplane(m_fuselage, m_leftWing, m_rightWing, m_tail);
 
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
@@ -198,16 +187,26 @@ void MassBalanceSubsystem::Create() {
   m_Grid.attach(*combo_inertia_units, 5, 6);
 
   combo_inertia_units->signal_changed().connect(
-      [&m_airplane, entry_inertia_Ixx, entry_inertia_Iyy, entry_inertia_Izz,
+      [this, entry_inertia_Ixx, entry_inertia_Iyy, entry_inertia_Izz,
        entry_inertia_Ixz, entry_inertia_Iyz, entry_inertia_Ixy,
        combo_inertia_units]() {
         std::string selected_unit = combo_inertia_units->get_active_text();
 
         // Perform unit conversion if necessary
-        if (selected_unit == "KG*M2" || selected_unit == "SLUG*FT2") {
+        if (selected_unit != m_airplane.getInertiaUnits()) {
           m_airplane.convertInertiaUnits();
           entry_inertia_Ixx->set_text(
               std::to_string(m_airplane.totalInertiaAboutLongitudinalAxis()));
+          entry_inertia_Iyy->set_text(
+              std::to_string(m_airplane.totalInertiaAboutTransverseAxis()));
+          entry_inertia_Izz->set_text(
+              std::to_string(m_airplane.totalInertiaAboutVerticalAxis()));
+          entry_inertia_Ixz->set_text(
+              std::to_string(m_airplane.getTotalInertiaXZPlane()));
+          entry_inertia_Iyz->set_text(
+              std::to_string(m_airplane.getTotalInertiaYZPlane()));
+          entry_inertia_Ixy->set_text(
+              std::to_string(m_airplane.getTotalInertiaXYPlane()));
         }
       });
 

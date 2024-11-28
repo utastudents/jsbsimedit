@@ -163,9 +163,22 @@ void Airplane::convertInertiaUnits() {
   const double kg_m2_to_slug_ft2 =
       1.0 / slug_ft2_to_kg_m2; // Conversion factor for KG*M2 to SLUG*FT2
 
-  if (inertiaUnits == "KG*M2") {
+  if (inertiaUnits == "SLUG*FT2") {
     totalInertiaLongitudinal *= slug_ft2_to_kg_m2;
     totalInertiaTransverse *= slug_ft2_to_kg_m2;
+    totalInertiaVertical *= slug_ft2_to_kg_m2;
+    totalInertiaXZPlane *= slug_ft2_to_kg_m2;
+    totalInertiaYZPlane *= slug_ft2_to_kg_m2;
+    totalInertiaXYPlane *= slug_ft2_to_kg_m2;
+    inertiaUnits = "KG*M2";
+  } else if (inertiaUnits == "KG*M2") {
+    totalInertiaLongitudinal *= kg_m2_to_slug_ft2;
+    totalInertiaTransverse *= kg_m2_to_slug_ft2;
+    totalInertiaVertical *= kg_m2_to_slug_ft2;
+    totalInertiaXZPlane *= kg_m2_to_slug_ft2;
+    totalInertiaYZPlane *= kg_m2_to_slug_ft2;
+    totalInertiaXYPlane *= kg_m2_to_slug_ft2;
+    inertiaUnits = "SLUG*FT2";
   }
 }
 
