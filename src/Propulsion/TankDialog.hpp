@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TANK_DIALOG_HPP
-#define TANK_DIALOG_HPP
+#ifndef TANK_DIALOG_H
+#define TANK_DIALOG_H
 
 #include <gtkmm.h>
 
