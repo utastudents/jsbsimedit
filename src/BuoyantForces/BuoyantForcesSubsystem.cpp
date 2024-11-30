@@ -32,16 +32,24 @@ void BuoyantForcesSubsystem::Create()
   m_Grid.attach(m_notebook, 0, m_rows++);
 
     try
-  {   
+  {
                                                // file  paths will need some work to correlate to our buoyant forces
     //temp file for testing
     doc.LoadFileAndParse({"../../../data/aircraft/weather-balloon/weather-balloon.xml"});
-    
+
     // temporarilly using doc instead of xmlptr() so we can test if it is pulling from file
     auto node = doc.GetNode("fdm_config"); // root node
     auto node_BuoyantForces = doc.GetNode("/fdm_config/buoyant_forces");
     auto node_GasCell = doc.GetNode("/fdm_config/buoyant_forces/gas_cell");
-  
+    auto locationNode = node_GasCell.FindChild("location"); // add nodes for all children of gascell
+    auto xRadiusNode = node_GasCell.FindChild("x_radius");
+    auto yRadiusNode = node_GasCell.FindChild("y_radius");
+    auto zRadiusNode = node_GasCell.FindChild("z_radius");
+    auto maxOverpressureNode = node_GasCell.FindChild("max_overpressure");
+    auto valveCoefficientNode = node_GasCell.FindChild("valve_coefficient");
+    auto fullnessNode = node_GasCell.FindChild("fullness");
+
+
   //todo: make sure this works
     std::vector <JSBEdit::XMLNode> node_ballonett = node_BuoyantForces.GetChildren();
 
@@ -52,6 +60,15 @@ void BuoyantForcesSubsystem::Create()
     if (node_GasCell)
     {
       std::cout << "Gas Cell: " << node_GasCell.GetAttribute("type").second << std::endl;
+
+      if (locationNode)
+        {
+            std::cout << "  Location (unit: " << locationNode.GetAttribute("unit").second << "): "
+                      << "X=" << locationNode.FindChild("x").GetText() << ", "
+                      << "Y=" << locationNode.FindChild("y").GetText() << ", "
+                      << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
+        }
+
     }
   }
   catch(const std::exception& e){
@@ -59,7 +76,7 @@ void BuoyantForcesSubsystem::Create()
   }
 
   LoadStringLists();
-  
+
   // Create "Gas Cell" Tab
   std::string gc_name = m_gascell.getName();
   m_pages[gc_name] = std::make_unique<Gtk::Grid>();
