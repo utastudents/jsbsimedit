@@ -3,6 +3,8 @@
 #include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 #include "Component.hpp"
+#include "XML/XMLDoc.hpp" //temporary
+
 class BuoyantForcesSubsystem : public Subsystem
 {
 public:
@@ -39,4 +41,7 @@ private:
   double dimensionY;
   double dimensionZ;
   double blowerInput;
+
+//temporary
+  JSBEdit::XMLDoc doc;
 };

@@ -16,7 +16,7 @@ void BuoyantForcesSubsystem::Create()
   auto node=xmlptr()->GetNode("buoyant_forces");
 
   // These widgets can come from a ui file or direct from code
-  //
+
   /* set the spacing to 10 on x and 10 on y */
 
   m_Grid.set_row_spacing(10);
@@ -27,25 +27,30 @@ void BuoyantForcesSubsystem::Create()
 
   m_Grid.attach(m_notebook, 0, 0);
 
-  try
-  {                                              // file  paths will need some work to correlate to our buoyant forces
-    auto node = xmlptr()->GetNode("fdm_config"); // root node
-    auto node_BuoyantForces = xmlptr()->GetNode("/fdm_config/buoyant_forces");
-    auto node_GasCell = xmlptr()->GetNode("/fdm_config/buoyant_forces/gas_cell");
-    //auto node_Location = xmlptr()->GetNode("/fdm_config/buoyant_forces/fileheader");
 
-    /*if (node_BuoyantForces)
+  try
+  {   
+                                               // file  paths will need some work to correlate to our buoyant forces
+    //temp file for testing
+    doc.LoadFileAndParse({"../../../data/aircraft/weather-balloon/weather-balloon.xml"});
+    
+    // temporarilly using doc instead of xmlptr() so we can test if it is pulling from file
+    auto node = doc.GetNode("fdm_config"); // root node
+    auto node_BuoyantForces = doc.GetNode("/fdm_config/buoyant_forces");
+    auto node_GasCell = doc.GetNode("/fdm_config/buoyant_forces/gas_cell");
+
+
+    //todo: make sure this works
+    std::vector <JSBEdit::XMLNode> node_ballonett = node_BuoyantForces.GetChildren();
+
+    if (node_BuoyantForces)
     {
-      std::cout << "Buoyant Forces Info: " << node_BuoyantForces.GetAttributes() << std::endl;
-    }*/
+      std::cout << "Buoyant Forces node found: " << std::endl;
+    }
     if (node_GasCell)
     {
       std::cout << "Gas Cell: " << node_GasCell.GetAttribute("type").second << std::endl;
     }
-    /*if (node_Location)
-    {
-      std::cout << "Location: " << node_Location.GetAttributes() << std::endl;
-    }*/
 
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     SetupTab(*m_pages.back());
