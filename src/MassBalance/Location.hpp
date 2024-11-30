@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace MassBalance{
+
 class Location {
 private:
     float x, y, z;           // Coordinates
@@ -9,7 +11,7 @@ private:
 
 public:
     // Constructor
-    Location(float x = 0.0f, float y = 0.0f, float z = 0.0f, const std::string& units = "meters");
+    Location(float x = 0.0f, float y = 0.0f, float z = 0.0f, const std::string& units = "in");
 
     // Setters
     void setLocation(float newX, float newY, float newZ);
@@ -20,7 +22,8 @@ public:
     float getY() const;
     float getZ() const;
     std::string getUnits() const;
+    void convertLengthUnits();
 
 };
 
-
+}

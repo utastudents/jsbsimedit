@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace MassBalance{
+
 class EmptyMass {
 private:
     float emptyMass;        // Mass value
@@ -19,5 +21,8 @@ public:
     float getEmptyMass() const;
     std::string getUnits() const;
 
+    void convertUnits();
+
 };
 
+}

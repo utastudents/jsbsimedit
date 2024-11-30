@@ -11,10 +11,12 @@ public:
     public:
         ModelColumns() { 
             add(columnName); 
-            add(node); 
+            add(node);
+            add(icon);
         }
         Gtk::TreeModelColumn<Glib::ustring> columnName; // Column for node names
         Gtk::TreeModelColumn<std::shared_ptr<AerodynamicsNode>> node; // Column for AerodynamicsNode objects
+        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> icon;
     };
 
     // Constructor

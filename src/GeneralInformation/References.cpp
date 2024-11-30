@@ -1,4 +1,4 @@
-#include "References.h"
+#include "References.hpp"
 
 // Default constructor
 References::References() : refID(""), author(""), title(""), date("") {}

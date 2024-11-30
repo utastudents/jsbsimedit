@@ -1915,7 +1915,7 @@
    </function>
   </axis>
  </aerodynamics>
-<!--
+
   <output name="f16_datalog.csv" type="CSV" rate="1">
  <property> aero/qbar-psf </property>
  <property> attitude/phi-rad </property>
@@ -1938,6 +1938,6 @@
  <fcs> ON </fcs>
  <ground_reactions> ON </ground_reactions>
   </output>
--->
+
 </fdm_config>
 

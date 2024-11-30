@@ -11,4 +11,10 @@ void GainComponent::LoadGUI(Glib::RefPtr<Gtk::Application>& app)
 {
 }
 
+void GainComponent::LoadFromXml(JSBEdit::XMLNode& node)
+{
+
+}
+
+
 };
