@@ -46,7 +46,7 @@ void BuoyantForcesSubsystem::Create()
   {
                                                // file  paths will need some work to correlate to our buoyant forces
     //temp file for testing
-    doc.LoadFileAndParse({"../../../data/aircraft/weather-balloon/weather-balloon.xml"});
+    doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
 
     // temporarilly using doc instead of xmlptr() so we can test if it is pulling from file
     auto node = doc.GetNode("fdm_config"); // root node
@@ -84,23 +84,23 @@ void BuoyantForcesSubsystem::Create()
 
       if (xRadiusNode)
         {
-            std::cout << "  X Radius: " << xRadiusNode.GetText() << std::endl;
+            std::cout << "  X Radius: " << xRadiusNode.GetText() << " (unit = " << xRadiusNode.GetAttribute("unit").second << ")" << std::endl;
         }
         if (yRadiusNode)
         {
-            std::cout << "  Y Radius: " << yRadiusNode.GetText() << std::endl;
+            std::cout << "  Y Radius: " << yRadiusNode.GetText() << " (unit = " << yRadiusNode.GetAttribute("unit").second << ")" << std::endl;
         }
         if (zRadiusNode)
         {
-            std::cout << "  Z Radius: " << zRadiusNode.GetText() << std::endl;
+            std::cout << "  Z Radius: " << zRadiusNode.GetText() << " (unit = " << zRadiusNode.GetAttribute("unit").second << ")" << std::endl;
         }
         if (maxOverpressureNode)
         {
-            std::cout << "  Max Overpressure: " << maxOverpressureNode.GetText() << std::endl;
+            std::cout << "  Max Overpressure: " << maxOverpressureNode.GetText() << " (unit = " << maxOverpressureNode.GetAttribute("unit").second << ")" << std::endl;
         }
         if (valveCoefficientNode)
         {
-            std::cout << "  Valve Coefficient: " << valveCoefficientNode.GetText() << std::endl;
+            std::cout << "  Valve Coefficient: " << valveCoefficientNode.GetText() << " (unit = " << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
         }
         if (fullnessNode)
         {
