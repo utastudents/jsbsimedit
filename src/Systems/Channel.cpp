@@ -102,6 +102,11 @@ void Channel::HandleDoubleClick(int x, int y)
                     m_appRef->add_window(*m_winPtr);
                     break;
 
+                case ComponentType::FILTER:  // New case for Filter
+                    m_winPtr = std::make_shared<FilterComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window (*m_winPtr);
+                    break;
+
                 case ComponentType::SUMMER:
                     m_winPtr = std::make_shared<SummerComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
@@ -166,6 +171,9 @@ std::shared_ptr<IComponentCommon> Channel::createComponentFromType(ComponentType
         case ComponentType::DEADBAND:
             component = std::make_shared<DeadbandComponent>(name);
             break;
+        case ComponentType::FILTER:
+            component = std::make_shared<FilterComponent>(name);
+            break;
         default:
             component = std::make_shared<GainComponent>(name);
             break;
@@ -199,6 +207,7 @@ void Channel::populateStringComponentMap()
 	m_stringToComponentMap.insert({"kinematic", ComponentType::KINEMATIC});
 	m_stringToComponentMap.insert({"summer", ComponentType::SUMMER});
 	m_stringToComponentMap.insert({"pid", ComponentType::PID});
+    m_stringToComponentMap.insert({"filter", ComponentType::FILTER});
     
 }
 
