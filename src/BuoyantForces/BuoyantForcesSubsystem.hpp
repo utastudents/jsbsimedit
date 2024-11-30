@@ -15,9 +15,12 @@ class BuoyantForcesSubsystem : public Subsystem
   public:
     BuoyantForcesSubsystem();
     void Create(); 
+    void loadXmlData();
+    void saveXmlData();
 
   protected:
     Component::Unit GetUnitFromString(const std::string& unit_string) const;
+    void on_button_toggled();
     void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
     void on_dropdown_changed(const std::string& dropdown_name);
     void on_entry_activate(const std::string& key);
@@ -27,11 +30,10 @@ class BuoyantForcesSubsystem : public Subsystem
     void BuildTabs();
     void SetupTab(Gtk::Grid& p_grid);
     void AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu);
-    void loadXmlData();
-    void saveXmlData();
 
 
     Gtk::Notebook m_notebook;
+    Gtk::CheckButton m_checkbutton;
     std::unordered_map<std::string, std::unique_ptr<Gtk::Grid>> m_pages;
     std::unordered_map<std::string, std::unique_ptr<Gtk::DropDown>> m_dropdowns;
     std::unordered_map<std::string, std::unique_ptr<Gtk::Entry>> m_entries;
@@ -44,18 +46,6 @@ class BuoyantForcesSubsystem : public Subsystem
     Glib::RefPtr<Gtk::StringList> m_blowerStringList;
 
  private:
-  	double maxOverpressure;
-    double valveCoefficient;
-    Component::Unit maxOverpressureUnit;
-    Component::Unit valveCoefficientUnit;
-    double locationX;
-    double locationY;
-    double locationZ;
-    double dimensionX;
-    double dimensionY;
-    double dimensionZ;
-    double blowerInput;
-    
     //temporary
     JSBEdit::XMLDoc doc;
 

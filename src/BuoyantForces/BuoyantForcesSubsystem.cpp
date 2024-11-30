@@ -10,7 +10,7 @@ int BuoyantForcesSubsystem::m_tab_count = 0;
 BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 {
 
-  m_Name = "BuoyantForces";
+  m_Name = "Buoyant Forces";
   std::cout << "In BuoyantForcesSubsystem contructor" << std::endl;
 }
 
@@ -26,9 +26,20 @@ void BuoyantForcesSubsystem::Create()
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
-  m_notebook.set_margin(10);
+  m_notebook.set_margin_bottom(10);
+  m_notebook.set_margin_start(10);
+  m_notebook.set_margin_end(10);
   m_notebook.set_expand();
+  m_notebook.set_sensitive(false);
 
+  m_checkbutton.set_label("Enable/Disable");
+  m_checkbutton.set_margin_top(10);
+  m_checkbutton.set_margin_start(10);
+
+  m_checkbutton.signal_toggled().connect(
+    sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_button_toggled));
+
+  m_Grid.attach(m_checkbutton, 0, m_rows++);
   m_Grid.attach(m_notebook, 0, m_rows++);
 
     try
@@ -51,11 +62,13 @@ void BuoyantForcesSubsystem::Create()
 
 
   //todo: make sure this works
-    std::vector <JSBEdit::XMLNode> node_ballonett = node_BuoyantForces.GetChildren();
+    std::vector <JSBEdit::XMLNode> ballonetNodes = node_BuoyantForces.GetChildren();
 
     if (node_BuoyantForces)
     {
-      std::cout << "Buoyant Forces node found: " << std::endl;
+      std::cout << "buoyant_forces node found!" << std::endl;
+    } else {
+        std::cout << "buoyant_forces node NOT found!" << std::endl;
     }
     if (node_GasCell)
     {
@@ -134,6 +147,17 @@ Component::Unit BuoyantForcesSubsystem::GetUnitFromString(const std::string& uni
     if (unit_string == "FT3 / SEC")     { UnitType = Component::Unit::FT3_SEC; }
 
     return UnitType;
+}
+
+void BuoyantForcesSubsystem::on_button_toggled() {
+  bool enable = m_checkbutton.get_active();
+
+  if (enable) 
+    std::cout << "Buoyant Forces is ENABLED" << std::endl;
+  else 
+    std::cout << "Buoyant Forces is DISABLED" << std::endl;
+
+  m_notebook.set_sensitive(enable);
 }
 
 void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
@@ -259,19 +283,6 @@ void BuoyantForcesSubsystem::on_entry_activate(const std::string& key) {
         std::cout << "'" << key << "' activated with input: " << input << std::endl;
     } 
 }
-
-// void BuoyantForcesSubsystem:: on_ballonetcount_changed()
-// {
-//   int selected_value = m_dropdowns["Ballonet"]->get_selected();
-//   if(selected_value >= 0)
-//   {
-//   int ballonetCount= selected_value;
-//   Component :: setBallonetCount(ballonetCount);
-//   std::cout << "Selected Ballonet Count:" <<ballonetCount <<std::endl;
-
-//   BuildTabs();
-//   }
-// }
 
 void BuoyantForcesSubsystem::LoadStringLists() {
   m_gasStringList = Gtk::StringList::create({"AIR", "HELIUM", "HYDROGEN"});
