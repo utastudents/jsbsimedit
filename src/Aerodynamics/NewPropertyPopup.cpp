@@ -11,7 +11,7 @@ NewPropertyPopup::NewPropertyPopup(std::string propertyName) {
 
     // Create the dialog text
     dialog = Gtk::make_managed<Gtk::Label>();
-    dialog->set_text("The property " + propertyName + " could not be found. Would you like to add it to the list of properties?");
+    dialog->set_text("The property \"" + propertyName + "\" could not be found. Would you like to add it to the list of properties?");
     dialog->set_wrap(true);
     dialog->set_margin(10);
     dialog->set_halign(Gtk::Align::CENTER);
