@@ -1,5 +1,5 @@
 #pragma once
-#include "XML_api.hpp"
+#include "inc/XML_api.hpp"
 #include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 #include "Component.hpp"
