@@ -41,14 +41,14 @@ void ExternalReactionsSubsystem :: Create(){
     auto locationLabel = Gtk:: make_managed <Gtk::Label> ("LOCATION");
     m_Grid.attach(*locationLabel, 0, row + 2 );
 
-    auto xTextbox = Gtk::make_managed<Gtk::Entry>();
-    xTextbox->set_text("X.");
+    auto xTextboxL = Gtk::make_managed<Gtk::Entry>();
+    xTextboxL->set_text("X.");
 
-    auto yTextbox = Gtk::make_managed<Gtk::Entry>();
-    yTextbox->set_text("Y.");
+    auto yTextboxL = Gtk::make_managed<Gtk::Entry>();
+    yTextboxL->set_text("Y.");
 
-    auto zTextbox = Gtk::make_managed<Gtk::Entry>();
-    zTextbox->set_text("Z.");
+    auto zTextboxL = Gtk::make_managed<Gtk::Entry>();
+    zTextboxL->set_text("Z.");
 
     auto LocationUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
     LocationUnitDropDown->append("IN");
@@ -57,14 +57,35 @@ void ExternalReactionsSubsystem :: Create(){
     LocationUnitDropDown->set_active(0);
     m_Grid.attach(*LocationUnitDropDown, 5, row + 2 );
 
-    m_Grid.attach(*xTextbox, 1, row + 2);
-    m_Grid.attach(*yTextbox, 3, row + 2);
-    m_Grid.attach(*zTextbox, 4, row + 2);
+    m_Grid.attach(*xTextboxL, 1, row + 2);
+    m_Grid.attach(*yTextboxL, 3, row + 2);
+    m_Grid.attach(*zTextboxL, 4, row + 2);
 
 
     //direction
     auto directionLabel = Gtk:: make_managed <Gtk::Label> ("DIRECTION");
     m_Grid.attach(*directionLabel, 0, row + 4 );
+
+    auto xTextboxD = Gtk::make_managed<Gtk::Entry>();
+    xTextboxD->set_text("X.");
+
+    auto yTextboxD = Gtk::make_managed<Gtk::Entry>();
+    yTextboxD->set_text("Y.");
+
+    auto zTextboxD = Gtk::make_managed<Gtk::Entry>();
+    zTextboxD->set_text("Z.");
+
+    auto DirectionUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
+    DirectionUnitDropDown->append("IN");
+    DirectionUnitDropDown->append("FT");
+    DirectionUnitDropDown->append("M");
+    DirectionUnitDropDown->set_active(0);
+    m_Grid.attach(*DirectionUnitDropDown, 5, row + 2 );
+
+    m_Grid.attach(*xTextboxD, 1, row + 2);
+    m_Grid.attach(*yTextboxD, 3, row + 2);
+    m_Grid.attach(*zTextboxD, 4, row + 2);
+
 }
 
 
