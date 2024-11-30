@@ -1,6 +1,6 @@
-#include "User.h"
+#include "User.hpp"
 #include <iostream>
-#include "Validation.h"
+#include "Validation.hpp"
 
 // Default constructor
 User::User() : authorName(""), email(""), organization("") {}

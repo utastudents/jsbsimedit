@@ -1,7 +1,7 @@
-#include "Aircraft.h"
+#include "Aircraft.hpp"
 #include <fstream>
 #include <iostream>
-#include "Validation.h"
+#include "Validation.hpp"
 
 // Default constructor
 Aircraft::Aircraft() : name(""), Description(""), limitations(""), notes(""), Organization("")  {}

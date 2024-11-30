@@ -1,19 +1,37 @@
+#pragma once
 #ifndef TANK_DIALOG_H
 #define TANK_DIALOG_H
 
-class TankDialog {
+#include <gtkmm.h>
+
+class TankDialog : public Gtk::Window {
 public:
-    // Constructor
-    TankDialog();
+    TankDialog(); // Constructor
+    virtual ~TankDialog() = default;
 
-    // Method to handle confirmation action
-    void onConfirm();
+private:
+    // Main dialog and layout
+    Gtk::Dialog* dialogTank;
+    Gtk::Grid grid;
 
-    // Method to handle cancellation action
-    void onCancel();
+    // Input widgets
+    Gtk::ComboBoxText typeComboBox;
+    Gtk::Entry capacityEntry;
+    Gtk::ComboBoxText capacityUnitComboBox;
+    Gtk::Entry contentsEntry;
+    Gtk::ComboBoxText contentsUnitComboBox;
 
-    // Method to fill default values of dialog box
-    void defaultValueFill();
+    Gtk::Entry xEntry, yEntry, zEntry;
+    Gtk::ComboBoxText locationUnitComboBox;
+
+    // Buttons
+    Gtk::Button createButton;
+    Gtk::Button cancelButton;
+
+    // Helper methods
+    bool isValidSelection();
+    void onCreateButtonClicked();
+    void onCancelButtonClicked();
 };
 
-#endif // TANK_DIALOG_H
+#endif // TANK_DIALOG_HPP

@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "MainWindow.hpp"
 #include <gtkmm.h>
 #include <iostream>
 #if 0

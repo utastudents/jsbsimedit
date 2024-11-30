@@ -2,22 +2,25 @@
 #include <iostream>
 #include <map>
 #include "EngineThrusterDialog.hpp"
+#include "PropulsionSubsystem.hpp"
 
 EngineThrusterDialog::EngineThrusterDialog() {
+    // TODO: If existing pair make sure changes are included in dialog box
+
     // Set the title and default size for the parent window
     set_title("Engine/Thruster Setup");
     set_default_size(400, 400);
 
     // Create the dialog window
-    dialog = new Gtk::Dialog("Engine/Thruster Setup", *this);
-    dialog->set_modal(true);
+    dialogEng = new Gtk::Dialog("Engine/Thruster Setup", *this);
+    dialogEng->set_modal(true);
 
     // Use GTK_RESPONSE_ACCEPT for OK and GTK_RESPONSE_REJECT for Cancel
-    dialog->add_button("OK", GTK_RESPONSE_ACCEPT);  // OK button
-    dialog->add_button("Cancel", GTK_RESPONSE_REJECT);  // Cancel button
+    dialogEng->add_button("OK", GTK_RESPONSE_ACCEPT);  // OK button
+    dialogEng->add_button("Cancel", GTK_RESPONSE_REJECT);  // Cancel button
 
     // Create a Gtk::Box to hold the grid (as the content area)
-    Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialog->get_content_area());
+    Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialogEng->get_content_area());
     if (content_area) {
         // Add the grid to the content area using pack_start
         content_area->append(grid);  // In GTKmm 4, append() is used instead of pack_start
@@ -31,6 +34,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*engine_header, 0, 0, 2, 1);
 
     // Engine Name Field
+    // TODO: Change name to selected engine name from dropdown 
     Gtk::Label* engine_name_label = new Gtk::Label("Engine Name:");
     engine_name_entry = new Gtk::Entry();
     grid.attach(*engine_name_label, 0, 1, 1, 1);
@@ -96,6 +100,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*feed_display, 1, 13, 1, 1);
 
     // Thruster Section
+    // TODO: Change name to selected thruster name from dropdown 
     Gtk::Label* thruster_header = new Gtk::Label("Thruster");
     grid.attach(*thruster_header, 0, 14, 2, 1);
 
@@ -156,11 +161,16 @@ EngineThrusterDialog::EngineThrusterDialog() {
     thruster_orient_dropdown->append("RAD");
     grid.attach(*thruster_orient_dropdown, 1, 25, 1, 1);
 
+    // Fill default values before showing the dialog
+    defaultValueFill();
+
     // Show the dialog window
-    dialog->show();
+    dialogEng->show();
 
     // Connect to the response signal
-    dialog->signal_response().connect(sigc::mem_fun(*this, &EngineThrusterDialog::onResponse));
+    // TODO: Check if values are empty or not
+    // TODO: Fix buttons so the close dialog if check passes
+    dialogEng->signal_response().connect(sigc::mem_fun(*this, &EngineThrusterDialog::onResponse));
 }
 
 
@@ -185,10 +195,10 @@ void EngineThrusterDialog::onCancel() {
     std::cout << "Canceled! No changes were applied." << std::endl;
 }
 
-// Default value filling (optional based on design)
 void EngineThrusterDialog::defaultValueFill() {
-    // Example: Set default values
-    engine_name_entry->set_text("Default Engine");
+    // Set default values for other fields (e.g., location, orientation, etc.)
+    PropulsionSubsystem propSubsystem;
+    engine_name_entry->set_text(propSubsystem.getSelectedEngine());
     x_entry->set_text("0.0");
     y_entry->set_text("0.0");
     z_entry->set_text("0.0");
@@ -197,4 +207,13 @@ void EngineThrusterDialog::defaultValueFill() {
     yaw_entry->set_text("0.0");
     location_dropdown->set_active(0);  // Default to "IN"
     orient_dropdown->set_active(0);  // Default to "DEG"
+    thruster_name_entry->set_text(propSubsystem.getSelectedThruster());
+    thruster_x_entry->set_text("0.0");
+    thruster_y_entry->set_text("0.0");
+    thruster_z_entry->set_text("0.0");
+    thruster_roll_entry->set_text("0.0");
+    thruster_pitch_entry->set_text("0.0");
+    thruster_yaw_entry->set_text("0.0");
+    thruster_location_dropdown->set_active(0);  // Default to "IN"
+    thruster_orient_dropdown->set_active(0);  // Default to "DEG"
 }

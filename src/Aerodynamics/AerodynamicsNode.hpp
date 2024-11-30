@@ -13,6 +13,7 @@ public:
         TABLE,
         AXIS
     };
+    virtual ~AerodynamicsNode() = default;
 
     const std::string& getName() const;
     void setName(const std::string& name);
@@ -96,6 +97,7 @@ public:
     static std::map<AxisName, std::string> axisNameToString;
     static std::map<std::string, AxisName> stringToAxisName;
     enum UnitName {
+        NONE,
         LBS,
         N,
         LBSFT,

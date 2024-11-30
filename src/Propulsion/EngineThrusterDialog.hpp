@@ -5,6 +5,9 @@
 #include <iostream>
 #include <gtk/gtk.h>
 #include <gtkmm.h>
+#include "PropulsionSubsystem.hpp"
+
+class PropulsionSubsystem;
 
 class EngineThrusterDialog : public Gtk::Window {
 public:
@@ -20,7 +23,7 @@ protected:
 
 private:
     // Widgets
-    Gtk::Dialog* dialog;
+    Gtk::Dialog* dialogEng;
     Gtk::Grid grid;
 
     Gtk::Entry* engine_name_entry;

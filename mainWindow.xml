@@ -15,7 +15,7 @@
       </item>
 
       <item>
-        <attribute name='label' translatable='yes'>File _Dialog</attribute>
+        <attribute name='label' translatable='yes'>files_Dialog</attribute>
         <attribute name='action'>example.files-dialog</attribute>
         <attribute name='accel'>&lt;Primary&gt;o</attribute>
       </item>
@@ -55,7 +55,7 @@
   <object class='GtkButton' id='toolbutton_open'>
         <property name='can_focus'>False</property>
         <property name='tooltip_text' translatable='yes'>Open</property>
-        <property name='action_name'>example.open</property>
+        <property name='action_name'>example.files-dialog</property>
         <property name='icon_name'>document-open</property>
         <property name='hexpand'>False</property>
         <property name='vexpand'>False</property>

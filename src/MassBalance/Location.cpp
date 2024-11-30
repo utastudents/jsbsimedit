@@ -1,6 +1,8 @@
 #include "Location.hpp"
 #include <iostream>
 
+namespace MassBalance{
+
 // Constructor 
 Location::Location(float x, float y, float z, const std::string& units) 
     : x(x), y(y), z(z), units(units) {}
@@ -34,3 +36,18 @@ std::string Location::getUnits() const {
     return units;
 }
 
+void Location::convertLengthUnits() {
+    if (units == "in") {
+        x *= 2.54f; // inches to centimeters
+        y *= 2.54f;
+        z *= 2.54f;
+        units = "cm"; // update the unit to "cm"
+    } else if (units == "cm") {
+        x /= 2.54f; // entimeters to inches
+        y /= 2.54f;
+        z /= 2.54f;
+        units = "in"; // update the unit to "in"
+    }
+}
+
+}
