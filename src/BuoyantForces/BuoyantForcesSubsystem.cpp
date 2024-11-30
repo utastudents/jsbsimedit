@@ -69,6 +69,30 @@ void BuoyantForcesSubsystem::Create()
                       << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
         }
 
+      if (xRadiusNode)
+        {
+            std::cout << "  X Radius: " << xRadiusNode.GetText() << std::endl;
+        }
+        if (yRadiusNode)
+        {
+            std::cout << "  Y Radius: " << yRadiusNode.GetText() << std::endl;
+        }
+        if (zRadiusNode)
+        {
+            std::cout << "  Z Radius: " << zRadiusNode.GetText() << std::endl;
+        }
+        if (maxOverpressureNode)
+        {
+            std::cout << "  Max Overpressure: " << maxOverpressureNode.GetText() << std::endl;
+        }
+        if (valveCoefficientNode)
+        {
+            std::cout << "  Valve Coefficient: " << valveCoefficientNode.GetText() << std::endl;
+        }
+        if (fullnessNode)
+        {
+            std::cout << "  Fullness: " << fullnessNode.GetText() << std::endl;
+        }
     }
   }
   catch(const std::exception& e){
