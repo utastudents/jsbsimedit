@@ -80,11 +80,11 @@ void ExternalReactionsSubsystem :: Create(){
     DirectionUnitDropDown->append("FT");
     DirectionUnitDropDown->append("M");
     DirectionUnitDropDown->set_active(0);
-    m_Grid.attach(*DirectionUnitDropDown, 5, row + 2 );
+    m_Grid.attach(*DirectionUnitDropDown, 5, row + 4 );
 
-    m_Grid.attach(*xTextboxD, 1, row + 2);
-    m_Grid.attach(*yTextboxD, 3, row + 2);
-    m_Grid.attach(*zTextboxD, 4, row + 2);
+    m_Grid.attach(*xTextboxD, 1, row + 4);
+    m_Grid.attach(*yTextboxD, 3, row + 4);
+    m_Grid.attach(*zTextboxD, 4, row + 4);
 
 }
 
