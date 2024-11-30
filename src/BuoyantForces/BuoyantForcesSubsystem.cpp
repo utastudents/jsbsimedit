@@ -13,6 +13,7 @@ BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 void BuoyantForcesSubsystem::Create()
 {
   std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
+  auto node=xmlptr()->GetNode("buoyant_forces");
 
   // These widgets can come from a ui file or direct from code
   //
@@ -29,22 +30,22 @@ void BuoyantForcesSubsystem::Create()
   try
   {                                              // file  paths will need some work to correlate to our buoyant forces
     auto node = xmlptr()->GetNode("fdm_config"); // root node
-    auto node_BuoyantForces = xmlptr()->GetNode("/fdm_config/fileheader/version");
-    auto node_Size = xmlptr()->GetNode("/fdm_config/fileheader");
-    auto node_Location = xmlptr()->GetNode("/fdm_config/fileheader");
+    auto node_BuoyantForces = xmlptr()->GetNode("/fdm_config/buoyant_forces");
+    auto node_GasCell = xmlptr()->GetNode("/fdm_config/buoyant_forces/gas_cell");
+    //auto node_Location = xmlptr()->GetNode("/fdm_config/buoyant_forces/fileheader");
 
-    if (node_BuoyantForces)
+    /*if (node_BuoyantForces)
     {
-      std::cout << "Buoyant Forces Info: " << node_BuoyantForces->get_content() << std::endl;
-    }
-    if (node_Size)
+      std::cout << "Buoyant Forces Info: " << node_BuoyantForces.GetAttributes() << std::endl;
+    }*/
+    if (node_GasCell)
     {
-      std::cout << "Sizes: " << node_Size->get_content() << std::endl;
+      std::cout << "Gas Cell: " << node_GasCell.GetAttribute("type").second << std::endl;
     }
-    if (node_Location)
+    /*if (node_Location)
     {
-      std::cout << "Location: " << node_Location->get_content() << std::endl;
-    }
+      std::cout << "Location: " << node_Location.GetAttributes() << std::endl;
+    }*/
 
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     SetupTab(*m_pages.back());
@@ -53,6 +54,11 @@ void BuoyantForcesSubsystem::Create()
     // Track switching tabs
     m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
                                                           &BuoyantForcesSubsystem::on_notebook_switch_page));
+  }
+  catch(const std::exception& e){
+    std::cout << "got caught" << std::endl;
+  }
+
   }
 
   void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget * /* page */, guint page_num)
