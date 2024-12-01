@@ -77,11 +77,12 @@ private:
     void onCancelButtonClicked();
     void loadPropertiesFromFile(const std::string& fileName);
     void onPropertySelected();
+    void addProperty();
+    void reloadList();
    // Helper methods
     void applyFilter();
 private:
     // Widgets
-    // Gtk::Grid gridLayout;,,,not needed
     Gtk::Box m_VBox;
     Gtk::Label currentLabel;
     Gtk::Entry* currentPlaceholder;
@@ -100,10 +101,6 @@ private:
     Gtk::Button closeButton;
     int visibleProperties;
     int hiddenProperties;
-
-    //Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
-    //Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
-
 // Define property columns model
 class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
     public:
