@@ -145,7 +145,6 @@ void ChannelCanvas::OnDragBegin(double x, double y)
 {
     //std::cout << "Drag began at: "<< x << ", " << y << ".\n";
     m_dragStartPos = {static_cast<int>(x), static_cast<int>(y)};
-    
     m_channels.at(m_currentChannel).OnDragBegin(m_dragStartPos.first, m_dragStartPos.second);
     queue_draw();
 
@@ -159,6 +158,20 @@ void ChannelCanvas::OnDragUpdate(double x, double y)
     int adjustX = static_cast<int>(x) + m_dragStartPos.first; 
     int adjustY = static_cast<int>(y) + m_dragStartPos.second;
 
+    //Fix dragging and things off screen by capping the position to the canvas bounds.
+    //Future bug if the canvas is resized, since it could remain offscreen.
+    //Could probably make this a function to since im copying and pasting this elsewhere..
+    auto bounds = get_allocation();
+    if(bounds.get_width() < adjustX)
+        adjustX = bounds.get_width();
+    else if (0 > adjustX)
+        adjustX = 0;
+    if(bounds.get_height() < adjustY)
+        adjustY = bounds.get_height();
+    else if (0 > adjustY)
+        adjustY = 0;
+
+
     m_channels.at(m_currentChannel).OnDragUpdate(adjustX, adjustY);
     queue_draw();
 }
@@ -170,6 +183,19 @@ void ChannelCanvas::OnDragEnd(double x, double y)
     //Becuase x,y passed here are the difference relative to the drag begin...    
     int adjustX = static_cast<int>(x) + m_dragStartPos.first; 
     int adjustY = static_cast<int>(y) + m_dragStartPos.second;
+
+    //Fix dragging and things off screen by capping the position to the canvas bounds.
+    //Future bug if the canvas is resized, since it could remain offscreen.
+    //Could probably make this a function to since im copying and pasting this elsewhere..
+    auto bounds = get_allocation();
+    if(bounds.get_width() < adjustX)
+        adjustX = bounds.get_width();
+    else if (0 > adjustX)
+        adjustX = 0;
+    if(bounds.get_height() < adjustY)
+        adjustY = bounds.get_height();
+    else if (0 > adjustY)
+        adjustY = 0;
 
     m_channels.at(m_currentChannel).OnDragEnd(adjustX, adjustY);
     queue_draw();
