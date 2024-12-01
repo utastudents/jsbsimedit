@@ -118,19 +118,19 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
     p_Grid->attach(*rollingFrictionLabel, 0, p_row);
     p_Grid->attach(*rollingFrictionTextbox, 1, p_row++);
 
-    // Max Stear
-    auto maxStearLabel = Gtk::make_managed<Gtk::Label>("Max Stear =");
-    auto maxStearTextbox = Gtk::make_managed<Gtk::Entry>();
-    maxStearTextbox->set_text("Max Stear.");
+    // Max Steer
+    auto maxSteerLabel = Gtk::make_managed<Gtk::Label>("Max Steer =");
+    auto maxSteerTextbox = Gtk::make_managed<Gtk::Entry>();
+    maxSteerTextbox->set_text("Max Steer.");
 
-    auto maxStearUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
-    maxStearUnitDropDown->append("DEG");
-    maxStearUnitDropDown->append("RAD");
-    maxStearUnitDropDown->set_active(0);    
+    auto maxSteerUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
+    maxSteerUnitDropDown->append("DEG");
+    maxSteerUnitDropDown->append("RAD");
+    maxSteerUnitDropDown->set_active(0);    
 
-    p_Grid->attach(*maxStearLabel, 0, p_row);
-    p_Grid->attach(*maxStearTextbox, 1, p_row);
-    p_Grid->attach(*maxStearUnitDropDown, 2, p_row++);
+    p_Grid->attach(*maxSteerLabel, 0, p_row);
+    p_Grid->attach(*maxSteerTextbox, 1, p_row);
+    p_Grid->attach(*maxSteerUnitDropDown, 2, p_row++);
 
     // Brake Group
     auto brakeGroupLabel = Gtk::make_managed<Gtk::Label>("Brake Group =");
