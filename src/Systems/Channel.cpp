@@ -211,5 +211,38 @@ void Channel::populateStringComponentMap()
     
 }
 
+void Channel::OnDragBegin(int x, int y)
+{
+    //Fail safe I guess in case somehow this goes wrong.
+    if(m_isDragging)
+        return;
+
+    for(auto& i : m_spriteComponents)
+    {
+        if(i.second.ContainsPoint(x,y))
+        {
+            m_isDragging = true;
+            m_selectedId = i.first;
+            return;
+        }    
+    }
+}
+
+void Channel::OnDragUpdate(int x, int y)
+{
+    if(!m_isDragging)
+        return;
+    m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+}
+
+void Channel::OnDragEnd(int x, int y)
+{
+    if(!m_isDragging)
+        return;
+
+    m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+
+    m_isDragging = false;
+}
 
 };

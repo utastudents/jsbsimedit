@@ -105,8 +105,8 @@ bool ChannelCanvas::OnDropEnd(const Glib::ValueBase &value, double x, double y)
 {
     Glib::Value<int> passedData;
     passedData.init(value.gobj());
-    std::cout << "Something was dropped at: "<< x << ", " << y << " with data type: "
-        << passedData.get() << ".\n";
+    //std::cout << "Something was dropped at: "<< x << ", " << y << " with data type: "
+    //    << passedData.get() << ".\n";
 
     if(!CurrentChannelExists())
         return false;
@@ -136,25 +136,42 @@ void ChannelCanvas::OnClickDown(int numClick, double x, double y)
 {
     if(!CurrentChannelExists())
         return;
-     std::cout << "Mouse down at: "<< x << ", " << y << ".\n";
+    //std::cout << "Mouse down at: "<< x << ", " << y << ".\n";
 
     //Click handling here for left click
 }
 
 void ChannelCanvas::OnDragBegin(double x, double y)
 {
-     std::cout << "Drag began at: "<< x << ", " << y << ".\n";
+    //std::cout << "Drag began at: "<< x << ", " << y << ".\n";
+    m_dragStartPos = {static_cast<int>(x), static_cast<int>(y)};
+    
+    m_channels.at(m_currentChannel).OnDragBegin(m_dragStartPos.first, m_dragStartPos.second);
+    queue_draw();
 
 }
 
 void ChannelCanvas::OnDragUpdate(double x, double y)
 {
-     std::cout << "Drag update at: "<< x << ", " << y << ".\n";
+    //std::cout << "Drag update at: "<< x << ", " << y << ".\n";
+
+    //Becuase x,y passed here are the difference relative to the drag begin...    
+    int adjustX = static_cast<int>(x) + m_dragStartPos.first; 
+    int adjustY = static_cast<int>(y) + m_dragStartPos.second;
+
+    m_channels.at(m_currentChannel).OnDragUpdate(adjustX, adjustY);
+    queue_draw();
 }
 
 void ChannelCanvas::OnDragEnd(double x, double y)
 {
-     std::cout << "Drag ended at: "<< x << ", " << y << ".\n";
+    //std::cout << "Drag ended at: "<< x << ", " << y << ".\n";
 
+    //Becuase x,y passed here are the difference relative to the drag begin...    
+    int adjustX = static_cast<int>(x) + m_dragStartPos.first; 
+    int adjustY = static_cast<int>(y) + m_dragStartPos.second;
+
+    m_channels.at(m_currentChannel).OnDragEnd(adjustX, adjustY);
+    queue_draw();
 }
 };
