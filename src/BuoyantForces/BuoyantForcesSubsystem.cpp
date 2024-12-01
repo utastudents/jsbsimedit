@@ -44,15 +44,6 @@ void BuoyantForcesSubsystem::Create()
 
   LoadStringLists();
 
-
-  // Load XML data for testing
-  try {
-    LoadXMLData();
-    std::cout << "XML data loaded successfully." << std::endl;
-  } catch (const std::exception& e) {
-    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
-  }
-
   // Create "Gas Cell" Tab
   std::string gc_name = m_gascell.getName();
   m_pages[gc_name] = std::make_unique<Gtk::Grid>();
@@ -63,6 +54,15 @@ void BuoyantForcesSubsystem::Create()
   // Track switching tabs
   m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
       &BuoyantForcesSubsystem::on_notebook_switch_page));
+
+
+  // Load XML data for testing
+  try {
+    LoadXMLData();
+    std::cout << "XML data loaded successfully." << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
+  }
 }
 
 void BuoyantForcesSubsystem::SaveXMLData() {
@@ -92,6 +92,19 @@ void BuoyantForcesSubsystem::LoadXMLData() {
 
         if (gasCellNode) {
             std::cout << "Gas Cell Type: " << gasCellNode.GetAttribute("type").second << std::endl;
+            Glib::ustring gasTypeRead = gasCellNode.GetAttribute("type").second;
+            int foundGasTypeIndex = -1;
+            for (int i = 0; i < m_gasStringList->get_n_items(); i++) {
+                Glib::ustring gasTypeItem = m_gasStringList->get_string(i);
+                if (gasTypeItem == gasTypeRead) {
+                    foundGasTypeIndex = i;
+                    break;
+                }
+            }
+            if (foundGasTypeIndex != -1) {
+                std::string keyString = "Gas Type " + std::to_string(m_tab_count);
+                m_dropdowns[keyString]->set_selected(foundGasTypeIndex);
+            }
             
             auto locationNode = gasCellNode.FindChild("location");
             if (locationNode) {
@@ -99,6 +112,20 @@ void BuoyantForcesSubsystem::LoadXMLData() {
                           << "X=" << locationNode.FindChild("x").GetText() << ", "
                           << "Y=" << locationNode.FindChild("y").GetText() << ", "
                           << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
+
+                Glib::ustring locationUnitRead = locationNode.GetAttribute("unit").second;
+                int foundLocationUnitIndex = -1;
+                for (int i = 0; i < m_measurementStringList->get_n_items(); i++) {
+                    Glib::ustring locationUnitItem = m_measurementStringList->get_string(i);
+                    if (locationUnitItem == locationUnitRead) {
+                        foundLocationUnitIndex = i;
+                        break;
+                    }
+                }
+                if (foundLocationUnitIndex != -1) {
+                    std::string keyString = "Location " + std::to_string(m_tab_count);
+                    m_dropdowns[keyString]->set_selected(foundLocationUnitIndex);
+                }
             }
 
             // Dimensions
@@ -109,6 +136,19 @@ void BuoyantForcesSubsystem::LoadXMLData() {
                               << " (unit = " << childNode.GetAttribute("unit").second 
                               << ")" << std::endl;
 
+                    Glib::ustring dimensionUnitRead = childNode.GetAttribute("unit").second;
+                    int foundDimensionUnitIndex = -1;
+                    for (int i = 0; i < m_measurementStringList->get_n_items(); i++) {
+                        Glib::ustring dimensionUnitItem = m_measurementStringList->get_string(i);
+                        if (dimensionUnitItem == dimensionUnitRead) {
+                            foundDimensionUnitIndex = i;
+                            break;
+                        }
+                    }
+                    if (foundDimensionUnitIndex != -1) {
+                        std::string keyString = "Dimensions " + std::to_string(m_tab_count);
+                        m_dropdowns[keyString]->set_selected(foundDimensionUnitIndex);
+                    }
                 }
             }
 
@@ -119,6 +159,40 @@ void BuoyantForcesSubsystem::LoadXMLData() {
                     std::cout << "   " << node << ": " << childNode.GetText() 
                               << " (unit = " << childNode.GetAttribute("unit").second
                               << ")" << std::endl;
+
+                    // Set Overpressure DropDown
+                    if (childNode.GetName() == "max_overpressure") {
+                        Glib::ustring pressureUnitRead = childNode.GetAttribute("unit").second;
+                        int foundPressureUnitIndex = -1;
+                        for (int i = 0; i < m_pressureStringList->get_n_items(); i++) {
+                            Glib::ustring pressureUnitItem = m_pressureStringList->get_string(i);
+                            if (pressureUnitItem == pressureUnitRead) {
+                                foundPressureUnitIndex = i;
+                                break;
+                            }
+                        }
+                        if (foundPressureUnitIndex != -1) {
+                            std::string keyString = "Max Overpressure " + std::to_string(m_tab_count);
+                            m_dropdowns[keyString]->set_selected(foundPressureUnitIndex);
+                        }
+                    }
+
+                    // Set Valve Coefficient DropDown
+                    if (childNode.GetName() == "valve_coefficient") {
+                        Glib::ustring valveUnitRead = childNode.GetAttribute("unit").second;
+                        int foundValveUnitIndex = -1;
+                        for (int i = 0; i < m_valveStringList->get_n_items(); i++) {
+                            Glib::ustring valveUnitItem = m_valveStringList->get_string(i);
+                            if (valveUnitItem == valveUnitRead) {
+                                foundValveUnitIndex = i;
+                                break;
+                            }
+                        }
+                        if (foundValveUnitIndex != -1) {
+                            std::string keyString = "Valve Coefficient " + std::to_string(m_tab_count);
+                            m_dropdowns[keyString]->set_selected(foundValveUnitIndex);
+                        }
+                    }
                 }
             }
         }
@@ -132,8 +206,8 @@ void BuoyantForcesSubsystem::LoadXMLData() {
 Component::Unit BuoyantForcesSubsystem::GetUnitFromString(const std::string& unit_string) const {
     Component::Unit UnitType;
 
-    if (unit_string == "WIDTH")     { UnitType = Component::Unit::WIDTH; }
-    if (unit_string == "RADIUS")    { UnitType = Component::Unit::RADIUS; }
+    if (unit_string == "width")     { UnitType = Component::Unit::WIDTH; }
+    if (unit_string == "radius")    { UnitType = Component::Unit::RADIUS; }
     
     if (unit_string == "PA")    { UnitType = Component::Unit::PA; }
     if (unit_string == "PSI")   { UnitType = Component::Unit::PSI; }
@@ -141,13 +215,13 @@ Component::Unit BuoyantForcesSubsystem::GetUnitFromString(const std::string& uni
     if (unit_string == "M")     { UnitType = Component::Unit::M; }
     if (unit_string == "IN")    { UnitType = Component::Unit::IN; }
     
-    if (unit_string == "FT4 * SEC / SLUG")  { UnitType = Component::Unit::FT4_SEC_SLUG; }
-    if (unit_string == "M4 * SEC / KG")     { UnitType = Component::Unit::M4_SEC_KG; }
+    if (unit_string == "FT4*SEC/SLUG")  { UnitType = Component::Unit::FT4_SEC_SLUG; }
+    if (unit_string == "M4*SEC/KG")     { UnitType = Component::Unit::M4_SEC_KG; }
     
-    if (unit_string == "LBS FT / SEC")      { UnitType = Component::Unit::LBS_FT_SEC; }
-    if (unit_string == "LB FT / (SEC R)")   { UnitType = Component::Unit::LB_FT_SEC_R; }
+    if (unit_string == "lbs ft / sec")      { UnitType = Component::Unit::LBS_FT_SEC; }
+    if (unit_string == "lb ft / (sec R)")   { UnitType = Component::Unit::LB_FT_SEC_R; }
     
-    if (unit_string == "FT3 / SEC")     { UnitType = Component::Unit::FT3_SEC; }
+    if (unit_string == "ft^3 / sec")     { UnitType = Component::Unit::FT3_SEC; }
 
     return UnitType;
 }
@@ -275,8 +349,8 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
 
     }
 
-    std::cout << "Dropdown '" << key << "' changed, Row = " << selected
-              << ", String = " << selected_string << std::endl;
+    // std::cout << "Dropdown '" << key << "' changed, Row = " << selected
+    //           << ", String = " << selected_string << std::endl;
 }
 
 void BuoyantForcesSubsystem::on_entry_activate(const std::string& key) {
