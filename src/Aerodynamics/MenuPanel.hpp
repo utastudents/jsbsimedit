@@ -30,6 +30,7 @@ private:
     std::shared_ptr<Function> function;
     Gtk::Entry* nameEntry;
     Gtk::Entry* descriptionEntry;
+    Gtk::ComboBoxText* dropdown;
 };
 
 class TableMenu : public MenuPanel {
