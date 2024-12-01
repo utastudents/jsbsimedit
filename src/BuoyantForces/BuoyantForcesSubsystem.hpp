@@ -3,6 +3,7 @@
 #include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 #include <unordered_map>
+#include <format>
 #include "BuoyantForces.hpp"
 #include "GasCell.hpp"
 #include "Ballonet.hpp"
@@ -27,17 +28,16 @@ class BuoyantForcesSubsystem : public Subsystem
                              int tabIndex);
     void SetEntryFromNode(JSBEdit::XMLNode& node, const std::string& nodeName,
                           const std::string& entryLabel, int tabIndex);
-    Component::Unit GetUnitFromString(const std::string& unit_string) const;
     void on_button_toggled();
     void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
     void on_dropdown_changed(const std::string& dropdown_name);
     void on_entry_activate(const std::string& key);
-    void on_ballonetcount_changed();
     void LoadStringLists();
-    void AddDropDown(Gtk::Grid& p_grid, std::string label, int col, Glib::RefPtr<Gtk::StringList> stringlist);
     void BuildTabs(int target);
     void SetupTab(Gtk::Grid& p_grid);
+    void AddDropDown(Gtk::Grid& p_grid, std::string label, int col, Glib::RefPtr<Gtk::StringList> stringlist);
     void AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu);
+    Component::Unit GetUnitFromString(const std::string& unit_string) const;
 
 
     Gtk::Notebook m_notebook;

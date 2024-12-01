@@ -6,7 +6,7 @@ BuoyantForces::BuoyantForces() {
 
 void BuoyantForces::setHasBuoyantForces(bool byfActive) {
     hasBuoyantForces = byfActive;
-    std::cout << "   [in buoyant forces class] bool has changed to " << ((hasBuoyantForces) ? "TRUE" : "FALSE") << std::endl;
+    // std::cout << "   [in buoyant forces class] bool has changed to " << ((hasBuoyantForces) ? "TRUE" : "FALSE") << std::endl;
 }
 
 void BuoyantForces::setGasCell(GasCell newGasCell){

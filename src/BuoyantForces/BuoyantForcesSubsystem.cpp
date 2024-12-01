@@ -59,18 +59,117 @@ void BuoyantForcesSubsystem::Create()
 
 
   // Load XML data for testing
-  // try {
-  //   LoadXMLData();
-  //   std::cout << "XML data loaded successfully." << std::endl;
-  // } catch (const std::exception& e) {
-  //   std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
-  // }
+  try {
+    LoadXMLData();
+    std::cout << "XML data loaded successfully." << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
+  }
 
   // Save changes to XML file for testing
+  try {
+    SaveXMLData();
+    std::cout << "XML data saved successfully" << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "Error saving XML: " << e.what() << std::endl;
+  }
 }
 
 void BuoyantForcesSubsystem::SaveXMLData() {
-    // auto rootNode = m_doc.
+    try {
+        m_doc.LoadFileAndParse({"../../../xmltests/tester.xml"});
+        JSBEdit::XMLNode root{m_doc,"<fdm_config></fdm_config>"};
+
+        // "buoyant_forces" node
+        JSBEdit::XMLNode byfNode{m_doc};
+        byfNode.SetName("buoyant_forces");
+        byfNode.SetText("");
+
+        // "gas_cell" node
+        JSBEdit::XMLNode gascellNode{m_doc};
+        AttributeKV gascellAttribute{"type", "HELIUM"};
+        gascellNode.SetName("gas_cell");
+        gascellNode.AddAttribute(gascellAttribute);
+        gascellNode.SetText("");
+
+        std::vector<JSBEdit::XMLNode> gascellChildren;
+
+        // "location" node
+        JSBEdit::XMLNode locationNode{m_doc};
+        AttributeKV locationAttribute{"unit", "M"};
+        locationNode.SetName("location");
+        locationNode.AddAttribute(locationAttribute);
+        locationNode.SetText("");
+        gascellChildren.push_back(locationNode);
+
+        // location child nodes
+        std::vector<JSBEdit::XMLNode> locationChildren;
+        JSBEdit::XMLNode xLocationNode{m_doc};
+        JSBEdit::XMLNode yLocationNode{m_doc};
+        JSBEdit::XMLNode zLocationNode{m_doc};
+        xLocationNode.SetName("x");
+        yLocationNode.SetName("y");
+        zLocationNode.SetName("z");
+        xLocationNode.SetText("23.00");
+        yLocationNode.SetText("13.00");
+        zLocationNode.SetText("0.10");
+        locationChildren.push_back(xLocationNode);
+        locationChildren.push_back(yLocationNode);
+        locationChildren.push_back(zLocationNode);
+
+        // dimension-related nodes (all children to "gas_cell" node)
+        JSBEdit::XMLNode xDimensionNode{m_doc};
+        JSBEdit::XMLNode yDimensionNode{m_doc};
+        JSBEdit::XMLNode zDimensionNode{m_doc};
+        AttributeKV xDimensionAttribute{"unit", "IN"};
+        AttributeKV yDimensionAttribute{"unit", "IN"};
+        AttributeKV zDimensionAttribute{"unit", "IN"};
+        xDimensionNode.SetName("x_radius");
+        yDimensionNode.SetName("y_radius");
+        zDimensionNode.SetName("z_radius");
+        xDimensionNode.AddAttribute(xDimensionAttribute);
+        yDimensionNode.AddAttribute(yDimensionAttribute);
+        zDimensionNode.AddAttribute(zDimensionAttribute);
+        xDimensionNode.SetText("22.30");
+        yDimensionNode.SetText("0.0");
+        zDimensionNode.SetText("1.0");
+        gascellChildren.push_back(xDimensionNode);
+        gascellChildren.push_back(yDimensionNode);
+        gascellChildren.push_back(zDimensionNode);
+
+        // "max_overpressure" node
+        JSBEdit::XMLNode maxOverpressureNode{m_doc};
+        AttributeKV maxOverpressureAttribute{"unit", "PA"};
+        maxOverpressureNode.SetName("max_overpressure");
+        maxOverpressureNode.AddAttribute(maxOverpressureAttribute);
+        maxOverpressureNode.SetText("291.0");
+        gascellChildren.push_back(maxOverpressureNode);
+
+        // "valve_coefficient" node
+        JSBEdit::XMLNode valveCoefficientNode{m_doc};
+        AttributeKV valveCoefficientAttribute{"unit", "M4*SEC/KG"};
+        valveCoefficientNode.SetName("valve_coefficient");
+        valveCoefficientNode.AddAttribute(valveCoefficientAttribute);
+        valveCoefficientNode.SetText("0.0075");
+        gascellChildren.push_back(valveCoefficientNode);
+
+        // "fullness" node
+        JSBEdit::XMLNode fullnessNode{m_doc};
+        fullnessNode.SetName("fullness");
+        fullnessNode.SetText("0.23");
+        gascellChildren.push_back(fullnessNode);
+
+        locationNode.AddChildren(locationChildren);
+        gascellNode.AddChildren(gascellChildren);
+        byfNode.AddChild(gascellNode);
+        root.AddChild(byfNode);
+
+        m_doc.Print();
+        m_doc.SaveToFile("../../../xmltests/tester.xml");
+
+    } catch (const std::exception& e) {
+        std::cerr << "Error in SaveXML: " << e.what() << std::endl;
+    }
 }
 
 void BuoyantForcesSubsystem::LoadXMLData() {
@@ -86,11 +185,11 @@ void BuoyantForcesSubsystem::LoadXMLData() {
         std::vector<JSBEdit::XMLNode> ballonetNodes;
 
         if (buoyantForcesNode) {
-            std::cout << "buoyant_forces node found!" << std::endl;
+            std::cout << "   buoyant_forces node found!" << std::endl;
             m_checkbutton.set_active(true);     // Enables the button
 
         } else {
-            std::cout << "buoyant_forces node NOT found!" << std::endl;
+            std::cout << "   buoyant_forces node NOT found!" << std::endl;
             m_checkbutton.set_active(false);    // Disables the button
         }
 
@@ -102,7 +201,6 @@ void BuoyantForcesSubsystem::LoadXMLData() {
                     ballonetNodes.push_back(gasCellNode.GetChild(i));
                 }   
             }
-            std::cout << "Airship has " << ballonetNodes.size() << " ballonet(s)" << std::endl;
             SetDropDownFromNode(ballonetNodes.back(), "ballonet", std::to_string(ballonetNodes.size()), 
                                 m_ballonetStringList, "# of Ballonets", 0);
         }
@@ -119,8 +217,8 @@ void BuoyantForcesSubsystem::LoadXMLData() {
 }
 
 void BuoyantForcesSubsystem::SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tabIndex) {
-    std::cout << root.GetName() << std::endl;
-    std::cout << "   Gas Type: " << root.GetAttribute("type").second << std::endl;
+    // std::cout << root.GetName() << std::endl;
+    // std::cout << "      Gas Type: " << root.GetAttribute("type").second << std::endl;
 
     std::string rootName = ((tabIndex == 0) ? "gas_cell" : "ballonet");
     SetDropDownFromNode(root, rootName, "type", m_gasStringList, "Gas Type", tabIndex);
@@ -130,10 +228,10 @@ void BuoyantForcesSubsystem::SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tab
         auto x_locationNode = locationNode.FindChild("x");
         auto y_locationNode = locationNode.FindChild("y");
         auto z_locationNode = locationNode.FindChild("z");
-        std::cout << "      Location (unit: " << locationNode.GetAttribute("unit").second << "): "
-                  << "X=" << x_locationNode.GetText() << ", "
-                  << "Y=" << y_locationNode.GetText() << ", "
-                  << "Z=" << z_locationNode.GetText() << std::endl;
+        // std::cout << "         Location (unit: " << locationNode.GetAttribute("unit").second << "): "
+        //           << "X=" << x_locationNode.GetText() << ", "
+        //           << "Y=" << y_locationNode.GetText() << ", "
+        //           << "Z=" << z_locationNode.GetText() << std::endl;
 
         SetDropDownFromNode(locationNode, "location", "unit", m_measurementStringList, "Location", tabIndex);
         SetEntryFromNode(x_locationNode, "x", "x Loc", tabIndex);
@@ -144,24 +242,24 @@ void BuoyantForcesSubsystem::SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tab
     // Dimensions
     auto x_dimensionNode = root.FindChild("x_radius");
     if (x_dimensionNode) {
-        std::cout << "      X Dimension = " << x_dimensionNode.GetText() << " (unit = " 
-                  << x_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+        // std::cout << "         X Dimension = " << x_dimensionNode.GetText() << " (unit = " 
+        //           << x_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
         SetDropDownFromNode(x_dimensionNode, "x_radius", "unit", m_measurementStringList, "Dimensions", tabIndex);
         SetEntryFromNode(x_dimensionNode, "x_radius", "x Dim", tabIndex);
     }
 
     auto y_dimensionNode = root.FindChild("y_radius");
     if (y_dimensionNode) {
-        std::cout << "      Y Dimension = " << y_dimensionNode.GetText() << " (unit = " 
-                  << y_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+        // std::cout << "         Y Dimension = " << y_dimensionNode.GetText() << " (unit = " 
+        //           << y_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
         SetDropDownFromNode(y_dimensionNode, "y_radius", "unit", m_measurementStringList, "Dimensions", tabIndex);
         SetEntryFromNode(y_dimensionNode, "y_radius", "y Dim", tabIndex);
     }
 
     auto z_dimensionNode = root.FindChild("z_radius");
     if (z_dimensionNode) {
-        std::cout << "      Z Dimension = " << z_dimensionNode.GetText() << " (unit = " 
-                  << z_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+        // std::cout << "         Z Dimension = " << z_dimensionNode.GetText() << " (unit = " 
+        //           << z_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
         SetDropDownFromNode(z_dimensionNode, "z_radius", "unit", m_measurementStringList, "Dimensions", tabIndex);
         SetEntryFromNode(z_dimensionNode, "z_radius", "z Dim", tabIndex);
     }
@@ -169,23 +267,23 @@ void BuoyantForcesSubsystem::SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tab
     // Other Data
     auto overpressureNode = root.FindChild("max_overpressure");
     if (overpressureNode) {
-        std::cout << "      Max Overpressure = " << overpressureNode.GetText() << " (unit = " 
-                  << overpressureNode.GetAttribute("unit").second << ")" << std::endl;
+        // std::cout << "         Max Overpressure = " << overpressureNode.GetText() << " (unit = " 
+        //           << overpressureNode.GetAttribute("unit").second << ")" << std::endl;
         SetDropDownFromNode(overpressureNode, "max_overpressure", "unit", m_pressureStringList, "Max Overpressure", tabIndex);
         SetEntryFromNode(overpressureNode, "max_overpressure", "Max Overpressure", tabIndex);
     }
 
     auto valveCoefficientNode = root.FindChild("valve_coefficient");
     if (valveCoefficientNode) {
-        std::cout << "      Valve Coefficient = " << valveCoefficientNode.GetText() << " (unit = "
-                  << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
+        // std::cout << "         Valve Coefficient = " << valveCoefficientNode.GetText() << " (unit = "
+        //           << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
         SetDropDownFromNode(valveCoefficientNode, "valve_coefficient", "unit", m_valveStringList, "Valve Coefficient", tabIndex);
         SetEntryFromNode(valveCoefficientNode, "valve_coefficient", "Valve Coefficient", tabIndex);
     }
 
     auto fullnessNode = root.FindChild("fullness");
     if (fullnessNode) {
-        std::cout << "      Fullness = " << fullnessNode.GetText() << std::endl;
+        // std::cout << "         Fullness = " << fullnessNode.GetText() << std::endl;
         SetEntryFromNode(fullnessNode, "fullness", "Fullness", tabIndex);
     }
 }
@@ -195,10 +293,12 @@ void BuoyantForcesSubsystem::SetDropDownFromNode(JSBEdit::XMLNode& node, const s
                                                  const std::string& dropdownLabel, int tabIndex) {
     if (node.GetName() == nodeName) {
         Glib::ustring dataRead;
-        if (nodeName == "ballonet" && tabIndex == 0)     dataRead = attributeName;
-        else                            dataRead = node.GetAttribute(attributeName).second;
-        int foundIndex = -1;
+        if (nodeName == "ballonet" && tabIndex == 0)     
+            dataRead = attributeName;
+        else                            
+            dataRead = node.GetAttribute(attributeName).second;
 
+        int foundIndex = -1;
         for (int i = 0; i < stringList->get_n_items(); i++) {
             if (stringList->get_string(i) == dataRead) {
                 foundIndex = i;
@@ -209,7 +309,7 @@ void BuoyantForcesSubsystem::SetDropDownFromNode(JSBEdit::XMLNode& node, const s
         if (foundIndex != -1) {
             std::string keyString = dropdownLabel + " " + std::to_string(tabIndex);
 
-            if (m_dropdowns.find(keyString) != m_dropdowns.end())
+            if (m_dropdowns.find(keyString) != m_dropdowns.end()) 
                 m_dropdowns[keyString]->set_selected(foundIndex);
             else
                 std::cerr << "Dropdown with key " << keyString << " not found!" << std::endl;
@@ -231,29 +331,6 @@ void BuoyantForcesSubsystem::SetEntryFromNode(JSBEdit::XMLNode& node, const std:
             std::cerr << "Entry with key " << keyString << " not found!" << std::endl;
         }
     }
-}
-
-Component::Unit BuoyantForcesSubsystem::GetUnitFromString(const std::string& unit_string) const {
-    Component::Unit UnitType;
-
-    if (unit_string == "width")     { UnitType = Component::Unit::WIDTH; }
-    if (unit_string == "radius")    { UnitType = Component::Unit::RADIUS; }
-    
-    if (unit_string == "PA")    { UnitType = Component::Unit::PA; }
-    if (unit_string == "PSI")   { UnitType = Component::Unit::PSI; }
-    
-    if (unit_string == "M")     { UnitType = Component::Unit::M; }
-    if (unit_string == "IN")    { UnitType = Component::Unit::IN; }
-    
-    if (unit_string == "FT4*SEC/SLUG")  { UnitType = Component::Unit::FT4_SEC_SLUG; }
-    if (unit_string == "M4*SEC/KG")     { UnitType = Component::Unit::M4_SEC_KG; }
-    
-    if (unit_string == "lbs ft / sec")      { UnitType = Component::Unit::LBS_FT_SEC; }
-    if (unit_string == "lb ft / (sec R)")   { UnitType = Component::Unit::LB_FT_SEC_R; }
-    
-    if (unit_string == "ft^3 / sec")     { UnitType = Component::Unit::FT3_SEC; }
-
-    return UnitType;
 }
 
 void BuoyantForcesSubsystem::on_button_toggled() {
@@ -346,7 +423,7 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         else if (key.find("Blower Value") != std::string::npos) {
             selected_string = m_blowerStringList->get_string(selected);
             Component::Unit selected_unit_type = GetUnitFromString(selected_string);
-            
+
             m_ballonets[tab_index-1].setBlowerUnit(selected_unit_type);
         }
 
@@ -436,29 +513,6 @@ void BuoyantForcesSubsystem::LoadStringLists() {
   m_ballonetStringList = Gtk::StringList::create({"0", "1", "2", "3", "4", "5"});
 }
 
-void BuoyantForcesSubsystem::AddDropDown(Gtk::Grid& p_grid, std::string label, int col, Glib::RefPtr<Gtk::StringList> stringlist) {
-  // DropDown Key will be appended with current tab count
-  std::string key_text = label + " " + std::to_string(m_tab_count);
-  auto dropdown_label = Gtk::make_managed<Gtk::Label>(label);
-
-  m_dropdowns[key_text] = std::make_unique<Gtk::DropDown>();
-  m_dropdowns[key_text]->set_model(stringlist);
-  m_dropdowns[key_text]->set_expand(false);
-  m_dropdowns[key_text]->set_show_arrow(true);
-  m_dropdowns[key_text]->set_size_request(150, -1);
-  m_dropdowns[key_text]->set_margin_top(5);
-  m_dropdowns[key_text]->set_margin_bottom(5);
-
-  if (m_entries.find(key_text) == m_entries.end()) {
-    p_grid.attach(*dropdown_label, 0, m_rows);
-  }
-
-  p_grid.attach(*m_dropdowns[key_text], col, m_rows++);
-
-  m_dropdowns[key_text]->property_selected().signal_changed().connect(
-    sigc::bind(sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_dropdown_changed), key_text));
-}
-
 void BuoyantForcesSubsystem::BuildTabs(int target) 
 {
     int current = m_ballonets.size();
@@ -539,6 +593,28 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   
 }
 
+void BuoyantForcesSubsystem::AddDropDown(Gtk::Grid& p_grid, std::string label, int col, Glib::RefPtr<Gtk::StringList> stringlist) {
+  // DropDown Key will be appended with current tab count
+  std::string key_text = label + " " + std::to_string(m_tab_count);
+  auto dropdown_label = Gtk::make_managed<Gtk::Label>(label);
+
+  m_dropdowns[key_text] = std::make_unique<Gtk::DropDown>();
+  m_dropdowns[key_text]->set_model(stringlist);
+  m_dropdowns[key_text]->set_expand(false);
+  m_dropdowns[key_text]->set_show_arrow(true);
+  m_dropdowns[key_text]->set_size_request(150, -1);
+  m_dropdowns[key_text]->set_margin_top(5);
+  m_dropdowns[key_text]->set_margin_bottom(5);
+
+  if (m_entries.find(key_text) == m_entries.end()) {
+    p_grid.attach(*dropdown_label, 0, m_rows);
+  }
+
+  p_grid.attach(*m_dropdowns[key_text], col, m_rows++);
+
+  m_dropdowns[key_text]->property_selected().signal_changed().connect(
+    sigc::bind(sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_dropdown_changed), key_text));
+}
 
 void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu) {
   std::string key_text = label + " " + std::to_string(m_tab_count);
@@ -578,4 +654,27 @@ void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, bool
   } else {
       p_grid.attach(*m_entries[key_text], 1, m_rows++);
   }
+}
+
+Component::Unit BuoyantForcesSubsystem::GetUnitFromString(const std::string& unit_string) const {
+    Component::Unit UnitType;
+
+    if (unit_string == "width")     { UnitType = Component::Unit::WIDTH; }
+    if (unit_string == "radius")    { UnitType = Component::Unit::RADIUS; }
+    
+    if (unit_string == "PA")    { UnitType = Component::Unit::PA; }
+    if (unit_string == "PSI")   { UnitType = Component::Unit::PSI; }
+    
+    if (unit_string == "M")     { UnitType = Component::Unit::M; }
+    if (unit_string == "IN")    { UnitType = Component::Unit::IN; }
+    
+    if (unit_string == "FT4*SEC/SLUG")  { UnitType = Component::Unit::FT4_SEC_SLUG; }
+    if (unit_string == "M4*SEC/KG")     { UnitType = Component::Unit::M4_SEC_KG; }
+    
+    if (unit_string == "lbs ft / sec")      { UnitType = Component::Unit::LBS_FT_SEC; }
+    if (unit_string == "lb ft / (sec R)")   { UnitType = Component::Unit::LB_FT_SEC_R; }
+    
+    if (unit_string == "ft^3 / sec")     { UnitType = Component::Unit::FT3_SEC; }
+
+    return UnitType;
 }
