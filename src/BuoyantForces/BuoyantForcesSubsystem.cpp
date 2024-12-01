@@ -17,7 +17,7 @@ BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 void BuoyantForcesSubsystem::Create()
 {
   std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
-  //auto node=xmlptr()->GetNode("buoyant_forces");
+  // auto node=xmlptr()->GetNode("buoyant_forces");
 
   // These widgets can come from a ui file or direct from code
 
@@ -42,77 +42,16 @@ void BuoyantForcesSubsystem::Create()
   m_Grid.attach(m_checkbutton, 0, m_rows++);
   m_Grid.attach(m_notebook, 0, m_rows++);
 
-    try
-  {
-                                               // file  paths will need some work to correlate to our buoyant forces
-    //temp file for testing
-    doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
-
-    // temporarilly using doc instead of xmlptr() so we can test if it is pulling from file
-    auto node = doc.GetNode("fdm_config"); // root node
-    auto node_BuoyantForces = doc.GetNode("/fdm_config/buoyant_forces");
-    auto node_GasCell = doc.GetNode("/fdm_config/buoyant_forces/gas_cell");
-    auto locationNode = node_GasCell.FindChild("location"); // add nodes for all children of gascell
-    auto xRadiusNode = node_GasCell.FindChild("x_radius");
-    auto yRadiusNode = node_GasCell.FindChild("y_radius");
-    auto zRadiusNode = node_GasCell.FindChild("z_radius");
-    auto maxOverpressureNode = node_GasCell.FindChild("max_overpressure");
-    auto valveCoefficientNode = node_GasCell.FindChild("valve_coefficient");
-    auto fullnessNode = node_GasCell.FindChild("fullness");
-
-
-  //todo: make sure this works
-    std::vector <JSBEdit::XMLNode> ballonetNodes = node_BuoyantForces.GetChildren();
-
-    if (node_BuoyantForces)
-    {
-      std::cout << "buoyant_forces node found!" << std::endl;
-    } else {
-        std::cout << "buoyant_forces node NOT found!" << std::endl;
-    }
-    if (node_GasCell)
-    {
-      std::cout << "Gas Cell: " << node_GasCell.GetAttribute("type").second << std::endl;
-
-      if (locationNode)
-        {
-            std::cout << "  Location (unit: " << locationNode.GetAttribute("unit").second << "): "
-                      << "X=" << locationNode.FindChild("x").GetText() << ", "
-                      << "Y=" << locationNode.FindChild("y").GetText() << ", "
-                      << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
-        }
-
-      if (xRadiusNode)
-        {
-            std::cout << "  X Radius: " << xRadiusNode.GetText() << " (unit = " << xRadiusNode.GetAttribute("unit").second << ")" << std::endl;
-        }
-        if (yRadiusNode)
-        {
-            std::cout << "  Y Radius: " << yRadiusNode.GetText() << " (unit = " << yRadiusNode.GetAttribute("unit").second << ")" << std::endl;
-        }
-        if (zRadiusNode)
-        {
-            std::cout << "  Z Radius: " << zRadiusNode.GetText() << " (unit = " << zRadiusNode.GetAttribute("unit").second << ")" << std::endl;
-        }
-        if (maxOverpressureNode)
-        {
-            std::cout << "  Max Overpressure: " << maxOverpressureNode.GetText() << " (unit = " << maxOverpressureNode.GetAttribute("unit").second << ")" << std::endl;
-        }
-        if (valveCoefficientNode)
-        {
-            std::cout << "  Valve Coefficient: " << valveCoefficientNode.GetText() << " (unit = " << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
-        }
-        if (fullnessNode)
-        {
-            std::cout << "  Fullness: " << fullnessNode.GetText() << std::endl;
-        }
-    }
-  }
-  catch(const std::exception& e){
-    std::cout << "got caught" << std::endl;
-  }
-
   LoadStringLists();
+
+
+  // Load XML data for testing
+  try {
+    LoadXMLData();
+    std::cout << "XML data loaded successfully." << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
+  }
 
   // Create "Gas Cell" Tab
   std::string gc_name = m_gascell.getName();
@@ -124,6 +63,70 @@ void BuoyantForcesSubsystem::Create()
   // Track switching tabs
   m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
       &BuoyantForcesSubsystem::on_notebook_switch_page));
+}
+
+void BuoyantForcesSubsystem::SaveXMLData() {
+    // code
+}
+
+void BuoyantForcesSubsystem::LoadXMLData() {
+    try {
+        // auto buoyantForcesNode = xmlptr()->GetNode("/fdm_config/buoyant_forces");
+
+        // temp file for testing
+        doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
+        auto buoyantForcesNode = doc.GetNode("/fdm_config/buoyant_forces");
+        auto gasCellNode = buoyantForcesNode.FindChild("gas_cell");
+
+        // todo: make sure this works
+        // std::vector<JSBEdit::XMLNode> ballonetNodes = buoyantForcesNode.GetChildren();
+
+        if (buoyantForcesNode) {
+            std::cout << "buoyant_forces node found!" << std::endl;
+            m_checkbutton.set_active(true);     // Enables the button
+
+        } else {
+            std::cout << "buoyant_forces node NOT found!" << std::endl;
+            m_checkbutton.set_active(false);    // Disables the button
+        }
+
+        if (gasCellNode) {
+            std::cout << "Gas Cell Type: " << gasCellNode.GetAttribute("type").second << std::endl;
+            
+            auto locationNode = gasCellNode.FindChild("location");
+            if (locationNode) {
+                std::cout << "   Location (unit: " << locationNode.GetAttribute("unit").second << "): "
+                          << "X=" << locationNode.FindChild("x").GetText() << ", "
+                          << "Y=" << locationNode.FindChild("y").GetText() << ", "
+                          << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
+            }
+
+            // Dimensions
+            for (const auto& node : {"x_radius", "y_radius", "z_radius"}) {
+                auto childNode = gasCellNode.FindChild(node);
+                if (childNode) {
+                    std::cout << "   " << node << ": " << childNode.GetText() 
+                              << " (unit = " << childNode.GetAttribute("unit").second 
+                              << ")" << std::endl;
+
+                }
+            }
+
+            // Other Data
+            for (const auto& node : {"max_overpressure", "valve_coefficient", "fullness"}) {
+                auto childNode = gasCellNode.FindChild(node);
+                if (childNode) {
+                    std::cout << "   " << node << ": " << childNode.GetText() 
+                              << " (unit = " << childNode.GetAttribute("unit").second
+                              << ")" << std::endl;
+                }
+            }
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading XML data: " << e.what() << std::endl;
+        m_checkbutton.set_active(false);    // Default to disabled in case of error
+        m_checkbutton.set_label("Error in XML Load");
+    }
 }
 
 Component::Unit BuoyantForcesSubsystem::GetUnitFromString(const std::string& unit_string) const {

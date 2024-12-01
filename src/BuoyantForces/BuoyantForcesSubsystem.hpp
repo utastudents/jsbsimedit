@@ -8,6 +8,7 @@
 #include "Component.hpp"
 
 #include "XML/XMLDoc.hpp" //temporary
+#include "XML/XMLLoad.hpp"
 
 
 class BuoyantForcesSubsystem : public Subsystem
@@ -15,8 +16,8 @@ class BuoyantForcesSubsystem : public Subsystem
   public:
     BuoyantForcesSubsystem();
     void Create(); 
-    void loadXmlData();
-    void saveXmlData();
+    void SaveXMLData();
+    void LoadXMLData();
 
   protected:
     Component::Unit GetUnitFromString(const std::string& unit_string) const;
