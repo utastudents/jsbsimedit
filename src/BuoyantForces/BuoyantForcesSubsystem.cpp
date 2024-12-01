@@ -44,6 +44,8 @@ void BuoyantForcesSubsystem::Create()
 
   LoadStringLists();
 
+  m_buoyantforces.setGasCell(m_gascell);
+
   // Create "Gas Cell" Tab
   std::string gc_name = m_gascell.getName();
   m_pages[gc_name] = std::make_unique<Gtk::Grid>();
@@ -57,16 +59,18 @@ void BuoyantForcesSubsystem::Create()
 
 
   // Load XML data for testing
-  try {
-    LoadXMLData();
-    std::cout << "XML data loaded successfully." << std::endl;
-  } catch (const std::exception& e) {
-    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
-  }
+  // try {
+  //   LoadXMLData();
+  //   std::cout << "XML data loaded successfully." << std::endl;
+  // } catch (const std::exception& e) {
+  //   std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
+  // }
+
+  // Save changes to XML file for testing
 }
 
 void BuoyantForcesSubsystem::SaveXMLData() {
-    // code
+    // auto rootNode = m_doc.
 }
 
 void BuoyantForcesSubsystem::LoadXMLData() {
@@ -74,8 +78,8 @@ void BuoyantForcesSubsystem::LoadXMLData() {
         // auto buoyantForcesNode = xmlptr()->GetNode("/fdm_config/buoyant_forces");
 
         // temp file for testing
-        doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
-        auto buoyantForcesNode = doc.GetNode("/fdm_config/buoyant_forces");
+        m_doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
+        auto buoyantForcesNode = m_doc.GetNode("/fdm_config/buoyant_forces");
         auto gasCellNode = buoyantForcesNode.FindChild("gas_cell");
 
         // todo: make sure this works
@@ -260,6 +264,7 @@ void BuoyantForcesSubsystem::on_button_toggled() {
   else 
     std::cout << "Buoyant Forces is DISABLED" << std::endl;
 
+  m_buoyantforces.setHasBuoyantForces(enable);
   m_notebook.set_sensitive(enable);
 }
 
@@ -288,16 +293,15 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
 
     else if (key.find("# of Ballonets") != std::string::npos) {
         selected_string = m_ballonetStringList->get_string(selected);
-
-        m_gascell.setBallonetCount(selected);
-        BuildTabs();
+        BuildTabs(selected);
     } 
     
     else {
-        Component::Unit selected_unit_type = GetUnitFromString(selected_string);
 
         if (key.find("Loc") != std::string::npos) {
             selected_string = m_measurementStringList->get_string(selected);
+            Component::Unit selected_unit_type = GetUnitFromString(selected_string);
+
             if (tab_index == 0) 
                 m_gascell.setLocationUnit(selected_unit_type);
             else 
@@ -305,6 +309,8 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         }
         else if (key.find("Dimensions") != std::string::npos) {
             selected_string = m_measurementStringList->get_string(selected);
+            Component::Unit selected_unit_type = GetUnitFromString(selected_string);
+
             if (tab_index == 0) 
                 m_gascell.setDimensionsUnit(selected_unit_type);
             else 
@@ -312,6 +318,8 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         }
         else if (key.find("Dim") != std::string::npos) {
             selected_string = m_shapeStringList->get_string(selected);
+            Component::Unit selected_unit_type = GetUnitFromString(selected_string);
+
             if (tab_index == 0) 
                 m_gascell.setDimensionsShape(selected_unit_type);
             else 
@@ -319,6 +327,8 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         }
         else if (key.find("Max Overpressure") != std::string::npos) {
             selected_string = m_pressureStringList->get_string(selected);
+            Component::Unit selected_unit_type = GetUnitFromString(selected_string);
+
             if (tab_index == 0) 
                 m_gascell.setPressureUnit(selected_unit_type);
             else 
@@ -326,6 +336,8 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         }
         else if (key.find("Valve Coefficient") != std::string::npos) {
             selected_string = m_valveStringList->get_string(selected);
+            Component::Unit selected_unit_type = GetUnitFromString(selected_string);
+            
             if (tab_index == 0) 
                 m_gascell.setValveCoefficientUnit(selected_unit_type);
             else 
@@ -333,6 +345,8 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         }
         else if (key.find("Blower Value") != std::string::npos) {
             selected_string = m_blowerStringList->get_string(selected);
+            Component::Unit selected_unit_type = GetUnitFromString(selected_string);
+            
             m_ballonets[tab_index-1].setBlowerUnit(selected_unit_type);
         }
 
@@ -347,6 +361,42 @@ void BuoyantForcesSubsystem::on_entry_activate(const std::string& key) {
     if (it != m_entries.end()) {
         Glib::ustring input = it->second->get_text();  // Retrieve text from the entry box
         std::cout << "'" << key << "' activated with input: " << input << std::endl;
+
+        if (key.find("x Loc") != std::string::npos) {
+            m_gascell.setXLocation(std::stod(input.raw()));
+        }
+        
+        else if (key.find("y Loc") != std::string::npos) {
+            m_gascell.setYLocation(std::stod(input.raw()));
+        }
+        
+        else if (key.find("z Loc") != std::string::npos) {
+            m_gascell.setZLocation(std::stod(input.raw()));
+        }
+        
+        else if (key.find("x Dim") != std::string::npos) {
+            m_gascell.setXDimension(std::stod(input.raw()));
+        }
+        
+        else if (key.find("y Dim") != std::string::npos) {
+            m_gascell.setYDimension(std::stod(input.raw()));
+        }
+        
+        else if (key.find("z Dim") != std::string::npos) {
+            m_gascell.setZDimension(std::stod(input.raw()));
+        }
+        
+        else if (key.find("Max Overpressure") != std::string::npos) {
+            m_gascell.setOverpressure(std::stod(input.raw()));
+        }
+        
+        else if (key.find("Valve Coefficient") != std::string::npos) {
+            m_gascell.setValveCoefficient(std::stod(input.raw()));
+        }
+        
+        else if (key.find("Fullness") != std::string::npos) {
+            m_gascell.setInitialFullness(std::stod(input.raw()));
+        }
     } 
 }
 
@@ -409,15 +459,15 @@ void BuoyantForcesSubsystem::AddDropDown(Gtk::Grid& p_grid, std::string label, i
     sigc::bind(sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_dropdown_changed), key_text));
 }
 
-void BuoyantForcesSubsystem::BuildTabs() 
+void BuoyantForcesSubsystem::BuildTabs(int target) 
 {
     int current = m_ballonets.size();
-    int target = m_gascell.getBallonetCount();
 
     // Add Ballonet Objects 
     while (current < target) {
         std::cout << "Building Ballonet " << current << " Object" << std::endl;
         m_ballonets.emplace_back("Ballonet " + std::to_string(current + 1));
+        m_gascell.addBallonet(m_ballonets.back());
         current++;
     }
 
@@ -425,6 +475,7 @@ void BuoyantForcesSubsystem::BuildTabs()
     while (current > target) {
         std::cout << "Destroying Ballonet " << current << " Object" << std::endl;
         m_ballonets.pop_back();
+        m_gascell.removeLastBallonet();
         current--;
     }
 
@@ -470,7 +521,7 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
   if (m_pages.size() == 1) {
     // Select # of Ballonets
     AddDropDown(p_grid, "# of Ballonets", 1, m_ballonetStringList);
-    BuildTabs();
+    BuildTabs(m_gascell.getBallonetCount());
 
   } else {
     // Input Blower Input
@@ -489,8 +540,7 @@ void BuoyantForcesSubsystem::SetupTab(Gtk::Grid& p_grid)
 }
 
 
-void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu)
-{
+void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu) {
   std::string key_text = label + " " + std::to_string(m_tab_count);
   auto entry_label = Gtk::make_managed<Gtk::Label>();
 
@@ -529,18 +579,3 @@ void BuoyantForcesSubsystem::AddEntry(Gtk::Grid& p_grid, std::string label, bool
       p_grid.attach(*m_entries[key_text], 1, m_rows++);
   }
 }
-
-
-  void BuoyantForcesSubsystem::on_ballonetcount_changed()
-  {
-    int selected_value = m_dropdowns["Ballonet"]->get_selected();
-    if (selected_value >= 0)
-    {
-      int ballonetCount = selected_value;
-      Component ::setBallonetCount(ballonetCount);
-      std::cout << "Selected Ballonet Count:" << ballonetCount << std::endl;
-
-      BuildTabs();
-    }
-  }
-

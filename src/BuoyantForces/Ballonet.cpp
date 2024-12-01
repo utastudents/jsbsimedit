@@ -6,12 +6,10 @@ Ballonet::Ballonet(const std::string& name, GasType gastype)
 {
     this->gasType = gastype;
     this->name = name;
-    Component::ballonetCount++;
 }
 
 Ballonet::Ballonet(const std::string& name) {
     this->name = name;
-    Component::ballonetCount++;
 }
 
 Ballonet::~Ballonet() 

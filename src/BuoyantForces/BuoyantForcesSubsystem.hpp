@@ -3,6 +3,7 @@
 #include "inc/Subsystem.hpp"
 #include <gtkmm.h>
 #include <unordered_map>
+#include "BuoyantForces.hpp"
 #include "GasCell.hpp"
 #include "Ballonet.hpp"
 #include "Component.hpp"
@@ -34,7 +35,7 @@ class BuoyantForcesSubsystem : public Subsystem
     void on_ballonetcount_changed();
     void LoadStringLists();
     void AddDropDown(Gtk::Grid& p_grid, std::string label, int col, Glib::RefPtr<Gtk::StringList> stringlist);
-    void BuildTabs();
+    void BuildTabs(int target);
     void SetupTab(Gtk::Grid& p_grid);
     void AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu);
 
@@ -54,8 +55,9 @@ class BuoyantForcesSubsystem : public Subsystem
 
  private:
     //temporary
-    JSBEdit::XMLDoc doc;
+    JSBEdit::XMLDoc m_doc;
 
+    BuoyantForces m_buoyantforces;
     GasCell m_gascell;
     std::vector<Ballonet> m_ballonets;
     static int m_rows;
