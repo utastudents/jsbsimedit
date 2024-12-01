@@ -32,6 +32,8 @@ namespace DragDrop
 		bool IsOutputBoxClicked(int x, int y) const;
 		std::pair<int, int> GetBounds() const;
 		ComponentType GetComponentType() const;
+		std::pair<int, int> GetInputBoxPosition() const;
+		std::pair<int, int> GetOutputBoxPosition() const;
 		std::pair<int, int> GetPosition() const;
 		void SetComponentType(const ComponentType& compType);
 		void SetPosition(int x, int y);
