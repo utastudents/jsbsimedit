@@ -92,19 +92,8 @@ void BuoyantForcesSubsystem::LoadXMLData() {
 
         if (gasCellNode) {
             std::cout << "Gas Cell Type: " << gasCellNode.GetAttribute("type").second << std::endl;
-            Glib::ustring gasTypeRead = gasCellNode.GetAttribute("type").second;
-            int foundGasTypeIndex = -1;
-            for (int i = 0; i < m_gasStringList->get_n_items(); i++) {
-                Glib::ustring gasTypeItem = m_gasStringList->get_string(i);
-                if (gasTypeItem == gasTypeRead) {
-                    foundGasTypeIndex = i;
-                    break;
-                }
-            }
-            if (foundGasTypeIndex != -1) {
-                std::string keyString = "Gas Type " + std::to_string(m_tab_count);
-                m_dropdowns[keyString]->set_selected(foundGasTypeIndex);
-            }
+
+            SetDropDownFromNode(gasCellNode, "gas_cell", "type", m_gasStringList, "Gas Type");
             
             auto locationNode = gasCellNode.FindChild("location");
             if (locationNode) {
@@ -113,93 +102,81 @@ void BuoyantForcesSubsystem::LoadXMLData() {
                           << "Y=" << locationNode.FindChild("y").GetText() << ", "
                           << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
 
-                Glib::ustring locationUnitRead = locationNode.GetAttribute("unit").second;
-                int foundLocationUnitIndex = -1;
-                for (int i = 0; i < m_measurementStringList->get_n_items(); i++) {
-                    Glib::ustring locationUnitItem = m_measurementStringList->get_string(i);
-                    if (locationUnitItem == locationUnitRead) {
-                        foundLocationUnitIndex = i;
-                        break;
-                    }
-                }
-                if (foundLocationUnitIndex != -1) {
-                    std::string keyString = "Location " + std::to_string(m_tab_count);
-                    m_dropdowns[keyString]->set_selected(foundLocationUnitIndex);
-                }
+                SetDropDownFromNode(locationNode, "location", "unit", m_measurementStringList, "Location");
             }
 
             // Dimensions
-            for (const auto& node : {"x_radius", "y_radius", "z_radius"}) {
-                auto childNode = gasCellNode.FindChild(node);
-                if (childNode) {
-                    std::cout << "   " << node << ": " << childNode.GetText() 
-                              << " (unit = " << childNode.GetAttribute("unit").second 
-                              << ")" << std::endl;
+            auto x_dimensionNode = gasCellNode.FindChild("x_radius");
+            if (x_dimensionNode) {
+                std::cout << "   X Dimension = " << x_dimensionNode.GetText() << " (unit = " 
+                          << x_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+                SetDropDownFromNode(x_dimensionNode, "x_radius", "unit", m_measurementStringList, "Dimensions");
+            }
 
-                    Glib::ustring dimensionUnitRead = childNode.GetAttribute("unit").second;
-                    int foundDimensionUnitIndex = -1;
-                    for (int i = 0; i < m_measurementStringList->get_n_items(); i++) {
-                        Glib::ustring dimensionUnitItem = m_measurementStringList->get_string(i);
-                        if (dimensionUnitItem == dimensionUnitRead) {
-                            foundDimensionUnitIndex = i;
-                            break;
-                        }
-                    }
-                    if (foundDimensionUnitIndex != -1) {
-                        std::string keyString = "Dimensions " + std::to_string(m_tab_count);
-                        m_dropdowns[keyString]->set_selected(foundDimensionUnitIndex);
-                    }
-                }
+            auto y_dimensionNode = gasCellNode.FindChild("y_radius");
+            if (y_dimensionNode) {
+                std::cout << "   Y Dimension = " << y_dimensionNode.GetText() << " (unit = " 
+                          << y_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+                SetDropDownFromNode(y_dimensionNode, "y_radius", "unit", m_measurementStringList, "Dimensions");
+            }
+
+            auto z_dimensionNode = gasCellNode.FindChild("z_radius");
+            if (z_dimensionNode) {
+                std::cout << "   Z Dimension = " << z_dimensionNode.GetText() << " (unit = " 
+                          << z_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+                SetDropDownFromNode(z_dimensionNode, "z_radius", "unit", m_measurementStringList, "Dimensions");
             }
 
             // Other Data
-            for (const auto& node : {"max_overpressure", "valve_coefficient", "fullness"}) {
-                auto childNode = gasCellNode.FindChild(node);
-                if (childNode) {
-                    std::cout << "   " << node << ": " << childNode.GetText() 
-                              << " (unit = " << childNode.GetAttribute("unit").second
-                              << ")" << std::endl;
+            auto overpressureNode = gasCellNode.FindChild("max_overpressure");
+            if (overpressureNode) {
+                std::cout << "   Max Overpressure = " << overpressureNode.GetText() << " (unit = " 
+                          << overpressureNode.GetAttribute("unit").second << ")" << std::endl;
+                SetDropDownFromNode(overpressureNode, "max_overpressure", "unit", m_pressureStringList, "Max Overpressure");
+            }
 
-                    // Set Overpressure DropDown
-                    if (childNode.GetName() == "max_overpressure") {
-                        Glib::ustring pressureUnitRead = childNode.GetAttribute("unit").second;
-                        int foundPressureUnitIndex = -1;
-                        for (int i = 0; i < m_pressureStringList->get_n_items(); i++) {
-                            Glib::ustring pressureUnitItem = m_pressureStringList->get_string(i);
-                            if (pressureUnitItem == pressureUnitRead) {
-                                foundPressureUnitIndex = i;
-                                break;
-                            }
-                        }
-                        if (foundPressureUnitIndex != -1) {
-                            std::string keyString = "Max Overpressure " + std::to_string(m_tab_count);
-                            m_dropdowns[keyString]->set_selected(foundPressureUnitIndex);
-                        }
-                    }
+            auto valveCoefficientNode = gasCellNode.FindChild("valve_coefficient");
+            if (valveCoefficientNode) {
+                std::cout << "   Valve Coefficient = " << valveCoefficientNode.GetText() << " (unit = "
+                          << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
+                SetDropDownFromNode(valveCoefficientNode, "valve_coefficient", "unit", m_valveStringList, "Valve Coefficient");
+            }
 
-                    // Set Valve Coefficient DropDown
-                    if (childNode.GetName() == "valve_coefficient") {
-                        Glib::ustring valveUnitRead = childNode.GetAttribute("unit").second;
-                        int foundValveUnitIndex = -1;
-                        for (int i = 0; i < m_valveStringList->get_n_items(); i++) {
-                            Glib::ustring valveUnitItem = m_valveStringList->get_string(i);
-                            if (valveUnitItem == valveUnitRead) {
-                                foundValveUnitIndex = i;
-                                break;
-                            }
-                        }
-                        if (foundValveUnitIndex != -1) {
-                            std::string keyString = "Valve Coefficient " + std::to_string(m_tab_count);
-                            m_dropdowns[keyString]->set_selected(foundValveUnitIndex);
-                        }
-                    }
-                }
+            auto fullnessNode = gasCellNode.FindChild("fullness");
+            if (fullnessNode) {
+                std::cout << "   Fullness = " << fullnessNode.GetText() << std::endl;
             }
         }
     } catch (const std::exception& e) {
         std::cerr << "Error loading XML data: " << e.what() << std::endl;
         m_checkbutton.set_active(false);    // Default to disabled in case of error
         m_checkbutton.set_label("Error in XML Load");
+    }
+}
+
+void BuoyantForcesSubsystem::SetDropDownFromNode(JSBEdit::XMLNode& node, const std::string& nodeName, const std::string& attributeName, const Glib::RefPtr<Gtk::StringList>& stringList, const std::string& dropdownLabel) {
+    if (node.GetName() == nodeName) {
+        Glib::ustring dataRead = node.GetAttribute(attributeName).second;
+        int foundIndex = -1;
+
+        for (int i = 0; i < stringList->get_n_items(); i++) {
+            std::cout << "[READ] " << dataRead << " ?? " << stringList->get_string(i) << std::endl;
+            if (stringList->get_string(i) == dataRead) {
+                foundIndex = i;
+                break;
+            }
+        }
+
+        if (foundIndex != -1) {
+            std::string keyString = dropdownLabel + " " + std::to_string(m_tab_count);
+            if (m_dropdowns.find(keyString) != m_dropdowns.end()) {
+                m_dropdowns[keyString]->set_selected(foundIndex);
+            } else {
+                std::cerr << "Dropdown with key " << keyString << " not found!" << std::endl;
+            }
+        } else {
+            std::cerr << "Unit " << dataRead << " not found in list for " << nodeName << std::endl;
+        }
     }
 }
 

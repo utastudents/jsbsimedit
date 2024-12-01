@@ -20,6 +20,8 @@ class BuoyantForcesSubsystem : public Subsystem
     void LoadXMLData();
 
   protected:
+    void SetDropDownFromNode(JSBEdit::XMLNode& node, const std::string& nodeName, const std::string& attributeName,
+                             const Glib::RefPtr<Gtk::StringList>& stringList, const std::string& dropdownLabel);
     Component::Unit GetUnitFromString(const std::string& unit_string) const;
     void on_button_toggled();
     void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
