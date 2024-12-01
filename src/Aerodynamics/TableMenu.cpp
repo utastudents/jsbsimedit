@@ -9,6 +9,8 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
         throw std::runtime_error("Node is not of type Table.");
     }
 
+    /*
+
     // Set the header
     setHeader("Table");
 
@@ -44,7 +46,11 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
 
     // Debugging: Print the table data
     std::cout << "Table data loaded:\n" << table->getTableData() << std::endl;
+
+    */
 }
+
+/*
 
 // Set up TreeView columns based on the table data
 void TableMenu::setup_columns(Gtk::TreeView* tree_view, Glib::RefPtr<Gtk::ListStore> list_store) {
@@ -90,3 +96,5 @@ void TableMenu::populate_table(Gtk::TreeView* tree_view, Glib::RefPtr<Gtk::ListS
     }
     std::cout << "Table population complete." << std::endl;
 }
+
+*/
