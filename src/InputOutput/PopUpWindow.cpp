@@ -40,12 +40,21 @@ PopUpWindow::PopUpWindow()
     listStore = Gtk::ListStore::create(propertyColumns);
     propertyTreeView.set_model(listStore);
 
-    propertyTreeView.append_column("No.", propertyColumns.index);
-    propertyTreeView.append_column("Property Name", propertyColumns.propertyName);
-    propertyTreeView.append_column("Description", propertyColumns.description);
-    propertyTreeView.append_column("Unit", propertyColumns.unit);
-    propertyTreeView.append_column("Access", propertyColumns.access);
-    propertyTreeView.append_column("Comments", propertyColumns.comments);
+    // Append columns and set their minimum widths separately
+    auto col_index = propertyTreeView.append_column("No.", propertyColumns.index);
+    auto col_name = propertyTreeView.append_column("Property Name", propertyColumns.propertyName);
+    auto col_description = propertyTreeView.append_column("Description", propertyColumns.description);
+    auto col_unit = propertyTreeView.append_column("Unit", propertyColumns.unit);
+    auto col_access = propertyTreeView.append_column("Access", propertyColumns.access);
+    auto col_comments = propertyTreeView.append_column("Comments", propertyColumns.comments);
+
+    // Set minimum widths for each column
+    propertyTreeView.get_column(col_index - 1)->set_min_width(50);
+    propertyTreeView.get_column(col_name - 1)->set_min_width(200);
+    propertyTreeView.get_column(col_description - 1)->set_min_width(150);
+    propertyTreeView.get_column(col_unit - 1)->set_min_width(100);
+    propertyTreeView.get_column(col_access - 1)->set_min_width(100);
+    propertyTreeView.get_column(col_comments - 1)->set_min_width(200);
 
     // Add the TreeView to the ScrolledWindow
     m_ScrolledWindow.set_child(propertyTreeView);
