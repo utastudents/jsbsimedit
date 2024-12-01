@@ -5,10 +5,11 @@
 #include "IDrawable.hpp"
 #include <iostream>
 #include <unordered_map>
-#include "IComponentCommon.hpp"
 #include "ComponentSprite.hpp"
 #include "inc/XML_api.hpp"
+#include "DragStateEnum.hpp"
 
+#include "IComponentCommon.hpp"
 #include "GainComponent.hpp"
 #include "PIDComponent.hpp"
 #include "KinematicsComponent.hpp"
@@ -55,18 +56,26 @@ namespace DragDrop
 		int generateUniqueId();
 		void populateStringComponentMap();
 
-		//Member Variables
+		//Member Variables=================
+		//Component/Unique id/Sprite/name relational maps and sets
 		std::string m_channelName {};
         std::unordered_map<int, std::shared_ptr<IComponentCommon>> m_components {};
 		std::unordered_map<int, ComponentSprite> m_spriteComponents{};
 		std::unordered_map<std::string, ComponentType> m_stringToComponentMap{};
 		std::shared_ptr<std::set<std::string>> m_componentNameSet{};
 		std::set<int> m_uniqueIDSet{};
-		bool m_isDragging = false;
+		
+		//Dragging and Selection related
+		DragState m_dragState = DragState::NONE;
+		std::pair<int, int> m_currentDragPos{};
 		int m_selectedId {};
-		Glib::RefPtr<Gtk::Application> m_appRef;
+
+		//Random number generation vars
 		std::mt19937 m_rng{ std::random_device{}() };
 		std::uniform_int_distribution<> m_distribuition{1,1000};
+		
+		//GTK app related
+		Glib::RefPtr<Gtk::Application> m_appRef;
 		std::shared_ptr<Gtk::Window> m_winPtr;
 
 	};

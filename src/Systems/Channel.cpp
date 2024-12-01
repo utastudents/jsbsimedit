@@ -59,6 +59,23 @@ void Channel::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     //Draw every sprite.
     for(auto& spritePair : m_spriteComponents)
         spritePair.second.Draw(drawCont);
+
+    //If we are not connecting then exit early.
+    if(m_dragState == DragState::DRAGGING || m_dragState == DragState::NONE)
+        return;
+
+    //Drawing the connection lines if we are trying to make connection via dragging.
+    drawCont->set_line_width(2);
+    drawCont->set_source_rgb(0,0,0);
+    std::pair<int, int> startLoc {};
+
+    if(m_dragState == DragState::CONNECT_INP)
+        startLoc = m_spriteComponents.at(m_selectedId).GetInputBoxPosition();
+    else if(m_dragState == DragState::CONNECT_OUT)
+        startLoc = m_spriteComponents.at(m_selectedId).GetOutputBoxPosition();
+    drawCont->move_to(startLoc.first, startLoc.second);
+    drawCont->line_to(m_currentDragPos.first, m_currentDragPos.second);
+    drawCont->stroke();
 }
 
 std::string Channel::GetChannelName() const
@@ -214,15 +231,20 @@ void Channel::populateStringComponentMap()
 void Channel::OnDragBegin(int x, int y)
 {
     //Fail safe I guess in case somehow this goes wrong.
-    if(m_isDragging)
+    if(m_dragState != DragState::NONE)
         return;
 
     for(auto& i : m_spriteComponents)
     {
         if(i.second.ContainsPoint(x,y))
         {
-            m_isDragging = true;
+            m_dragState = DragState::DRAGGING;
             m_selectedId = i.first;
+            //Check to see if its a connection attempt on the inp/output
+            if(i.second.IsInputBoxClicked(x,y))
+                m_dragState = DragState::CONNECT_INP;
+            else if(i.second.IsOutputBoxClicked(x,y))
+                m_dragState = DragState::CONNECT_OUT;
             return;
         }    
     }
@@ -230,19 +252,28 @@ void Channel::OnDragBegin(int x, int y)
 
 void Channel::OnDragUpdate(int x, int y)
 {
-    if(!m_isDragging)
+    if(m_dragState == DragState::NONE)
         return;
-    m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+
+    m_currentDragPos = {x,y};
+
+    if(m_dragState == DragState::DRAGGING)
+        m_spriteComponents.at(m_selectedId).SetPosition(x,y);
 }
 
 void Channel::OnDragEnd(int x, int y)
 {
-    if(!m_isDragging)
+    if(m_dragState == DragState::NONE)
         return;
+    
+    m_currentDragPos = {x,y};
 
-    m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+    //Todo handle connections here.
 
-    m_isDragging = false;
+    if(m_dragState == DragState::DRAGGING)
+        m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+
+    m_dragState = DragState::NONE;
 }
 
 };
