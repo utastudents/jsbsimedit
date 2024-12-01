@@ -31,5 +31,36 @@ FunctionMenu::FunctionMenu(std::shared_ptr<AerodynamicsNode> node)
     descriptionEntry->set_text(function ? function->getDescription() : "");
     grid->attach(*descriptionEntry, 1, index++, 1, 1);
 
+    //creates a save Button
+    //
+    auto saveButton = Gtk::make_managed<Gtk::Button>("Save");
+    grid->attach(*saveButton, 1, index++, 1, 1);
+
+    //Connect the save button's clicked signal
+    //
+    saveButton->signal_clicked().connect([this](){
+        if(function){
+            function->setName(nameEntry->get_text());
+            function->setDescription(descriptionEntry->get_text());
+            std::cout << "Changes saved: "
+                      << "Name = " << function->getName()
+                      << ", Description = " << function->getDescription()
+                      << std::endl;
+        }
+    });
+
+    //To Save text changes for the Name/Description fields
+    /*nameEntry->signal_changed().connect([this](){
+        if(function){
+            function->setName(nameEntry->get_text());
+        }
+    });
+
+    descriptionEntry->signal_changed().connect([this](){
+        if(function){
+            function->setDescription(descriptionEntry->get_text());
+        }
+    });*/
+
 
 }
