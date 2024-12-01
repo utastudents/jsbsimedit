@@ -79,7 +79,7 @@ void BuoyantForcesSubsystem::LoadXMLData() {
         auto gasCellNode = buoyantForcesNode.FindChild("gas_cell");
 
         // todo: make sure this works
-        // std::vector<JSBEdit::XMLNode> ballonetNodes = buoyantForcesNode.GetChildren();
+        std::vector<JSBEdit::XMLNode> ballonetNodes;
 
         if (buoyantForcesNode) {
             std::cout << "buoyant_forces node found!" << std::endl;
@@ -91,76 +91,99 @@ void BuoyantForcesSubsystem::LoadXMLData() {
         }
 
         if (gasCellNode) {
-            std::cout << "Gas Cell Type: " << gasCellNode.GetAttribute("type").second << std::endl;
+            SetWidgetsFromNodes(gasCellNode, 0);
 
-            SetDropDownFromNode(gasCellNode, "gas_cell", "type", m_gasStringList, "Gas Type");
-            
-            auto locationNode = gasCellNode.FindChild("location");
-            if (locationNode) {
-                std::cout << "   Location (unit: " << locationNode.GetAttribute("unit").second << "): "
-                          << "X=" << locationNode.FindChild("x").GetText() << ", "
-                          << "Y=" << locationNode.FindChild("y").GetText() << ", "
-                          << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
-
-                SetDropDownFromNode(locationNode, "location", "unit", m_measurementStringList, "Location");
+            for (int i=5; i < gasCellNode.GetChildren().size(); i++) {
+                if (gasCellNode.GetChild(i).GetName() == "ballonet") {
+                    ballonetNodes.push_back(gasCellNode.GetChild(i));
+                }   
             }
+            std::cout << "Airship has " << ballonetNodes.size() << " ballonet(s)" << std::endl;
+            SetDropDownFromNode(ballonetNodes.back(), "ballonet", std::to_string(ballonetNodes.size()), 
+                                m_ballonetStringList, "# of Ballonets", 0);
+        }
 
-            // Dimensions
-            auto x_dimensionNode = gasCellNode.FindChild("x_radius");
-            if (x_dimensionNode) {
-                std::cout << "   X Dimension = " << x_dimensionNode.GetText() << " (unit = " 
-                          << x_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
-                SetDropDownFromNode(x_dimensionNode, "x_radius", "unit", m_measurementStringList, "Dimensions");
-            }
-
-            auto y_dimensionNode = gasCellNode.FindChild("y_radius");
-            if (y_dimensionNode) {
-                std::cout << "   Y Dimension = " << y_dimensionNode.GetText() << " (unit = " 
-                          << y_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
-                SetDropDownFromNode(y_dimensionNode, "y_radius", "unit", m_measurementStringList, "Dimensions");
-            }
-
-            auto z_dimensionNode = gasCellNode.FindChild("z_radius");
-            if (z_dimensionNode) {
-                std::cout << "   Z Dimension = " << z_dimensionNode.GetText() << " (unit = " 
-                          << z_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
-                SetDropDownFromNode(z_dimensionNode, "z_radius", "unit", m_measurementStringList, "Dimensions");
-            }
-
-            // Other Data
-            auto overpressureNode = gasCellNode.FindChild("max_overpressure");
-            if (overpressureNode) {
-                std::cout << "   Max Overpressure = " << overpressureNode.GetText() << " (unit = " 
-                          << overpressureNode.GetAttribute("unit").second << ")" << std::endl;
-                SetDropDownFromNode(overpressureNode, "max_overpressure", "unit", m_pressureStringList, "Max Overpressure");
-            }
-
-            auto valveCoefficientNode = gasCellNode.FindChild("valve_coefficient");
-            if (valveCoefficientNode) {
-                std::cout << "   Valve Coefficient = " << valveCoefficientNode.GetText() << " (unit = "
-                          << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
-                SetDropDownFromNode(valveCoefficientNode, "valve_coefficient", "unit", m_valveStringList, "Valve Coefficient");
-            }
-
-            auto fullnessNode = gasCellNode.FindChild("fullness");
-            if (fullnessNode) {
-                std::cout << "   Fullness = " << fullnessNode.GetText() << std::endl;
+        if (ballonetNodes.size() > 0) {
+            for (int i=0; i < ballonetNodes.size(); i++) {
+                SetWidgetsFromNodes(ballonetNodes.at(i), i+1);
             }
         }
     } catch (const std::exception& e) {
         std::cerr << "Error loading XML data: " << e.what() << std::endl;
         m_checkbutton.set_active(false);    // Default to disabled in case of error
-        m_checkbutton.set_label("Error in XML Load");
     }
 }
 
-void BuoyantForcesSubsystem::SetDropDownFromNode(JSBEdit::XMLNode& node, const std::string& nodeName, const std::string& attributeName, const Glib::RefPtr<Gtk::StringList>& stringList, const std::string& dropdownLabel) {
+void BuoyantForcesSubsystem::SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tabIndex) {
+    std::cout << root.GetName() << std::endl;
+    std::cout << "   Gas Type: " << root.GetAttribute("type").second << std::endl;
+
+    std::string rootName = ((tabIndex == 0) ? "gas_cell" : "ballonet");
+    SetDropDownFromNode(root, rootName, "type", m_gasStringList, "Gas Type", tabIndex);
+    
+    auto locationNode = root.FindChild("location");
+    if (locationNode) {
+        std::cout << "      Location (unit: " << locationNode.GetAttribute("unit").second << "): "
+                  << "X=" << locationNode.FindChild("x").GetText() << ", "
+                  << "Y=" << locationNode.FindChild("y").GetText() << ", "
+                  << "Z=" << locationNode.FindChild("z").GetText() << std::endl;
+
+        SetDropDownFromNode(locationNode, "location", "unit", m_measurementStringList, "Location", tabIndex);
+    }
+
+    // Dimensions
+    auto x_dimensionNode = root.FindChild("x_radius");
+    if (x_dimensionNode) {
+        std::cout << "      X Dimension = " << x_dimensionNode.GetText() << " (unit = " 
+                  << x_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+        SetDropDownFromNode(x_dimensionNode, "x_radius", "unit", m_measurementStringList, "Dimensions", tabIndex);
+    }
+
+    auto y_dimensionNode = root.FindChild("y_radius");
+    if (y_dimensionNode) {
+        std::cout << "      Y Dimension = " << y_dimensionNode.GetText() << " (unit = " 
+                  << y_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+        SetDropDownFromNode(y_dimensionNode, "y_radius", "unit", m_measurementStringList, "Dimensions", tabIndex);
+    }
+
+    auto z_dimensionNode = root.FindChild("z_radius");
+    if (z_dimensionNode) {
+        std::cout << "      Z Dimension = " << z_dimensionNode.GetText() << " (unit = " 
+                  << z_dimensionNode.GetAttribute("unit").second << ")" << std::endl;
+        SetDropDownFromNode(z_dimensionNode, "z_radius", "unit", m_measurementStringList, "Dimensions", tabIndex);
+    }
+
+    // Other Data
+    auto overpressureNode = root.FindChild("max_overpressure");
+    if (overpressureNode) {
+        std::cout << "      Max Overpressure = " << overpressureNode.GetText() << " (unit = " 
+                  << overpressureNode.GetAttribute("unit").second << ")" << std::endl;
+        SetDropDownFromNode(overpressureNode, "max_overpressure", "unit", m_pressureStringList, "Max Overpressure", tabIndex);
+    }
+
+    auto valveCoefficientNode = root.FindChild("valve_coefficient");
+    if (valveCoefficientNode) {
+        std::cout << "      Valve Coefficient = " << valveCoefficientNode.GetText() << " (unit = "
+                  << valveCoefficientNode.GetAttribute("unit").second << ")" << std::endl;
+        SetDropDownFromNode(valveCoefficientNode, "valve_coefficient", "unit", m_valveStringList, "Valve Coefficient", tabIndex);
+    }
+
+    auto fullnessNode = root.FindChild("fullness");
+    if (fullnessNode) {
+        std::cout << "      Fullness = " << fullnessNode.GetText() << std::endl;
+    }
+}
+
+void BuoyantForcesSubsystem::SetDropDownFromNode(JSBEdit::XMLNode& node, const std::string& nodeName, 
+                                                 const std::string& attributeName, const Glib::RefPtr<Gtk::StringList>& stringList, 
+                                                 const std::string& dropdownLabel, int tabIndex) {
     if (node.GetName() == nodeName) {
-        Glib::ustring dataRead = node.GetAttribute(attributeName).second;
+        Glib::ustring dataRead;
+        if (nodeName == "ballonet" && tabIndex == 0)     dataRead = attributeName;
+        else                            dataRead = node.GetAttribute(attributeName).second;
         int foundIndex = -1;
 
         for (int i = 0; i < stringList->get_n_items(); i++) {
-            std::cout << "[READ] " << dataRead << " ?? " << stringList->get_string(i) << std::endl;
             if (stringList->get_string(i) == dataRead) {
                 foundIndex = i;
                 break;
@@ -168,12 +191,12 @@ void BuoyantForcesSubsystem::SetDropDownFromNode(JSBEdit::XMLNode& node, const s
         }
 
         if (foundIndex != -1) {
-            std::string keyString = dropdownLabel + " " + std::to_string(m_tab_count);
-            if (m_dropdowns.find(keyString) != m_dropdowns.end()) {
+            std::string keyString = dropdownLabel + " " + std::to_string(tabIndex);
+
+            if (m_dropdowns.find(keyString) != m_dropdowns.end())
                 m_dropdowns[keyString]->set_selected(foundIndex);
-            } else {
+            else
                 std::cerr << "Dropdown with key " << keyString << " not found!" << std::endl;
-            }
         } else {
             std::cerr << "Unit " << dataRead << " not found in list for " << nodeName << std::endl;
         }
@@ -231,17 +254,10 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
         selected_string = m_gasStringList->get_string(selected);
         Component::GasType selected_gas_type = static_cast<Component::GasType>(selected);
 
-        if (tab_index == 0) {
+        if (tab_index == 0)
             m_gascell.setGasType(selected_gas_type);
-
-            std::cout << "Selected Gas Type (for Gas Cell): " << selected_string
-                      << std::endl;
-        } else {
+        else 
             m_ballonets[tab_index-1].setGasType(selected_gas_type);
-
-            std::cout << "Selected Gas Type (for Ballonet " << tab_index << "): " << selected_string
-                      << std::endl;
-        }
     } 
 
     else if (key.find("# of Ballonets") != std::string::npos) {
@@ -256,78 +272,48 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
 
         if (key.find("Loc") != std::string::npos) {
             selected_string = m_measurementStringList->get_string(selected);
-            if (tab_index == 0) {
+            if (tab_index == 0) 
                 m_gascell.setLocationUnit(selected_unit_type);
-                std::cout << "Set Gas Cell's Location Units to '" << selected_string << "'" << std::endl;
-            } 
-            else {
+            else 
                 m_ballonets[tab_index-1].setLocationUnit(selected_unit_type);
-                std::cout << "Set Ballonet's Location Units to '" << selected_string << "'" << std::endl;
-            }
         }
         else if (key.find("Dimensions") != std::string::npos) {
             selected_string = m_measurementStringList->get_string(selected);
-            if (tab_index == 0) {
+            if (tab_index == 0) 
                 m_gascell.setDimensionsUnit(selected_unit_type);
-
-                std::cout << "Set Gas Cell's Dimensions Units to '" << selected_string << "'" << std::endl;
-            }
-            else {
+            else 
                 m_ballonets[tab_index-1].setDimensionsUnit(selected_unit_type);
-
-                std::cout << "Set Ballonet's Dimensions Units to '" << selected_string << "'" << std::endl;
-            }
         }
         else if (key.find("Dim") != std::string::npos) {
             selected_string = m_shapeStringList->get_string(selected);
-            if (tab_index == 0) {
+            if (tab_index == 0) 
                 m_gascell.setDimensionsShape(selected_unit_type);
-
-                std::cout << "Set Gas Cell's Dimensions Shape to '" << selected_string << "'" << std::endl;
-            }
-            else {
+            else 
                 m_ballonets[tab_index-1].setDimensionsShape(selected_unit_type);
-
-                std::cout << "Set Ballonet's Dimensions Shape to '" << selected_string << "'" << std::endl;
-            }
         }
         else if (key.find("Max Overpressure") != std::string::npos) {
             selected_string = m_pressureStringList->get_string(selected);
-            if (tab_index == 0) {
+            if (tab_index == 0) 
                 m_gascell.setPressureUnit(selected_unit_type);
-
-                std::cout << "Set Gas Cell's Max Overpressure Units to '" << selected_string << "'" << std::endl;
-            }
-            else {
+            else 
                 m_ballonets[tab_index-1].setPressureUnit(selected_unit_type);
-
-                std::cout << "Set Ballonet's Max Overpressure Units to '" << selected_string << "'" << std::endl;
-            }
         }
         else if (key.find("Valve Coefficient") != std::string::npos) {
             selected_string = m_valveStringList->get_string(selected);
-            if (tab_index == 0) {
+            if (tab_index == 0) 
                 m_gascell.setValveCoefficientUnit(selected_unit_type);
-
-                std::cout << "Set Gas Cell's Valve Coefficient Units to '" << selected_string << "'" << std::endl;
-            }
-            else {
+            else 
                 m_ballonets[tab_index-1].setValveCoefficientUnit(selected_unit_type);
-
-                std::cout << "Set Ballonet's Valve Coefficient Units to '" << selected_string << "'" << std::endl;
-            }
         }
         else if (key.find("Blower Value") != std::string::npos) {
             selected_string = m_blowerStringList->get_string(selected);
             m_ballonets[tab_index-1].setBlowerUnit(selected_unit_type);
-
-            std::cout << "Set Ballonet's Blower Value Units to '" << selected_string << "'" << std::endl;
         }
 
     }
 
-    // std::cout << "Dropdown '" << key << "' changed, Row = " << selected
-    //           << ", String = " << selected_string << std::endl;
+    std::cout << "Dropdown '" << key << "' changed, Row = " << selected
+              << ", String = " << selected_string << std::endl;
 }
 
 void BuoyantForcesSubsystem::on_entry_activate(const std::string& key) {
