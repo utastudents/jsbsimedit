@@ -184,9 +184,10 @@ void Airplane::convertInertiaUnits() {
 
 // Constructor
 MomentOfInertia::MomentOfInertia(double ixx, double iyy, double izz, double ixy,
-                                 double ixz, double iyz,
+                                 double ixz, double iyz, bool negated,
                                  const std::string &unit)
-    : Ixx(ixx), Iyy(iyy), Izz(izz), Ixy(ixy), Ixz(ixz), Iyz(iyz), unit(unit) {}
+    : Ixx(ixx), Iyy(iyy), Izz(izz), Ixy(ixy), Ixz(ixz), Iyz(iyz),
+      negated(negated), unit(unit) {}
 
 // Getters
 double MomentOfInertia::getIxx() const { return Ixx; }

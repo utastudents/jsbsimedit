@@ -2,9 +2,9 @@
 #include "Location.hpp"
 #include "PointMassDialogue.hpp"
 #include "inc/XML_api.hpp"
+#include <assert.h>
 #include <iostream>
 #include <vector>
-#include <assert.h>
 
 MassBalanceSubsystem::MassBalanceSubsystem() {
   m_Name = "Mass Balance";
@@ -14,96 +14,98 @@ MassBalanceSubsystem::MassBalanceSubsystem() {
 void MassBalanceSubsystem::Create() {
   std::cout << "In MassBalanceSubsystem::Create" << std::endl;
 
-
-
   // Example code for reading from the xml file.
   // This code may or may not go here, but this was a place
   // to put it.
   //
   //
   assert(xmlptr());
-  std::cout << "-------------------------------------------------------------------------" << std::endl;
+  std::cout << "---------------------------------------------------------------"
+               "----------"
+            << std::endl;
   std::cout << "This is in mass balance, reading the xml file" << std::endl;
   JSBEdit::XMLNode node = xmlptr()->GetNode("fdm_config/mass_balance");
+  JSBEdit::XMLNode locNode =
+      xmlptr()->GetNode("fdm_config/mass_balance/location");
   auto a = node.GetAttribute(std::string("negated_crossproduct_inertia"));
+
   std::cout << a.first << " -->  " << a.second << std::endl;
 
-  //store this in the class
-  m_negated_crossproduct_inertia = a.second=="true";
+  // store this in the class
+  m_airplane.negated = a.second == "true";
 
-  std::cout << "the value is " << m_negated_crossproduct_inertia << std::endl;
+  std::cout << "the value is " << m_airplane.negated << std::endl;
 
   auto children = node.GetChildren();
+  auto locChildren = locNode.GetChildren();
   std::cout << "there are " << children.size() << " children " << std::endl;
-  for (auto& child : children)
-  {
-      std::vector <AttributeKV> attributes = child.GetAttributes();
-      std::cout << child.GetName() << " " << child.GetText(); 
-      if (child.GetName() == "ixx")
-      {
-          m_airplane.Ixx = std::stod(child.GetText());
+  for (auto &child : children) {
+    std::vector<AttributeKV> attributes = child.GetAttributes();
+    std::cout << child.GetName() << " " << child.GetText();
+    if (child.GetName() == "ixx") {
+      m_airplane.setIxx(std::stod(child.GetText()));
+    } else if (child.GetName() == "iyy") {
+      m_airplane.setIyy(std::stod(child.GetText()));
+    } else if (child.GetName() == "izz") {
+      m_airplane.setIzz(std::stod(child.GetText()));
+    } else if (child.GetName() == "ixy") {
+      m_airplane.setIxy(std::stod(child.GetText()));
+    } else if (child.GetName() == "ixz") {
+      m_airplane.setIxz(std::stod(child.GetText()));
+    } else if (child.GetName() == "iyz") {
+      m_airplane.setIyz(std::stod(child.GetText()));
+    } else if (child.GetName() == "emptywt") {
+      m_Emptymass.setEmptyMass(std::stod(child.GetText()));
+    } else if (child.GetName() == "location") {
+      for (auto &locChild : locChildren) {
+        std::vector<AttributeKV> locAttributes = child.GetAttributes();
+        if (locChild.GetName() == "x") {
+          m_Location.setX(std::stod(locChild.GetText()));
+        } else if (locChild.GetName() == "y") {
+          m_Location.setY(std::stod(locChild.GetText()));
+        } else if (locChild.GetName() == "z") {
+          m_Location.setZ(std::stod(locChild.GetText()));
+        }
       }
-      else if (child.GetName() == "ixy")
-      {
-          m_airplane.Ixy = std::stod(child.GetText());
-      }
-      else if (child.GetName() == "ixz")
-      {
-          m_airplane.Ixz = std::stod(child.GetText());
-      }
-      // if there are units, deal with them here
-      if (attributes[0].first=="unit")
-      {
-          std::cout << attributes[0].second;
-      }
-      std::cout << std::endl;
+    }
+
+    // if there are units, deal with them here
+    if (attributes[0].first == "unit") {
+      std::cout << attributes[0].second;
+    }
+    std::cout << std::endl;
   }
-  std::cout << "-------------------------------------------------------------------------" << std::endl;
+  std::cout << "---------------------------------------------------------------"
+               "----------"
+            << std::endl;
   //
   //
   //
   //
   //
 #ifdef THIS_IS_AN_EXAMPLE_FROM_THE_XML_FILE
-<mass_balance negated_crossproduct_inertia="true">
-  <ixx unit="SLUG*FT2"> 9496 </ixx>
-  <iyy unit="SLUG*FT2"> 55814 </iyy>
-  <izz unit="SLUG*FT2"> 63100 </izz>
-  <ixy unit="SLUG*FT2"> 0 </ixy>
-  <ixz unit="SLUG*FT2"> -982 </ixz>
-  <iyz unit="SLUG*FT2"> 0 </iyz>
-  <emptywt unit="LBS"> 17400 </emptywt>
-  <location name="CG" unit="IN">
-   <x> -193 </x>
-   <y> 0 </y>
-   <z> -5.1 </z>
-  </location>
-  <pointmass name="Pilot">
-   <weight unit="LBS"> 230 </weight>
-   <location name="POINTMASS" unit="IN">
-    <x> -336.2 </x>
-    <y> 0 </y>
-    <z> 0 </z>
-   </location>
-  </pointmass>
- </mass_balance>
+  <mass_balance negated_crossproduct_inertia = "true"> < ixx unit =
+      "SLUG*FT2" > 9496 < / ixx > < iyy unit =
+          "SLUG*FT2" > 55814 < / iyy > < izz unit =
+              "SLUG*FT2" > 63100 < / izz > < ixy unit =
+                  "SLUG*FT2" > 0 < / ixy > <ixz unit = "SLUG*FT2"> - 982 <
+                  / ixz > < iyz unit =
+                      "SLUG*FT2" > 0 < / iyz > < emptywt unit =
+                          "LBS" > 17400 < / emptywt >
+                          <location name = "CG" unit = "IN"><x> - 193 < / x > <
+                          y > 0 < / y > <z> - 5.1 < / z > </ location>
+                          <pointmass name = "Pilot"> < weight unit =
+                              "LBS" > 230 < / weight >
+                              <location name = "POINTMASS" unit = "IN">
+                                  <x> - 336.2 <
+                              / x > < y > 0 < / y > < z > 0 < / z >
+                              </ location></ pointmass></ mass_balance>
 #endif
-  // end Example Code
- 
+                                  // end Example Code
 
+                                  // test values for empty mass
 
-
-  // test values for location object
-  m_Location.setLocation(1.0f, 2.0f, 3.0f);
-  m_Location.setUnits("in");
-
-  // test values for empty mass
-  m_Emptymass.setEmptyMass(50.0f);
-  m_Emptymass.setUnits("lbs");
-
-  m_airplane.setIxx(50);
-
-  m_Grid.set_row_spacing(10);
+                                  m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
   m_Grid.set_margin(10);
 
