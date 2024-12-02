@@ -54,6 +54,9 @@ MetricsSubsystem::MetricsSubsystem()
 
   node_name = "Visual Reference Point";
   vertex_data_units[node_name] = std::make_unique<Metrics::Vertex_Unit>(0.0, 0.0, 0.0, unit_map["location"]);
+
+  its_xml_ptr = new JSBEdit::XMLDoc();
+  its_xml_ptr->LoadFileAndParse("../../../data/aircraft/f16/f16.xml");
 }
 
 void MetricsSubsystem::Create()
@@ -79,81 +82,76 @@ void MetricsSubsystem::Create()
   auto save_button = Gtk::make_managed<Gtk::Button>();
   save_button->set_label("Save");
   save_button->signal_clicked().connect([this]()
-                                         { save_data(xmlptr()); });
+                                         { save_data(its_xml_ptr); });
 
   m_Grid.attach(*save_button, 0, row);
 
   // load metrics from XML file
-  if (xmlptr())
-    load_data(xmlptr());
+  load_data(its_xml_ptr);
 }
 
 // This method should be invoked when the XML is being saved
 void MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)
 {
-  std::cout << "MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)\n";
+  // Get metrics node
+  JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
+  if (!metricsNode)
+  {
+    std::cerr << "Error 'save_data' : <metrics> node not found in XML file." << std::endl;
+    return;
+  }
 
-  // // Get metrics node
-  // JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
-  // if (!metricsNode)
-  // {
-  //   std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
-  //   return;
-  // }
+  // Saving data_unit s
+  for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
+  {
 
-  // // Saving data_unit s
-  // for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
-  // {
+    JSBEdit::XMLNode node = metricsNode.FindChild(cit->first);
 
-  //   JSBEdit::XMLNode node = metricsNode.FindChild(cit->first);
+    if (node)
+    {
+      AttributeKV unit_attribute{"unit", cit->second->get_its_unit()->get_current_unit()};
+      node.SetAttribute(unit_attribute);
+      node.SetText(std::to_string(cit->second->get_value()));
+    }
+  }
 
-  //   if (node)
-  //   {
-  //     AttributeKV unit_attribute{"unit", cit->second->get_its_unit()->get_unit()};
-  //     node.SetAttribute(unit_attribute);
-  //     node.SetText(std::to_string(cit->second->get_value()));
+  // Save vertex_unit s
+  std::vector<JSBEdit::XMLNode> locationNodes = metricsNode.GetChildren();
 
-  //     cit->second->set_value(value);
-  //     cit->second->get_its_unit()->set_current_unit(unit);
-  //   }
-  // }
+  for (auto &locationNode : locationNodes)
+  {
+    if (locationNode.GetName() == "location")
+    {
+      std::string name = locationNode.GetAttribute("name").second;
 
-  // // Save vertex_unit s
-  // std::vector<JSBEdit::XMLNode> locationNodes = metricsNode.GetChildren();
-  // for (auto &locationNode : locationNodes)
-  // {
-  //   if (locationNode.GetName() == "location")
-  //   {
-  //     std::string name = locationNode.GetAttribute("name").second;
+      if (name == "AERORP")
+        name = "Aerodynamic Reference Point";
 
-  //     if (name == "AERORP")
-  //       name = "Aerodynamic Reference Point";
+      else if (name == "EYEPOINT")
+        name = "Eye Point";
 
-  //     else if (name == "EYEPOINT")
-  //       name = "Eye Point";
+      else if (name == "VRP")
+        name = "Visual Reference Point";
 
-  //     else if (name == "VRP")
-  //       name = "Visual Reference Point";
+      else
+        continue;
 
-  //     else
-  //       continue;
+      AttributeKV unit_attribute{"unit", vertex_data_units[name]->get_its_unit()->get_current_unit()};
+      locationNode.SetAttribute(unit_attribute);
 
-  //     AttributeKV unit_attribute{"unit", vertex_data_units[name]->get_its_unit()->get_unit()};
-  //     node.SetAttribute(unit_attribute);
+      auto x_node{locationNode.FindChild("x")};
+      x_node.SetText(std::to_string(vertex_data_units[name]->get_x()));
 
-  //     auto &x_node{locationNode.FindChild("x")};
-  //     x_node.SetText(vertex_data_units[name]->get_x());
+      auto y_node{locationNode.FindChild("y")};
+      y_node.SetText(std::to_string(vertex_data_units[name]->get_y()));
 
-  //     auto &x_node{locationNode.FindChild("y")};
-  //     x_node.SetText(vertex_data_units[name]->get_y());
+      auto z_node{locationNode.FindChild("z")};
+      z_node.SetText(std::to_string(vertex_data_units[name]->get_z()));
+    }
+  }
 
-  //     auto &x_node{locationNode.FindChild("z")};
-  //     x_node.SetText(vertex_data_units[name]->get_z());
-  //   }
-  // }
-
-  // // This is only used for testing. Remove this function so mainwindow can handle the file path
-  // doc_ptr->SaveToFile("f16.xml");
+  // This is only used for testing. Remove this function so mainwindow can handle the file path
+  doc_ptr->SaveToFile("../../../src/Metrics/f16.xml");
 }
 
 // This method should be invoked when an XML is opened
@@ -163,7 +161,7 @@ void MetricsSubsystem::load_data(JSBEdit::XMLDoc *doc_ptr)
   JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
   if (!metricsNode)
   {
-    std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
+    std::cerr << "Error 'load_data' : <metrics> node not found in XML file." << std::endl;
     return;
   }
 

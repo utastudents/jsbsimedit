@@ -28,7 +28,8 @@ class MetricsSubsystem : public Subsystem
   private:
     static constexpr int LABELS{8};
 
+    JSBEdit::XMLDoc* its_xml_ptr{nullptr};
+
     std::map<std::string, std::unique_ptr<Metrics::Data_Unit>> data_units;
     std::map<std::string, std::unique_ptr<Metrics::Vertex_Unit>> vertex_data_units;
-
 };
