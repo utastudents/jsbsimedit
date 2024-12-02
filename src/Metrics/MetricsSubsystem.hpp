@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gtkmm.h>
+#include "inc/XML_api.hpp"
 #include "inc/Subsystem.hpp"
 #include "Metrics/Data_Unit.hpp"
 #include "Metrics/Vertex_Unit.hpp"
@@ -12,7 +13,7 @@ class MetricsSubsystem : public Subsystem
 
     void Create();
 
-    void load_data(const std::string& filepath);
+    void load_data(JSBEdit::XMLDoc* doc_ptr);
 
     void add_data_unit(std::string tab_name, Metrics::string_vector units, int horozontal_position, int vertical_position); 
 

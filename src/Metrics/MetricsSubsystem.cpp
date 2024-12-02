@@ -77,17 +77,14 @@ void MetricsSubsystem::Create()
   }
 
   // load metrics from XML file
-  // put absolute path
-  load_data("/home/blaise/gitlab/jsbsimedit/reference/JSBSimCommander/f16.xml");
+  load_data(xmlptr());
 }
 
-void MetricsSubsystem::load_data(const std::string &filepath)
+// This method should be invoked when an XML is opened
+void MetricsSubsystem::load_data(JSBEdit::XMLDoc* doc_ptr)
 {
-  JSBEdit::XMLDoc doc;
-  doc.LoadFileAndParse(filepath);
-
   // Get metrics node
-  JSBEdit::XMLNode metricsNode = doc.GetNode("/fdm_config/metrics");
+  JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
   if (!metricsNode)
   {
     std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
