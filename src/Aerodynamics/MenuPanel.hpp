@@ -78,7 +78,9 @@ private:
     Gtk::Label* inputLabel;
     Gtk::Entry* inputEntry;
     std::shared_ptr<Value> value;
+    Gtk::Button* saveButton;
     void on_text_changed();
+    void on_save_clicked();
 };
 
 class AxisMenu : public MenuPanel {

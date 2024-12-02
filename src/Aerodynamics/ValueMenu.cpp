@@ -17,11 +17,15 @@ ValueMenu::ValueMenu(std::shared_ptr<AerodynamicsNode> node)
     inputEntry = Gtk::make_managed<Gtk::Entry>();
     grid->attach(*inputEntry, 1,0);
     inputEntry->set_text(std::to_string(value->getInput()));
-    inputEntry->property_text().signal_changed().connect(sigc::mem_fun(*this,&ValueMenu::on_text_changed));
+
+    saveButton = Gtk::make_managed<Gtk::Button>();
+    saveButton->set_label("Save");
+    saveButton->signal_clicked().connect(sigc::mem_fun(*this,&ValueMenu::on_save_clicked));
+    grid->attach(*saveButton,1,1);
     
 }
 // is now only allowing #'s and no letters
-void ValueMenu::on_text_changed(){
+void ValueMenu::on_save_clicked(){
     try {
         double value = std::stod(inputEntry->get_text());
         this->value->setInput(value);
