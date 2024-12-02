@@ -36,9 +36,30 @@ private:
 class TableMenu : public MenuPanel {
 public:
     TableMenu(std::shared_ptr<AerodynamicsNode> node);
+
 private:
+    void setup_columns();
+    void populate_table();
+
     std::shared_ptr<Table> table;
+    Glib::RefPtr<Gtk::ListStore> list_store;
+    Gtk::TreeView* tree_view;
+
+    // Column structure for TreeView
+    class TableColumns : public Gtk::TreeModel::ColumnRecord {
+    public:
+        Gtk::TreeModelColumn<std::string> col1;
+        Gtk::TreeModelColumn<std::string> col2;
+
+        TableColumns() {
+            add(col1);
+            add(col2);
+        }
+    };
+
+    TableColumns columns;
 };
+
 
 class ValueMenu : public MenuPanel {
 public:

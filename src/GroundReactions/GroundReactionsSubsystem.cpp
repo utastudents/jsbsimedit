@@ -1,4 +1,6 @@
 #include <iostream>
+#include <assert.h>
+#include "inc/XML_api.hpp"
 #include "GroundReactionsSubsystem.hpp"
 
 GroundReactionsSubsystem::GroundReactionsSubsystem() {
@@ -166,6 +168,65 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
 
 void GroundReactionsSubsystem::Create() {
     std::cout << "in GroundReactionsSubsystem::Create" << std::endl;
+
+/*  this code is provided to help the group extract info from the xml
+ *  file.
+ *  "here" may or may not be the place for this code.  please
+ *  understand it, and then cut and paste it, or re-write it, or
+ *  whatever is needed.
+ */
+    assert(xmlptr());
+
+   // these variables are local to the constructor!! be aware..
+   //
+   // you probably want to test the value from GetName(), before the data is used...
+   //
+   //
+   std::vector<JSBEdit::XMLNode> nodes = xmlptr()->GetNodes("fdm_config/ground_reactions/contact");
+   std::cout << "the number of nodes is " << nodes.size() << std::endl;
+   for (auto& i : nodes)
+   {
+       std::cout << "the name is " << i.GetName() << std::endl;
+       std::vector <AttributeKV> attributes = i.GetAttributes();
+       std::cout << "the number of attributes in the node is " << attributes.size()  << std::endl;
+       for (auto& j : attributes)
+       {
+           //  type and name
+           std::cout  << "    " << j.first << " " << j.second << std::endl;
+       }
+       std::vector<JSBEdit::XMLNode> nodes = i.GetChildren();
+       for (auto& k : nodes ) 
+       {
+           std::vector<JSBEdit::XMLNode> nodes = k.GetChildren();
+           std::cout << "   " << k.GetName() << " " << k.GetText()  << std::endl;
+           if (nodes.size()>1) 
+           {
+               for (auto& m : nodes ) 
+               {
+                   std::cout << m.GetName() << " "  << m.GetText() << std::endl;
+               }
+           }
+       }
+   }
+#ifdef THIS_IS_AN_EXAMPLE_FROM_THE_XML_FILE
+   <contact type="BOGEY" name="NOSE_LG">
+   <location unit="IN">
+    <x> -299.6 </x>
+    <y> 0 </y>
+    <z> -72 </z>
+   </location>
+   <static_friction> 0.8 </static_friction>
+   <dynamic_friction> 0.5 </dynamic_friction>
+   <rolling_friction> 0.02 </rolling_friction>
+   <spring_coeff unit="LBS/FT"> 17250 </spring_coeff>
+   <damping_coeff unit="LBS/FT/SEC"> 4250 </damping_coeff>
+   <max_steer unit="DEG"> 80 </max_steer>
+   <brake_group> NOSE </brake_group>
+   <retractable>1</retractable>
+  </contact>
+#endif
+//////////////
+
 
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
