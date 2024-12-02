@@ -84,6 +84,9 @@ TankDialog::TankDialog() {
     // Attach button box to the grid
     grid.attach(*buttonBox, 0, 5, 7, 1); // Center buttons and span all columns
 
+    // Call defaultValueFill to set default values for all fields
+    defaultValueFill();
+
     // Show the dialog and all children
     dialogTank->show(); 
 }
@@ -106,3 +109,21 @@ void TankDialog::onCreateButtonClicked() {
 void TankDialog::onCancelButtonClicked() {
     dialogTank->close();
 }
+
+void TankDialog::defaultValueFill() {
+    // Set default values for the TankDialog fields
+    typeComboBox.set_active(0); // Default to "OXIDIZER"
+    capacityEntry.set_text("0.0");
+    capacityUnitComboBox.set_active(0); // Default to "LBS"
+    contentsEntry.set_text("0.0");
+    contentsUnitComboBox.set_active(0); // Default to "LBS"
+
+    xEntry.set_text("0.0");
+    yEntry.set_text("0.0");
+    zEntry.set_text("0.0");
+
+    // Assuming there's a zUnitComboBox, set its default value
+    Gtk::ComboBoxText* zUnitComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
+    zUnitComboBox->set_active(0); // Default to "IN"
+}
+
