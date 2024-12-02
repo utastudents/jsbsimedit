@@ -22,13 +22,20 @@ PopUpWindow::PopUpWindow()
     auto currentHBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 5);
     currentLabel.set_text("Current:");
     currentLabel.set_margin(5);
+    showLabel.set_text("Show: 0");
+    hideLabel.set_text("Hide: 0");
+    showLabel.set_margin(5);
+    hideLabel.set_margin(5);
     currentHBox->append(currentLabel);
+    
     
     // Added box to show selected property
     currentPlaceholder->set_text("");
     currentPlaceholder->set_editable(false);
     currentPlaceholder->set_width_chars(20);
     currentHBox->append(*currentPlaceholder);
+    currentHBox->append(showLabel);
+    currentHBox->append(hideLabel);
     
     scrolledContainer->append(*currentHBox);
 
@@ -157,3 +164,25 @@ void PopUpWindow::onPropertySelected() {
     }
 }
 
+void PopUpWindow::updateShowHideCounts() {
+    int showCount = 0;
+    int hideCount = 0;
+
+    // Iterate through all rows in the ListStore to calculate counts
+    for (auto& row : listStore->children()) {
+        // Apply your filtering logic to determine whether this row is shown or hidden
+        // Assuming the row contains a "propertyName" field and we're using the filterTextBox to filter
+        Glib::ustring propertyName = row[propertyColumns.propertyName];
+        
+        // Check if the property name matches the filter text
+        if (propertyName.lowercase().find(filterTextBox.get_text().lowercase()) != std::string::npos) {
+            ++showCount;  // This row matches the filter and should be counted as shown
+        } else {
+            ++hideCount;  // This row does not match the filter and should be counted as hidden
+        }
+    }
+
+    // Update the labels
+    showLabel.set_text("Show: " + std::to_string(showCount));
+    hideLabel.set_text("Hide: " + std::to_string(hideCount));
+}
