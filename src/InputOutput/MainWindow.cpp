@@ -9,6 +9,7 @@
 #include <pugixml.hpp>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 
 // constructor - manage main window
@@ -23,8 +24,7 @@ MainWindow::MainWindow(Gtk::Grid& m_Grid)
 void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) 
 {
 	// Load the xml file and get the starting node
-  xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
-	JSBEdit::XMLNode node = xmlFile.GetNode("fdm_config/output");
+  auto node = xmlptr()->GetNode("fdm_config/output");
 
 	// creates name label and text box, then attaches them to the grid
   name.set_text("Name(*) : ");
@@ -65,10 +65,10 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   // Vector to store labels for each checkbox
   std::vector<std::string> checkboxLabels = 
   {
-    "Simulation", "Atmosphere", "Massprops", "Aerosurfaces", 
-    "Rates", "Velocities", "Forces", "Moments", 
-    "Position", "Coefficients", "Ground Reactions", 
-    "FCS", "Propulsion"
+    "simulation", "atmosphere", "massprops", "aerosurfaces", 
+    "rates", "velocities", "forces", "moments", 
+    "position", "coefficients", "ground_reactions", 
+    "fcs", "propulsion"
   };
 
   // Vector to store the CheckButtons
@@ -97,15 +97,57 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
       row++;
     }
   }
-
-    
+  
 	// creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
-	m_Grid.attach(customProperty, 0, 8);
+	m_Grid.attach(customProperty, 0, 8);  
+  
+  //std::cout << "\n\n\n\n\n\n\n" << std::endl;
 
- 
+  auto node2 = xmlptr()->GetNodes("fdm_config/output");
+  std::vector<JSBEdit::XMLNode> children = node.GetChildren();
 
+  // std::string state = children[0].GetName();
+  
+  // std::cout << "aa" + state + "aa"<< std::endl;
+
+  // for (size_t i = 0; i < children.size(); ++i) 
+  // {
+  //   std::cout << "Child " << i << ": " << children[i].GetName() << std::endl;
+  // }
+
+  for(int i = 0; i < 13; ++i)
+  {
+    if(children[i].GetText() == " ON ")
+    {
+      for (size_t j = 0; j < checkboxes.size(); ++j)
+      {
+        if(j == i)
+        {
+          checkboxes[j]->set_active(true);
+        }
+      }
+    }
+    else if(children[i].GetText() == " OFF " )
+    {
+      for (size_t j = 0; j < checkboxes.size(); ++j)
+      {
+        if(j == i)
+        {
+          checkboxes[j]->set_active(false);
+        }
+      }
+    }
+  }
+  
+  std::cout << "\n\n\n\n\n\n\n" << std::endl;
+  
 }
+// Function to set a specific checkbox on or off by its label or index
+// void MainWindow::setCheckboxState(int ID, bool state, const std::vector<Gtk::CheckButton*>& checkboxes)
+// {
+  
+// }
 
 // create and manage checkboxes
 void MainWindow::onCheckBoxToggle() {}
@@ -119,7 +161,7 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
 	m_Grid.attach(*chooseButton, 1, 8);
 	
 	// Connect the "Choose" button's signal to onChooseButtonClicked
-    chooseButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::onChooseButtonClicked));
+  chooseButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::onChooseButtonClicked));
     
 	// creates add button
 	auto addLabel = Glib::ustring::compose("Add");

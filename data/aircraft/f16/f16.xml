@@ -1917,6 +1917,19 @@
  </aerodynamics>
 
   <output name="f16_datalog.csv" type="CSV" rate="1">
+ <simulation> ON </simulation>
+ <atmosphere> OFF </atmosphere>
+ <massprops> ON </massprops>
+ <aerosurfaces> OFF </aerosurfaces>
+ <rates> OFF </rates>
+ <velocities> OFF </velocities>
+ <forces> OFF </forces>
+ <moments> OFF </moments>
+ <position> OFF </position>
+ <coefficients> OFF </coefficients>
+ <ground_reactions> OFF </ground_reactions>
+ <fcs> OFF </fcs>
+ <propulsion> OFF </propulsion>
  <property> aero/qbar-psf </property>
  <property> attitude/phi-rad </property>
  <property> position/h-sl-ft </property>
@@ -1927,6 +1940,7 @@
  <property> propulsion/total-fuel-lbs </property>
  <property> flight-path/gamma-rad </property>
  <property> accelerations/n-pilot-z-norm </property>
+ <!-- 
  <rates> ON </rates>
  <velocities> ON </velocities>
  <forces> ON </forces>
@@ -1937,6 +1951,7 @@
  <aerosurfaces> ON </aerosurfaces>
  <fcs> ON </fcs>
  <ground_reactions> ON </ground_reactions>
+ -->
   </output>
 
 </fdm_config>

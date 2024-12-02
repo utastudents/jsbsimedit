@@ -6,6 +6,9 @@
 #include "XML/XMLDoc.hpp"
 #include <gtkmm.h>
 
+#include <vector>
+#include <string>
+
 class MainWindow {
 	public:
     	MainWindow(Gtk::Grid& m_Grid);
@@ -14,6 +17,8 @@ class MainWindow {
     	void onCheckBoxToggle();
     	void onButtonClicked(Gtk::Grid& m_Grid);
     	void onChooseButtonClicked(); // Adding this declaration
+		// void setCheckboxState(const std::string& label, bool state, const std::vector<std::string>& checkboxLabels, const std::vector<Gtk::CheckButton*>& checkboxes);
+		//void setCheckboxState(int ID, bool state, const std::vector<Gtk::CheckButton*>& checkboxes);
 	private:
 		//XML File Handling fields
 		JSBEdit::XMLDoc xmlFile;
