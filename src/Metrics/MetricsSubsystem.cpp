@@ -10,7 +10,7 @@ MetricsSubsystem::MetricsSubsystem()
   std::map<std::string, Metrics::string_vector> unit_map{
       {"wingarea", {"FT2", "M2"}},
       {"wingspan", {"FT", "M"}},
-      {"wing incidence", {"DEG"}},
+      {"wing_incidence", {"DEG"}},
       {"chord", {"FT", "M"}},
       {"htailarea", {"FT2", "M2"}},
       {"htailarm", {"FT", "M"}},
@@ -23,76 +23,65 @@ MetricsSubsystem::MetricsSubsystem()
 
   node_name = "wingarea";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "wingspan";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "chord";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "htailarea";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "htailarm";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "vtailarea";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "vtailarm";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
-  node_name = "wing incidence";
+  node_name = "wing_incidence";
   data_units[node_name] = std::make_unique<Metrics::Data_Unit>(0.0, unit_map[node_name]);
-  data_units[node_name]->get_its_unit()->set_current_unit("");
 
   // Create and initialize Metrics::Vertex_Unit instances
   node_name = "Aerodynamic Reference Point";
   vertex_data_units[node_name] = std::make_unique<Metrics::Vertex_Unit>(0.0, 0.0, 0.0, unit_map["location"]);
-  vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "Eye Point";
   vertex_data_units[node_name] = std::make_unique<Metrics::Vertex_Unit>(0.0, 0.0, 0.0, unit_map["location"]);
-  vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
 
   node_name = "Visual Reference Point";
   vertex_data_units[node_name] = std::make_unique<Metrics::Vertex_Unit>(0.0, 0.0, 0.0, unit_map["location"]);
-  vertex_data_units[node_name]->get_its_unit()->set_current_unit("");
 }
 
 void MetricsSubsystem::Create()
 {
-  // load metrics from XML file
-  //put absolute path
-  //loadMetricsFromXML("jsbsimedit/src/Metrics/f16.xml");
-
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
 
   // Add widgets for data units
   int row = 0;
-  for (auto cit = data_units.cbegin(); cit != data_units.cend(); cit++)
+  for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
   {
     add_data_unit(cit->first, cit->second->get_its_unit()->get_unit_bank(), row++, 0);
   }
 
   // Add widgets for vertex data units
   row++; // Add an empty row between data units and vertex data units
-  for (auto cit = vertex_data_units.cbegin(); cit != vertex_data_units.cend(); cit++)
+  for (auto cit = vertex_data_units.cbegin(); cit != vertex_data_units.cend(); ++cit)
   {
     add_vertex_data_unit(cit->first, cit->second->get_its_unit()->get_unit_bank(), row, 0);
     row += 2;
   }
+
+  // load metrics from XML file
+  // put absolute path
+  load_data("/home/blaise/gitlab/jsbsimedit/reference/JSBSimCommander/f16.xml");
 }
 
-void MetricsSubsystem::loadMetricsFromXML(const std::string &filepath)
+void MetricsSubsystem::load_data(const std::string &filepath)
 {
   JSBEdit::XMLDoc doc;
   doc.LoadFileAndParse(filepath);
@@ -105,21 +94,39 @@ void MetricsSubsystem::loadMetricsFromXML(const std::string &filepath)
     return;
   }
 
-  // Process metrics
-  std::vector<std::string> metricNames = {"wingarea", "wingspan", "chord", "htailarea", "htailarm", "vtailarea", "vtailarm", "wing incidence"};
-  for (const auto &metric : metricNames)
+  for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
   {
-    JSBEdit::XMLNode node = metricsNode.FindChild(metric);
+
+    JSBEdit::XMLNode node = metricsNode.FindChild(cit->first);
+
     if (node)
     {
-      double value = std::stod(node.GetText());
+      double value = update_text(node.GetText());
       std::string unit = node.GetAttribute("unit").second;
 
-      if (data_units.find(metric) != data_units.end())
+      cit->second->set_value(value);
+      cit->second->get_its_unit()->set_current_unit(unit);
+
+      // Searching for widgets to update
+      Gtk::Entry* value_box{nullptr};
+      Gtk::DropDown* unit_dropdown{nullptr};
+      for (int i = 0; i < LABELS; i++)
       {
-        data_units[metric]->set_value(value);
-        data_units[metric]->get_its_unit()->set_current_unit(unit);
+        auto it = m_Grid.get_child_at(0, i);
+        auto* label = dynamic_cast<Gtk::Label*>(it);
+        if (label->get_text().raw() == cit->first)
+        {
+          value_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(1, i));
+          unit_dropdown = dynamic_cast<Gtk::DropDown*>(m_Grid.get_child_at(3, i));
+          break;
+        }
       }
+
+      if (value_box)
+        value_box->set_text(std::to_string(cit->second->get_value()));
+
+      if (unit_dropdown)
+        set_selected_by_name(unit_dropdown, unit);
     }
   }
 
@@ -132,28 +139,55 @@ void MetricsSubsystem::loadMetricsFromXML(const std::string &filepath)
       std::string name = locationNode.GetAttribute("name").second;
       std::string unit = locationNode.GetAttribute("unit").second;
 
-      double x = std::stod(locationNode.FindChild("x").GetText());
-      double y = std::stod(locationNode.FindChild("y").GetText());
-      double z = std::stod(locationNode.FindChild("z").GetText());
+      double x = update_text(locationNode.FindChild("x").GetText());
+      double y = update_text(locationNode.FindChild("y").GetText());
+      double z = update_text(locationNode.FindChild("z").GetText());
 
       if (name == "AERORP")
-      {
         name = "Aerodynamic Reference Point";
-      }
+
       else if (name == "EYEPOINT")
-      {
         name = "Eye Point";
-      }
+
       else if (name == "VRP")
-      {
         name = "Visual Reference Point";
+
+      else
+        continue;
+
+      vertex_data_units[name]->set_vertex(x, y, z);
+      vertex_data_units[name]->get_its_unit()->set_current_unit(unit);
+
+      // Searching for widgets to update
+      Gtk::Entry* x_box{nullptr};
+      Gtk::Entry* y_box{nullptr};
+      Gtk::Entry* z_box{nullptr};
+      Gtk::DropDown* unit_dropdown{nullptr};
+      for (int i = 9; i <= 13; i+=2)
+      {
+        auto it = m_Grid.get_child_at(0, i);
+        auto* label = dynamic_cast<Gtk::Label*>(it);
+        if (label->get_text().raw() == name)
+        {
+          x_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(1, i + 1));
+          y_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(3, i + 1));
+          z_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(5, i + 1));
+          unit_dropdown = dynamic_cast<Gtk::DropDown*>(m_Grid.get_child_at(7, i + 1));
+          break;
+        }
       }
 
-      if (vertex_data_units.find(name) != vertex_data_units.end())
-      {
-        vertex_data_units[name]->set_vertex(x, y, z);
-        vertex_data_units[name]->get_its_unit()->set_current_unit(unit);
-      }
+      if (x_box)
+        x_box->set_text(std::to_string(vertex_data_units[name]->get_x()));
+
+      if (y_box)
+        y_box->set_text(std::to_string(vertex_data_units[name]->get_y()));
+
+      if (z_box)
+        z_box->set_text(std::to_string(vertex_data_units[name]->get_z()));
+
+      if (unit_dropdown)
+        set_selected_by_name(unit_dropdown, unit);
     }
   }
 }
@@ -220,7 +254,7 @@ void MetricsSubsystem::add_vertex_data_unit(std::string tab_name, Metrics::strin
 
   // Connect dropdown signal to a handler
   drop_down->property_selected().signal_changed().connect(
-      [this, tab_name, drop_down, dropdown_bank]()
+    [this, tab_name, drop_down, dropdown_bank]()
       {
         auto selected = drop_down->get_selected();
         if (selected != -1)
@@ -271,7 +305,7 @@ void MetricsSubsystem::add_data_unit(std::string tab_name, Metrics::string_vecto
 
   // Connect dropdown signal to a handler
   drop_down->property_selected().signal_changed().connect(
-      [this, tab_name, drop_down, dropdown_bank]()
+    [this, tab_name, drop_down, dropdown_bank]()
       {
         auto selected = drop_down->get_selected();
         if (selected != -1)
@@ -291,5 +325,20 @@ double MetricsSubsystem::update_text(std::string data)
   catch (const std::exception &e)
   {
     return 0.0;
+  }
+}
+
+void MetricsSubsystem::set_selected_by_name(Gtk::DropDown* dropdown, const std::string& name)
+{
+  auto bank = std::dynamic_pointer_cast<Gtk::StringList>(dropdown->get_model());
+  if (bank)
+  {
+    for (int i = 0; i < bank->get_n_items(); ++i)
+    {
+      if (bank->get_string(i).raw() == name)
+      {
+        dropdown->set_selected(i);
+      }
+    }
   }
 }
