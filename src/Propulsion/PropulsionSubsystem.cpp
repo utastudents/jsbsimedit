@@ -171,15 +171,6 @@ void PropulsionSubsystem::Create() {
     Gtk::Label* pLabelTK = Gtk::make_managed<Gtk::Label>("Select Tank:");
     // Create the ComboBoxText (dropdown menu) for Tank selection
     Gtk::ComboBoxText* pComboBoxTK = Gtk::make_managed<Gtk::ComboBoxText>();
-     // Location UI for Tank
-    Gtk::Label* pLabelLocX = Gtk::make_managed<Gtk::Label>("Location X:");
-    Gtk::Entry* pEntryLocX = Gtk::make_managed<Gtk::Entry>();
-
-    Gtk::Label* pLabelLocY = Gtk::make_managed<Gtk::Label>("Location Y:");
-    Gtk::Entry* pEntryLocY = Gtk::make_managed<Gtk::Entry>();
-
-    Gtk::Label* pLabelLocZ = Gtk::make_managed<Gtk::Label>("Location Z:");
-    Gtk::Entry* pEntryLocZ = Gtk::make_managed<Gtk::Entry>();
 
     pComboBoxTK->append("No Selection");
     pComboBoxTK->append("FULL TANK 1000 GALLONS");
