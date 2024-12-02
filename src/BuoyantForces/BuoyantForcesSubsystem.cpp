@@ -16,6 +16,7 @@ BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 
 void BuoyantForcesSubsystem::Create()
 {
+  std::cout << "---------------------------------" << std::endl;
   std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
   // auto node=xmlptr()->GetNode("buoyant_forces");
 
@@ -39,17 +40,22 @@ void BuoyantForcesSubsystem::Create()
   m_checkbutton.signal_toggled().connect(
     sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_button_toggled));
 
-  // Temporary: Only to Test SaveXMLData
-  m_testbutton.set_label("Save");
-  m_testbutton.set_margin_top(10);
 
-  m_testbutton.signal_clicked().connect(
-    sigc::mem_fun(*this, &BuoyantForcesSubsystem::on_button_clicked));
+  // Temporary: Only for Testing
+  m_savebutton.set_label("Save");
+  m_savebutton.set_margin_top(10);
+  m_loadbutton.set_label("Load Submarine_Scout");
+  m_loadbutton.set_margin_top(10);
+
+  m_savebutton.signal_clicked().connect(
+    std::bind(&BuoyantForcesSubsystem::on_button_clicked, this, "Save"));
+  m_loadbutton.signal_clicked().connect(
+    std::bind(&BuoyantForcesSubsystem::on_button_clicked, this, "Load"));
+
 
   m_Grid.attach(m_checkbutton, 0, m_rows);
-  // end of temp code
-
-  m_Grid.attach(m_testbutton, 3, m_rows++);
+  m_Grid.attach(m_loadbutton, 2, m_rows);
+  m_Grid.attach(m_savebutton, 3, m_rows++);
   m_Grid.attach(m_notebook, 0, m_rows++);
 
   LoadStringLists();
@@ -66,46 +72,23 @@ void BuoyantForcesSubsystem::Create()
   // Track switching tabs
   m_notebook.signal_switch_page().connect(sigc::mem_fun(*this,
       &BuoyantForcesSubsystem::on_notebook_switch_page));
-
-
-  // Load XML data for testing
-  try {
-    LoadXMLData();
-    std::cout << "XML data loaded successfully." << std::endl;
-  } catch (const std::exception& e) {
-    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
-  }
-}
-
-// Needed for Testing SaveXMLData
-void BuoyantForcesSubsystem::on_button_clicked() {
-    std::cout << "Button clicked!" << std::endl;
-
-    // Save changes to XML file for testing
-    try {
-        SaveXMLData();
-        std::cout << "XML data saved successfully" << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "Error saving XML: " << e.what() << std::endl;
-    }
 }
 
 void BuoyantForcesSubsystem::SaveXMLData() {
     UpdateData();
 
     try {
-
         // "buoyant_forces" node
         if (m_buoyantforces.isBuoyantForcesActive()) {
-            JSBEdit::XMLNode root{*xmlptr(), "<buoyant_forces></buoyant_forces>"};
+            JSBEdit::XMLNode root{m_doc, "<buoyant_forces></buoyant_forces>"};
 
-            JSBEdit::XMLNode gascellNode{*xmlptr(), "<gas_cell></gas_cell>"};
+            JSBEdit::XMLNode gascellNode{m_doc, "<gas_cell></gas_cell>"};
             SetNodesFromWidgets(gascellNode);
 
             if (m_gascell.getBallonetCount() > 0) {
                 std::vector<JSBEdit::XMLNode> ballonetNodes;
                 for (int i=0; i < m_ballonets.size(); i++) {
-                    ballonetNodes.push_back({*xmlptr(), "<ballonet></ballonet>"});
+                    ballonetNodes.push_back({m_doc, "<ballonet></ballonet>"});
                 }
                 SetNodesFromWidgets(ballonetNodes.back());
             }
@@ -113,11 +96,127 @@ void BuoyantForcesSubsystem::SaveXMLData() {
             root.AddChild(gascellNode);
         }   // else, print nothing if BuoyantForces is disabled
 
-
-        xmlptr()->SaveToFile("../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml");
+        std::cout << "Saving to 'data/aircraft/Submarine_Scout/Submarine_Scout.xml'" << std::endl;
+        // m_doc.Print();
+        m_doc.SaveToFile("../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml");
 
     } catch (const std::exception& e) {
         std::cerr << "Error in SaveXML: " << e.what() << std::endl;
+    }
+}
+
+void BuoyantForcesSubsystem::LoadXMLData() {
+    try {
+        // auto buoyantForcesNode = xmlptr()->GetNode("/fdm_config/buoyant_forces");
+
+        // temp file for testing
+        std::cout << "Using 'data/aircraft/Submarine_Scout/Submarine_Scout.xml' for Buoyant Forces" << std::endl;
+        m_doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
+        auto buoyantForcesNode = m_doc.GetNode("/fdm_config/buoyant_forces");
+        auto gasCellNode = buoyantForcesNode.FindChild("gas_cell");
+
+        // todo: make sure this works
+        std::vector<JSBEdit::XMLNode> ballonetNodes;
+
+        if (buoyantForcesNode) {
+            std::cout << "   buoyant_forces node found!" << std::endl;
+            m_checkbutton.set_active(true);     // Enables the button
+
+        } else {
+            std::cout << "   buoyant_forces node NOT found!" << std::endl;
+            m_checkbutton.set_active(false);    // Disables the button
+        }
+
+        if (gasCellNode) {
+            SetWidgetsFromNodes(gasCellNode, 0);
+
+            for (int i=5; i < gasCellNode.GetChildren().size(); i++) {
+                if (gasCellNode.GetChild(i).GetName() == "ballonet") {
+                    ballonetNodes.push_back(gasCellNode.GetChild(i));
+                }   
+            }
+            SetDropDownFromNode(ballonetNodes.back(), "ballonet", std::to_string(ballonetNodes.size()), 
+                                m_ballonetStringList, "# of Ballonets", 0);
+        }
+
+        if (ballonetNodes.size() > 0) {
+            for (int i=0; i < ballonetNodes.size(); i++) {
+                SetWidgetsFromNodes(ballonetNodes.at(i), i+1);
+            }
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading XML data: " << e.what() << std::endl;
+        m_checkbutton.set_active(false);    // Default to disabled in case of error
+    }
+}
+
+void BuoyantForcesSubsystem::UpdateData() {
+    // Fetch all data in widgets and update buoyantforces, gascell, and ballonets
+    m_buoyantforces.setHasBuoyantForces(m_checkbutton.get_active());
+
+    for (const auto& [key, dropdownptr] : m_dropdowns) {
+        int selectedIndex = dropdownptr->get_selected();
+
+        if (selectedIndex >= 0) {
+            Glib::RefPtr<Gtk::StringList> stringlist = std::dynamic_pointer_cast<Gtk::StringList>(dropdownptr->get_model());
+            if (stringlist) {
+                std::string fixedKey = key.substr(0, key.size()-2);
+                if (key.back() == '0') {
+                    if (fixedKey == "Gas Type")            m_gascell.setGasType(static_cast<Component::GasType>(selectedIndex));
+                    if (fixedKey == "Location")            m_gascell.setLocationUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "Dimensions")          m_gascell.setDimensionsUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "x Dim")               m_gascell.setDimensionsShape(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "Max Overpressure")    m_gascell.setPressureUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "Valve Coefficient")   m_gascell.setValveCoefficientUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "# of Ballonets")      m_gascell.setBallonetCount(std::stoi(stringlist->get_string(selectedIndex)));
+                }
+                else {
+                    int ballonetIndex = key.back() - '0';
+
+                    if (fixedKey == "Gas Type")            m_ballonets[ballonetIndex].setGasType(static_cast<Component::GasType>(selectedIndex));
+                    if (fixedKey == "Location")            m_ballonets[ballonetIndex].setLocationUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "Dimensions")          m_ballonets[ballonetIndex].setDimensionsUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "x Dim")               m_ballonets[ballonetIndex].setDimensionsShape(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "Max Overpressure")    m_ballonets[ballonetIndex].setPressureUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                    if (fixedKey == "Valve Coefficient")   m_ballonets[ballonetIndex].setValveCoefficientUnit(stringToUnit(stringlist->get_string(selectedIndex)));
+                }
+            } else {
+                std::cout << "No selection." << std::endl;
+            }
+        }
+    }
+
+    for (const auto& [key, entryptr] : m_entries) {
+        std::string currentText = entryptr->get_text();
+        double textAsDouble = std::stod(currentText);
+        // std::cout << "Current entry text: '" << currentText << "' in " << key << std::endl;
+
+        std::string fixedKey = key.substr(0, key.size()-2);
+        if (key.back() == '0') {
+            if (fixedKey == "x Loc")                m_gascell.setXLocation(textAsDouble);
+            if (fixedKey == "y Loc")                m_gascell.setYLocation(textAsDouble);
+            if (fixedKey == "z Loc")                m_gascell.setZLocation(textAsDouble);
+            if (fixedKey == "x Dim")                m_gascell.setXDimension(textAsDouble);
+            if (fixedKey == "y Dim")                m_gascell.setYDimension(textAsDouble);
+            if (fixedKey == "z Dim")                m_gascell.setZDimension(textAsDouble);
+            if (fixedKey == "Max Overpressure")     m_gascell.setOverpressure(textAsDouble);
+            if (fixedKey == "Valve Coefficient")    m_gascell.setValveCoefficient(textAsDouble);
+            if (fixedKey == "Fullness")             m_gascell.setInitialFullness(textAsDouble);
+        }
+        else {
+            int ballonetIndex = key.back() - '0';
+
+            if (fixedKey == "x Loc")                m_ballonets[ballonetIndex].setXLocation(textAsDouble);
+            if (fixedKey == "y Loc")                m_ballonets[ballonetIndex].setYLocation(textAsDouble);
+            if (fixedKey == "z Loc")                m_ballonets[ballonetIndex].setZLocation(textAsDouble);
+            if (fixedKey == "x Dim")                m_ballonets[ballonetIndex].setXDimension(textAsDouble);
+            if (fixedKey == "y Dim")                m_ballonets[ballonetIndex].setYDimension(textAsDouble);
+            if (fixedKey == "z Dim")                m_ballonets[ballonetIndex].setZDimension(textAsDouble);
+            if (fixedKey == "Max Overpressure")     m_ballonets[ballonetIndex].setOverpressure(textAsDouble);
+            if (fixedKey == "Valve Coefficient")    m_ballonets[ballonetIndex].setValveCoefficient(textAsDouble);
+            if (fixedKey == "Fullness")             m_ballonets[ballonetIndex].setInitialFullness(textAsDouble);
+            if (fixedKey == "Blower Input")         m_ballonets[ballonetIndex].setBlowerValue(textAsDouble);
+        }
     }
 }
 
@@ -229,49 +328,6 @@ void BuoyantForcesSubsystem::SetNodesFromWidgets(JSBEdit::XMLNode& parent) {    
             // std::cout << "   BlowerUnit = " << i.unitToString(i.getBlowerUnit()) << std::endl;
             // std::cout << "   Blower = " << i.getBlowerValue() << std::endl;
         }
-    }
-}
-
-void BuoyantForcesSubsystem::LoadXMLData() {
-    try {
-        // temp file for testing
-        // m_doc.LoadFileAndParse({"../../../data/aircraft/Submarine_Scout/Submarine_Scout.xml"});
-        // auto buoyantForcesNode = m_doc.GetNode("/fdm_config/buoyant_forces");
-        auto buoyantForcesNode = xmlptr()->GetNode("/fdm_config/buoyant_forces");
-        auto gasCellNode = buoyantForcesNode.FindChild("gas_cell");
-
-        // todo: make sure this works
-        std::vector<JSBEdit::XMLNode> ballonetNodes;
-
-        if (buoyantForcesNode) {
-            std::cout << "   buoyant_forces node found!" << std::endl;
-            m_checkbutton.set_active(true);     // Enables the button
-
-        } else {
-            std::cout << "   buoyant_forces node NOT found!" << std::endl;
-            m_checkbutton.set_active(false);    // Disables the button
-        }
-
-        if (gasCellNode) {
-            SetWidgetsFromNodes(gasCellNode, 0);
-
-            for (int i=5; i < gasCellNode.GetChildren().size(); i++) {
-                if (gasCellNode.GetChild(i).GetName() == "ballonet") {
-                    ballonetNodes.push_back(gasCellNode.GetChild(i));
-                }   
-            }
-            SetDropDownFromNode(ballonetNodes.back(), "ballonet", std::to_string(ballonetNodes.size()), 
-                                m_ballonetStringList, "# of Ballonets", 0);
-        }
-
-        if (ballonetNodes.size() > 0) {
-            for (int i=0; i < ballonetNodes.size(); i++) {
-                SetWidgetsFromNodes(ballonetNodes.at(i), i+1);
-            }
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "Error loading XML data: " << e.what() << std::endl;
-        m_checkbutton.set_active(false);    // Default to disabled in case of error
     }
 }
 
@@ -388,76 +444,6 @@ void BuoyantForcesSubsystem::SetEntryFromNode(JSBEdit::XMLNode& node, const std:
             m_entries[keyString]->set_text(dataRead);
         } else {
             std::cerr << "Entry with key " << keyString << " not found!" << std::endl;
-        }
-    }
-}
-
-void BuoyantForcesSubsystem::UpdateData() {
-    // Fetch all data in widgets and update buoyantforces, gascell, and ballonets
-    m_buoyantforces.setHasBuoyantForces(m_checkbutton.get_active());
-
-    for (const auto& [key, dropdownptr] : m_dropdowns) {
-        int selectedIndex = dropdownptr->get_selected();
-
-        if (selectedIndex >= 0) {
-            Glib::RefPtr<Gtk::StringList> stringlist = std::dynamic_pointer_cast<Gtk::StringList>(dropdownptr->get_model());
-            if (stringlist) {
-                std::string fixedKey = key.substr(0, key.size()-2);
-                if (key.back() == '0') {
-                    if (fixedKey == "Gas Type")            m_gascell.setGasType(static_cast<Component::GasType>(selectedIndex));
-                    if (fixedKey == "Location")            m_gascell.setLocationUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "Dimensions")          m_gascell.setDimensionsUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "x Dim")               m_gascell.setDimensionsShape(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "Max Overpressure")    m_gascell.setPressureUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "Valve Coefficient")   m_gascell.setValveCoefficientUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "# of Ballonets")      m_gascell.setBallonetCount(std::stoi(stringlist->get_string(selectedIndex)));
-                }
-                else {
-                    int ballonetIndex = key.back() - '0';
-
-                    if (fixedKey == "Gas Type")            m_ballonets[ballonetIndex].setGasType(static_cast<Component::GasType>(selectedIndex));
-                    if (fixedKey == "Location")            m_ballonets[ballonetIndex].setLocationUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "Dimensions")          m_ballonets[ballonetIndex].setDimensionsUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "x Dim")               m_ballonets[ballonetIndex].setDimensionsShape(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "Max Overpressure")    m_ballonets[ballonetIndex].setPressureUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                    if (fixedKey == "Valve Coefficient")   m_ballonets[ballonetIndex].setValveCoefficientUnit(stringToUnit(stringlist->get_string(selectedIndex)));
-                }
-            } else {
-                std::cout << "No selection." << std::endl;
-            }
-        }
-    }
-
-    for (const auto& [key, entryptr] : m_entries) {
-        std::string currentText = entryptr->get_text();
-        double textAsDouble = std::stod(currentText);
-        // std::cout << "Current entry text: '" << currentText << "' in " << key << std::endl;
-
-        std::string fixedKey = key.substr(0, key.size()-2);
-        if (key.back() == '0') {
-            if (fixedKey == "x Loc")                m_gascell.setXLocation(textAsDouble);
-            if (fixedKey == "y Loc")                m_gascell.setYLocation(textAsDouble);
-            if (fixedKey == "z Loc")                m_gascell.setZLocation(textAsDouble);
-            if (fixedKey == "x Dim")                m_gascell.setXDimension(textAsDouble);
-            if (fixedKey == "y Dim")                m_gascell.setYDimension(textAsDouble);
-            if (fixedKey == "z Dim")                m_gascell.setZDimension(textAsDouble);
-            if (fixedKey == "Max Overpressure")     m_gascell.setOverpressure(textAsDouble);
-            if (fixedKey == "Valve Coefficient")    m_gascell.setValveCoefficient(textAsDouble);
-            if (fixedKey == "Fullness")             m_gascell.setInitialFullness(textAsDouble);
-        }
-        else {
-            int ballonetIndex = key.back() - '0';
-
-            if (fixedKey == "x Loc")                m_ballonets[ballonetIndex].setXLocation(textAsDouble);
-            if (fixedKey == "y Loc")                m_ballonets[ballonetIndex].setYLocation(textAsDouble);
-            if (fixedKey == "z Loc")                m_ballonets[ballonetIndex].setZLocation(textAsDouble);
-            if (fixedKey == "x Dim")                m_ballonets[ballonetIndex].setXDimension(textAsDouble);
-            if (fixedKey == "y Dim")                m_ballonets[ballonetIndex].setYDimension(textAsDouble);
-            if (fixedKey == "z Dim")                m_ballonets[ballonetIndex].setZDimension(textAsDouble);
-            if (fixedKey == "Max Overpressure")     m_ballonets[ballonetIndex].setOverpressure(textAsDouble);
-            if (fixedKey == "Valve Coefficient")    m_ballonets[ballonetIndex].setValveCoefficient(textAsDouble);
-            if (fixedKey == "Fullness")             m_ballonets[ballonetIndex].setInitialFullness(textAsDouble);
-            if (fixedKey == "Blower Input")         m_ballonets[ballonetIndex].setBlowerValue(textAsDouble);
         }
     }
 }
@@ -806,4 +792,30 @@ Component::Unit BuoyantForcesSubsystem::stringToUnit(const std::string& unit_str
     if (unit_string == "ft^3 / sec")     { UnitType = Component::Unit::FT3_SEC; }
 
     return UnitType;
+}
+
+
+// Needed for Testing 
+void BuoyantForcesSubsystem::on_button_clicked(const std::string& button_name) {
+    std::cout << button_name << " clicked!" << std::endl;
+
+    if (button_name == "Save") {
+        // Save changes to XML file for testing
+        try {
+            SaveXMLData();
+            std::cout << "XML data saved successfully" << std::endl;
+        } catch (const std::exception& e) {
+            std::cerr << "Error saving XML: " << e.what() << std::endl;
+        }
+    }
+
+    if (button_name == "Load") {
+        // Load XML data for testing
+        try {
+            LoadXMLData();
+            std::cout << "XML data loaded successfully." << std::endl;
+        } catch (const std::exception& e) {
+            std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
+        }
+    }
 }
