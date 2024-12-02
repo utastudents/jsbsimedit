@@ -1,17 +1,10 @@
 #include "MassBalanceSubsystem.hpp"
 #include "Location.hpp"
+#include "PointMassDialogue.hpp"
 #include <iostream>
 #include <vector>
 
-MassBalanceSubsystem::MassBalanceSubsystem()
-    : m_fuselage(1000, 30,
-                 2), // Example values: mass=1000kg, length=30m, radius=2m
-      m_leftWing(500, 15, 1),  // Example values: mass=500kg, span=15m, chord=1m
-      m_rightWing(500, 15, 1), // Example values: mass=500kg, span=15m, chord=1m
-      m_tail(200, 5, 0.5), // Example values: mass=200kg, span=5m, chord=0.5m
-      m_airplane(m_fuselage, m_leftWing, m_rightWing,
-                 m_tail) // Initialize Airplane
-{
+MassBalanceSubsystem::MassBalanceSubsystem() {
   m_Name = "Mass Balance";
   std::cout << "In MassBalanceSubsystem constructor" << std::endl;
 }
@@ -26,6 +19,8 @@ void MassBalanceSubsystem::Create() {
   // test values for empty mass
   m_Emptymass.setEmptyMass(50.0f);
   m_Emptymass.setUnits("lbs");
+
+  m_airplane.setIxx(50);
 
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);
@@ -125,8 +120,7 @@ void MassBalanceSubsystem::Create() {
 
   auto entry_inertia_Ixx = Gtk::make_managed<Gtk::Entry>();
   entry_inertia_Ixx->set_editable(false);
-  entry_inertia_Ixx->set_text(
-      std::to_string(m_airplane.totalInertiaAboutLongitudinalAxis()));
+  entry_inertia_Ixx->set_text(std::to_string(m_airplane.getIxx()));
   m_Grid.attach(*entry_inertia_Ixx, 1, 6);
 
   // Iyy
@@ -135,8 +129,7 @@ void MassBalanceSubsystem::Create() {
 
   auto entry_inertia_Iyy = Gtk::make_managed<Gtk::Entry>();
   entry_inertia_Iyy->set_editable(false);
-  entry_inertia_Iyy->set_text(
-      std::to_string(m_airplane.totalInertiaAboutTransverseAxis()));
+  entry_inertia_Iyy->set_text(std::to_string(m_airplane.getIyy()));
   m_Grid.attach(*entry_inertia_Iyy, 1, 7);
 
   // Izz
@@ -145,8 +138,7 @@ void MassBalanceSubsystem::Create() {
 
   auto entry_inertia_Izz = Gtk::make_managed<Gtk::Entry>();
   entry_inertia_Izz->set_editable(false);
-  entry_inertia_Izz->set_text(
-      std::to_string(m_airplane.totalInertiaAboutVerticalAxis()));
+  entry_inertia_Izz->set_text(std::to_string(m_airplane.getIzz()));
   m_Grid.attach(*entry_inertia_Izz, 1, 8);
 
   // Ixz
@@ -155,8 +147,7 @@ void MassBalanceSubsystem::Create() {
 
   auto entry_inertia_Ixz = Gtk::make_managed<Gtk::Entry>();
   entry_inertia_Ixz->set_editable(false);
-  entry_inertia_Ixz->set_text(
-      std::to_string(m_airplane.getTotalInertiaXZPlane()));
+  entry_inertia_Ixz->set_text(std::to_string(m_airplane.getIxz()));
   m_Grid.attach(*entry_inertia_Ixz, 4, 6);
 
   // Iyz
@@ -165,8 +156,7 @@ void MassBalanceSubsystem::Create() {
 
   auto entry_inertia_Iyz = Gtk::make_managed<Gtk::Entry>();
   entry_inertia_Iyz->set_editable(false);
-  entry_inertia_Iyz->set_text(
-      std::to_string(m_airplane.getTotalInertiaYZPlane()));
+  entry_inertia_Iyz->set_text(std::to_string(m_airplane.getIyz()));
   m_Grid.attach(*entry_inertia_Iyz, 4, 7);
 
   // Ixy
@@ -175,8 +165,7 @@ void MassBalanceSubsystem::Create() {
 
   auto entry_inertia_Ixy = Gtk::make_managed<Gtk::Entry>();
   entry_inertia_Ixy->set_editable(false);
-  entry_inertia_Ixy->set_text(
-      std::to_string(m_airplane.getTotalInertiaXYPlane()));
+  entry_inertia_Ixy->set_text(std::to_string(m_airplane.getIxy()));
   m_Grid.attach(*entry_inertia_Ixy, 4, 8);
 
   // Dropdown for units
@@ -193,20 +182,14 @@ void MassBalanceSubsystem::Create() {
         std::string selected_unit = combo_inertia_units->get_active_text();
 
         // Perform unit conversion if necessary
-        if (selected_unit != m_airplane.getInertiaUnits()) {
+        if (selected_unit != m_airplane.getUnit()) {
           m_airplane.convertInertiaUnits();
-          entry_inertia_Ixx->set_text(
-              std::to_string(m_airplane.totalInertiaAboutLongitudinalAxis()));
-          entry_inertia_Iyy->set_text(
-              std::to_string(m_airplane.totalInertiaAboutTransverseAxis()));
-          entry_inertia_Izz->set_text(
-              std::to_string(m_airplane.totalInertiaAboutVerticalAxis()));
-          entry_inertia_Ixz->set_text(
-              std::to_string(m_airplane.getTotalInertiaXZPlane()));
-          entry_inertia_Iyz->set_text(
-              std::to_string(m_airplane.getTotalInertiaYZPlane()));
-          entry_inertia_Ixy->set_text(
-              std::to_string(m_airplane.getTotalInertiaXYPlane()));
+          entry_inertia_Ixx->set_text(std::to_string(m_airplane.getIxx()));
+          entry_inertia_Iyy->set_text(std::to_string(m_airplane.getIyy()));
+          entry_inertia_Izz->set_text(std::to_string(m_airplane.getIzz()));
+          entry_inertia_Ixz->set_text(std::to_string(m_airplane.getIxy()));
+          entry_inertia_Iyz->set_text(std::to_string(m_airplane.getIxz()));
+          entry_inertia_Ixy->set_text(std::to_string(m_airplane.getIyz()));
         }
       });
 
@@ -223,9 +206,17 @@ void MassBalanceSubsystem::Create() {
   // button to add a new point mass
   auto button_new_mass = Gtk::make_managed<Gtk::Button>("Add a new point mass");
   m_Grid.attach(*button_new_mass, 0, 14, 4, 1);
+  button_new_mass->signal_clicked().connect(
+      sigc::mem_fun(*this, &MassBalanceSubsystem::on_button_pressed));
 
   // button to delete selected point mass
   auto button_del_mass =
       Gtk::make_managed<Gtk::Button>("Delete the selected point mass");
   m_Grid.attach(*button_del_mass, 4, 14, 4, 1);
+}
+
+void MassBalanceSubsystem::on_button_pressed() {
+  auto point_mass_dialogue =
+      new PointMassDialogue(); // Dynamically allocate a new PointMassDialogue
+  point_mass_dialogue->show(); // Show the dialog window
 }
