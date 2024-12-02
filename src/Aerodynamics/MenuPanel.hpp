@@ -31,6 +31,11 @@ private:
     Gtk::Entry* nameEntry;
     Gtk::Entry* descriptionEntry;
     Gtk::ComboBoxText* dropdown;
+    Gtk::Grid* grid;
+    Gtk::Label* dropdownLabel;
+    Gtk::Label* nameLabel;
+    Gtk::Label* descriptionLabel;
+    Gtk::Button* saveButton;
 };
 
 class TableMenu : public MenuPanel {
