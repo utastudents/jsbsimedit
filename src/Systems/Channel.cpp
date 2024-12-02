@@ -60,6 +60,10 @@ void Channel::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     for(auto& spritePair : m_spriteComponents)
         spritePair.second.Draw(drawCont);
 
+    //Draw every connection.
+    for(auto& connect : m_connections)
+        connect.Draw(drawCont, m_spriteComponents);
+
     //If we are not connecting then exit early.
     if(m_dragState == DragState::DRAGGING || m_dragState == DragState::NONE)
         return;
@@ -215,6 +219,22 @@ int Channel::generateUniqueId()
     return uId;
 }
 
+void Channel::makeConnection(int inputUID, int outputUID)
+{
+    Connection connect{inputUID, outputUID};
+    //CONNECTIONS ARE ALL SCUFFED AND NEEDS TO BE REWRITTEN.
+    if(m_inputConnectionSet.contains(inputUID)){
+        if(m_components.at(inputUID)->CanHaveMultipleInputs())
+            m_connections.push_back(connect);
+    }
+    else
+    {
+        m_inputConnectionSet.insert(inputUID);
+        m_connections.push_back(connect);
+    }
+
+}
+
 void Channel::populateStringComponentMap()
 {
     //This whole thing should probably be static but oh well
@@ -267,11 +287,27 @@ void Channel::OnDragEnd(int x, int y)
         return;
     
     m_currentDragPos = {x,y};
-
-    //Todo handle connections here.
-
     if(m_dragState == DragState::DRAGGING)
+    {
         m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+    }
+    else if(m_dragState == DragState::CONNECT_INP || m_dragState == DragState::CONNECT_OUT)
+    {
+        for(auto& i : m_spriteComponents)
+        {
+            //Make connection.
+            if(i.first == m_selectedId)
+                continue;
+            if(i.second.ContainsPoint(x,y))
+            {
+                if(m_dragState == DragState::CONNECT_OUT)
+                    makeConnection(m_selectedId, i.first);
+                else
+                    makeConnection(i.first, m_selectedId);
+                break;
+            }
+        }
+    }
 
     m_dragState = DragState::NONE;
 }

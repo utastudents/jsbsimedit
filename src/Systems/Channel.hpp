@@ -5,9 +5,11 @@
 #include "IDrawable.hpp"
 #include <iostream>
 #include <unordered_map>
+#include <vector>
 #include "ComponentSprite.hpp"
 #include "inc/XML_api.hpp"
 #include "DragStateEnum.hpp"
+#include "Connection.hpp"
 
 #include "IComponentCommon.hpp"
 #include "GainComponent.hpp"
@@ -54,6 +56,7 @@ namespace DragDrop
 		std::shared_ptr<IComponentCommon> createComponentFromType(ComponentType type, const std::string& name);
 		std::string createName(ComponentType type);
 		int generateUniqueId();
+		void makeConnection(int inputUID, int outpuUID);
 		void populateStringComponentMap();
 
 		//Member Variables=================
@@ -64,6 +67,11 @@ namespace DragDrop
 		std::unordered_map<std::string, ComponentType> m_stringToComponentMap{};
 		std::shared_ptr<std::set<std::string>> m_componentNameSet{};
 		std::set<int> m_uniqueIDSet{};
+		std::vector<Connection> m_connections{};
+
+		/// @brief Most components are allowed only one input, if a component has a input 
+		///connection then its in this set.
+		std::set<int> m_inputConnectionSet{};
 		
 		//Dragging and Selection related
 		DragState m_dragState = DragState::NONE;
