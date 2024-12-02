@@ -84,6 +84,7 @@ class Component
         std::string getName() const;
 
         static std::string unitToString(Unit unit);
+        static std::string gasTypeToString(GasType gastype);
 
     protected:
         GasType gasType;
