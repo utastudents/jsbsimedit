@@ -21,6 +21,7 @@ FunctionMenu::FunctionMenu(std::shared_ptr<AerodynamicsNode> node)
 
     // Initialize the dropdown (assign to member variable)
     dropdown = Gtk::make_managed<Gtk::ComboBoxText>();
+    dropdown->set_tooltip_text("Change to either a function or operator");
 
     std::vector<std::string> options = {
         "function", "product", "difference", "sum", "quotient", "pow", "abs", 
@@ -42,6 +43,7 @@ FunctionMenu::FunctionMenu(std::shared_ptr<AerodynamicsNode> node)
 
     nameEntry = Gtk::make_managed<Gtk::Entry>();
     nameEntry->set_text(function ? function->getName() : "");
+    nameEntry->set_tooltip_text("Change this function's name");
     grid->attach(*nameEntry, 1, index++, 1, 1);
 
     // Create Description Field
@@ -51,10 +53,12 @@ FunctionMenu::FunctionMenu(std::shared_ptr<AerodynamicsNode> node)
 
     descriptionEntry = Gtk::make_managed<Gtk::Entry>();
     descriptionEntry->set_text(function ? function->getDescription() : "");
+    descriptionEntry->set_tooltip_text("Change this function's description");
     grid->attach(*descriptionEntry, 1, index++, 1, 1);
 
     // Create Save Button
     saveButton = Gtk::make_managed<Gtk::Button>("Save");
+    saveButton->set_tooltip_text("Save changes to this function/operator");
     grid->attach(*saveButton, 1, index++, 1, 1);
 
     // Connect the save button's clicked signal

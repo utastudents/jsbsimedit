@@ -30,12 +30,14 @@ NewPropertyPopup::NewPropertyPopup(std::string propertyName) {
     cancel_button = Gtk::make_managed<Gtk::Button>();
     cancel_button->set_label("Cancel");
     cancel_button->signal_clicked().connect(sigc::mem_fun(*this, &NewPropertyPopup::on_cancel_button_clicked));
+    cancel_button->set_tooltip_text("Don't add property");
     grid->attach(*cancel_button,0,0);
 
     // Set up the confirm button and attach a signal
     confirm_button = Gtk::make_managed<Gtk::Button>();
     confirm_button->set_label("Confirm");
     confirm_button->signal_clicked().connect(sigc::mem_fun(*this, &NewPropertyPopup::on_confirm_button_clicked));
+    confirm_button->set_tooltip_text("Add property");
     grid->attach(*confirm_button,1,0);
 }
 
