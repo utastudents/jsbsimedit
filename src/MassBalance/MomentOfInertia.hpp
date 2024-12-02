@@ -137,7 +137,8 @@ public:
   void convertInertiaUnits(); */
 
 class MomentOfInertia {
-private:
+//private:
+    public:
   double Ixx;
   double Iyy;
   double Izz;
