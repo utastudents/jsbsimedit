@@ -28,152 +28,152 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
 	std::cout << "IO Tab" << std::endl;
   std::cout << "-------------------------------------------------------------------\n" << std::endl;
   
-  // Load the xml file and get the starting node
-  auto node = xmlptr()->GetNode("fdm_config/output");
+//   // Load the xml file and get the starting node
+//   auto node = xmlptr()->GetNode("fdm_config/output");
 
-	// creates name label and text box, then attaches them to the grid
-  name.set_text("Name(*) : ");
-  m_Grid.attach(name, 0, 0);
-  // Get the attribute from the XML File
-  auto nameField = node.GetAttribute("name");
-  nameTextBox.set_text(nameField.second);
-  m_Grid.attach(nameTextBox, 1, 0);
+// 	// creates name label and text box, then attaches them to the grid
+//   name.set_text("Name(*) : ");
+//   m_Grid.attach(name, 0, 0);
+//   // Get the attribute from the XML File
+//   auto nameField = node.GetAttribute("name");
+//   nameTextBox.set_text(nameField.second);
+//   m_Grid.attach(nameTextBox, 1, 0);
     
-	// creates type label and drop down list, then attaches them to the grid
-	type.set_text("Type(*) : ");
-	typeDropDownList.append("CSV");
-	typeDropDownList.append("TABULAR");
-  // Get the attribute from the XML File
-  auto typeField = node.GetAttribute("type");
-	// Choose default based on what's in the XML File
-  // If TABULAR, put that or else CSV is default
-	if(typeField.second == "TABULAR")
-  {
-    typeDropDownList.set_active(1);
-  }
-  else
-  {
-    typeDropDownList.set_active(0);
-  }
-	m_Grid.attach(type, 0, 1);
-	m_Grid.attach(typeDropDownList, 1, 1);
+// 	// creates type label and drop down list, then attaches them to the grid
+// 	type.set_text("Type(*) : ");
+// 	typeDropDownList.append("CSV");
+// 	typeDropDownList.append("TABULAR");
+//   // Get the attribute from the XML File
+//   auto typeField = node.GetAttribute("type");
+// 	// Choose default based on what's in the XML File
+//   // If TABULAR, put that or else CSV is default
+// 	if(typeField.second == "TABULAR")
+//   {
+//     typeDropDownList.set_active(1);
+//   }
+//   else
+//   {
+//     typeDropDownList.set_active(0);
+//   }
+// 	m_Grid.attach(type, 0, 1);
+// 	m_Grid.attach(typeDropDownList, 1, 1);
     
-	// creates rate label and text box, then attaches them to the grid
-  rate.set_text("Rate(*) : ");
-	// Get the attribute from the XML File
-  auto rateFiled = node.GetAttribute("rate");
-  rateTextBox.set_text(rateFiled.second);
-	m_Grid.attach(rate, 0, 2);
-	m_Grid.attach(rateTextBox, 1, 2);
+// 	// creates rate label and text box, then attaches them to the grid
+//   rate.set_text("Rate(*) : ");
+// 	// Get the attribute from the XML File
+//   auto rateFiled = node.GetAttribute("rate");
+//   rateTextBox.set_text(rateFiled.second);
+// 	m_Grid.attach(rate, 0, 2);
+// 	m_Grid.attach(rateTextBox, 1, 2);
 
     
-  // Vector to store labels for each checkbox
-  std::vector<std::string> checkboxLabels = 
-  {
-    "simulation", "atmosphere", "massprops", "aerosurfaces", 
-    "rates", "velocities", "forces", "moments", 
-    "position", "coefficients", "ground_reactions", 
-    "fcs", "propulsion"
-  };
+//   // Vector to store labels for each checkbox
+//   std::vector<std::string> checkboxLabels = 
+//   {
+//     "simulation", "atmosphere", "massprops", "aerosurfaces", 
+//     "rates", "velocities", "forces", "moments", 
+//     "position", "coefficients", "ground_reactions", 
+//     "fcs", "propulsion"
+//   };
 
-  // Vector to store the CheckButtons
-  std::vector<Gtk::CheckButton*> checkboxes;
+//   // Vector to store the CheckButtons
+//   std::vector<Gtk::CheckButton*> checkboxes;
 
-  int row = 3; // Start row for checkboxes
-  int col = 0; // Start column for checkboxes
+//   int row = 3; // Start row for checkboxes
+//   int col = 0; // Start column for checkboxes
 
-  // Create and attach labels and checkboxes
-  for (const auto& labelText : checkboxLabels) 
-  {
-    // Create and manage a label
-    auto label = Gtk::make_managed<Gtk::Label>(labelText);
-    m_Grid.attach(*label, col * 2, row); // Place label in the column
+//   // Create and attach labels and checkboxes
+//   for (const auto& labelText : checkboxLabels) 
+//   {
+//     // Create and manage a label
+//     auto label = Gtk::make_managed<Gtk::Label>(labelText);
+//     m_Grid.attach(*label, col * 2, row); // Place label in the column
 
-    // Create and manage a checkbox
-    auto checkbox = Gtk::make_managed<Gtk::CheckButton>();
-    checkboxes.push_back(checkbox); // Store checkbox pointer if needed for later access
-    m_Grid.attach(*checkbox, col * 2 + 1, row); // Place checkbox next to label
+//     // Create and manage a checkbox
+//     auto checkbox = Gtk::make_managed<Gtk::CheckButton>();
+//     checkboxes.push_back(checkbox); // Store checkbox pointer if needed for later access
+//     m_Grid.attach(*checkbox, col * 2 + 1, row); // Place checkbox next to label
 
-    // Update column and row counters
-    col++;
-    if (col >= 4) 
-    { // Move to the next row after 4 columns
-      col = 0;
-      row++;
-    }
-  }
+//     // Update column and row counters
+//     col++;
+//     if (col >= 4) 
+//     { // Move to the next row after 4 columns
+//       col = 0;
+//       row++;
+//     }
+//   }
 
-  auto node2 = xmlptr()->GetNodes("fdm_config/output");
-  std::vector<JSBEdit::XMLNode> children = node.GetChildren();
+//   auto node2 = xmlptr()->GetNodes("fdm_config/output");
+//   std::vector<JSBEdit::XMLNode> children = node.GetChildren();
 
-  // std::string state = children[0].GetName();
+//   // std::string state = children[0].GetName();
   
-  // std::cout << "aa" + state + "aa"<< std::endl;
+//   // std::cout << "aa" + state + "aa"<< std::endl;
 
-  // for (size_t i = 0; i < children.size(); ++i) 
-  // {
-  //   std::cout << "Child " << i << ": " << children[i].GetName() << std::endl;
-  // }
+//   // for (size_t i = 0; i < children.size(); ++i) 
+//   // {
+//   //   std::cout << "Child " << i << ": " << children[i].GetName() << std::endl;
+//   // }
 
-  for(int i = 0; i < 13; ++i)
-  {
-    if(children[i].GetText() == " ON ")
-    {
-      for (size_t j = 0; j < checkboxes.size(); ++j)
-      {
-        if(j == i)
-        {
-          checkboxes[j]->set_active(true);
-        }
-      }
-    }
-    else if(children[i].GetText() == " OFF " )
-    {
-      for (size_t j = 0; j < checkboxes.size(); ++j)
-      {
-        if(j == i)
-        {
-          checkboxes[j]->set_active(false);
-        }
-      }
-    }
-  }
+//   for(int i = 0; i < 13; ++i)
+//   {
+//     if(children[i].GetText() == " ON ")
+//     {
+//       for (size_t j = 0; j < checkboxes.size(); ++j)
+//       {
+//         if(j == i)
+//         {
+//           checkboxes[j]->set_active(true);
+//         }
+//       }
+//     }
+//     else if(children[i].GetText() == " OFF " )
+//     {
+//       for (size_t j = 0; j < checkboxes.size(); ++j)
+//       {
+//         if(j == i)
+//         {
+//           checkboxes[j]->set_active(false);
+//         }
+//       }
+//     }
+//   }
 
 
-  // Connecting each checkbox with a signal handler using sigc::bind
-  checkboxes[0]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Simulation", checkboxes[0]));
-  checkboxes[1]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Atmosphere", checkboxes[1]));
-  checkboxes[2]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Massprops", checkboxes[2]));
-  checkboxes[3]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Aerosurfaces", checkboxes[3]));
-  checkboxes[4]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Rates", checkboxes[4]));
-  checkboxes[5]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Velocities", checkboxes[5]));
-  checkboxes[6]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Forces", checkboxes[6]));
-  checkboxes[7]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Moments", checkboxes[7]));
-  checkboxes[8]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Position", checkboxes[8]));
-  checkboxes[9]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Coefficients", checkboxes[9]));
-  checkboxes[10]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Ground Reactions", checkboxes[10]));
-  checkboxes[11]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "FCS", checkboxes[11]));
-  checkboxes[12]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Propulsion", checkboxes[12]));
+//   // Connecting each checkbox with a signal handler using sigc::bind
+//   checkboxes[0]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Simulation", checkboxes[0]));
+//   checkboxes[1]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Atmosphere", checkboxes[1]));
+//   checkboxes[2]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Massprops", checkboxes[2]));
+//   checkboxes[3]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Aerosurfaces", checkboxes[3]));
+//   checkboxes[4]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Rates", checkboxes[4]));
+//   checkboxes[5]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Velocities", checkboxes[5]));
+//   checkboxes[6]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Forces", checkboxes[6]));
+//   checkboxes[7]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Moments", checkboxes[7]));
+//   checkboxes[8]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Position", checkboxes[8]));
+//   checkboxes[9]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Coefficients", checkboxes[9]));
+//   checkboxes[10]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Ground Reactions", checkboxes[10]));
+//   checkboxes[11]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "FCS", checkboxes[11]));
+//   checkboxes[12]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Propulsion", checkboxes[12]));
 
-  // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
-	// then attaches it to the grid
-	m_Grid.attach(customProperty, 0, 8); 
+//   // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
+// 	// then attaches it to the grid
+// 	m_Grid.attach(customProperty, 0, 8); 
 
-  children[0].SetText(" OFF "); 
+//   children[0].SetText(" OFF "); 
 
-  // create save button
-  auto saveLabel = Glib::ustring::compose("Save");
-	auto saveButton = Gtk::make_managed<Gtk::ToggleButton>(saveLabel);
-	m_Grid.attach(*saveButton, 4, 8);
+//   // create save button
+//   auto saveLabel = Glib::ustring::compose("Save");
+// 	auto saveButton = Gtk::make_managed<Gtk::ToggleButton>(saveLabel);
+// 	m_Grid.attach(*saveButton, 4, 8);
 
-  // saveButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::IOSave), children, checkboxes);
-  saveButton->signal_clicked().connect(
-    sigc::bind(
-        sigc::mem_fun(*this, &MainWindow::IOSave), 
-        children, 
-        checkboxes
-    )
-);
+//   // saveButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::IOSave), children, checkboxes);
+//   saveButton->signal_clicked().connect(
+//     sigc::bind(
+//         sigc::mem_fun(*this, &MainWindow::IOSave), 
+//         children, 
+//         checkboxes
+//     )
+// );
 
 
   std::cout << "\n\n\n" << std::endl;
