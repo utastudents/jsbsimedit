@@ -17,6 +17,11 @@ class MainWindow {
     	void onCheckBoxToggle();
     	void onButtonClicked(Gtk::Grid& m_Grid);
     	void onChooseButtonClicked(); // Adding this declaration
+		void IOSave(std::vector<JSBEdit::XMLNode> children, std::vector<Gtk::CheckButton*> checkboxes);
+		void on_checkbox_toggled(const std::string& label, Gtk::CheckButton* checkbox); //std::set<std::string>& toggledCheckboxes); 
+		// void addCheckBox(const std::string& label);
+
+
 		// void setCheckboxState(const std::string& label, bool state, const std::vector<std::string>& checkboxLabels, const std::vector<Gtk::CheckButton*>& checkboxes);
 		//void setCheckboxState(int ID, bool state, const std::vector<Gtk::CheckButton*>& checkboxes);
 	private:
@@ -45,6 +50,11 @@ class MainWindow {
     	Gtk::CheckButton checkboxGroundReactions;
     	Gtk::CheckButton checkboxFCS;
     	Gtk::CheckButton checkboxPropulsion;
+
+		// Set to store unique checkbox labels that have been toggled
+ 		std::set<std::string> toggledCheckboxes;
+		// std::vector<std::string> toggledCheckboxes;
+    	
 
 		//Output Area
     	Gtk::Box totalArea;
