@@ -1,20 +1,29 @@
 #pragma once
 
-#include "ComponentWindowCommon.hpp"
+#include "IComponentCommon.hpp"
+#include <string>
+#include <vector>
 
 namespace DragDrop {
 
-class FilterComponentWindow : public ComponentWindowCommon {
+class FilterComponent : public IComponentCommon {
 public:
-    FilterComponentWindow(std::shared_ptr<IComponentCommon> comp, 
-                          std::shared_ptr<std::set<std::string>> setOfNames);
+    FilterComponent(const std::string& name);
+    ~FilterComponent() = default;
 
-private:
-    bool checkboxState = false;  // Tracks the state of FC-21 checkbox
+    void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;
+    void LoadFromXml(JSBEdit::XMLNode& node) override;
 
-    void CreateFilterTab();
-    void HandleRadioSelection(); // Handles radio button logic for FC-16 and FC-17
-    void SaveInfo();             // Saves user inputs
+    // Member variables for filter configuration
+    std::string ComponentName;
+    std::string Type;
+    int Order;
+    float MaxValue;
+    float MinValue;
+
+    std::vector<std::string> DropdownOptions;
+    std::vector<float> Coefficients;
+    bool IsEnabled;
 };
 
-};
+} // namespace DragDrop

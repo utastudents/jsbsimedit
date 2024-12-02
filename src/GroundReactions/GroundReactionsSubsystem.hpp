@@ -12,4 +12,9 @@ public:
 
 private:
     std::vector<Contact> contacts;
+
+    class LandingGearSetupDialog : public Gtk::Dialog {
+    public: 
+        LandingGearSetupDialog();
+    };
 };

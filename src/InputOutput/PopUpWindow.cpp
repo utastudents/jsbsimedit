@@ -22,13 +22,20 @@ PopUpWindow::PopUpWindow()
     auto currentHBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 5);
     currentLabel.set_text("Current:");
     currentLabel.set_margin(5);
+    showLabel.set_text("Show: 0");
+    hideLabel.set_text("Hide: 0");
+    showLabel.set_margin(5);
+    hideLabel.set_margin(5);
     currentHBox->append(currentLabel);
+    
     
     // Added box to show selected property
     currentPlaceholder->set_text("");
     currentPlaceholder->set_editable(false);
     currentPlaceholder->set_width_chars(20);
     currentHBox->append(*currentPlaceholder);
+    currentHBox->append(showLabel);
+    currentHBox->append(hideLabel);
     
     scrolledContainer->append(*currentHBox);
 
@@ -40,12 +47,21 @@ PopUpWindow::PopUpWindow()
     listStore = Gtk::ListStore::create(propertyColumns);
     propertyTreeView.set_model(listStore);
 
-    propertyTreeView.append_column("No.", propertyColumns.index);
-    propertyTreeView.append_column("Property Name", propertyColumns.propertyName);
-    propertyTreeView.append_column("Description", propertyColumns.description);
-    propertyTreeView.append_column("Unit", propertyColumns.unit);
-    propertyTreeView.append_column("Access", propertyColumns.access);
-    propertyTreeView.append_column("Comments", propertyColumns.comments);
+    // Append columns and set their minimum widths separately
+    auto col_index = propertyTreeView.append_column("No.", propertyColumns.index);
+    auto col_name = propertyTreeView.append_column("Property Name", propertyColumns.propertyName);
+    auto col_description = propertyTreeView.append_column("Description", propertyColumns.description);
+    auto col_unit = propertyTreeView.append_column("Unit", propertyColumns.unit);
+    auto col_access = propertyTreeView.append_column("Access", propertyColumns.access);
+    auto col_comments = propertyTreeView.append_column("Comments", propertyColumns.comments);
+
+    // Set minimum widths for each column
+    propertyTreeView.get_column(col_index - 1)->set_min_width(50);
+    propertyTreeView.get_column(col_name - 1)->set_min_width(200);
+    propertyTreeView.get_column(col_description - 1)->set_min_width(150);
+    propertyTreeView.get_column(col_unit - 1)->set_min_width(100);
+    propertyTreeView.get_column(col_access - 1)->set_min_width(100);
+    propertyTreeView.get_column(col_comments - 1)->set_min_width(200);
 
     // Add the TreeView to the ScrolledWindow
     m_ScrolledWindow.set_child(propertyTreeView);
@@ -148,3 +164,25 @@ void PopUpWindow::onPropertySelected() {
     }
 }
 
+void PopUpWindow::updateShowHideCounts() {
+    int showCount = 0;
+    int hideCount = 0;
+
+    // Iterate through all rows in the ListStore to calculate counts
+    for (auto& row : listStore->children()) {
+        // Apply your filtering logic to determine whether this row is shown or hidden
+        // Assuming the row contains a "propertyName" field and we're using the filterTextBox to filter
+        Glib::ustring propertyName = row[propertyColumns.propertyName];
+        
+        // Check if the property name matches the filter text
+        if (propertyName.lowercase().find(filterTextBox.get_text().lowercase()) != std::string::npos) {
+            ++showCount;  // This row matches the filter and should be counted as shown
+        } else {
+            ++hideCount;  // This row does not match the filter and should be counted as hidden
+        }
+    }
+
+    // Update the labels
+    showLabel.set_text("Show: " + std::to_string(showCount));
+    hideLabel.set_text("Hide: " + std::to_string(hideCount));
+}

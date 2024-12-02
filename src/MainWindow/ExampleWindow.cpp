@@ -9,7 +9,7 @@
 #include "Propulsion/PropulsionSubsystem.hpp"
 #include "InputOutput/IOSubSystem.hpp"
 #include "MassBalance/MassBalanceSubsystem.hpp"
-#include "ExternalReactions/ExternalReactionSubsystem.hpp"
+#include "ExternalReactions/ExternalReactionsSubsystem.hpp"
 #include "GeneralInformation/GeneralInformationSubsystem.hpp"
 #include "GroundReactions/GroundReactionsSubsystem.hpp"
 
@@ -75,37 +75,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
 
 
 
-    m_Notebook = new Gtk::Notebook();
-    set_child(*m_Notebook);
 
-    m_Notebook->set_margin(10);
-    m_Notebook->set_expand();
-
-    // create the Subsystems objects
-    m_Subsystems.push_back(new GeneralInformationSubsystem());
-    m_Subsystems.push_back(new AeroDynamicsSubsystem());
-    m_Subsystems.push_back(new BuoyantForcesSubsystem());
-    m_Subsystems.push_back(new MetricsSubsystem());
-    m_Subsystems.push_back(new PropulsionSubsystem());
-    m_Subsystems.push_back(new IOSubSystem());
-    m_Subsystems.push_back(new MassBalanceSubsystem());
-    m_Subsystems.push_back(new ExternalReactionSubsystem());
-    m_Subsystems.push_back(new GroundReactionsSubsystem());
-
-    
-
-    m_Notebook->append_page(m_Box,"Flight Control"); 
-    
-        // Call Create() for all subsystems
-        for (const auto &i : m_Subsystems) 
-        {
-            i->Create();
-        }
-
-        // Add subsystem pages to the notebook
-        for (const auto &i : m_Subsystems) {
-            m_Notebook->append_page(i->m_Grid, i->m_Name);
-        }
     
 
     
@@ -136,6 +106,33 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
         m_Box.append(*pToolbar);
     else
         g_warning("toolbar not found");
+        
+    m_Notebook = new Gtk::Notebook();
+    m_Notebook->set_margin(10);
+    m_Notebook->set_expand();
+    m_Box.append(*m_Notebook);
+
+    // create the Subsystems objects
+    m_Subsystems.push_back(new GeneralInformationSubsystem());
+    m_Subsystems.push_back(new AeroDynamicsSubsystem());
+    m_Subsystems.push_back(new BuoyantForcesSubsystem());
+    m_Subsystems.push_back(new MetricsSubsystem());
+    m_Subsystems.push_back(new PropulsionSubsystem());
+    m_Subsystems.push_back(new IOSubSystem());
+    m_Subsystems.push_back(new MassBalanceSubsystem());
+    m_Subsystems.push_back(new ExternalReactionsSubsystem());
+    m_Subsystems.push_back(new GroundReactionsSubsystem());
+
+    
+
+    m_Notebook->append_page(m_fcDemo,"Flight Control"); 
+    
+        // Call Create() for all subsystems
+        for (const auto &i : m_Subsystems) 
+        {
+            i->Create();
+            m_Notebook->append_page(i->m_Grid, i->m_Name);  
+        }
 
     //Load Stack elements..
     if(!load_stack(app))
@@ -240,5 +237,4 @@ void ExampleWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_
 }
 
 };
-
 

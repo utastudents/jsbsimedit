@@ -21,6 +21,8 @@ public:
     float getEmptyMass() const;
     std::string getUnits() const;
 
+    void convertUnits();
+
 };
 
 }

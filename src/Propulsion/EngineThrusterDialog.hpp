@@ -5,6 +5,9 @@
 #include <iostream>
 #include <gtk/gtk.h>
 #include <gtkmm.h>
+#include "PropulsionSubsystem.hpp"
+
+class PropulsionSubsystem;
 
 class EngineThrusterDialog : public Gtk::Window {
 public:

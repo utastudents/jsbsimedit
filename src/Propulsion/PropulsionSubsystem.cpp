@@ -10,6 +10,9 @@
 #include "PropulsionSubsystem.hpp"
 #include "PropulsionManager.hpp"
 #include "EngineSelectorWindow.hpp"
+#include "EngineThrusterDialog.hpp"
+
+PropulsionManager m_PropManager;  // Propulsion manager instance
 
 namespace fs = std::filesystem;
 
@@ -17,7 +20,12 @@ PropulsionSubsystem::PropulsionSubsystem() {
     m_Name = "Propulsion";
     std::cout << "In PropulsionSubsystem constructor" << std::endl;
 }
-
+std::string PropulsionSubsystem::getSelectedEngine() const {
+    return std::string(selectedEngine);
+}
+std::string PropulsionSubsystem::getSelectedThruster() const {
+    return std::string(selectedThruster);
+}
 void PropulsionSubsystem::Create() {
     std::cout << "in PropulsionSubsystem::Create" << std::endl;
 
@@ -163,8 +171,16 @@ void PropulsionSubsystem::Create() {
     Gtk::Label* pLabelTK = Gtk::make_managed<Gtk::Label>("Select Tank:");
     // Create the ComboBoxText (dropdown menu) for Tank selection
     Gtk::ComboBoxText* pComboBoxTK = Gtk::make_managed<Gtk::ComboBoxText>();
-    // TODO: Replace with xml logic to find Tanks
-    // Placeholders
+     // Location UI for Tank
+    Gtk::Label* pLabelLocX = Gtk::make_managed<Gtk::Label>("Location X:");
+    Gtk::Entry* pEntryLocX = Gtk::make_managed<Gtk::Entry>();
+
+    Gtk::Label* pLabelLocY = Gtk::make_managed<Gtk::Label>("Location Y:");
+    Gtk::Entry* pEntryLocY = Gtk::make_managed<Gtk::Entry>();
+
+    Gtk::Label* pLabelLocZ = Gtk::make_managed<Gtk::Label>("Location Z:");
+    Gtk::Entry* pEntryLocZ = Gtk::make_managed<Gtk::Entry>();
+
     pComboBoxTK->append("No Selection");
     pComboBoxTK->append("FULL TANK 1000 GALLONS");
     pComboBoxTK->append("NFULL TANK 1000 GALLONS");
