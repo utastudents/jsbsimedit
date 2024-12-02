@@ -140,9 +140,23 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             std::shared_ptr<Table> table = std::make_shared<Table>();
 
             std::string name = i.GetName();
+
+            std::string rowProperty = "";
+            std::string columnProperty = "";
+            // Some tables have a row property and a column property
+            for(auto child : i.GetChildren()) {
+                if(child.GetName() == "independentVar") {
+                    if(child.GetAttribute("lookup").second == "column")
+                        columnProperty = "";
+                    else if(child.GetAttribute("lookup").second == "row" || rowProperty == "")
+                        rowProperty = child.GetText();
+                }
+            }
             std::string tableData = i.FindChild("tableData").GetText();
             table->setName(name);
             table->setTableData(tableData);
+            table->setRowProperty(rowProperty);
+            table->setColumnProperty(columnProperty);
 
             // Create a row to represent the table in the tree
             auto row = *(aerodynamicsNodes->append(parent.children()));

@@ -55,8 +55,12 @@ class Component
         void setDimensionsShape(Unit type);
         void setPressureUnit(Unit type);
         void setValveCoefficientUnit(Unit type);
-        void setLocation(double locationX, double locationY, double locationZ);
-        void setDimensions(double x, double y, double z);
+        void setXLocation(double x);
+        void setYLocation(double y);
+        void setZLocation(double z);
+        void setXDimension(double x);
+        void setYDimension(double y);
+        void setZDimension(double z);
         void setOverpressure(double overpressure);
         void setValveCoefficient(double valveCoefficient);
         void setInitialFullness(double initFullness);
@@ -68,22 +72,29 @@ class Component
         Component::Unit getDimensionsShape() const;
         Component::Unit getPressureUnit() const;
         Component::Unit getValveCoefficientUnit() const;
-        std::vector<double> getLocation() const;
-        std::vector<double> getDimensions() const;
+        double getXLocation() const;
+        double getYLocation() const;
+        double getZLocation() const;
+        double getXDimension() const;
+        double getYDimension() const;
+        double getZDimension() const;
         double getOverpressure() const;
         double getValveCoefficient() const;
         double getInitialFullness() const;
         std::string getName() const;
 
         static std::string unitToString(Unit unit);
-        static int getBallonetCount();
-        static void setBallonetCount(int count);
+        static std::string gasTypeToString(GasType gastype);
 
     protected:
         GasType gasType;
         std::string name;
-        double location[3];
-        double dimensions[3];
+        double xLocation;
+        double yLocation;
+        double zLocation;
+        double xDimension;
+        double yDimension;
+        double zDimension;
         double maxOverpressure;
         double valveCoefficient;
         double fullness;
@@ -92,13 +103,6 @@ class Component
         Unit dimensionsShape;
         Unit pressureUnit;
         Unit valveCoefficientUnit;
-        // double volume;
-        // double temperature;
-        // double pressure;
-        // double mass;
-        bool hasHeat;
-        std::vector<MathFunction> heatFunctions;
-        static int ballonetCount;
-        
+        // bool hasHeat;
 };
 

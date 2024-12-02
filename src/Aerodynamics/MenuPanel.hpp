@@ -31,6 +31,11 @@ private:
     Gtk::Entry* nameEntry;
     Gtk::Entry* descriptionEntry;
     Gtk::ComboBoxText* dropdown;
+    Gtk::Grid* grid;
+    Gtk::Label* dropdownLabel;
+    Gtk::Label* nameLabel;
+    Gtk::Label* descriptionLabel;
+    Gtk::Button* saveButton;
 };
 
 class TableMenu : public MenuPanel {
@@ -44,6 +49,11 @@ private:
     std::shared_ptr<Table> table;
     Glib::RefPtr<Gtk::ListStore> list_store;
     Gtk::TreeView* tree_view;
+    Gtk::Grid* grid;
+    Gtk::Label* rowPropertyLabel;
+    Gtk::Label* columnPropertyLabel;
+    Gtk::Entry* rowPropertyEntry;
+    Gtk::Entry* columnPropertyEntry;
 
     // Column structure for TreeView
     class TableColumns : public Gtk::TreeModel::ColumnRecord {
@@ -68,7 +78,9 @@ private:
     Gtk::Label* inputLabel;
     Gtk::Entry* inputEntry;
     std::shared_ptr<Value> value;
+    Gtk::Button* saveButton;
     void on_text_changed();
+    void on_save_clicked();
 };
 
 class AxisMenu : public MenuPanel {
@@ -77,6 +89,7 @@ public:
 private:
     void on_name_dropdown_selected();
     void on_unit_dropdown_selected();
+    void on_save_clicked();
     std::shared_ptr<Axis> axis;
     Gtk::Grid* grid;
     Gtk::Label* nameDropdownLabel;
@@ -85,6 +98,7 @@ private:
     Gtk::DropDown* unitDropdown;
     std::shared_ptr<Gtk::StringList> name_list;
     std::shared_ptr<Gtk::StringList> unit_list;
+    Gtk::Button* saveButton;
 };
 
 class PropertyMenu : public MenuPanel {
