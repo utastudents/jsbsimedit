@@ -1,11 +1,15 @@
 #pragma once
 #include <gtkmm.h>
+#include "inc/XML_api.hpp"
+#include "XML/XMLDoc.hpp"
 
 
 class PopUpWindow : public Gtk::Window { // Explicitly inherit from Gtk::Window
 public:
+
     PopUpWindow();
     virtual ~PopUpWindow();
+    
 
 protected:
 
@@ -14,8 +18,9 @@ protected:
     void onShowAllButtonClicked();
     void onOkButtonClicked();
     void onCancelButtonClicked();
-    void loadPropertiesFromFile(const std::string& fileName);
+    void loadPropertiesFromFile(const std::string& filePath);
     void onPropertySelected();
+    void updateShowHideCounts();
    // Helper methods
     void applyFilter();
     
@@ -38,6 +43,8 @@ private:
     Gtk::Button okButton; 
     Gtk::Button cancelButton; 
     Gtk::Button closeButton;
+    Gtk::Label showLabel;
+    Gtk::Label hideLabel;
     int visibleProperties; 
     int hiddenProperties; 
     
