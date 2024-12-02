@@ -43,10 +43,10 @@ private:
     Gtk::Button okButton; 
     Gtk::Button cancelButton; 
     Gtk::Button closeButton;
-    Gtk::Label showLabel;
-    Gtk::Label hideLabel;
     int visibleProperties; 
     int hiddenProperties; 
+    Gtk::Label showLabel;
+    Gtk::Label hideLabel;
     
     //Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
     //Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
