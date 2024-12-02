@@ -81,6 +81,12 @@ void MetricsSubsystem::Create()
     load_data(xmlptr());
 }
 
+// This method should be invoked when the XML is being saved
+void MetricsSubsystem::save_data(JSBEdit::XMLDoc* doc_ptr)
+{
+  // doc_ptr->SaveToFile
+}
+
 // This method should be invoked when an XML is opened
 void MetricsSubsystem::load_data(JSBEdit::XMLDoc* doc_ptr)
 {
@@ -314,7 +320,7 @@ void MetricsSubsystem::add_data_unit(std::string tab_name, Metrics::string_vecto
       });
 }
 
-double MetricsSubsystem::update_text(std::string data)
+double MetricsSubsystem::update_text(const std::string& data)
 {
   try
   {

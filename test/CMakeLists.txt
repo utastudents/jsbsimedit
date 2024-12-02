@@ -7,8 +7,9 @@ project(JSBSimEdit_Testing)
 
 
 # get the files recursively so that programmers don't have to touch this file
-file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/XML/*.cpp)
-#file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
+# file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/XML/*.cpp)
+# file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/Metrics/*.cpp)
+file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
 
 # filter out main.cpp
 list(FILTER SIMEDIT_SOURCES EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/src/Application/main.cpp")
@@ -22,7 +23,7 @@ list(FILTER SIMEDIT_SOURCES EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/src/Application/m
 #file(GLOB GROUND_TESTS Ground-Reactions/*.cpp )
 #file(GLOB INPUT_OUTPUT_TESTS Input-Output/*.cpp )
 #file(GLOB MASS_BALANCE_TESTS Mass-Balance/*.cpp )
-#file(GLOB METRICS_TESTS Metrics/*.cpp )
+file(GLOB METRICS_TESTS Metrics/*.cpp )
 #file(GLOB PLOT_EDITING_TESTS Plot-Editing/*.cpp )
 #file(GLOB PROPULSION_TESTS Propulsion/*.cpp )
 #file(GLOB SYSTEM_TESTS System/*.cpp )
