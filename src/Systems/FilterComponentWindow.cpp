@@ -47,15 +47,6 @@ void FilterComponentWindow::FilterTab() {
     Gtk::CheckButton enableButton{"Enable"};
     grid.attach(enableButton, 0, 5);
 
-    // FC-18, FC-19: OK and Cancel buttons
-    Gtk::Button okButton{"OK"};
-    okButton.signal_clicked().connect([this]() { SaveInfo(); });
-    grid.attach(okButton, 0, 6);
-
-    Gtk::Button cancelButton{"Cancel"};
-    cancelButton.signal_clicked().connect([this]() { CancelInfo(); });
-    grid.attach(cancelButton, 1, 6);
-
     m_noteBook.append_page(grid, "Filter");
 }
 
