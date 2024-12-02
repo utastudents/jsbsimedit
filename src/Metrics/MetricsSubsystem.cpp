@@ -76,19 +76,88 @@ void MetricsSubsystem::Create()
     row += 2;
   }
 
+  auto save_button = Gtk::make_managed<Gtk::Button>();
+  save_button->set_label("Save");
+  save_button->signal_activate().connect([this]()
+                                         { save_data(xmlptr()); });
+
+  m_Grid.attach(*save_button, 0, row);
+
   // load metrics from XML file
   if (xmlptr())
     load_data(xmlptr());
 }
 
 // This method should be invoked when the XML is being saved
-void MetricsSubsystem::save_data(JSBEdit::XMLDoc* doc_ptr)
+void MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)
 {
-  // doc_ptr->SaveToFile
+  std::cout << "MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)\n";
+
+  // // Get metrics node
+  // JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
+  // if (!metricsNode)
+  // {
+  //   std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
+  //   return;
+  // }
+
+  // // Saving data_unit s
+  // for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
+  // {
+
+  //   JSBEdit::XMLNode node = metricsNode.FindChild(cit->first);
+
+  //   if (node)
+  //   {
+  //     AttributeKV unit_attribute{"unit", cit->second->get_its_unit()->get_unit()};
+  //     node.SetAttribute(unit_attribute);
+  //     node.SetText(std::to_string(cit->second->get_value()));
+
+  //     cit->second->set_value(value);
+  //     cit->second->get_its_unit()->set_current_unit(unit);
+  //   }
+  // }
+
+  // // Save vertex_unit s
+  // std::vector<JSBEdit::XMLNode> locationNodes = metricsNode.GetChildren();
+  // for (auto &locationNode : locationNodes)
+  // {
+  //   if (locationNode.GetName() == "location")
+  //   {
+  //     std::string name = locationNode.GetAttribute("name").second;
+
+  //     if (name == "AERORP")
+  //       name = "Aerodynamic Reference Point";
+
+  //     else if (name == "EYEPOINT")
+  //       name = "Eye Point";
+
+  //     else if (name == "VRP")
+  //       name = "Visual Reference Point";
+
+  //     else
+  //       continue;
+
+  //     AttributeKV unit_attribute{"unit", vertex_data_units[name]->get_its_unit()->get_unit()};
+  //     node.SetAttribute(unit_attribute);
+
+  //     auto &x_node{locationNode.FindChild("x")};
+  //     x_node.SetText(vertex_data_units[name]->get_x());
+
+  //     auto &x_node{locationNode.FindChild("y")};
+  //     x_node.SetText(vertex_data_units[name]->get_y());
+
+  //     auto &x_node{locationNode.FindChild("z")};
+  //     x_node.SetText(vertex_data_units[name]->get_z());
+  //   }
+  // }
+
+  // // This is only used for testing. Remove this function so mainwindow can handle the file path
+  // doc_ptr->SaveToFile("f16.xml");
 }
 
 // This method should be invoked when an XML is opened
-void MetricsSubsystem::load_data(JSBEdit::XMLDoc* doc_ptr)
+void MetricsSubsystem::load_data(JSBEdit::XMLDoc *doc_ptr)
 {
   // Get metrics node
   JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
@@ -112,16 +181,16 @@ void MetricsSubsystem::load_data(JSBEdit::XMLDoc* doc_ptr)
       cit->second->get_its_unit()->set_current_unit(unit);
 
       // Searching for widgets to update
-      Gtk::Entry* value_box{nullptr};
-      Gtk::DropDown* unit_dropdown{nullptr};
+      Gtk::Entry *value_box{nullptr};
+      Gtk::DropDown *unit_dropdown{nullptr};
       for (int i = 0; i < LABELS; i++)
       {
         auto it = m_Grid.get_child_at(0, i);
-        auto* label = dynamic_cast<Gtk::Label*>(it);
+        auto *label = dynamic_cast<Gtk::Label *>(it);
         if (label->get_text().raw() == cit->first)
         {
-          value_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(1, i));
-          unit_dropdown = dynamic_cast<Gtk::DropDown*>(m_Grid.get_child_at(3, i));
+          value_box = dynamic_cast<Gtk::Entry *>(m_Grid.get_child_at(1, i));
+          unit_dropdown = dynamic_cast<Gtk::DropDown *>(m_Grid.get_child_at(3, i));
           break;
         }
       }
@@ -163,20 +232,20 @@ void MetricsSubsystem::load_data(JSBEdit::XMLDoc* doc_ptr)
       vertex_data_units[name]->get_its_unit()->set_current_unit(unit);
 
       // Searching for widgets to update
-      Gtk::Entry* x_box{nullptr};
-      Gtk::Entry* y_box{nullptr};
-      Gtk::Entry* z_box{nullptr};
-      Gtk::DropDown* unit_dropdown{nullptr};
-      for (int i = 9; i <= 13; i+=2)
+      Gtk::Entry *x_box{nullptr};
+      Gtk::Entry *y_box{nullptr};
+      Gtk::Entry *z_box{nullptr};
+      Gtk::DropDown *unit_dropdown{nullptr};
+      for (int i = 9; i <= 13; i += 2)
       {
         auto it = m_Grid.get_child_at(0, i);
-        auto* label = dynamic_cast<Gtk::Label*>(it);
+        auto *label = dynamic_cast<Gtk::Label *>(it);
         if (label->get_text().raw() == name)
         {
-          x_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(1, i + 1));
-          y_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(3, i + 1));
-          z_box = dynamic_cast<Gtk::Entry*>(m_Grid.get_child_at(5, i + 1));
-          unit_dropdown = dynamic_cast<Gtk::DropDown*>(m_Grid.get_child_at(7, i + 1));
+          x_box = dynamic_cast<Gtk::Entry *>(m_Grid.get_child_at(1, i + 1));
+          y_box = dynamic_cast<Gtk::Entry *>(m_Grid.get_child_at(3, i + 1));
+          z_box = dynamic_cast<Gtk::Entry *>(m_Grid.get_child_at(5, i + 1));
+          unit_dropdown = dynamic_cast<Gtk::DropDown *>(m_Grid.get_child_at(7, i + 1));
           break;
         }
       }
@@ -258,7 +327,7 @@ void MetricsSubsystem::add_vertex_data_unit(std::string tab_name, Metrics::strin
 
   // Connect dropdown signal to a handler
   drop_down->property_selected().signal_changed().connect(
-    [this, tab_name, drop_down, dropdown_bank]()
+      [this, tab_name, drop_down, dropdown_bank]()
       {
         auto selected = drop_down->get_selected();
         if (selected != -1)
@@ -309,7 +378,7 @@ void MetricsSubsystem::add_data_unit(std::string tab_name, Metrics::string_vecto
 
   // Connect dropdown signal to a handler
   drop_down->property_selected().signal_changed().connect(
-    [this, tab_name, drop_down, dropdown_bank]()
+      [this, tab_name, drop_down, dropdown_bank]()
       {
         auto selected = drop_down->get_selected();
         if (selected != -1)
@@ -320,7 +389,7 @@ void MetricsSubsystem::add_data_unit(std::string tab_name, Metrics::string_vecto
       });
 }
 
-double MetricsSubsystem::update_text(const std::string& data)
+double MetricsSubsystem::update_text(const std::string &data)
 {
   try
   {
@@ -332,7 +401,7 @@ double MetricsSubsystem::update_text(const std::string& data)
   }
 }
 
-void MetricsSubsystem::set_selected_by_name(Gtk::DropDown* dropdown, const std::string& name)
+void MetricsSubsystem::set_selected_by_name(Gtk::DropDown *dropdown, const std::string &name)
 {
   auto bank = std::dynamic_pointer_cast<Gtk::StringList>(dropdown->get_model());
   if (bank)
