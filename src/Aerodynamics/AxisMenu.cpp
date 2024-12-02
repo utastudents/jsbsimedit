@@ -33,9 +33,6 @@ AxisMenu::AxisMenu(std::shared_ptr<AerodynamicsNode> node)
         index++;
     }
 
-    // Connect the dropdown selection signal to a function
-    nameDropdown->property_selected().signal_changed().connect(sigc::mem_fun(*this, &AxisMenu::on_name_dropdown_selected));
-
     // Populate the dropdown menu with unit names
     unitDropdown = Gtk::make_managed<Gtk::DropDown>();
     unit_list = Gtk::StringList::create();
@@ -57,18 +54,18 @@ AxisMenu::AxisMenu(std::shared_ptr<AerodynamicsNode> node)
         index++;
     }
 
-    // Connect the dropdown selection signal to a function
-    unitDropdown->property_selected().signal_changed().connect(sigc::mem_fun(*this, &AxisMenu::on_unit_dropdown_selected));
+    saveButton = Gtk::make_managed<Gtk::Button>();
+    saveButton->set_label("Save");
+    saveButton->signal_clicked().connect(sigc::mem_fun(*this,&AxisMenu::on_save_clicked));
+    grid->attach(*saveButton,1,2);
 }
 
-void AxisMenu::on_name_dropdown_selected() {
+void AxisMenu::on_save_clicked() {
     std::string newName = name_list->get_string(nameDropdown->get_selected());
     axis->setName(Axis::stringToAxisName[newName]);
-    update_signal.emit();
-}
 
-void AxisMenu::on_unit_dropdown_selected() {
     std::string newUnit = unit_list->get_string(unitDropdown->get_selected());
     axis->setUnit(Axis::stringToUnitName[newUnit]);
+
     update_signal.emit();
 }

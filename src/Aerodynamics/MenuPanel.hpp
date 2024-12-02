@@ -89,6 +89,7 @@ public:
 private:
     void on_name_dropdown_selected();
     void on_unit_dropdown_selected();
+    void on_save_clicked();
     std::shared_ptr<Axis> axis;
     Gtk::Grid* grid;
     Gtk::Label* nameDropdownLabel;
@@ -97,6 +98,7 @@ private:
     Gtk::DropDown* unitDropdown;
     std::shared_ptr<Gtk::StringList> name_list;
     std::shared_ptr<Gtk::StringList> unit_list;
+    Gtk::Button* saveButton;
 };
 
 class PropertyMenu : public MenuPanel {
