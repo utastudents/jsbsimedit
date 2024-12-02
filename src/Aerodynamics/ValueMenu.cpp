@@ -12,7 +12,8 @@ ValueMenu::ValueMenu(std::shared_ptr<AerodynamicsNode> node)
     grid->set_row_spacing(10);
     append(*grid);
 
-    inputLabel = Gtk::make_managed<Gtk::Label>("Value");
+    inputLabel = Gtk::make_managed<Gtk::Label>("Value:");
+    inputLabel->set_halign(Gtk::Align::START);
     grid->attach(*inputLabel,0,0);
     inputEntry = Gtk::make_managed<Gtk::Entry>();
     grid->attach(*inputEntry, 1,0);

@@ -19,6 +19,7 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
 
     // Create row property label and entry
     rowPropertyLabel = Gtk::make_managed<Gtk::Label>("Row Property:");
+    rowPropertyLabel->set_halign(Gtk::Align::START);
     grid->attach(*rowPropertyLabel,0,0);
 
     rowPropertyEntry = Gtk::make_managed<Gtk::Entry>();
@@ -28,6 +29,7 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
 
     // Create column property label and entry
     columnPropertyLabel = Gtk::make_managed<Gtk::Label>("Column Property:");
+    columnPropertyLabel->set_halign(Gtk::Align::START);
     grid->attach(*columnPropertyLabel,0,1);
 
     columnPropertyEntry = Gtk::make_managed<Gtk::Entry>();
