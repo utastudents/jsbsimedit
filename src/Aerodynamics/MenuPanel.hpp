@@ -44,6 +44,11 @@ private:
     std::shared_ptr<Table> table;
     Glib::RefPtr<Gtk::ListStore> list_store;
     Gtk::TreeView* tree_view;
+    Gtk::Grid* grid;
+    Gtk::Label* rowPropertyLabel;
+    Gtk::Label* columnPropertyLabel;
+    Gtk::Entry* rowPropertyEntry;
+    Gtk::Entry* columnPropertyEntry;
 
     // Column structure for TreeView
     class TableColumns : public Gtk::TreeModel::ColumnRecord {

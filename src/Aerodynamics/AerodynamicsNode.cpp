@@ -101,9 +101,19 @@ const std::string &Table::getRowProperty() const
     return rowProperty;
 }
 
+void Table::setRowProperty(const std::string &rowProperty)
+{
+    this->rowProperty = rowProperty;
+}
+
 const std::string &Table::getColumnProperty() const
 {
     return columnProperty;
+}
+
+void Table::setColumnProperty(const std::string &columnProperty)
+{
+    this->columnProperty = columnProperty;
 }
 
 const std::string &Table::getTableData() const

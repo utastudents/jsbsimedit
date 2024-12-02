@@ -11,11 +11,36 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
     // Set the header
     setHeader("Table Menu");
 
+    // Create grid
+    grid = Gtk::make_managed<Gtk::Grid>();
+    grid->set_row_spacing(10);
+    grid->set_column_spacing(10);
+    append(*grid);
+
+    // Create row property label and entry
+    rowPropertyLabel = Gtk::make_managed<Gtk::Label>("Row Property:");
+    grid->attach(*rowPropertyLabel,0,0);
+
+    rowPropertyEntry = Gtk::make_managed<Gtk::Entry>();
+    rowPropertyEntry->set_text(table->getRowProperty());
+    rowPropertyEntry->set_editable(false);
+    grid->attach(*rowPropertyEntry,1,0);
+
+    // Create column property label and entry
+    columnPropertyLabel = Gtk::make_managed<Gtk::Label>("Column Property:");
+    grid->attach(*columnPropertyLabel,0,1);
+
+    columnPropertyEntry = Gtk::make_managed<Gtk::Entry>();
+    columnPropertyEntry->set_text(table->getColumnProperty());
+    columnPropertyEntry->set_editable(false);
+    grid->attach(*columnPropertyEntry,1,1);
+
     // Create a scrolled window for the TreeView
     auto scrolled_window = Gtk::make_managed<Gtk::ScrolledWindow>();
     scrolled_window->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
     scrolled_window->set_min_content_height(300);
     scrolled_window->set_min_content_width(500);
+    scrolled_window->set_vexpand(true);
     append(*scrolled_window);
 
     // Create the TreeView
