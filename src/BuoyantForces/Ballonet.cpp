@@ -6,16 +6,19 @@ Ballonet::Ballonet(const std::string& name, GasType gastype)
 {
     this->gasType = gastype;
     this->name = name;
-    Component::ballonetCount++;
+    blowerValue = 0;
+    blowerUnits = Component::Unit::FT3_SEC;
 }
 
 Ballonet::Ballonet(const std::string& name) {
     this->name = name;
-    Component::ballonetCount++;
+    blowerValue = 0;
+    blowerUnits = Component::Unit::FT3_SEC;
 }
 
-Ballonet::~Ballonet() 
-{
+Ballonet::~Ballonet() {
+    blowerValue = 0;
+    blowerUnits = Component::Unit::FT3_SEC;
 }
 
 void Ballonet::setBlowerValue(double blowerValue) {
