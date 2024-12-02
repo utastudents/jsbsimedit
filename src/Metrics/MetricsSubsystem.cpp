@@ -77,7 +77,8 @@ void MetricsSubsystem::Create()
   }
 
   // load metrics from XML file
-  load_data(xmlptr());
+  if (xmlptr())
+    load_data(xmlptr());
 }
 
 // This method should be invoked when an XML is opened
