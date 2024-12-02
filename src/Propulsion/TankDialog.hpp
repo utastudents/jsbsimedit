@@ -32,6 +32,9 @@ private:
     bool isValidSelection();
     void onCreateButtonClicked();
     void onCancelButtonClicked();
+
+    // set default values method 
+    void defaultValueFill();
 };
 
 #endif // TANK_DIALOG_HPP
