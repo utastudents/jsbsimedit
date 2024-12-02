@@ -89,7 +89,7 @@ void ChannelCanvas::LoadChannelFromXml(const std::string & channelName, JSBEdit:
 void ChannelCanvas::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont, int width, int height)
 {
     //Drawing the back ground this color cause why not.
-    drawCont->set_source_rgb(0.54, 0.81, 0.94);
+    drawCont->set_source_rgb(0.83, 0.83, 0.83);
     drawCont->paint();
 
     auto result = m_channels.find(m_currentChannel);
