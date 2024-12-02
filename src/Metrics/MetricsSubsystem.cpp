@@ -93,67 +93,67 @@ void MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)
 {
   std::cout << "MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)\n";
 
-  // Get metrics node
-  JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
-  if (!metricsNode)
-  {
-    std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
-    return;
-  }
+  // // Get metrics node
+  // JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
+  // if (!metricsNode)
+  // {
+  //   std::cerr << "Error: <metrics> node not found in XML file." << std::endl;
+  //   return;
+  // }
 
-  // Saving data_unit s
-  for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
-  {
+  // // Saving data_unit s
+  // for (auto cit = data_units.cbegin(); cit != data_units.cend(); ++cit)
+  // {
 
-    JSBEdit::XMLNode node = metricsNode.FindChild(cit->first);
+  //   JSBEdit::XMLNode node = metricsNode.FindChild(cit->first);
 
-    if (node)
-    {
-      AttributeKV unit_attribute{"unit", cit->second->get_its_unit()->get_unit()};
-      node.SetAttribute(unit_attribute);
-      node.SetText(std::to_string(cit->second->get_value()));
+  //   if (node)
+  //   {
+  //     AttributeKV unit_attribute{"unit", cit->second->get_its_unit()->get_unit()};
+  //     node.SetAttribute(unit_attribute);
+  //     node.SetText(std::to_string(cit->second->get_value()));
 
-      cit->second->set_value(value);
-      cit->second->get_its_unit()->set_current_unit(unit);
-    }
-  }
+  //     cit->second->set_value(value);
+  //     cit->second->get_its_unit()->set_current_unit(unit);
+  //   }
+  // }
 
-  // Save vertex_unit s
-  std::vector<JSBEdit::XMLNode> locationNodes = metricsNode.GetChildren();
-  for (auto &locationNode : locationNodes)
-  {
-    if (locationNode.GetName() == "location")
-    {
-      std::string name = locationNode.GetAttribute("name").second;
+  // // Save vertex_unit s
+  // std::vector<JSBEdit::XMLNode> locationNodes = metricsNode.GetChildren();
+  // for (auto &locationNode : locationNodes)
+  // {
+  //   if (locationNode.GetName() == "location")
+  //   {
+  //     std::string name = locationNode.GetAttribute("name").second;
 
-      if (name == "AERORP")
-        name = "Aerodynamic Reference Point";
+  //     if (name == "AERORP")
+  //       name = "Aerodynamic Reference Point";
 
-      else if (name == "EYEPOINT")
-        name = "Eye Point";
+  //     else if (name == "EYEPOINT")
+  //       name = "Eye Point";
 
-      else if (name == "VRP")
-        name = "Visual Reference Point";
+  //     else if (name == "VRP")
+  //       name = "Visual Reference Point";
 
-      else
-        continue;
+  //     else
+  //       continue;
 
-      AttributeKV unit_attribute{"unit", vertex_data_units[name]->get_its_unit()->get_unit()};
-      node.SetAttribute(unit_attribute);
+  //     AttributeKV unit_attribute{"unit", vertex_data_units[name]->get_its_unit()->get_unit()};
+  //     node.SetAttribute(unit_attribute);
 
-      auto &x_node{locationNode.FindChild("x")};
-      x_node.SetText(vertex_data_units[name]->get_x());
+  //     auto &x_node{locationNode.FindChild("x")};
+  //     x_node.SetText(vertex_data_units[name]->get_x());
 
-      auto &x_node{locationNode.FindChild("y")};
-      x_node.SetText(vertex_data_units[name]->get_y());
+  //     auto &x_node{locationNode.FindChild("y")};
+  //     x_node.SetText(vertex_data_units[name]->get_y());
 
-      auto &x_node{locationNode.FindChild("z")};
-      x_node.SetText(vertex_data_units[name]->get_z());
-    }
-  }
+  //     auto &x_node{locationNode.FindChild("z")};
+  //     x_node.SetText(vertex_data_units[name]->get_z());
+  //   }
+  // }
 
-  // This is only used for testing. Remove this function so mainwindow can handle the file path
-  doc_ptr->SaveToFile("f16.xml");
+  // // This is only used for testing. Remove this function so mainwindow can handle the file path
+  // doc_ptr->SaveToFile("f16.xml");
 }
 
 // This method should be invoked when an XML is opened
