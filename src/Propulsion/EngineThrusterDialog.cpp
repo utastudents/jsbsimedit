@@ -217,3 +217,54 @@ void EngineThrusterDialog::defaultValueFill() {
     thruster_location_dropdown->set_active(0);  // Default to "IN"
     thruster_orient_dropdown->set_active(0);  // Default to "DEG"
 }
+
+//This function accepts a preset string and updates the dialog fields based on predefined values for that preset.
+void EngineThrusterDialog::presetValueFill(const std::string& preset) {
+    if (preset == "Preset1") {
+        // Apply values for Preset1
+        engine_name_entry->set_text("Engine A");
+        x_entry->set_text("10.0");
+        y_entry->set_text("15.0");
+        z_entry->set_text("5.0");
+        roll_entry->set_text("5.0");
+        pitch_entry->set_text("10.0");
+        yaw_entry->set_text("0.0");
+        location_dropdown->set_active(1);  // Default to "FT"
+        orient_dropdown->set_active(1);  // Default to "RAD"
+
+        thruster_name_entry->set_text("Thruster X");
+        thruster_x_entry->set_text("8.0");
+        thruster_y_entry->set_text("6.0");
+        thruster_z_entry->set_text("2.0");
+        thruster_roll_entry->set_text("2.0");
+        thruster_pitch_entry->set_text("4.0");
+        thruster_yaw_entry->set_text("1.0");
+        thruster_location_dropdown->set_active(1);  // Default to "FT"
+        thruster_orient_dropdown->set_active(1);  // Default to "RAD"
+    }
+    else if (preset == "Preset2") {
+        // Apply values for Preset2
+        engine_name_entry->set_text("Engine B");
+        x_entry->set_text("20.0");
+        y_entry->set_text("25.0");
+        z_entry->set_text("15.0");
+        roll_entry->set_text("15.0");
+        pitch_entry->set_text("20.0");
+        yaw_entry->set_text("5.0");
+        location_dropdown->set_active(2);  // Default to "M"
+        orient_dropdown->set_active(0);  // Default to "DEG"
+
+        thruster_name_entry->set_text("Thruster Y");
+        thruster_x_entry->set_text("12.0");
+        thruster_y_entry->set_text("10.0");
+        thruster_z_entry->set_text("8.0");
+        thruster_roll_entry->set_text("3.0");
+        thruster_pitch_entry->set_text("6.0");
+        thruster_yaw_entry->set_text("2.0");
+        thruster_location_dropdown->set_active(2);  // Default to "M"
+        thruster_orient_dropdown->set_active(0);  // Default to "DEG"
+    }
+    else {
+        std::cerr << "Unknown preset: " << preset << std::endl;
+    }
+}
