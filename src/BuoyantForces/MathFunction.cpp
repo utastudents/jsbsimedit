@@ -31,15 +31,14 @@ void MathFunction::addValue(double value){
     valueArray.push_back(value);
 }
 
-void MathFunction::conduction(double surfaceArea, double conductivity) {
+double MathFunction::conduction(double surfaceArea, double conductivity) {
     double result = surfaceArea * conductivity;
-
-
+    return result;  // Return the result, conduction is not unused.
 }
 
-void MathFunction::radiation(double surfaceArea, double emissivity, double stefanConst) {
-    double result = surfaceArea * emissivity *  stefanConst;
-
+double MathFunction::radiation(double surfaceArea, double emissivity, double stefanConst) {
+    double result = surfaceArea * emissivity * stefanConst;
+    return result;  // Return the result, radiation is not unused.
 }
 
 void MathFunction:: del() {
