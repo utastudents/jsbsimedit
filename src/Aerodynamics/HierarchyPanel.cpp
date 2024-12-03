@@ -37,7 +37,8 @@ HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
 }
 
 // Emits a signal when a row is activated
-void HierarchyPanel::on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+void HierarchyPanel::on_row_activated(const Gtk::TreeModel::Path& path, G_GNUC_UNUSED  Gtk::TreeViewColumn* column)// the column parameter is declared but not used in the function body, issue resolved.
+{
     column->get_title();
     // Get the row from the TreeModel using the path
     Gtk::TreeModel::iterator iter = treeStore->get_iter(path);
