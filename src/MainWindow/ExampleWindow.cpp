@@ -161,6 +161,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
 
 bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app) //tabs
 {
+    (void) app;  // Mark the parameter as unused to avoid the warning
     //m_stack.add(m_tab1, "Tab1", "Tab1");
     //m_stack.add(m_tab2, "Tab2", "Tab2");
     m_stack.add(m_fcDemo, "Flight Control", "Flight Control");
