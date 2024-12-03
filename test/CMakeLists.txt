@@ -7,8 +7,8 @@ project(JSBSimEdit_Testing)
 
 
 # get the files recursively so that programmers don't have to touch this file
-file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/XML/*.cpp)
-#file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
+#file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/XML/*.cpp)
+file(GLOB_RECURSE SIMEDIT_SOURCES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
 
 # filter out main.cpp
 list(FILTER SIMEDIT_SOURCES EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/src/Application/main.cpp")
