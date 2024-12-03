@@ -19,42 +19,87 @@ void ExternalReactionsSubsystem::Create() {
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     m_notebook.append_page(*m_pages.back(), "Force 1");
 
-    // Force Name takes in a user input string
+    // Force Name Input
     auto nameLabel = Gtk::make_managed<Gtk::Label>("FORCE NAME");
     auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
     nameTextbox->set_text("");
     m_Grid.attach(*nameLabel, 0, row);
     m_Grid.attach(*nameTextbox, 1, row);
 
-    // Force Type dropdown window
+    // Force Type Dropdown
     auto typeLabel = Gtk::make_managed<Gtk::Label>("FORCE TYPE");
     auto typeDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
     typeDropDownList->append("Push-back");
     typeDropDownList->append("Hook");
     typeDropDownList->append("Gravity");
-    typeDropDownList->set_active(0); // Set default value
+    typeDropDownList->set_active(0); // Default to "Push-back"
     m_Grid.attach(*typeLabel, 3, row);
     m_Grid.attach(*typeDropDownList, 4, row);
 
-    // Attach to force object when selected
-    typeDropDownList->signal_changed().connect([this, typeDropDownList]() {
-        std::string selectedType = typeDropDownList->get_active_text();
-        if (selectedType == "Push-back") {
-            m_currentForce = Force(Force::forceVector(-2.98081, 0.0, -1.9683), Force::forceVector(1, 0, 0));
-        } else if (selectedType == "Hook") {
-            m_currentForce = Force(Force::forceVector(100.669, 0.0, -28.818), Force::forceVector(-0.9995, 0.0, 0.01));
-        }
-        // Additional types can be added here
-    });
+    // Force Metrics Dropdown
+    auto metricLabel = Gtk::make_managed<Gtk::Label>("METRIC");
+    auto metricDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
+    metricDropDownList->append("Inches");
+    metricDropDownList->append("Meters");
+    metricDropDownList->append("Feet");
+    metricDropDownList->set_active(0); // Default to "Inches"
+    m_Grid.attach(*metricLabel, 5, row);
+    m_Grid.attach(*metricDropDownList, 6, row);
 
-    // Frame dropdown window
+    // Location Input Fields
+    auto locLabel = Gtk::make_managed<Gtk::Label>("LOCATION");
+    auto locXTextbox = Gtk::make_managed<Gtk::Entry>();
+    auto locYTextbox = Gtk::make_managed<Gtk::Entry>();
+    auto locZTextbox = Gtk::make_managed<Gtk::Entry>();
+    locXTextbox->set_placeholder_text("X");
+    locYTextbox->set_placeholder_text("Y");
+    locZTextbox->set_placeholder_text("Z");
+    m_Grid.attach(*locLabel, 0, row + 1);
+    m_Grid.attach(*locXTextbox, 1, row + 1);
+    m_Grid.attach(*locYTextbox, 2, row + 1);
+    m_Grid.attach(*locZTextbox, 3, row + 1);
+
+    // Direction Input Fields
+    auto dirLabel = Gtk::make_managed<Gtk::Label>("DIRECTION");
+    auto dirXTextbox = Gtk::make_managed<Gtk::Entry>();
+    auto dirYTextbox = Gtk::make_managed<Gtk::Entry>();
+    auto dirZTextbox = Gtk::make_managed<Gtk::Entry>();
+    dirXTextbox->set_placeholder_text("X");
+    dirYTextbox->set_placeholder_text("Y");
+    dirZTextbox->set_placeholder_text("Z");
+    m_Grid.attach(*dirLabel, 0, row + 2);
+    m_Grid.attach(*dirXTextbox, 1, row + 2);
+    m_Grid.attach(*dirYTextbox, 2, row + 2);
+    m_Grid.attach(*dirZTextbox, 3, row + 2);
+
+    // Frame Dropdown
     auto frameLabel = Gtk::make_managed<Gtk::Label>("FRAME");
     auto frameDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
     frameDropDownList->append("BODY");
     frameDropDownList->append("LOCAL");
     frameDropDownList->append("WIND");
-    m_Grid.attach(*frameLabel, 3, row + 2);
-    m_Grid.attach(*frameDropDownList, 4, row + 2);
+    frameDropDownList->set_active(0); // Default to "BODY"
+    m_Grid.attach(*frameLabel, 0, row + 3);
+    m_Grid.attach(*frameDropDownList, 1, row + 3);
 
-    // Location and Direction fields as before...
+    // Connect Force Type Dropdown
+    typeDropDownList->signal_changed().connect([this, typeDropDownList, locXTextbox, locYTextbox, locZTextbox, dirXTextbox, dirYTextbox, dirZTextbox]() {
+        std::string selectedType = typeDropDownList->get_active_text();
+        if (selectedType == "Push-back") {
+            locXTextbox->set_text("1.0");
+            locYTextbox->set_text("0.0");
+            locZTextbox->set_text("0.0");
+            dirXTextbox->set_text("-2.0");
+            dirYTextbox->set_text("0.0");
+            dirZTextbox->set_text("-1.0");
+        } else if (selectedType == "Hook") {
+            locXTextbox->set_text("0.5");
+            locYTextbox->set_text("0.5");
+            locZTextbox->set_text("0.5");
+            dirXTextbox->set_text("2.0");
+            dirYTextbox->set_text("1.0");
+            dirZTextbox->set_text("-1.0");
+        }
+        // Additional force types can be added here
+    });
 }
