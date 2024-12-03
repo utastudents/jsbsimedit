@@ -196,5 +196,6 @@ std::string Component::unitToString(Unit unit) {
         case Unit::LB_FT_SEC_R:     return "lb ft / (sec R)";
         
         case Unit::FT3_SEC:         return "ft^3 / sec";
+        default:                    return "Unknown Unit";// default case if input doesn't match any case values.
     }
 }
