@@ -72,7 +72,33 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
     for (auto& i : children)
     {
         // Handle each type of node (function, axis, property, table, value)
-        if (i.GetName() == "function" || i.GetName() == "product") {
+
+        // Check if is an operator
+        for(auto operation : Function::operations) {
+            if(operation == i.GetName()) {
+                // Create a function data object
+                std::shared_ptr<Function> function = std::make_shared<Function>();
+
+                // Set function properties
+                std::string name = i.GetName();
+
+                function->setName(name);
+                function->setFunctionType(i.GetName());
+
+                // Create a row to represent the function in the tree
+                auto row = *(aerodynamicsNodes->append(parent.children()));
+                row[columns.columnName] = function->getName();
+
+                // TODO: Add unique icons for operators
+                row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-formula-30.png");
+                row[columns.node] = function;
+
+                appendChildren(row, i.GetChildren());
+            }
+        }
+
+        // If is a function
+        if (i.GetName() == "function") {
             // Create a function data object
             std::shared_ptr<Function> function = std::make_shared<Function>();
 
@@ -98,6 +124,8 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
 
             appendChildren(row, i.GetChildren());
         }
+
+        // If is an axis
         else if (i.GetName() == "axis") {
             // Create an axis data object
             std::shared_ptr<Axis> axis = std::make_shared<Axis>();
@@ -119,6 +147,8 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
                 
             appendChildren(row, i.GetChildren());
         }
+
+        // If is a property
         else if (i.GetName() == "property") {
             // Create a property data object
             std::shared_ptr<AeroProperty> property = std::make_shared<AeroProperty>();
@@ -135,6 +165,8 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             // Recursively add children of the property
             appendChildren(row, i.GetChildren());
         }
+
+        // If is a table
         else if (i.GetName() == "table") {
             // Create a table data object
             std::shared_ptr<Table> table = std::make_shared<Table>();
@@ -166,6 +198,8 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
 
             appendChildren(row, i.GetChildren());
         }
+
+        // If is a value
         else if (i.GetName() == "value") {
             // Create a value data object
             std::shared_ptr<Value> value = std::make_shared<Value>();
