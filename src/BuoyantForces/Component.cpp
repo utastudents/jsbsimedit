@@ -174,6 +174,7 @@ std::string Component::gasTypeToString(GasType gastype) {
         case GasType::AIR:              return "AIR";
         case GasType::HELIUM:           return "HELIUM";
         case GasType::HYDROGEN:         return "HYDROGEN";
+        default:                        return "Unknown GasType";  //default case
     }
 }
 
