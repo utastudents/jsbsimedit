@@ -2,6 +2,7 @@
 #include "Emptymass.hpp"
 #include "Location.hpp"
 #include "MomentOfInertia.hpp"
+#include "Pointmass.hpp"
 #include "gtkmm.h"
 #include "inc/Subsystem.hpp"
 
@@ -11,11 +12,11 @@ public:
   void Create();
   void on_button_pressed();
 
-//private:
+  // private:
   MassBalance::Location m_Location;
   MassBalance::EmptyMass m_Emptymass;
   MassBalance::MomentOfInertia m_airplane;
-
+  MassBalance::PointMass m_Pointmass;
   // These structures do not match what is / can be in the xml file
   bool m_negated_crossproduct_inertia;
 };
