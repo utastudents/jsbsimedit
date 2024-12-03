@@ -1,7 +1,8 @@
 #include "TankDialog.hpp"
 #include <iostream>
 
-TankDialog::TankDialog() {
+TankDialog::TankDialog() 
+{
     set_title("Tank Setup");
     set_default_size(600, 300);
 
@@ -11,7 +12,8 @@ TankDialog::TankDialog() {
 
     // Content area for the dialog
     Gtk::Box* content_area = dynamic_cast<Gtk::Box*>(dialogTank->get_content_area());
-    if (content_area) {
+    if (content_area) 
+    {
         content_area->append(grid);
     }
 
@@ -36,10 +38,10 @@ TankDialog::TankDialog() {
     grid.attach(contentsEntry, 4, 1);
     contentsUnitComboBox.append("LBS");
     contentsUnitComboBox.append("KG");
-    contentsUnitComboBox.set_size_request(70, -1);                  // Set width for dropdown
+    contentsUnitComboBox.set_size_request(50, -1);                  // Set width for dropdown
     grid.attach(contentsUnitComboBox, 5, 1);                        // Contents dropdown
 
-        // Location Section Header
+    // Location Section Header
     grid.attach(*Gtk::make_managed<Gtk::Label>("Location:"), 0, 3, 1, 1); // Header spans across 6 columns
 
     // Row for x, y, z inputs, with one dropdown for the z-axis
@@ -54,10 +56,15 @@ TankDialog::TankDialog() {
     // z-axis
     grid.attach(*Gtk::make_managed<Gtk::Label>("z ="), 4, 4); // z label
     grid.attach(zEntry, 5, 4);                               // z entry
-    Gtk::ComboBoxText* zUnitComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
+    
+    //Gtk::ComboBoxText* zUnitComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
+    zUnitComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
     zUnitComboBox->append("IN");
     zUnitComboBox->append("FT");
     zUnitComboBox->append("M");
+       
+    //zUnitComboBox.set_size_request(70, -1); 
+    zUnitComboBox->set_active(0);   
     grid.attach(*zUnitComboBox, 6, 4);                       // Dropdown for z
 
 
@@ -70,12 +77,14 @@ TankDialog::TankDialog() {
     createButton.set_hexpand(true); // Allow horizontal expansion
     createButton.set_halign(Gtk::Align::CENTER); // Align horizontally
     createButton.set_margin(10); // Add margin for better appearance
+    createButton.set_size_request(400, -1); // Set width to 150 pixels, height unchanged
 
     // Cancel Button
     cancelButton.set_label("Cancel");
     cancelButton.set_hexpand(true); // Allow horizontal expansion
     cancelButton.set_halign(Gtk::Align::CENTER); // Align horizontally
     cancelButton.set_margin(10); // Add margin for better appearance
+    cancelButton.set_size_request(400, -1); // Set width to 150 pixels, height unchanged
 
     // Pack buttons into the button box
     buttonBox->append(createButton);
@@ -91,39 +100,51 @@ TankDialog::TankDialog() {
     dialogTank->show(); 
 }
 
-bool TankDialog::isValidSelection() {
+/*TankDialog::~TankDialog() 
+{
+    delete zUnitComboBox;  // Proper cleanup
+}*/
+
+bool TankDialog::isValidSelection() 
+{
     return !typeComboBox.get_active_text().empty() &&
            !capacityEntry.get_text().empty() &&
            !contentsEntry.get_text().empty();
 }
 
-void TankDialog::onCreateButtonClicked() {
-    if (isValidSelection()) {
+void TankDialog::onCreateButtonClicked() 
+{
+    if (isValidSelection()) 
+    {
         std::cout << "Tank configuration saved!" << std::endl;
         dialogTank->close();
-    } else {
+    } 
+    else 
+    {
         std::cerr << "Please fill out all fields!" << std::endl;
     }
 }
 
-void TankDialog::onCancelButtonClicked() {
+void TankDialog::onCancelButtonClicked() 
+{
     dialogTank->close();
 }
 
-void TankDialog::defaultValueFill() {
+void TankDialog::defaultValueFill() 
+{
     // Set default values for the TankDialog fields
-    typeComboBox.set_active(0); // Default to "OXIDIZER"
-    capacityEntry.set_text("0.0");
+    typeComboBox.set_active(1); // Default to "OXIDIZER"
+    capacityEntry.set_text("0");
     capacityUnitComboBox.set_active(0); // Default to "LBS"
-    contentsEntry.set_text("0.0");
+    contentsEntry.set_text("0");
     contentsUnitComboBox.set_active(0); // Default to "LBS"
 
-    xEntry.set_text("0.0");
-    yEntry.set_text("0.0");
-    zEntry.set_text("0.0");
+    xEntry.set_text("0");
+    yEntry.set_text("0");
+    zEntry.set_text("0");
 
     // Assuming there's a zUnitComboBox, set its default value
-    Gtk::ComboBoxText* zUnitComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
+    //Gtk::ComboBoxText* zUnitComboBox = Gtk::make_managed<Gtk::ComboBoxText>();
     zUnitComboBox->set_active(0); // Default to "IN"
 }
 
