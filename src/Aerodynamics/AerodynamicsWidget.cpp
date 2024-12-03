@@ -89,8 +89,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
                 auto row = *(aerodynamicsNodes->append(parent.children()));
                 row[columns.columnName] = function->getName();
 
-                // TODO: Add unique icons for operators
-                row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-formula-30.png");
+                row[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-math-30.png");
                 row[columns.node] = function;
 
                 appendChildren(row, i.GetChildren());
@@ -256,6 +255,13 @@ void AerodynamicsWidget::updateData(Gtk::TreeRow parent)
             // Append description to name if available
             if (!function->getDescription().empty())
                 i[columns.columnName] = function->getName() + " (" + function->getDescription() + ")";
+            // Change icon to operator or function
+            if(function->getFunctionType() == "function") {
+                i[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-formula-30.png");
+            }
+            else {
+                i[columns.icon] = Gdk::Pixbuf::create_from_file("../../../assets/nodeIcons/icons8-math-30.png");
+            }
         }
         if(node->getType() == AerodynamicsNode::AXIS) {
             std::shared_ptr<Axis> axis = std::dynamic_pointer_cast<Axis>(node);
