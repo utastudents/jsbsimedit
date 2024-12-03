@@ -6,8 +6,6 @@ namespace JSBEdit {
 ExampleTab::ExampleTab(const Glib::RefPtr<Gtk::Application>& app
     , const std::string& buttonName)
         : l(buttonName)
-     (void)app;  // Suppresses the unused parameter warning
-
 {
     try
     {
