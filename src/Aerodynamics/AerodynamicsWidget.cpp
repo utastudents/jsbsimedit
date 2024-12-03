@@ -178,7 +178,7 @@ void AerodynamicsWidget::appendChildren(Gtk::TreeRow parent, std::vector<JSBEdit
             for(auto child : i.GetChildren()) {
                 if(child.GetName() == "independentVar") {
                     if(child.GetAttribute("lookup").second == "column")
-                        columnProperty = "";
+                        columnProperty = child.GetText();
                     else if(child.GetAttribute("lookup").second == "row" || rowProperty == "")
                         rowProperty = child.GetText();
                 }
