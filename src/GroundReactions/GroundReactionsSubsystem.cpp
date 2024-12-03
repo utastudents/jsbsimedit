@@ -269,5 +269,5 @@ void GroundReactionsSubsystem::Create() {
     m_Grid.attach(*buttonContact5, 0, 4);
 
     // Keep track of rows
-    int row = 1;
+    //int row = 1; unused varaible can be uncommented if needed to be used.
 }
