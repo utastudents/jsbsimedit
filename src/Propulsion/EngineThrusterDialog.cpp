@@ -4,7 +4,7 @@
 #include "EngineThrusterDialog.hpp"
 #include "PropulsionSubsystem.hpp"
 
-EngineThrusterDialog::EngineThrusterDialog() {
+EngineThrusterDialog::EngineThrusterDialog(const std::string& engine, const std::string& thruster) {
     // TODO: If existing pair make sure changes are included in dialog box
 
     // Set the title and default size for the parent window
@@ -36,9 +36,9 @@ EngineThrusterDialog::EngineThrusterDialog() {
     // Engine Name Field
     // TODO: Change name to selected engine name from dropdown 
     Gtk::Label* engine_name_label = new Gtk::Label("Engine Name:");
-    engine_name_entry = new Gtk::Entry();
+    Gtk::Label* engine_name_out = new Gtk::Label(engine);
     grid.attach(*engine_name_label, 0, 1, 1, 1);
-    grid.attach(*engine_name_entry, 1, 1, 1, 1);
+    grid.attach(*engine_name_out, 1, 1, 1, 1);
 
     // Location Subheader
     Gtk::Label* location_header = new Gtk::Label("Location");
@@ -106,9 +106,9 @@ EngineThrusterDialog::EngineThrusterDialog() {
 
     // Thruster Name Field
     Gtk::Label* thruster_name_label = new Gtk::Label("Thruster Name:");
-    thruster_name_entry = new Gtk::Entry();
+    Gtk::Label* thruster_name_out = new Gtk::Label(thruster);
     grid.attach(*thruster_name_label, 0, 15, 1, 1);
-    grid.attach(*thruster_name_entry, 1, 15, 1, 1);
+    grid.attach(*thruster_name_out, 1, 15, 1, 1);
 
     // Thruster Location Subheader
     Gtk::Label* thruster_location_header = new Gtk::Label("Location");
@@ -162,7 +162,7 @@ EngineThrusterDialog::EngineThrusterDialog() {
     grid.attach(*thruster_orient_dropdown, 1, 25, 1, 1);
 
     // Fill default values before showing the dialog
-    defaultValueFill();
+    defaultValueFill(engine, thruster);
 
     // Show the dialog window
     dialogEng->show();
@@ -177,28 +177,31 @@ EngineThrusterDialog::EngineThrusterDialog() {
 
 // Signal handler for dialog responses
 void EngineThrusterDialog::onResponse(int response_id) {
-    if (response_id == GTK_RESPONSE_ACCEPT) {
+   if (response_id == GTK_RESPONSE_ACCEPT) {
         onConfirm();
     }
     else {
         onCancel();
     }
+    // Close the dialog box after handling response
+    dialogEng->hide();
 }
 
 // Handle Confirm button press
 void EngineThrusterDialog::onConfirm() {
     std::cout << "Confirmed! Settings have been applied." << std::endl;
+    dialogEng->hide();
 }
 
 // Handle Cancel button press
 void EngineThrusterDialog::onCancel() {
     std::cout << "Canceled! No changes were applied." << std::endl;
+    dialogEng->hide();
 }
 
-void EngineThrusterDialog::defaultValueFill() {
+void EngineThrusterDialog::defaultValueFill(const std::string& engine, const std::string& thruster) {
     // Set default values for other fields (e.g., location, orientation, etc.)
     PropulsionSubsystem propSubsystem;
-    engine_name_entry->set_text(propSubsystem.getSelectedEngine());
     x_entry->set_text("0.0");
     y_entry->set_text("0.0");
     z_entry->set_text("0.0");
@@ -207,7 +210,6 @@ void EngineThrusterDialog::defaultValueFill() {
     yaw_entry->set_text("0.0");
     location_dropdown->set_active(0);  // Default to "IN"
     orient_dropdown->set_active(0);  // Default to "DEG"
-    thruster_name_entry->set_text(propSubsystem.getSelectedThruster());
     thruster_x_entry->set_text("0.0");
     thruster_y_entry->set_text("0.0");
     thruster_z_entry->set_text("0.0");

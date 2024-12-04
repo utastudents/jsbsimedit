@@ -10,7 +10,9 @@
 class PropulsionManager {
 public:
 
-    void createPair();
+    void showEngineThrusterSetup(const std::string& Engine, const std::string& Thruster); 
+    void showTankSetup();
+    int createPair(const std::string& Engine, const std::string& Thruster);
     void createTank();
     void confirmDeletePair();
     void confirmDeleteTank();
@@ -21,8 +23,6 @@ public:
     void displayTankDetails();
     void saveEngineThrusterData();
     void saveTankData();
-    void showEngineThrusterSetup(); 
-    void showTankSetup();
 
 };
 
