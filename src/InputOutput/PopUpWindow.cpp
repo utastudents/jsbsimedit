@@ -1,4 +1,6 @@
 #include "PopUpWindow.hpp"
+#include "inc/XML_api.hpp"
+#include <fstream>
 
 PopUpWindow::PopUpWindow()
     : filterButton("Filter"),
@@ -77,7 +79,7 @@ PopUpWindow::PopUpWindow()
     selection->signal_changed().connect(sigc::mem_fun(*this, &PopUpWindow::onPropertySelected));
 
     // Temporary data population for testing
-    std::vector<std::string> propertyNames; // Placeholder vector for property names
+   /* std::vector<std::string> propertyNames; // Placeholder vector for property names
     for (int i = 1; i <= 850; ++i) {
         propertyNames.push_back("Property_" + std::to_string(i)); // Simulated property names
     }
@@ -86,8 +88,36 @@ PopUpWindow::PopUpWindow()
         auto row = *(listStore->append());
         row[propertyColumns.index] = i + 1;                   // Serial numbers starting from 1
         row[propertyColumns.propertyName] = propertyNames[i]; // Placeholder property names
-    }
+    } */
+    
+    //This xmlFile method is hardcode, need to find another way to use xmlptr()
+JSBEdit::XMLDoc xmlFile;
+//   xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
+  xmlFile.LoadFileAndParse({"../../../properties.xml"});
 
+
+  //This method is using for extracting data from all siblings label of Property
+  // Get the parent node
+  auto parentNode = xmlFile.GetNode("/properties");
+  // Get all child nodes
+  auto properties = parentNode.GetChildren();
+
+  int i = 1; // Row ID
+  //Loop for check all properties siblings
+  for (const auto& property : properties) {
+    // Create a mutable copy of the property node
+    auto mutableProperty = const_cast<JSBEdit::XMLNode&>(property);
+
+    if (mutableProperty.GetName() == "property") { // Check if the node is a <property>
+      auto tableRow = *(listStore->append());
+        
+      tableRow[propertyColumns.propertyName] = mutableProperty.GetText();  
+
+      //Additional properties here
+
+      tableRow[propertyColumns.index] = i++; // Increase index table by 1
+    }
+  }
     // Create a Grid for filter buttons and show all button
     auto filterGrid = Gtk::make_managed<Gtk::Grid>();
     filterGrid->set_row_spacing(10);  
