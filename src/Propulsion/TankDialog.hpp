@@ -22,6 +22,7 @@ private:
     Gtk::ComboBoxText contentsUnitComboBox;
 
     Gtk::Entry xEntry, yEntry, zEntry;
+    Gtk::ComboBoxText* zUnitComboBox; 
     Gtk::ComboBoxText locationUnitComboBox;
 
     // Buttons
@@ -37,4 +38,4 @@ private:
     void defaultValueFill();
 };
 
-#endif // TANK_DIALOG_HPP
+#endif 
