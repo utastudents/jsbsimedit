@@ -169,65 +169,85 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
 void GroundReactionsSubsystem::Create() {
     std::cout << "in GroundReactionsSubsystem::Create" << std::endl;
 
-/*  this code is provided to help the group extract info from the xml
- *  file.
- *  "here" may or may not be the place for this code.  please
- *  understand it, and then cut and paste it, or re-write it, or
- *  whatever is needed.
- */
     assert(xmlptr());
 
-   // these variables are local to the constructor!! be aware..
-   //
-   // you probably want to test the value from GetName(), before the data is used...
-   //
-   //
-   std::vector<JSBEdit::XMLNode> nodes = xmlptr()->GetNodes("fdm_config/ground_reactions/contact");
-   std::cout << "the number of nodes is " << nodes.size() << std::endl;
-   for (auto& i : nodes)
-   {
-       std::cout << "the name is " << i.GetName() << std::endl;
-       std::vector <AttributeKV> attributes = i.GetAttributes();
-       std::cout << "the number of attributes in the node is " << attributes.size()  << std::endl;
-       for (auto& j : attributes)
-       {
-           //  type and name
-           std::cout  << "    " << j.first << " " << j.second << std::endl;
-       }
-       std::vector<JSBEdit::XMLNode> nodes = i.GetChildren();
-       for (auto& k : nodes ) 
-       {
-           std::vector<JSBEdit::XMLNode> nodes = k.GetChildren();
-           std::cout << "   " << k.GetName() << " " << k.GetText()  << std::endl;
-           if (nodes.size()>1) 
-           {
-               for (auto& m : nodes ) 
-               {
-                   std::cout << m.GetName() << " "  << m.GetText() << std::endl;
-               }
-           }
-       }
-   }
-#ifdef THIS_IS_AN_EXAMPLE_FROM_THE_XML_FILE
-   <contact type="BOGEY" name="NOSE_LG">
-   <location unit="IN">
-    <x> -299.6 </x>
-    <y> 0 </y>
-    <z> -72 </z>
-   </location>
-   <static_friction> 0.8 </static_friction>
-   <dynamic_friction> 0.5 </dynamic_friction>
-   <rolling_friction> 0.02 </rolling_friction>
-   <spring_coeff unit="LBS/FT"> 17250 </spring_coeff>
-   <damping_coeff unit="LBS/FT/SEC"> 4250 </damping_coeff>
-   <max_steer unit="DEG"> 80 </max_steer>
-   <brake_group> NOSE </brake_group>
-   <retractable>1</retractable>
-  </contact>
-#endif
-//////////////
+    // Vector for XML contact node extraction
+    std::vector<JSBEdit::XMLNode> nodes = xmlptr()->GetNodes("fdm_config/ground_reactions/contact");
 
+    // Vector for storing contact data
+    std::vector<std::tuple<std::string, std::string, std::string, std::tuple<double, double, double>, std::string>> contactList;
 
+    // XML data extraction of nodes: contact
+    for (const auto& node : nodes) {
+        std::string contactType = "";
+        std::string contactName = "";
+        std::string locationUnit = "";
+        std::tuple<double, double, double> locationCoordinates = {0.0, 0.0, 0.0};
+        std::string brakeGroup = " NONE ";
+
+        // const_cast
+        auto& nonConstNode = const_cast<JSBEdit::XMLNode&>(node);
+
+        // Extraction of contact: type, name
+        for (const auto& attribute : nonConstNode.GetAttributes()) {
+            
+            // To contactType
+            if (attribute.first == "type") {
+                contactType = attribute.second;
+              
+              // To contactName
+            } else if (attribute.first == "name") {
+                contactName = attribute.second;
+            }
+        }
+
+        // const_cast
+        auto& nonConstNodeForChildren = const_cast<JSBEdit::XMLNode&>(node);
+
+        // XML data extraction of children: location, brake_group
+        for (const auto& child : nonConstNodeForChildren.GetChildren()) {
+            
+            // const_cast
+            auto& nonConstChild = const_cast<JSBEdit::XMLNode&>(child);
+
+            // Extraction of location
+            if (nonConstChild.GetName() == "location") {
+                
+                // Extraction of location: unit
+                auto attribute = nonConstChild.GetAttribute("unit");
+                
+                // To locationUnit
+                locationUnit = attribute.second; 
+
+                // Extraction of location children: x, y, z
+                for (const auto& locChild : nonConstChild.GetChildren()) {
+                    
+                    // const_cast
+                    auto& nonConstLocChild = const_cast<JSBEdit::XMLNode&>(locChild);
+                    
+                    // To locationCoordinates
+                    if (nonConstLocChild.GetName() == "x") {
+                        std::get<0>(locationCoordinates) = std::stod(nonConstLocChild.GetText());
+                    } else if (nonConstLocChild.GetName() == "y") {
+                        std::get<1>(locationCoordinates) = std::stod(nonConstLocChild.GetText());
+                    } else if (nonConstLocChild.GetName() == "z") {
+                        std::get<2>(locationCoordinates) = std::stod(nonConstLocChild.GetText());
+                    }
+                }
+              
+              // Extraction of brake_group
+            } else if (nonConstChild.GetName() == "brake_group") {
+                
+                // To brakeGroup
+                brakeGroup = nonConstChild.GetText();
+            }
+        }
+
+        // Extracted data to contactList vector 
+        contactList.push_back(std::make_tuple(contactType, contactName, locationUnit, locationCoordinates, brakeGroup));
+    }
+
+    // Main grid
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
 
@@ -235,21 +255,32 @@ void GroundReactionsSubsystem::Create() {
     auto m_ContactListBox = Gtk::make_managed<Gtk::ListBox>();
     m_ContactListBox->set_selection_mode(Gtk::SelectionMode::SINGLE);
 
-    // Contacts to list
-    int i;
-    for (i = 1; i <= 5; ++i) {
-        auto label = Gtk::make_managed<Gtk::Label>("Contact " + std::to_string(i) + " NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+    // contactList vector tuples to m_ContactListBox rows
+    for (const auto& contact : contactList) {
+        auto contactType = std::get<0>(contact);
+        auto contactName = std::get<1>(contact);
+        auto locationUnit = std::get<2>(contact);
+        auto locationCoordinates = std::get<3>(contact);
+        auto brakeGroup = std::get<4>(contact);
+
+        auto labelText = contactName + " (" + contactType + ") at point [" +
+            std::to_string(std::get<0>(locationCoordinates)) + ", " +
+            std::to_string(std::get<1>(locationCoordinates)) + ", " +
+            std::to_string(std::get<2>(locationCoordinates)) + "] in " + locationUnit + " (in" +
+            brakeGroup + "brake group)";
+
+        auto label = Gtk::make_managed<Gtk::Label>(labelText);
         auto row = Gtk::make_managed<Gtk::ListBoxRow>();
         row->set_child(*label);
         m_ContactListBox->append(*row);
     }
 
-    // Initial selection clear
+    // Initial m_ContactListBox row selection clear
     Glib::signal_idle().connect_once([m_ContactListBox]() {
         m_ContactListBox->unselect_all();
     });
 
-    // GestureClick for double-click detection
+    // GestureClick for m_ContactListBox row double-click detection
     auto gesture = Gtk::GestureClick::create();
     gesture->signal_released().connect([this, m_ContactListBox](int n_press, double, double) {
         if (n_press == 2) {
@@ -265,7 +296,7 @@ void GroundReactionsSubsystem::Create() {
     });
     m_ContactListBox->add_controller(gesture);
 
-    // ListBox to the grid
+    // m_ContactListBox to grid
     m_Grid.attach(*m_ContactListBox, 0, 0);
 
     // Keep track of rows
