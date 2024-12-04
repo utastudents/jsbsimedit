@@ -29,6 +29,3 @@ void Force::changeFrame(Frame newFrame) {
     frameType = newFrame;
 }
 
-int main() {
-    return 0;
-}
