@@ -1,3 +1,0 @@
-# Hashes of file build rules.
-baad34bd565c750e253b88425e248934 gschemas.compiled
-ce01d7a0198818f1fb1600deb4ea8c57 resources.c
