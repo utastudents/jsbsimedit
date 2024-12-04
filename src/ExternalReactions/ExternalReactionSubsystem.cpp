@@ -90,7 +90,7 @@ void ExternalReactionsSubsystem::Create() {
     m_Grid.attach(*frameDropDownList, 1, row + 3);
 
     // Connect Force Type Dropdown
-    typeDropDownList->signal_changed().connect([this, typeDropDownList, locXTextbox, locYTextbox, locZTextbox, dirXTextbox, dirYTextbox, dirZTextbox]() {
+    typeDropDownList->signal_changed().connect([ typeDropDownList, locXTextbox, locYTextbox, locZTextbox, dirXTextbox, dirYTextbox, dirZTextbox]() {
         std::string selectedType = typeDropDownList->get_active_text();
         if (selectedType == "Push-back") {
             locXTextbox->set_text("1.0");
