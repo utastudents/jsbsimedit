@@ -253,6 +253,8 @@ void GroundReactionsSubsystem::Create() {
 
     // ListBox for contacts
     auto m_ContactListBox = Gtk::make_managed<Gtk::ListBox>();
+    m_ContactListBox->set_halign(Gtk::Align::FILL);
+    m_ContactListBox->set_hexpand(true);
     m_ContactListBox->set_selection_mode(Gtk::SelectionMode::SINGLE);
 
     // contactList vector tuples to m_ContactListBox rows
@@ -270,6 +272,7 @@ void GroundReactionsSubsystem::Create() {
             brakeGroup + "brake group)";
 
         auto label = Gtk::make_managed<Gtk::Label>(labelText);
+        label->set_halign(Gtk::Align::START);
         auto row = Gtk::make_managed<Gtk::ListBoxRow>();
         row->set_child(*label);
         m_ContactListBox->append(*row);
