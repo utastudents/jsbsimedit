@@ -12,16 +12,30 @@ ValueMenu::ValueMenu(std::shared_ptr<AerodynamicsNode> node)
     grid->set_row_spacing(10);
     append(*grid);
 
-    inputLabel = Gtk::make_managed<Gtk::Label>("Value");
+    inputLabel = Gtk::make_managed<Gtk::Label>("Value:");
+    inputLabel->set_halign(Gtk::Align::START);
     grid->attach(*inputLabel,0,0);
     inputEntry = Gtk::make_managed<Gtk::Entry>();
     grid->attach(*inputEntry, 1,0);
     inputEntry->set_text(std::to_string(value->getInput()));
-    inputEntry->property_text().signal_changed().connect(sigc::mem_fun(*this,&ValueMenu::on_text_changed));
+    inputEntry->set_tooltip_text("Enter a numerical value");
 
+    saveButton = Gtk::make_managed<Gtk::Button>();
+    saveButton->set_label("Save");
+    saveButton->set_tooltip_text("Save changes to this value");
+    saveButton->signal_clicked().connect(sigc::mem_fun(*this,&ValueMenu::on_save_clicked));
+    grid->attach(*saveButton,1,1);
+    
 }
-// is to update text
-void ValueMenu::on_text_changed(){
-    value->setInput(std::stod(inputEntry->get_text()));
-    update_signal.emit();
+// is now only allowing #'s and no letters
+void ValueMenu::on_save_clicked(){
+    try {
+        double value = std::stod(inputEntry->get_text());
+        this->value->setInput(value);
+        update_signal.emit();
+
+    }catch (...) {
+        inputEntry->set_text("");
+    } 
 }
+

@@ -28,23 +28,59 @@ public:
     FunctionMenu(std::shared_ptr<AerodynamicsNode> node);
 private:
     std::shared_ptr<Function> function;
+    Gtk::Entry* nameEntry;
+    Gtk::Entry* descriptionEntry;
+    Gtk::ComboBoxText* dropdown;
+    Gtk::Grid* grid;
+    Gtk::Label* dropdownLabel;
+    Gtk::Label* nameLabel;
+    Gtk::Label* descriptionLabel;
+    Gtk::Button* saveButton;
 };
 
 class TableMenu : public MenuPanel {
 public:
     TableMenu(std::shared_ptr<AerodynamicsNode> node);
+
 private:
+    void setup_columns();
+    void populate_table();
+
     std::shared_ptr<Table> table;
+    Glib::RefPtr<Gtk::ListStore> list_store;
+    Gtk::TreeView* tree_view;
+    Gtk::Grid* grid;
+    Gtk::Label* rowPropertyLabel;
+    Gtk::Label* columnPropertyLabel;
+    Gtk::Entry* rowPropertyEntry;
+    Gtk::Entry* columnPropertyEntry;
+
+    // Column structure for TreeView
+    class TableColumns : public Gtk::TreeModel::ColumnRecord {
+    public:
+        Gtk::TreeModelColumn<std::string> col1;
+        Gtk::TreeModelColumn<std::string> col2;
+
+        TableColumns() {
+            add(col1);
+            add(col2);
+        }
+    };
+
+    TableColumns columns;
 };
+
 
 class ValueMenu : public MenuPanel {
 public:
     ValueMenu(std::shared_ptr<AerodynamicsNode> node);
-private: 
+private:
     Gtk::Label* inputLabel;
     Gtk::Entry* inputEntry;
     std::shared_ptr<Value> value;
+    Gtk::Button* saveButton;
     void on_text_changed();
+    void on_save_clicked();
 };
 
 class AxisMenu : public MenuPanel {
@@ -53,6 +89,7 @@ public:
 private:
     void on_name_dropdown_selected();
     void on_unit_dropdown_selected();
+    void on_save_clicked();
     std::shared_ptr<Axis> axis;
     Gtk::Grid* grid;
     Gtk::Label* nameDropdownLabel;
@@ -61,6 +98,7 @@ private:
     Gtk::DropDown* unitDropdown;
     std::shared_ptr<Gtk::StringList> name_list;
     std::shared_ptr<Gtk::StringList> unit_list;
+    Gtk::Button* saveButton;
 };
 
 class PropertyMenu : public MenuPanel {
@@ -76,9 +114,9 @@ private:
     void loadPropertiesFromFile(const std::string& fileName);
     void onPropertySelected();
     void addProperty();
+    void reloadList();
    // Helper methods
     void applyFilter();
-    void reloadList();
 private:
     // Widgets
     Gtk::Box m_VBox;
@@ -86,20 +124,19 @@ private:
     Gtk::Entry* currentPlaceholder;
     Gtk::ScrolledWindow m_ScrolledWindow;
     Gtk::Grid m_Grid;
-    Gtk::ScrolledWindow scrolledWindow; 
+    Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView propertyTreeView;
     Gtk::Label filterLabel;
     Gtk::Window propertiesScrolledWindow;
-    Gtk::Label currentPropertyValue; 
-    Gtk::Entry filterTextBox; 
-    Gtk::Button filterButton; 
-    Gtk::Button showAllButton; 
-    Gtk::Button okButton; 
-    Gtk::Button cancelButton; 
+    Gtk::Label currentPropertyValue;
+    Gtk::Entry filterTextBox;
+    Gtk::Button filterButton;
+    Gtk::Button showAllButton;
+    Gtk::Button okButton;
+    Gtk::Button cancelButton;
     Gtk::Button closeButton;
-    int visibleProperties; 
-    int hiddenProperties; 
-
+    int visibleProperties;
+    int hiddenProperties;
 // Define property columns model
 class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
     public:
@@ -111,6 +148,8 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
             add(access);
             add(comments);
         }
+    // Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
+
         Gtk::TreeModelColumn<int> index;  // Use int for the "No." column
         Gtk::TreeModelColumn<Glib::ustring> propertyName;
         Gtk::TreeModelColumn<Glib::ustring> description;

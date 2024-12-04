@@ -5,7 +5,7 @@
 
 namespace MassBalance {
 
-// Fuselage Class
+/*// Fuselage Class
 class Fuselage {
 public:
   Fuselage(double mass = 0, double length = 0, double radius = 0);
@@ -134,6 +134,44 @@ public:
   void setInertiaUnits(const std::string &units);
 
   // Function to convert between SLUG*FT2 and KG*M2
+  void convertInertiaUnits(); */
+
+class MomentOfInertia {
+  // private:
+public:
+  double Ixx;
+  double Iyy;
+  double Izz;
+  double Ixy;
+  double Ixz;
+  double Iyz;
+  bool negated;
+  std::string unit;
+
+public:
+  // Constructor
+  MomentOfInertia(double ixx = 0.0, double iyy = 0.0, double izz = 0.0,
+                  double ixy = 0.0, double ixz = 0.0, double iyz = 0.0,
+                  bool negated = false, const std::string &unit = "SLUG*FT2");
+
+  // Getters
+  double getIxx() const;
+  double getIyy() const;
+  double getIzz() const;
+  double getIxy() const;
+  double getIxz() const;
+  double getIyz() const;
+  std::string getUnit() const;
+
+  // Setters
+  void setIxx(double value);
+  void setIyy(double value);
+  void setIzz(double value);
+  void setIxy(double value);
+  void setIxz(double value);
+  void setIyz(double value);
+  void setUnit(const std::string &newUnit);
+
   void convertInertiaUnits();
 };
 

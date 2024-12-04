@@ -30,6 +30,7 @@ PropertyMenu::PropertyMenu(std::shared_ptr<AerodynamicsNode> node)
     currentPlaceholder->set_editable(false);
     currentPlaceholder->set_width_chars(20);
     currentHBox->append(*currentPlaceholder);
+    currentPlaceholder->set_tooltip_text("The currently selected property");
     
     scrolledContainer->append(*currentHBox);
 
@@ -117,6 +118,12 @@ PropertyMenu::PropertyMenu(std::shared_ptr<AerodynamicsNode> node)
 
     // Add the button grid to the vertical box (m_VBox)
     m_VBox.append(*buttonGrid);
+
+    // Set tooltip for buttons
+    okButton.set_tooltip_text("Change this property to the selected property");
+    cancelButton.set_tooltip_text("Close this menu without changing the property");
+    filterButton.set_tooltip_text("Filter the list to match the entered text");
+    showAllButton.set_tooltip_text("Remove all filters");
 
     // Signal connections for buttons
     filterButton.signal_clicked().connect(sigc::mem_fun(*this, &PropertyMenu::onFilterButtonClicked));

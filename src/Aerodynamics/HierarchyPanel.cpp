@@ -26,6 +26,7 @@ HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
     treeView.append_column(*column);
 
     treeView.set_headers_visible(false);
+    treeView.set_tooltip_text("Select a row to open the corresponding menu");
     treeView.set_activate_on_single_click(true);
     treeView.signal_row_activated().connect(sigc::mem_fun(*this, &HierarchyPanel::on_row_activated));
 
@@ -38,6 +39,7 @@ HierarchyPanel::HierarchyPanel() : Gtk::ScrolledWindow()
 // Emits a signal when a row is activated
 void HierarchyPanel::on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
 {
+    column->get_title();
     // Get the row from the TreeModel using the path
     Gtk::TreeModel::iterator iter = treeStore->get_iter(path);
     if (iter) {

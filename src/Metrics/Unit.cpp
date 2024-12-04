@@ -1,4 +1,5 @@
 #include "Unit.hpp"
+#include <iostream>
 
 namespace Metrics
 {
@@ -15,7 +16,14 @@ std::string Unit::get_current_unit() {
 }
 
 void Unit::set_current_unit(const std::string& p_unit) {
-    current_unit = p_unit;
+    for (const auto& unit: unit_bank)
+    {
+        if (unit == p_unit)
+        {
+            current_unit = p_unit;
+            break;
+        }
+    }
 }
 
 }

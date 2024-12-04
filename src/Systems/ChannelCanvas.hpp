@@ -38,6 +38,8 @@ namespace DragDrop
 		std::string m_currentChannel {};
 		std::unordered_map<std::string, Channel> m_channels{};
 		std::string m_systemName;
+		std::pair<int, int> m_dragStartPos{};
+
 	};
 
 };

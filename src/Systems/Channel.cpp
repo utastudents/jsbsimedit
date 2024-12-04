@@ -59,6 +59,27 @@ void Channel::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     //Draw every sprite.
     for(auto& spritePair : m_spriteComponents)
         spritePair.second.Draw(drawCont);
+
+    //Draw every connection.
+    for(auto& connect : m_connections)
+        connect.Draw(drawCont, m_spriteComponents);
+
+    //If we are not connecting then exit early.
+    if(m_dragState == DragState::DRAGGING || m_dragState == DragState::NONE)
+        return;
+
+    //Drawing the connection lines if we are trying to make connection via dragging.
+    drawCont->set_line_width(2);
+    drawCont->set_source_rgb(0,0,0);
+    std::pair<int, int> startLoc {};
+
+    if(m_dragState == DragState::CONNECT_INP)
+        startLoc = m_spriteComponents.at(m_selectedId).GetInputBoxPosition();
+    else if(m_dragState == DragState::CONNECT_OUT)
+        startLoc = m_spriteComponents.at(m_selectedId).GetOutputBoxPosition();
+    drawCont->move_to(startLoc.first, startLoc.second);
+    drawCont->line_to(m_currentDragPos.first, m_currentDragPos.second);
+    drawCont->stroke();
 }
 
 std::string Channel::GetChannelName() const
@@ -100,6 +121,11 @@ void Channel::HandleDoubleClick(int x, int y)
                 case ComponentType::DEADBAND:
                     m_winPtr = std::make_shared<DeadbandComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
+                    break;
+
+                case ComponentType::FILTER:  // New case for Filter
+                    m_winPtr = std::make_shared<FilterComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window (*m_winPtr);
                     break;
 
                 case ComponentType::SUMMER:
@@ -166,6 +192,9 @@ std::shared_ptr<IComponentCommon> Channel::createComponentFromType(ComponentType
         case ComponentType::DEADBAND:
             component = std::make_shared<DeadbandComponent>(name);
             break;
+        case ComponentType::FILTER:
+            component = std::make_shared<FilterComponent>(name);
+            break;
         default:
             component = std::make_shared<GainComponent>(name);
             break;
@@ -190,6 +219,22 @@ int Channel::generateUniqueId()
     return uId;
 }
 
+void Channel::makeConnection(int inputUID, int outputUID)
+{
+    Connection connect{inputUID, outputUID};
+    //CONNECTIONS ARE ALL SCUFFED AND NEEDS TO BE REWRITTEN.
+    if(m_inputConnectionSet.contains(inputUID)){
+        if(m_components.at(inputUID)->CanHaveMultipleInputs())
+            m_connections.push_back(connect);
+    }
+    else
+    {
+        m_inputConnectionSet.insert(inputUID);
+        m_connections.push_back(connect);
+    }
+
+}
+
 void Channel::populateStringComponentMap()
 {
     //This whole thing should probably be static but oh well
@@ -199,8 +244,72 @@ void Channel::populateStringComponentMap()
 	m_stringToComponentMap.insert({"kinematic", ComponentType::KINEMATIC});
 	m_stringToComponentMap.insert({"summer", ComponentType::SUMMER});
 	m_stringToComponentMap.insert({"pid", ComponentType::PID});
+    m_stringToComponentMap.insert({"filter", ComponentType::FILTER});
     
 }
 
+void Channel::OnDragBegin(int x, int y)
+{
+    //Fail safe I guess in case somehow this goes wrong.
+    if(m_dragState != DragState::NONE)
+        return;
+
+    for(auto& i : m_spriteComponents)
+    {
+        if(i.second.ContainsPoint(x,y))
+        {
+            m_dragState = DragState::DRAGGING;
+            m_selectedId = i.first;
+            //Check to see if its a connection attempt on the inp/output
+            if(i.second.IsInputBoxClicked(x,y))
+                m_dragState = DragState::CONNECT_INP;
+            else if(i.second.IsOutputBoxClicked(x,y))
+                m_dragState = DragState::CONNECT_OUT;
+            return;
+        }    
+    }
+}
+
+void Channel::OnDragUpdate(int x, int y)
+{
+    if(m_dragState == DragState::NONE)
+        return;
+
+    m_currentDragPos = {x,y};
+
+    if(m_dragState == DragState::DRAGGING)
+        m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+}
+
+void Channel::OnDragEnd(int x, int y)
+{
+    if(m_dragState == DragState::NONE)
+        return;
+    
+    m_currentDragPos = {x,y};
+    if(m_dragState == DragState::DRAGGING)
+    {
+        m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+    }
+    else if(m_dragState == DragState::CONNECT_INP || m_dragState == DragState::CONNECT_OUT)
+    {
+        for(auto& i : m_spriteComponents)
+        {
+            //Make connection.
+            if(i.first == m_selectedId)
+                continue;
+            if(i.second.ContainsPoint(x,y))
+            {
+                if(m_dragState == DragState::CONNECT_OUT)
+                    makeConnection(m_selectedId, i.first);
+                else
+                    makeConnection(i.first, m_selectedId);
+                break;
+            }
+        }
+    }
+
+    m_dragState = DragState::NONE;
+}
 
 };

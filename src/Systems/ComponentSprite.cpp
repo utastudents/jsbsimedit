@@ -25,13 +25,19 @@ void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     drawCont->paint();
 
     //Draw Input box, I know width height is 4x4 which is bad if we change later, sorry for hardcode
-    auto impPos = m_inputBox.GetPosition();
-    drawCont->set_source_rgb(0.0, 1.0, 0.0); //Green
-    drawCont->rectangle(impPos.first, impPos.second, 4, 4);
-    drawCont->fill();
-    drawCont->stroke();
+    //Source shouldnt have a input box.
+    if(m_componentType != ComponentType::SOURCE)
+    {
+        auto impPos = m_inputBox.GetPosition();
+        drawCont->set_source_rgb(0.0, 1.0, 0.0); //Green
+        drawCont->rectangle(impPos.first, impPos.second, 4, 4);
+        drawCont->fill();
+        drawCont->stroke();
+    }
 
-    //Draw output box
+    //Draw output box, destination component doesnt have an output.
+    if(m_componentType == ComponentType::DESTINATION)
+        return;
     auto outPos = m_outputBox.GetPosition();
     drawCont->set_source_rgb(1.0, 0.0, 0.0); //Red
     drawCont->rectangle(outPos.first, outPos.second, 4, 4);
@@ -47,17 +53,33 @@ bool ComponentSprite::ContainsPoint(int x, int y)
 
 bool ComponentSprite::IsInputBoxClicked(int x, int y) const
 {
+    //Source component shouldnt have one.
+    if(m_componentType == ComponentType::SOURCE)
+        return false;
     return m_inputBox.ContainsPoint(x,y);
 }
 
 bool ComponentSprite::IsOutputBoxClicked(int x, int y) const
 {
+    //Desitnation component shouldnt have one.
+    if(m_componentType == ComponentType::DESTINATION)
+        return false;
     return m_outputBox.ContainsPoint(x,y);
 }
 
 std::pair<int, int> ComponentSprite::GetBounds() const
 {
     return m_spriteBox.GetBounds();
+}
+
+std::pair<int, int> ComponentSprite::GetInputBoxPosition() const
+{
+    return m_inputBox.GetPosition();
+}
+
+std::pair<int, int> ComponentSprite::GetOutputBoxPosition() const
+{
+    return m_outputBox.GetPosition();
 }
 
 ComponentType ComponentSprite::GetComponentType() const

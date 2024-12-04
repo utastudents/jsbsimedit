@@ -4,7 +4,7 @@
 
 namespace MassBalance {
 
-// Fuselage constructor
+/*// Fuselage constructor
 Fuselage::Fuselage(double mass, double length, double radius)
     : mass(mass), length(length), radius(radius) {}
 // Getters
@@ -179,6 +179,56 @@ void Airplane::convertInertiaUnits() {
     totalInertiaYZPlane *= kg_m2_to_slug_ft2;
     totalInertiaXYPlane *= kg_m2_to_slug_ft2;
     inertiaUnits = "SLUG*FT2";
+  }
+}*/
+
+// Constructor
+MomentOfInertia::MomentOfInertia(double ixx, double iyy, double izz, double ixy,
+                                 double ixz, double iyz, bool negated,
+                                 const std::string &unit)
+    : Ixx(ixx), Iyy(iyy), Izz(izz), Ixy(ixy), Ixz(ixz), Iyz(iyz),
+      negated(negated), unit(unit) {}
+
+// Getters
+double MomentOfInertia::getIxx() const { return Ixx; }
+double MomentOfInertia::getIyy() const { return Iyy; }
+double MomentOfInertia::getIzz() const { return Izz; }
+double MomentOfInertia::getIxy() const { return Ixy; }
+double MomentOfInertia::getIxz() const { return Ixz; }
+double MomentOfInertia::getIyz() const { return Iyz; }
+std::string MomentOfInertia::getUnit() const { return unit; }
+
+// Setters
+void MomentOfInertia::setIxx(double value) { Ixx = value; }
+void MomentOfInertia::setIyy(double value) { Iyy = value; }
+void MomentOfInertia::setIzz(double value) { Izz = value; }
+void MomentOfInertia::setIxy(double value) { Ixy = value; }
+void MomentOfInertia::setIxz(double value) { Ixz = value; }
+void MomentOfInertia::setIyz(double value) { Iyz = value; }
+void MomentOfInertia::setUnit(const std::string &newUnit) { unit = newUnit; }
+
+void MomentOfInertia::convertInertiaUnits() {
+  const double slug_ft2_to_kg_m2 =
+      1.35581795; // Conversion factor for SLUG*FT2 to KG*M2
+  const double kg_m2_to_slug_ft2 =
+      1.0 / slug_ft2_to_kg_m2; // Conversion factor for KG*M2 to SLUG*FT2
+
+  if (unit == "SLUG*FT2") {
+    Ixx *= slug_ft2_to_kg_m2;
+    Iyy *= slug_ft2_to_kg_m2;
+    Izz *= slug_ft2_to_kg_m2;
+    Ixy *= slug_ft2_to_kg_m2;
+    Ixz *= slug_ft2_to_kg_m2;
+    Iyz *= slug_ft2_to_kg_m2;
+    unit = "KG*M2";
+  } else if (unit == "KG*M2") {
+    Ixx *= kg_m2_to_slug_ft2;
+    Iyy *= kg_m2_to_slug_ft2;
+    Izz *= kg_m2_to_slug_ft2;
+    Ixy *= kg_m2_to_slug_ft2;
+    Ixz *= kg_m2_to_slug_ft2;
+    Iyz *= kg_m2_to_slug_ft2;
+    unit = "SLUG*FT2";
   }
 }
 
