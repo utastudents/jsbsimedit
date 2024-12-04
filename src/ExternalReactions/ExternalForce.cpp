@@ -1,6 +1,6 @@
 #include "ExternalForce.hpp"
 
-// Constructor with default values
+// Constructor with default values for forceVector
 Force::forceVector::forceVector(float x_val, float y_val, float z_val)
     : x(x_val), y(y_val), z(z_val) {}
 
@@ -11,24 +11,24 @@ Force::Force(forceVector direction, forceVector location)
 // Destructor
 Force::~Force() {}
 
-// Applies the force (currently a placeholder)
-void Force::applyForce() {}
+// Method to apply force (currently placeholder)
+void Force::applyForce() {
+    // Logic to apply force can be added here
+}
 
-// Returns the force name
-string Force::forceName(string name) {
+// Sets or gets the force name
+string Force::forceName(const string& name) {
+    // Optionally add validation logic for the name here
     return name;
 }
 
-// Converts location units 
-double locationUnits(double units) {
+// Converts location units (currently placeholder)
+double Force::locationUnits(double units) {
+    // Optionally add unit conversion logic here
     return units;
 }
 
 // Changes the frame of reference
-void Force::changeFrame(Frame newFrame) {
+void Force::changeFrame(const Frame& newFrame) {
     frameType = newFrame;
-}
-
-int main() {
-    return 0;
 }
