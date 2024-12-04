@@ -52,7 +52,9 @@ void MassBalanceSubsystem::Create() {
     if (child.GetName() == "ixx") {
       m_airplane.setIxx(std::stod(child.GetText()));
     } else if (child.GetName() == "iyy") {
+
       m_airplane.setIyy(std::stod(child.GetText()));
+
     } else if (child.GetName() == "izz") {
       m_airplane.setIzz(std::stod(child.GetText()));
     } else if (child.GetName() == "ixy") {
@@ -146,9 +148,15 @@ void MassBalanceSubsystem::Create() {
 
   // box to view weight
   auto entry_empty_weight = Gtk::make_managed<Gtk::Entry>();
-  entry_empty_weight->set_editable(false);
+  entry_empty_weight->set_editable(true);
   m_Grid.attach(*entry_empty_weight, 1, 0);
   entry_empty_weight->set_text(std::to_string(m_Emptymass.getEmptyMass()));
+
+  entry_empty_weight->signal_activate().connect([entry_empty_weight, this]() {
+    double new_empty_mass = std::stod(entry_empty_weight->get_text());
+    m_Emptymass.setEmptyMass(new_empty_mass);
+    entry_empty_weight->set_text(std::to_string(m_Emptymass.getEmptyMass()));
+  });
 
   // dropdown to choose lbs or kg for empty mass
   auto combo_units = Gtk::make_managed<Gtk::ComboBoxText>();
