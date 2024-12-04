@@ -231,43 +231,43 @@ void GroundReactionsSubsystem::Create() {
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
 
-    // Contact buttons to open respective dialog popups
-    auto buttonContact1 = Gtk::make_managed<Gtk::Button>("Contact 1 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
-    buttonContact1->signal_clicked().connect([]() {
-        auto landingGearDialog1 = new LandingGearSetupDialog();
-        landingGearDialog1->show();
+    // ListBox for contacts
+    auto m_ContactListBox = Gtk::make_managed<Gtk::ListBox>();
+    m_ContactListBox->set_selection_mode(Gtk::SelectionMode::SINGLE);
+
+    // Contacts to list
+    int i;
+    for (i = 1; i <= 5; ++i) {
+        auto label = Gtk::make_managed<Gtk::Label>("Contact " + std::to_string(i) + " NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
+        auto row = Gtk::make_managed<Gtk::ListBoxRow>();
+        row->set_child(*label);
+        m_ContactListBox->append(*row);
+    }
+
+    // Initial selection clear
+    Glib::signal_idle().connect_once([m_ContactListBox]() {
+        m_ContactListBox->unselect_all();
     });
 
-    auto buttonContact2 = Gtk::make_managed<Gtk::Button>("Contact 2 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
-    buttonContact2->signal_clicked().connect([]() {
-        auto landingGearDialog2 = new LandingGearSetupDialog();
-        landingGearDialog2->show();
+    // GestureClick for double-click detection
+    auto gesture = Gtk::GestureClick::create();
+    gesture->signal_released().connect([this, m_ContactListBox](int n_press, double, double) {
+        if (n_press == 2) {
+            auto row = m_ContactListBox->get_selected_row();
+            if (row) {
+                auto label = dynamic_cast<Gtk::Label*>(row->get_child());
+                if (label) {
+                    auto landingGearDialog = new LandingGearSetupDialog();
+                    landingGearDialog->show();
+                }
+            }
+        }
     });
+    m_ContactListBox->add_controller(gesture);
 
-    auto buttonContact3 = Gtk::make_managed<Gtk::Button>("Contact 3 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
-    buttonContact3->signal_clicked().connect([]() {
-        auto landingGearDialog3 = new LandingGearSetupDialog();
-        landingGearDialog3->show();
-    });
-
-    auto buttonContact4 = Gtk::make_managed<Gtk::Button>("Contact 4 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
-    buttonContact4->signal_clicked().connect([]() {
-        auto landingGearDialog4 = new LandingGearSetupDialog();
-        landingGearDialog4->show();
-    });
-
-    auto buttonContact5 = Gtk::make_managed<Gtk::Button>("Contact 5 NAME at [LOCATION] in COORDINATEUNIT (in BRAKEGROUPUNIT brake group)");
-    buttonContact5->signal_clicked().connect([]() {
-        auto landingGearDialog5 = new LandingGearSetupDialog();
-        landingGearDialog5->show();
-    });
-
-    m_Grid.attach(*buttonContact1, 0, 0);
-    m_Grid.attach(*buttonContact2, 0, 1);
-    m_Grid.attach(*buttonContact3, 0, 2);
-    m_Grid.attach(*buttonContact4, 0, 3);
-    m_Grid.attach(*buttonContact5, 0, 4);
+    // ListBox to the grid
+    m_Grid.attach(*m_ContactListBox, 0, 0);
 
     // Keep track of rows
-    //int row = 1; unused varaible can be uncommented if needed to be used.
+    //int row = 1; // unused variable 
 }
