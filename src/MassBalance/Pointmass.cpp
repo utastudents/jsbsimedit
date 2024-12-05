@@ -34,4 +34,18 @@ void PointMass::setX(double newX) { x = newX; }
 void PointMass::setY(double newY) { y = newY; }
 void PointMass::setZ(double newZ) { z = newZ; }
 void PointMass::setWeight(double newWeight) { weight = newWeight; }
+
+void PointMass::convertLengthUnits() {
+  if (locationUnit == "in") {
+    x *= 2.54f; // inches to centimeters
+    y *= 2.54f;
+    z *= 2.54f;
+    locationUnit = "cm"; // update the unit to "cm"
+  } else if (locationUnit == "cm") {
+    x /= 2.54f; // entimeters to inches
+    y /= 2.54f;
+    z /= 2.54f;
+    locationUnit = "in"; // update the unit to "in"
+  }
+}
 } // namespace MassBalance

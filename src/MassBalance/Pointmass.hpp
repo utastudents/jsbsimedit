@@ -36,5 +36,6 @@ public:
   void setY(double newY);
   void setZ(double newZ);
   void setWeight(double newWeight);
+  void convertLengthUnits();
 };
 } // namespace MassBalance
