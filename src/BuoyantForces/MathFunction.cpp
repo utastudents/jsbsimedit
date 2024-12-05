@@ -33,14 +33,14 @@ void MathFunction::addValue(double value){
 
 void MathFunction::conduction(double surfaceArea, double conductivity) {
     double result = surfaceArea * conductivity;
-
-
+    (void)result; // Suppress unused variable warning for now
 }
 
 void MathFunction::radiation(double surfaceArea, double emissivity, double stefanConst) {
-    double result = surfaceArea * emissivity *  stefanConst;
-
+    double result = surfaceArea * emissivity * stefanConst;
+    (void)result; // Suppress unused variable warning for now
 }
+
 
 void MathFunction:: del() {
 

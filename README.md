@@ -76,3 +76,8 @@ Building on Windows Requires the following. Clang tooling is optional if you don
 5. Clone source ```git clone https://github.com/utastudents/jsbsimedit.git```
 6. cd into directory and generator build files ```cmake --preset MacOS-Arm64-Clang-Debug .```
 7. Use CMake to build ```cmake --build out/build/MacOS-Arm64-Clang-Debug```
+
+##### To run on linux:
+1. cd out/build/Linux-x64-GCC-Debug/
+2. ./JSBSimEdit 
+

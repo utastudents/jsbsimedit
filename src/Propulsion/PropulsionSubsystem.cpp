@@ -154,7 +154,7 @@ void PropulsionSubsystem::Create() {
         std::cout << "Selected Engine: " << this->selectedEngine << std::endl;
     });
     m_Grid.attach(*pLabelEng, 0, 0, 1, 1);  // Label: row 0, column 0
-    m_Grid.attach(*pComboBoxEng, 0, 1, 1, 1);  // ComboBox: row 1, column 0
+    m_Grid.attach(*pComboBoxEng, 0, 1, 1, 1);  // ComboBox: row 0, column 1
     
     // Thruster dropdown
     pComboBoxThr->set_active(0); 
@@ -163,9 +163,28 @@ void PropulsionSubsystem::Create() {
         this->selectedThruster = pComboBoxThr->get_active_text();
         std::cout << "Selected Thruster: " << this->selectedThruster << std::endl;
     });
-    m_Grid.attach(*pLabelThr, 0, 2, 1, 1);  // Label: row 0, column 0
-    m_Grid.attach(*pComboBoxThr, 0, 3, 1, 1);  // ComboBox: row 1, column 0
+    m_Grid.attach(*pLabelThr, 0, 2, 1, 1);  // Label: row 0, column 2
+    m_Grid.attach(*pComboBoxThr, 0, 3, 1, 1);  // ComboBox: row 0, column 3
     
+
+    // Engine Thruster Pair UI
+    Gtk::Label* pLabelPR = Gtk::make_managed<Gtk::Label>("Select Engine/Thruster Pair:");
+    // Create the ComboBoxText (dropdown menu) for Engine Thruster Pair selection
+    Gtk::ComboBoxText* pComboBoxPR = Gtk::make_managed<Gtk::ComboBoxText>();
+    
+    // Initialized without other selections
+    // User must make engine thruster pairs using create engine thruster pair button
+    pComboBoxPR->append("No Selection");
+    pComboBoxPR->set_active(0); 
+
+    // Connect signal to handle dropdown changes
+    pComboBoxPR->signal_changed().connect([this, pComboBoxPR]() {
+        this->selectedPair = pComboBoxPR->get_active_text();
+        std::cout << "Selected Pair: " << this->selectedPair << std::endl;
+    });
+
+    m_Grid.attach(*pLabelPR, 1, 0, 1, 1);  // Label: row 1, column 0
+    m_Grid.attach(*pComboBoxPR, 1, 1, 1, 1);  // ComboBox: row 1, column 1
 
     // Tank UI
     Gtk::Label* pLabelTK = Gtk::make_managed<Gtk::Label>("Select Tank:");
@@ -183,18 +202,20 @@ void PropulsionSubsystem::Create() {
     // Connect signal to handle dropdown changes
     pComboBoxTK->signal_changed().connect([this, pComboBoxTK]() {
         this->selectedTank = pComboBoxTK->get_active_text();
-        std::cout << "Selected Engine: " << this->selectedTank << std::endl;
+        std::cout << "Selected Tank: " << this->selectedTank << std::endl;
     });
-    m_Grid.attach(*pLabelTK, 1, 0, 1, 1);  // Label: row 1, column 0
-    m_Grid.attach(*pComboBoxTK, 1, 1, 1, 1);  // ComboBox: row 1, column 1
+    m_Grid.attach(*pLabelTK, 2, 0, 1, 1);  // Label: row 2, column 0
+    m_Grid.attach(*pComboBoxTK, 2, 1, 1, 1);  // ComboBox: row 2, column 1
 
 
+    int returnsig = 0;
     // Define the unique actions for each button in lambdas
     std::vector<std::function<void()>> buttonActions = {
-        [this]() { // "Create Engine/Thruster Pair"
+        [this, &returnsig]() { // "Create Engine/Thruster Pair"
             // TODO: When Engine/Thruster Pair is created append it to list of Engine/Thruster Pair options
             if ((checkSelect(selectedEngine)==true) && (checkSelect(selectedThruster)==true)) {// Engine/Thruster select check
-                m_PropManager.showEngineThrusterSetup(); 
+                returnsig = m_PropManager.createPair(selectedEngine, selectedThruster); 
+                std::cout << "returnsig: " << returnsig << std::endl;
             } else if ((checkSelect(selectedEngine)!=true) || (checkSelect(selectedThruster)!=true)) {
                 auto reselectdialog = Gtk::make_managed<Gtk::MessageDialog>(
                 "Engine/Thruster not selected from dropdowns, please select before creating.",
@@ -206,9 +227,9 @@ void PropulsionSubsystem::Create() {
                 reselectdialog->show();
             }   
         }, 
-        [this]() { // "Engine/Thruster Pair Details"
+        [this, &returnsig]() { // "Engine/Thruster Pair Details"
             if ((checkSelect(selectedEngine)==true) && (checkSelect(selectedThruster)==true)) {// Engine/Thruster select check
-                m_PropManager.showEngineThrusterSetup();
+                returnsig = m_PropManager.createPair(selectedEngine, selectedThruster); 
             } else if ((checkSelect(selectedEngine)!=true) || (checkSelect(selectedThruster)!=true)) {
                 auto reselectdialog = Gtk::make_managed<Gtk::MessageDialog>(
                 "Engine/Thruster not selected from dropdowns, please select before altering.",
@@ -283,10 +304,15 @@ void PropulsionSubsystem::Create() {
             }   
         }
     };
-
+    if (returnsig == 1) {
+        std::string pairStr = selectedEngine + "|" + selectedThruster;
+        std::cout << "pairStr: " << pairStr << std::endl;
+        pComboBoxPR->append(pairStr);
+        std::cout << "Past appending" << std::endl;
+    }
 
     // i is length #, j is height #
-    for (int i = 2; i < 4; i++) { // Shifts buttons to columns 2 and 3
+    for (int i = 3; i < 5; i++) { // Shifts buttons to columns 3 and 4
         for (int j = 1; j < 4; j++) { // Lowered buttons to row 1 through 3
             if (nameIndex < buttonNames.size()) {
                 // Create each button with a unique name

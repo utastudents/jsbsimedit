@@ -16,8 +16,15 @@ void ExternalReactionsSubsystem::Create() {
     m_notebook.set_margin(10);
     m_notebook.set_expand();
     m_Grid.attach(m_notebook, 0, 0);
+
+    // Adding "Force 1" tab
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     m_notebook.append_page(*m_pages.back(), "Force 1");
+
+    // Adding "Force 2" tab
+    m_pages.push_back(std::make_unique<Gtk::Grid>());
+    m_notebook.append_page(*m_pages.back(), "Force 2");
+
 
     // Force Name Input
     auto nameLabel = Gtk::make_managed<Gtk::Label>("FORCE NAME");
@@ -83,7 +90,7 @@ void ExternalReactionsSubsystem::Create() {
     m_Grid.attach(*frameDropDownList, 1, row + 3);
 
     // Connect Force Type Dropdown
-    typeDropDownList->signal_changed().connect([this, typeDropDownList, locXTextbox, locYTextbox, locZTextbox, dirXTextbox, dirYTextbox, dirZTextbox]() {
+    typeDropDownList->signal_changed().connect([ typeDropDownList, locXTextbox, locYTextbox, locZTextbox, dirXTextbox, dirYTextbox, dirZTextbox]() {
         std::string selectedType = typeDropDownList->get_active_text();
         if (selectedType == "Push-back") {
             locXTextbox->set_text("1.0");
