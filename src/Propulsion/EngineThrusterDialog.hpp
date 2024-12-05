@@ -13,8 +13,6 @@ class EngineThrusterDialog : public Gtk::Window {
 public:
     EngineThrusterDialog(const std::string& engine, const std::string& thruster);
     void show(); // Show the dialog
-
-protected:
     // Signal handlers
     void onConfirm();
     void onCancel();
