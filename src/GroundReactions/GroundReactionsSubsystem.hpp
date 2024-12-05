@@ -15,6 +15,12 @@ private:
 
     class LandingGearSetupDialog : public Gtk::Dialog {
     public: 
-        LandingGearSetupDialog();
+        LandingGearSetupDialog(
+        const std::string& contactName, 
+        const std::string& contactType,
+        const std::tuple<double, double, double>& locationCoordinates, 
+        const std::string& locationUnit,
+        const std::string& brakeGroup
+        );
     };
 };

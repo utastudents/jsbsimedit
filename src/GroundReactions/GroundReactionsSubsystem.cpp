@@ -8,7 +8,11 @@ GroundReactionsSubsystem::GroundReactionsSubsystem() {
     std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
 }
 
-GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
+GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
+    const std::string& contactName, const std::string& contactType,
+    const std::tuple<double, double, double>& locationCoordinates, const std::string& locationUnit,
+    const std::string& brakeGroup) {
+
     set_modal(true);
 
     set_title("Landing Gear Setup");
@@ -27,14 +31,14 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
     // Name
     auto nameLabel = Gtk::make_managed<Gtk::Label>("Name");
     auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
-    nameTextbox->set_text("Name.");
+    nameTextbox->set_text(contactName);  // Populate with contactName
     p_Grid->attach(*nameLabel, 0, p_row);
     p_Grid->attach(*nameTextbox, 1, p_row);
 
     // Structure
     auto structureLabel = Gtk::make_managed<Gtk::Label>("Structure");
     auto structureTextbox = Gtk::make_managed<Gtk::Entry>();
-    structureTextbox->set_text("Structure.");
+    structureTextbox->set_text(contactType);  // Populate with contactType
     p_Grid->attach(*structureLabel, 3, p_row);
     p_Grid->attach(*structureTextbox, 4, p_row++);
 
@@ -44,21 +48,21 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
 
     auto xLabel = Gtk::make_managed<Gtk::Label>("x =");
     auto xTextbox = Gtk::make_managed<Gtk::Entry>();
-    xTextbox->set_text("X.");
+    xTextbox->set_text(std::to_string(std::get<0>(locationCoordinates)));  // Populate with x-coordinate
 
     auto yLabel = Gtk::make_managed<Gtk::Label>("y =");
     auto yTextbox = Gtk::make_managed<Gtk::Entry>();
-    yTextbox->set_text("Y.");
+    yTextbox->set_text(std::to_string(std::get<1>(locationCoordinates)));  // Populate with y-coordinate
 
     auto zLabel = Gtk::make_managed<Gtk::Label>("z =");
     auto zTextbox = Gtk::make_managed<Gtk::Entry>();
-    zTextbox->set_text("Z.");
+    zTextbox->set_text(std::to_string(std::get<2>(locationCoordinates)));  // Populate with z-coordinate
 
     auto coordinateUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
     coordinateUnitDropDown->append("IN");
     coordinateUnitDropDown->append("FT");
     coordinateUnitDropDown->append("M");
-    coordinateUnitDropDown->set_active(0);
+    coordinateUnitDropDown->set_active_text(locationUnit);  // Set to locationUnit
 
     p_Grid->attach(*xLabel, 0, p_row);
     p_Grid->attach(*xTextbox, 1, p_row);
@@ -138,13 +142,13 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog() {
     auto brakeGroupLabel = Gtk::make_managed<Gtk::Label>("Brake Group =");
 
     auto brakeGroupUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
-    brakeGroupUnitDropDown->append("NONE");
-    brakeGroupUnitDropDown->append("LEFT");
-    brakeGroupUnitDropDown->append("RIGHT");
-    brakeGroupUnitDropDown->append("CENTER");
-    brakeGroupUnitDropDown->append("NOSE");
-    brakeGroupUnitDropDown->append("TAIL");  
-    brakeGroupUnitDropDown->set_active(0);
+    brakeGroupUnitDropDown->append(" NONE ");
+    brakeGroupUnitDropDown->append(" LEFT ");
+    brakeGroupUnitDropDown->append(" RIGHT ");
+    brakeGroupUnitDropDown->append(" CENTER ");
+    brakeGroupUnitDropDown->append(" NOSE ");
+    brakeGroupUnitDropDown->append(" TAIL ");
+    brakeGroupUnitDropDown->set_active_text(brakeGroup);  // Set to brakeGroup
 
     p_Grid->attach(*brakeGroupLabel, 0, p_row);
     p_Grid->attach(*brakeGroupUnitDropDown, 1, p_row++);
@@ -285,16 +289,27 @@ void GroundReactionsSubsystem::Create() {
 
     // GestureClick for m_ContactListBox row double-click detection
     auto gesture = Gtk::GestureClick::create();
-    gesture->signal_released().connect([this, m_ContactListBox](int n_press, double, double) {
+    gesture->signal_released().connect([this, m_ContactListBox, contactList](int n_press, double, double) {
         if (n_press == 2) {
             auto row = m_ContactListBox->get_selected_row();
-            if (row) {
-                auto label = dynamic_cast<Gtk::Label*>(row->get_child());
-                if (label) {
-                    auto landingGearDialog = new LandingGearSetupDialog();
-                    landingGearDialog->show();
-                }
-            }
+            auto index = row->get_index();
+
+            // Contact details for dialog
+            const auto& contact = contactList[index];
+            const auto& contactName = std::get<1>(contact);
+            const auto& contactType = std::get<0>(contact);
+            const auto& locationUnit = std::get<2>(contact);
+            const auto& locationCoordinates = std::get<3>(contact);
+            const auto& brakeGroup = std::get<4>(contact);
+
+            auto landingGearDialog = Gtk::make_managed<LandingGearSetupDialog>(
+                contactName, 
+                contactType, 
+                locationCoordinates, 
+                locationUnit, 
+                brakeGroup
+            );
+            landingGearDialog->show();
         }
     });
     m_ContactListBox->add_controller(gesture);
