@@ -18,6 +18,7 @@
 #include "SummerComponent.hpp"
 #include "DeadbandComponent.hpp"
 #include "FilterComponent.hpp"
+#include "SwitchComponent.hpp"
 
 #include "PIDComponentWindow.hpp"
 #include "GainComponentWindow.hpp"
@@ -25,6 +26,7 @@
 #include "DeadbandComponentWindow.hpp"
 #include "SummerComponentWindow.hpp"
 #include "FilterComponentWindow.hpp"
+#include "SwitchComponentWindow.hpp"
 
 #include <random>
 #include <set>

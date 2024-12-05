@@ -133,6 +133,11 @@ void Channel::HandleDoubleClick(int x, int y)
                     m_appRef->add_window(*m_winPtr);
                     break;
 
+                case ComponentType::SWITCH:
+                    m_winPtr = std::make_shared<SwitchComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+
                 default:
                     m_winPtr = std::make_shared<GainComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
@@ -194,6 +199,9 @@ std::shared_ptr<IComponentCommon> Channel::createComponentFromType(ComponentType
             break;
         case ComponentType::FILTER:
             component = std::make_shared<FilterComponent>(name);
+            break;
+        case ComponentType::SWITCH:
+            component = std::make_shared<SwitchComponent>(name);
             break;
         default:
             component = std::make_shared<GainComponent>(name);
