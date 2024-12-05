@@ -37,3 +37,4 @@ public:
     // Constructor for AerodynamicsWidget
     AerodynamicsWidget();
 };
+

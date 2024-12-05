@@ -17,6 +17,9 @@ AerodynamicsWidget::AerodynamicsWidget()
 
     // Set the default width of the split menu
     set_position(500);
+
+    (void)menuPanel;  
+    (void)selectedNode;
 }
 
 // Changes the menu to edit the selected node
@@ -279,3 +282,4 @@ void AerodynamicsWidget::saveData()
 {
     // TODO: do this
 }
+
