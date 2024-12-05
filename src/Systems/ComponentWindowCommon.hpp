@@ -13,6 +13,8 @@ class ComponentWindowCommon : public Gtk::Window
     public:
         ComponentWindowCommon(std::shared_ptr<IComponentCommon> component, 
             std::shared_ptr<std::set<std::string>> setOfNames);
+
+        std::shared_ptr<IComponentCommon> GetComponent() const { return m_component; }
     protected:
         //Member funcs
         void CreateCommonTab();
