@@ -121,16 +121,17 @@ if (!m_refFileDialog)
 
 void ExampleWindow::on_menu_file_save() //implement save function to over-write the xml
 {
-std::cout << "Saving data..." << std::endl;
-    // Example logic: Save data to a file
-    std::ofstream file("output.txt");
-    if (file.is_open()) {
-        file << "Your data goes here.\n";
-        file.close();
-        std::cout << "Data saved successfully." << std::endl;
-    } else {
-        std::cerr << "Failed to open file for saving." << std::endl; //saving data to txt file
-    }}
+  std::cout << "Saving data..." << std::endl;
+  
+  if (xmlptr()->SaveToFile(xmlptr()->GetFilePath())) //Calling the SaveToFile function with the file path. Note: this save will overwrite the existing file.
+  {
+    std::cout << "Data saved successfully to: " << xmlptr()->GetFilePath() << std::endl;
+  }
+  else
+  {
+    std::cout << "Failed to save to: " << xmlptr()->GetFilePath() << std::endl;
+  }
+}
 
 
 void ExampleWindow::on_menu_file_files_dialog()
