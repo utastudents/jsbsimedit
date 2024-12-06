@@ -16,18 +16,21 @@ private:
     class LandingGearSetupDialog : public Gtk::Dialog {
     public: 
         LandingGearSetupDialog(
-        const std::string& contactName, 
-        const std::string& contactType,
-        const std::tuple<double, double, double>& locationCoordinates, 
-        const std::string& locationUnit,
-        const std::string& brakeGroup,
-        const std::string& springCoefficient, 
-        const std::string& dampingCoefficient, 
-        const std::string& staticFriction, 
-        const std::string& dynamicFriction, 
-        const std::string& rollingFriction, 
-        const std::string& maxSteer,
-        const std::string& retractable
+            const std::string& contactName, 
+            const std::string& contactType, 
+            const std::tuple<std::string, std::string, std::string>& locationCoordinates, 
+            const std::string& locationUnit, 
+            const std::string& springCoefficient, 
+            const std::string& springCoefficientUnit, 
+            const std::string& dampingCoefficient, 
+            const std::string& dampingCoefficientUnit, 
+            const std::string& staticFriction, 
+            const std::string& dynamicFriction, 
+            const std::string& rollingFriction, 
+            const std::string& maxSteer, 
+            const std::string& maxSteerUnit, 
+            const std::string& brakeGroup, 
+            const std::string& retractable
         );
     };
 };
