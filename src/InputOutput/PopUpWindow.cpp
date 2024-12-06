@@ -30,7 +30,6 @@ PopUpWindow::PopUpWindow()
     hideLabel.set_margin(5);
     currentHBox->append(currentLabel);
     
-    
     // Added box to show selected property
     currentPlaceholder->set_text("");
     currentPlaceholder->set_editable(false);
@@ -78,81 +77,51 @@ PopUpWindow::PopUpWindow()
     auto selection = propertyTreeView.get_selection();
     selection->signal_changed().connect(sigc::mem_fun(*this, &PopUpWindow::onPropertySelected));
 
-    // Temporary data population for testing
-   /* std::vector<std::string> propertyNames; // Placeholder vector for property names
-    for (int i = 1; i <= 850; ++i) {
-        propertyNames.push_back("Property_" + std::to_string(i)); // Simulated property names
-    }
-    // Populate the list store
-    for (size_t i = 0; i < propertyNames.size(); ++i) {
-        auto row = *(listStore->append());
-        row[propertyColumns.index] = i + 1;                   // Serial numbers starting from 1
-        row[propertyColumns.propertyName] = propertyNames[i]; // Placeholder property names
-    } */
-    
     //This xmlFile method is hardcode, need to find another way to use xmlptr()
-JSBEdit::XMLDoc xmlFile;
-//   xmlFile.LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"});
-  xmlFile.LoadFileAndParse({"../../../properties.xml"});
+    JSBEdit::XMLDoc xmlFile;
+    xmlFile.LoadFileAndParse({"../../../properties.xml"});
 
+    auto parentNode = xmlFile.GetNode("/properties");
+    auto properties = parentNode.GetChildren();
 
-  //This method is using for extracting data from all siblings label of Property
-  // Get the parent node
-  auto parentNode = xmlFile.GetNode("/properties");
-  // Get all child nodes
-  auto properties = parentNode.GetChildren();
+    int i = 1; // Row ID
+    for (const auto& property : properties) {
+        auto mutableProperty = const_cast<JSBEdit::XMLNode&>(property);
 
-  int i = 1; // Row ID
-  //Loop for check all properties siblings
-  for (const auto& property : properties) {
-    // Create a mutable copy of the property node
-    auto mutableProperty = const_cast<JSBEdit::XMLNode&>(property);
-
-    if (mutableProperty.GetName() == "property") { // Check if the node is a <property>
-      auto tableRow = *(listStore->append());
-        
-      tableRow[propertyColumns.propertyName] = mutableProperty.GetText();  
-
-      //Additional properties here
-
-      tableRow[propertyColumns.index] = i++; // Increase index table by 1
+        if (mutableProperty.GetName() == "property") { // Check if the node is a <property>
+            auto tableRow = *(listStore->append());
+            tableRow[propertyColumns.propertyName] = mutableProperty.GetText();
+            tableRow[propertyColumns.index] = i++; // Increase index table by 1
+        }
     }
-  }
+
     // Create a Grid for filter buttons and show all button
     auto filterGrid = Gtk::make_managed<Gtk::Grid>();
     filterGrid->set_row_spacing(10);  
     filterGrid->set_column_spacing(10); 
 
-    // Set the expand property for the widgets in the grid
     filterTextBox.set_hexpand(true);  
     filterButton.set_hexpand(false);  
     showAllButton.set_hexpand(false);  
 
-    // Place the filter text box and buttons in the grid
     filterGrid->attach(filterTextBox, 1, 0, 7, 1);  
     filterGrid->attach(filterButton, 0, 0, 1, 1);   
     filterGrid->attach(showAllButton, 8, 0, 1, 1);  
 
-    // Add filter grid to the vertical box (m_VBox)
     m_VBox.append(*filterGrid);
 
-    // Create a Grid for OK and Cancel buttons
     auto buttonGrid = Gtk::make_managed<Gtk::Grid>();
     buttonGrid->set_row_spacing(10);   
     buttonGrid->set_column_spacing(10); 
 
-    // Add OK and Cancel buttons
     buttonGrid->attach(okButton, 0, 0, 1, 1);  
     buttonGrid->attach(cancelButton, 1, 0, 1, 1);     
 
-    // Make both buttons expand horizontally to take equal space
     okButton.set_hexpand(true);  
     cancelButton.set_hexpand(true);  
 
-    // Add the button grid to the vertical box (m_VBox)
     m_VBox.append(*buttonGrid);
 
-    // Signal connections for buttons
     filterButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onFilterButtonClicked));
     showAllButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onShowAllButtonClicked));
     okButton.signal_clicked().connect(sigc::mem_fun(*this, &PopUpWindow::onOkButtonClicked));
@@ -191,28 +160,30 @@ void PopUpWindow::onPropertySelected() {
         auto row = *iter;
         Glib::ustring propertyName = row[propertyColumns.propertyName];
         currentPlaceholder->set_text(propertyName); // Update placeholder with selected property
+        selectedProperty = propertyName;           // Store selected property
     }
+}
+
+// New method to return the selected property
+std::string PopUpWindow::getSelectedProperty() {
+    return selectedProperty; // Return the stored property
 }
 
 void PopUpWindow::updateShowHideCounts() {
     int showCount = 0;
     int hideCount = 0;
 
-    // Iterate through all rows in the ListStore to calculate counts
     for (auto& row : listStore->children()) {
-        // Apply your filtering logic to determine whether this row is shown or hidden
-        // Assuming the row contains a "propertyName" field and we're using the filterTextBox to filter
         Glib::ustring propertyName = row[propertyColumns.propertyName];
         
-        // Check if the property name matches the filter text
         if (propertyName.lowercase().find(filterTextBox.get_text().lowercase()) != std::string::npos) {
-            ++showCount;  // This row matches the filter and should be counted as shown
+            ++showCount;
         } else {
-            ++hideCount;  // This row does not match the filter and should be counted as hidden
+            ++hideCount;
         }
     }
 
-    // Update the labels
     showLabel.set_text("Show: " + std::to_string(showCount));
     hideLabel.set_text("Hide: " + std::to_string(hideCount));
 }
+
