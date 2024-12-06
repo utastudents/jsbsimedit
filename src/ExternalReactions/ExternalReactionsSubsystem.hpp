@@ -22,7 +22,9 @@ private:
     double directionX;
     double directionY;
     double directionZ;
-    
+    Gtk::Entry* m_nameTextbox;
+    int m_forceCount;
+
     // Add a member to store the current Force object
     Force m_currentForce;
 };

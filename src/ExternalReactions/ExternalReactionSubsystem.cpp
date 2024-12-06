@@ -4,6 +4,7 @@
 ExternalReactionsSubsystem::ExternalReactionsSubsystem() {
     m_Name = "External Reactions";
     std::cout << "In ExternalReactionsSubsystem constructor" << std::endl;
+    m_forceCount = 2;
 }
 
 void ExternalReactionsSubsystem::Create() {
@@ -25,13 +26,34 @@ void ExternalReactionsSubsystem::Create() {
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     m_notebook.append_page(*m_pages.back(), "Force 2");
 
+    m_nameTextbox = Gtk::make_managed<Gtk::Entry>();
+    m_nameTextbox->set_text("");
+    m_Grid.attach(*m_nameTextbox, 1, row);
+
+    auto newForceButton = Gtk::make_managed<Gtk::Button>("Add Force");
+    newForceButton->set_hexpand(false);
+    newForceButton->set_vexpand(false);
+    newForceButton->set_margin(5);
+
+    newForceButton->set_halign(Gtk::Align::START);
+    newForceButton->set_valign(Gtk::Align::START);
+    
+    newForceButton->signal_clicked().connect([this]() {
+        std::string forceName = m_nameTextbox->get_text();
+        
+        if(forceName.empty()) {
+            forceName = "Force " + std::to_string(++m_forceCount);
+        }
+        
+        m_pages.push_back(std::make_unique<Gtk::Grid>());
+        m_notebook.append_page(*m_pages.back(), forceName);
+        m_nameTextbox->set_text("");
+    });
+    m_Grid.attach(*newForceButton, 1, 0);
 
     // Force Name Input
     auto nameLabel = Gtk::make_managed<Gtk::Label>("FORCE NAME");
-    auto nameTextbox = Gtk::make_managed<Gtk::Entry>();
-    nameTextbox->set_text("");
     m_Grid.attach(*nameLabel, 0, row);
-    m_Grid.attach(*nameTextbox, 1, row);
 
     // Force Type Dropdown
     auto typeLabel = Gtk::make_managed<Gtk::Label>("FORCE TYPE");
