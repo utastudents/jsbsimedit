@@ -164,7 +164,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Retractable
     auto retractableLabel = Gtk::make_managed<Gtk::Label>("Retractable =");
     auto retractableCheckbox = Gtk::make_managed<Gtk::CheckButton>();
-    if (retractable == "1"|| retractable == " 1 ") {
+    if (retractable == "1") {
         retractableCheckbox->set_active(TRUE);
     }
     else {
@@ -209,13 +209,13 @@ void GroundReactionsSubsystem::Create() {
         std::string springCoefficientUnit = "LBS/FT";
         std::string dampingCoefficient = " 0 ";
         std::string dampingCoefficientUnit = "LBS/FT/SEC";
-        std::string staticFriction = " 0.0 ";
-        std::string dynamicFriction = " 0.0 ";
-        std::string rollingFriction = " 0.0 ";
-        std::string maxSteer = " 0 ";
+        std::string staticFriction = " 0.00 ";
+        std::string dynamicFriction = " 0.00 ";
+        std::string rollingFriction = " 0.00 ";
+        std::string maxSteer = " 0.0 ";
         std::string maxSteerUnit = "DEG";
         std::string brakeGroup = " NONE ";
-        std::string retractable = " 1 ";
+        std::string retractable = "0";
 
         // const_cast
         auto& nonConstNode = const_cast<JSBEdit::XMLNode&>(node);
