@@ -16,7 +16,6 @@ public:
     // set default values method 
     void defaultValueFill();
 
-private:
     // Main dialog and layout
     Gtk::Dialog* dialogTank;
     Gtk::Grid grid;
