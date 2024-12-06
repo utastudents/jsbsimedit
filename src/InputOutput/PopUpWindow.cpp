@@ -89,9 +89,15 @@ PopUpWindow::PopUpWindow()
         auto mutableProperty = const_cast<JSBEdit::XMLNode&>(property);
 
         if (mutableProperty.GetName() == "property") { // Check if the node is a <property>
+        std::string propertyText = mutableProperty.GetText();
+
+        // Remove first '/' from view
+        if (!propertyText.empty() && propertyText[0] == '/') {
+            propertyText = propertyText.substr(1);
+        }
             auto tableRow = *(listStore->append());
-            tableRow[propertyColumns.propertyName] = mutableProperty.GetText();
-            tableRow[propertyColumns.index] = i++; // Increase index table by 1
+            tableRow[propertyColumns.propertyName] = propertyText;
+            tableRow[propertyColumns.index] = i++;
         }
     }
 
