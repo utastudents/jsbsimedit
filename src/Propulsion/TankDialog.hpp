@@ -1,41 +1,32 @@
-#pragma once
-#ifndef TANK_DIALOG_H
-#define TANK_DIALOG_H
+#ifndef TANK_DIALOG_TEST_HPP
+#define TANK_DIALOG_TEST_HPP
 
 #include <gtkmm.h>
+#include "TankDialog.hpp"
 
-class TankDialog : public Gtk::Window {
+class TankDialogTest {
 public:
-    TankDialog(); // Constructor
-    virtual ~TankDialog() = default;
+    TankDialogTest(); // Constructor for initializing test environment
+    ~TankDialogTest(); // Destructor for cleanup
+
+    // Function to initialize and run the tests
+    void runTest();
+    void testDialogCreation();      // Test dialog creation and default values
+    void testConfirmButton();       // Test functionality of the confirm (OK) button
+    void testCancelButton();        // Test functionality of the cancel button
 
 private:
-    // Main dialog and layout
-    Gtk::Dialog* dialogTank;
-    Gtk::Grid grid;
+    // Declare a Gtk::Application for testing purposes
+    Glib::RefPtr<Gtk::Application> app;
 
-    // Input widgets
-    Gtk::ComboBoxText typeComboBox;
-    Gtk::Entry capacityEntry;
-    Gtk::ComboBoxText capacityUnitComboBox;
-    Gtk::Entry contentsEntry;
-    Gtk::ComboBoxText contentsUnitComboBox;
+    // Declare the dialog pointer for testing
+    TankDialog* dialog;
 
-    Gtk::Entry xEntry, yEntry, zEntry;
-    Gtk::ComboBoxText* zUnitComboBox; 
-    Gtk::ComboBoxText locationUnitComboBox;
+    // Simulate the behavior of the dialog's response function
+    void onResponse(int response_id);
 
-    // Buttons
-    Gtk::Button createButton;
-    Gtk::Button cancelButton;
-
-    // Helper methods
-    bool isValidSelection();
-    void onCreateButtonClicked();
-    void onCancelButtonClicked();
-
-    // set default values method 
-    void defaultValueFill();
+    // Helper function to run the tests
+    void assertTrue(bool condition, const std::string& testName);
 };
 
-#endif 
+#endif // TANK_DIALOG_TEST_HPP
