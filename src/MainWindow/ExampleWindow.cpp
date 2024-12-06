@@ -140,6 +140,7 @@ void ExampleWindow::on_menu_file_files_dialog()
     {
         m_refFileDialog = Gtk::FileDialog::create();
         m_refFileDialog->set_modal(true);
+        m_refFileDialog->set_title("Open XML File");
     }
     m_refFileDialog->open(*this, sigc::mem_fun(*this, &ExampleWindow::on_dialog_finish));
 }
@@ -164,8 +165,11 @@ void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
 
     auto selected_uri = file->get_uri();
     std::cout << "URI selected = " << selected_uri << std::endl;
-    std::cout << (m_refRecentManager->has_item(selected_uri) ? "A" : "Not a")
-        << " recently used file" << std::endl;
+    std::string selected_path = selected_uri.substr(7);
+    
+    xmlptr()->LoadFileAndParse(selected_path);
+    
+    std::cout << "Loaded XML data from: " << xmlptr()->GetFilePath() << std::endl;
 }
 void ExampleWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
