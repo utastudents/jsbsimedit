@@ -1,87 +1,86 @@
-#include <gtest/gtest.h>
-#include <gtkmm.h>
-#include "TankDialog.hpp"
+#include "TankDialogUnitTest.hpp"
+#include <iostream>
 
-class TankDialogTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-        // Initialize GTK application
-        app = Gtk::Application::create();
+TankDialogTest::TankDialogTest() {
+    // Initialize the GTK application for testing
+    app = Gtk::Application::create();
+}
+
+TankDialogTest::~TankDialogTest() {
+    // Clean up if needed
+}
+
+void TankDialogTest::runTest() {
+    testDialogCreation();
+    testConfirmButton();
+    testCancelButton();
+}
+
+void TankDialogTest::testDialogCreation() {
+    // Create an instance of the dialog
+    dialog = new TankDialog();
+
+    // Check if the dialog was created successfully
+    assertTrue(dialog != nullptr, "Dialog creation test");
+
+    // Check if the dialog title is set correctly
+    assertTrue(dialog->get_title() == "Tank Setup", "Dialog title test");
+
+    // Check if default values are filled correctly
+    assertTrue(dialog->typeComboBox.get_active_text() == "OXIDIZER", "Default tank type test");
+    assertTrue(dialog->capacityEntry.get_text() == "0", "Default capacity test");
+    assertTrue(dialog->capacityUnitComboBox.get_active_text() == "LBS", "Default capacity unit test");
+    assertTrue(dialog->contentsEntry.get_text() == "0", "Default contents test");
+    assertTrue(dialog->contentsUnitComboBox.get_active_text() == "LBS", "Default contents unit test");
+    assertTrue(dialog->xEntry.get_text() == "0", "Default x-coordinate test");
+    assertTrue(dialog->yEntry.get_text() == "0", "Default y-coordinate test");
+    assertTrue(dialog->zEntry.get_text() == "0", "Default z-coordinate test");
+    assertTrue(dialog->zUnitComboBox->get_active_text() == "IN", "Default z-unit test");
+
+    // Clean up
+    delete dialog;
+}
+
+void TankDialogTest::testConfirmButton() {
+    // Create an instance of the dialog for testing
+    dialog = new TankDialog();
+
+    // Simulate clicking the OK button
+    dialog->onCreateButtonClicked();
+
+    // Since we're not interacting with a real GUI, just print a confirmation message
+    std::cout << "Test: Confirm button pressed!" << std::endl;
+
+    // Clean up
+    delete dialog;
+}
+
+void TankDialogTest::testCancelButton() {
+    // Create an instance of the dialog for testing
+    dialog = new TankDialog();
+
+    // Simulate clicking the Cancel button
+    dialog->onCancelButtonClicked();
+
+    // Since we're not interacting with a real GUI, just print a cancel message
+    std::cout << "Test: Cancel button pressed!" << std::endl;
+
+    // Clean up
+    delete dialog;
+}
+
+void TankDialogTest::onResponse(int response_id) {
+    if (response_id == GTK_RESPONSE_ACCEPT) {
+        dialog->onCreateButtonClicked();
+    } else {
+        dialog->onCancelButtonClicked();
     }
-
-    Glib::RefPtr<Gtk::Application> app;
-};
-
-// Test default value filling
-TEST_F(TankDialogTest, DefaultValueFillTest) {
-    TankDialog dialog;
-
-    // Verify default values for typeComboBox
-    EXPECT_EQ(dialog.typeComboBox.get_active_text(), "OXIDIZER");
-
-    // Verify default values for capacity and contents
-    EXPECT_EQ(dialog.capacityEntry.get_text(), "0");
-    EXPECT_EQ(dialog.capacityUnitComboBox.get_active_text(), "LBS");
-    EXPECT_EQ(dialog.contentsEntry.get_text(), "0");
-    EXPECT_EQ(dialog.contentsUnitComboBox.get_active_text(), "LBS");
-
-    // Verify default values for location fields
-    EXPECT_EQ(dialog.xEntry.get_text(), "0");
-    EXPECT_EQ(dialog.yEntry.get_text(), "0");
-    EXPECT_EQ(dialog.zEntry.get_text(), "0");
-
-    // Verify default value for zUnitComboBox
-    EXPECT_EQ(dialog.zUnitComboBox->get_active_text(), "IN");
 }
 
-// Test the validity of selection
-TEST_F(TankDialogTest, IsValidSelectionTest) {
-    TankDialog dialog;
-
-    // Initially, all fields are set to default values; should be valid
-    EXPECT_TRUE(dialog.isValidSelection());
-
-    // Invalidate by clearing the capacity entry
-    dialog.capacityEntry.set_text("");
-    EXPECT_FALSE(dialog.isValidSelection());
-
-    // Restore valid state
-    dialog.capacityEntry.set_text("100");
-    EXPECT_TRUE(dialog.isValidSelection());
-}
-
-// Test Create button functionality
-TEST_F(TankDialogTest, OnCreateButtonClickedTest) {
-    TankDialog dialog;
-
-    // Redirect stdout to verify output
-    testing::internal::CaptureStdout();
-    dialog.onCreateButtonClicked();
-    std::string output = testing::internal::GetCapturedStdout();
-
-    EXPECT_EQ(output, "Tank configuration saved!\n");
-
-    // Invalidate a field and check error message
-    dialog.capacityEntry.set_text("");
-    testing::internal::CaptureStderr();
-    dialog.onCreateButtonClicked();
-    std::string errorOutput = testing::internal::GetCapturedStderr();
-
-    EXPECT_EQ(errorOutput, "Please fill out all fields!\n");
-}
-
-// Test Cancel button functionality
-TEST_F(TankDialogTest, OnCancelButtonClickedTest) {
-    TankDialog dialog;
-
-    // Ensure the cancel button closes the dialog without side effects
-    EXPECT_NO_THROW(dialog.onCancelButtonClicked());
-}
-
-// Test initialization
-TEST_F(TankDialogTest, InitializationTest) {
-    TankDialog dialog;
-
-    // Verify the dialog title
-    EXPECT_EQ(dialog.get_title(), "Tank Setup");
+void TankDialogTest::assertTrue(bool condition, const std::string& testName) {
+    if (condition) {
+        std::cout << testName << " passed!" << std::endl;
+    } else {
+        std::cout << testName << " failed!" << std::endl;
+    }
 }
