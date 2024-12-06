@@ -174,7 +174,7 @@ std::string Component::gasTypeToString(GasType gastype) {
         case GasType::AIR:              return "AIR";
         case GasType::HELIUM:           return "HELIUM";
         case GasType::HYDROGEN:         return "HYDROGEN";
-        
+        default:                        return "UNKOWN";
     }
 }
 
@@ -197,6 +197,6 @@ std::string Component::unitToString(Unit unit) {
         case Unit::LB_FT_SEC_R:     return "lb ft / (sec R)";
         
         case Unit::FT3_SEC:         return "ft^3 / sec";
-        
+        default:                    return "UNKOWN";
     }
 }

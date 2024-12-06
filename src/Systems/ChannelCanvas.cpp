@@ -53,7 +53,7 @@ bool ChannelCanvas::CreateNewChannel(const std::string & name)
     Channel newChannel { m_refApp, name };
 
     m_channels.insert({ name, newChannel });
-    std::cout << "Created new channel: " << name << ".\n";
+    //std::cout << "Created new channel: " << name << ".\n";
 
     //If this is the only channel, then lets make it current.
     if(!CurrentChannelExists())
