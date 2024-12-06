@@ -114,7 +114,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   }
     
 
-
+  // Get the XML node for output & get its children
   auto node2 = xmlptr()->GetNodes("fdm_config/output");
   std::vector<JSBEdit::XMLNode> children = node.GetChildren();
 
@@ -172,12 +172,18 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   checkboxes[11]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "FCS", checkboxes[11]));
   checkboxes[12]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Propulsion", checkboxes[12]));
     
-   
+  // Spearator to Distinguish between the different GUI sections
+  Gtk::Separator* separator = Gtk::make_managed<Gtk::Separator>(Gtk::Orientation::HORIZONTAL);
+  // Add the separator to the grid
+  m_Grid.attach(*separator, 0, 7, 10, 1);  
+
+  propertyName.set_text("Property Names: ");
+  m_Grid.attach(propertyName, 0, 8);
 
   // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
-    Gtk::Entry customProperty;
-	m_Grid.attach(customProperty, 0, 14);
+  Gtk::Entry customProperty;
+	m_Grid.attach(customProperty, 0, 25);
 
   // children[0].SetText(" OFF ");
     if (children.size() > 0) {
@@ -190,22 +196,22 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   // create save button
   auto saveLabel = Glib::ustring::compose("Save");
 	auto saveButton = Gtk::make_managed<Gtk::ToggleButton>(saveLabel);
-	m_Grid.attach(*saveButton, 4, 14);
+	m_Grid.attach(*saveButton, 4, 25);
     
 
 
   // saveButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::IOSave), children, checkboxes);
-  saveButton->signal_clicked().connect(
-    sigc::bind(
-        sigc::mem_fun(*this, &MainWindow::IOSave), 
-        children, 
-        checkboxes
+  saveButton->signal_clicked().connect  
+  (
+    sigc::bind
+    (
+      sigc::mem_fun(*this, &MainWindow::IOSave), 
+      children, 
+      checkboxes,
+      checkboxLabels
     )
-);
-    
-
-
-
+  );
+ 
   std::cout << "\n\n\n" << std::endl;
   
 }
@@ -224,7 +230,7 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
   // creates choose button
 	auto chooseLabel = Glib::ustring::compose("Choose");
 	auto chooseButton = Gtk::make_managed<Gtk::ToggleButton>(chooseLabel);
-	m_Grid.attach(*chooseButton, 1, 14);
+	m_Grid.attach(*chooseButton, 1, 25);
 	
 	// Connect the "Choose" button's signal to onChooseButtonClicked
   chooseButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::onChooseButtonClicked));
@@ -232,12 +238,12 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
 	// creates add button
 	auto addLabel = Glib::ustring::compose("Add");
 	auto addButton = Gtk::make_managed<Gtk::ToggleButton>(addLabel);
-	m_Grid.attach(*addButton, 2, 14);
+	m_Grid.attach(*addButton, 2, 25);
     
 	// creates delete button
 	auto deleteLabel = Glib::ustring::compose("Delete");
 	auto deleteButton = Gtk::make_managed<Gtk::ToggleButton>(deleteLabel);
-	m_Grid.attach(*deleteButton, 3, 14);
+	m_Grid.attach(*deleteButton, 3, 25);
 
 }
 
@@ -249,10 +255,38 @@ void MainWindow::onChooseButtonClicked()
   popUpWindow->show(); // Show the popup window
 }
 
-void MainWindow::IOSave(std::vector<JSBEdit::XMLNode> children, std::vector<Gtk::CheckButton*> checkboxes)
+void MainWindow::IOSave(std::vector<JSBEdit::XMLNode> children, std::vector<Gtk::CheckButton*> checkboxes, const std::vector<std::string> checkboxLabels)
 {
   std::cout << "Save method called!\n" << std::endl;
-  children[0].SetText(" OFF ");
+  
+  // Set the updated checkbox values
+  for (size_t i = 0; i < checkboxes.size(); ++i) 
+  {
+    // Get the status of the checkbox
+    bool isActive = checkboxes[i]->get_active();
+
+    // Loop Over the Children and find the XMLNode 
+    for (size_t j = 0; j < children.size(); ++j) 
+    {
+      // Match the children with the corresponding checkboxLabel
+      if (children[j].GetText() == checkboxLabels[i]) 
+      {
+        // Set the updated states
+        if(isActive)
+        {
+          children[j].SetText(" ON ");
+        }
+        else
+        {
+          children[j].SetText(" OFF ");
+        }
+      }
+    }
+    //std::cout << "Checkbox " << i << " is " << (isActive ? "active" : "inactive") << std::endl;
+  }
+
+
+
 }
 
 void MainWindow::on_checkbox_toggled(const std::string& label, Gtk::CheckButton* checkbox)
@@ -264,23 +298,23 @@ void MainWindow::on_checkbox_toggled(const std::string& label, Gtk::CheckButton*
 void MainWindow::addPropertiesTextBox(Gtk::Grid& grid, const std::vector<std::string>& properties)
 {
   // Create a ListBox to display the properties
-    auto listBox = Gtk::make_managed<Gtk::ListBox>();
+  auto listBox = Gtk::make_managed<Gtk::ListBox>();
 
-    // Populate the ListBox with the strings from the vector
-    for (const auto& property : properties) {
-        listBox->append(*Gtk::make_managed<Gtk::Label>(property));
-    }
+  // Populate the ListBox with the strings from the vector
+  for (const auto& property : properties) {
+      listBox->append(*Gtk::make_managed<Gtk::Label>(property));
+  }
 
-    // Optional: Add spacing and margins for better visuals
-    listBox->set_margin(10);
-    listBox->set_opacity(5);
+  // Optional: Add spacing and margins for better visuals
+  listBox->set_margin(10);
+  listBox->set_opacity(5);
 
-    // Create a ScrolledWindow to make the ListBox scrollable
-    auto scrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
-    scrolledWindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
-    scrolledWindow->set_child(*listBox); // Attach the ListBox to the ScrolledWindow
-    scrolledWindow->set_margin(5);
+  // Create a ScrolledWindow to make the ListBox scrollable
+  auto scrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  scrolledWindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+  scrolledWindow->set_child(*listBox); // Attach the ListBox to the ScrolledWindow
+  scrolledWindow->set_margin(5);
 
-    // Attach the ScrolledWindow containing the ListBox to the grid
-    grid.attach(*scrolledWindow, 0, 7, 7, 7);
+  // Attach the ScrolledWindow containing the ListBox to the grid
+  grid.attach(*scrolledWindow, 0, 9, 7, 10);
 }
