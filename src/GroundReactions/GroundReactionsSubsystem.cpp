@@ -24,7 +24,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     set_modal(true);
 
     set_title("Landing Gear Setup");
-    set_default_size(715, 620);
+    set_default_size(1050, 620);
 
     auto contentArea = get_content_area();
 
@@ -164,7 +164,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Retractable
     auto retractableLabel = Gtk::make_managed<Gtk::Label>("Retractable =");
     auto retractableCheckbox = Gtk::make_managed<Gtk::CheckButton>();
-    if (retractable == "1") {
+    if (retractable == "1"|| retractable == " 1 ") {
         retractableCheckbox->set_active(TRUE);
     }
     else {
@@ -204,18 +204,18 @@ void GroundReactionsSubsystem::Create() {
         std::string contactName = "";
         std::string contactType = "";
         std::tuple<std::string, std::string, std::string> locationCoordinates = {"0.0", "0.0", "0.0"};
-        std::string locationUnit = "";
-        std::string springCoefficient = " 0.0 ";
-        std::string springCoefficientUnit = "";
-        std::string dampingCoefficient = " 0.0 ";
-        std::string dampingCoefficientUnit = "";
+        std::string locationUnit = "IN";
+        std::string springCoefficient = " 0 ";
+        std::string springCoefficientUnit = "LBS/FT";
+        std::string dampingCoefficient = " 0 ";
+        std::string dampingCoefficientUnit = "LBS/FT/SEC";
         std::string staticFriction = " 0.0 ";
         std::string dynamicFriction = " 0.0 ";
         std::string rollingFriction = " 0.0 ";
-        std::string maxSteer = " 0.0 ";
-        std::string maxSteerUnit = "";
+        std::string maxSteer = " 0 ";
+        std::string maxSteerUnit = "DEG";
         std::string brakeGroup = " NONE ";
-        std::string retractable = " 0 ";
+        std::string retractable = " 1 ";
 
         // const_cast
         auto& nonConstNode = const_cast<JSBEdit::XMLNode&>(node);
