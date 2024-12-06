@@ -8,6 +8,13 @@ class TankDialog : public Gtk::Window {
 public:
     TankDialog(); // Constructor
     virtual ~TankDialog() = default;
+     // Helper methods
+    bool isValidSelection();
+    void onCreateButtonClicked();
+    void onCancelButtonClicked();
+
+    // set default values method 
+    void defaultValueFill();
 
 private:
     // Main dialog and layout
@@ -28,14 +35,6 @@ private:
     // Buttons
     Gtk::Button createButton;
     Gtk::Button cancelButton;
-
-    // Helper methods
-    bool isValidSelection();
-    void onCreateButtonClicked();
-    void onCancelButtonClicked();
-
-    // set default values method 
-    void defaultValueFill();
 };
 
 #endif 
