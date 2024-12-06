@@ -2,7 +2,7 @@
 #define TANK_DIALOG_TEST_HPP
 
 #include <gtkmm.h>
-#include "TankDialog.hpp"
+#include "Propulsion/TankDialog.hpp"
 
 class TankDialogTest {
 public:
