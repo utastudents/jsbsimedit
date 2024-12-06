@@ -25,8 +25,8 @@ MainWindow::MainWindow(Gtk::Grid& m_Grid)
 // create and manage textboxes and drop down lists
 void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid) 
 {
-	std::cout << "IO Tab" << std::endl;
-  std::cout << "-------------------------------------------------------------------\n" << std::endl;
+	//std::cout << "IO Tab" << std::endl;
+  //std::cout << "-------------------------------------------------------------------\n" << std::endl;
   
     
     

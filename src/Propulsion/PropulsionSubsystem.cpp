@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 
 PropulsionSubsystem::PropulsionSubsystem() {
     m_Name = "Propulsion";
-    std::cout << "In PropulsionSubsystem constructor" << std::endl;
+    //std::cout << "In PropulsionSubsystem constructor" << std::endl;
 }
 std::string PropulsionSubsystem::getSelectedEngine() const {
     return std::string(selectedEngine);

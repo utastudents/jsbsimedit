@@ -3,7 +3,7 @@
 
 ExternalReactionsSubsystem::ExternalReactionsSubsystem() {
     m_Name = "External Reactions";
-    std::cout << "In ExternalReactionsSubsystem constructor" << std::endl;
+    //std::cout << "In ExternalReactionsSubsystem constructor" << std::endl;
     m_forceCount = 2;
 }
 

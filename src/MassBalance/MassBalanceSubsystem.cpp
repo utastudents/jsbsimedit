@@ -8,11 +8,11 @@
 
 MassBalanceSubsystem::MassBalanceSubsystem() {
   m_Name = "Mass Balance";
-  std::cout << "In MassBalanceSubsystem constructor" << std::endl;
+  //std::cout << "In MassBalanceSubsystem constructor" << std::endl;
 }
 
 void MassBalanceSubsystem::Create() {
-  std::cout << "In MassBalanceSubsystem::Create" << std::endl;
+  //std::cout << "In MassBalanceSubsystem::Create" << std::endl;
 
   // Example code for reading from the xml file.
   // This code may or may not go here, but this was a place
@@ -20,10 +20,10 @@ void MassBalanceSubsystem::Create() {
   //
   //
   assert(xmlptr());
-  std::cout << "---------------------------------------------------------------"
-               "----------"
-            << std::endl;
-  std::cout << "This is in mass balance, reading the xml file" << std::endl;
+  //std::cout << "---------------------------------------------------------------"
+  //             "----------"
+  //          << std::endl;
+  //std::cout << "This is in mass balance, reading the xml file" << std::endl;
   JSBEdit::XMLNode node = xmlptr()->GetNode("fdm_config/mass_balance");
   JSBEdit::XMLNode locNode =
       xmlptr()->GetNode("fdm_config/mass_balance/location");
@@ -33,12 +33,12 @@ void MassBalanceSubsystem::Create() {
       xmlptr()->GetNode("fdm_config/mass_balance/pointmass/location");
   auto a = node.GetAttribute(std::string("negated_crossproduct_inertia"));
 
-  std::cout << a.first << " -->  " << a.second << std::endl;
+  //std::cout << a.first << " -->  " << a.second << std::endl;
 
   // store this in the class
   m_airplane.negated = a.second == "true";
 
-  std::cout << "the value is " << m_airplane.negated << std::endl;
+  //std::cout << "the value is " << m_airplane.negated << std::endl;
 
   auto children = node.GetChildren();
   auto locChildren = locNode.GetChildren();
@@ -47,7 +47,7 @@ void MassBalanceSubsystem::Create() {
   std::cout << "there are " << children.size() << " children " << std::endl;
   for (auto &child : children) {
     std::vector<AttributeKV> attributes = child.GetAttributes();
-    std::cout << child.GetName() << " " << child.GetText();
+    //std::cout << child.GetName() << " " << child.GetText();
 
     if (child.GetName() == "ixx") {
       m_airplane.setIxx(std::stod(child.GetText()));
@@ -104,13 +104,13 @@ void MassBalanceSubsystem::Create() {
       m_Pointmass.setName(attributes[0].second);
     }
 
-    std::cout << std::endl;
+    //std::cout << std::endl;
   }
-  std::cout << m_airplane.getUnit() << " " << m_Emptymass.getUnits() << " "
-            << m_Location.getUnits() << " " << m_Pointmass.getName();
-  std::cout << "---------------------------------------------------------------"
-               "----------"
-            << std::endl;
+  //std::cout << m_airplane.getUnit() << " " << m_Emptymass.getUnits() << " "
+  //          << m_Location.getUnits() << " " << m_Pointmass.getName();
+  //std::cout << "---------------------------------------------------------------"
+  //             "----------"
+  //          << std::endl;
 //
 //
 //

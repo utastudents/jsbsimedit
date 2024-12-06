@@ -5,7 +5,7 @@
 
 GroundReactionsSubsystem::GroundReactionsSubsystem() {
     m_Name = "GroundReactions";
-    std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
+    //std::cout << "In GroundReactionsSubsystem contructor" << std::endl; 
 }
 
 GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(

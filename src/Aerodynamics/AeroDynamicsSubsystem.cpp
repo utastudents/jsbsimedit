@@ -11,7 +11,7 @@ AeroDynamicsSubsystem::AeroDynamicsSubsystem()
 
 void AeroDynamicsSubsystem::Create()
 {
-  std::cout << "in AeroDynamicsSubsystem::Create" << std::endl;
+  //std::cout << "in AeroDynamicsSubsystem::Create" << std::endl;
 
   //These widgets can come from a ui file or direct from code
   //
