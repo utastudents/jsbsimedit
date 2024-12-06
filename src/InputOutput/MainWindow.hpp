@@ -19,7 +19,7 @@ class MainWindow {
     	void onChooseButtonClicked(); // Adding this declaration
 		void IOSave(std::vector<JSBEdit::XMLNode> children, std::vector<Gtk::CheckButton*> checkboxes);
 		void on_checkbox_toggled(const std::string& label, Gtk::CheckButton* checkbox); //std::set<std::string>& toggledCheckboxes); 
-		// void addCheckBox(const std::string& label);
+		void addPropertiesTextBox(Gtk::Grid& grid, const std::vector<std::string>& properties);
 
 
 		// void setCheckboxState(const std::string& label, bool state, const std::vector<std::string>& checkboxLabels, const std::vector<Gtk::CheckButton*>& checkboxes);
@@ -59,6 +59,8 @@ class MainWindow {
 		//Output Area
     	Gtk::Box totalArea;
     	Gtk::Box propertyDisplayArea;
+		std::vector<std::string> properties;
+
     	
 		//Buttons
 		// Gtk::ToggleButton chooseButton;

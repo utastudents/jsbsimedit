@@ -118,50 +118,44 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   auto node2 = xmlptr()->GetNodes("fdm_config/output");
   std::vector<JSBEdit::XMLNode> children = node.GetChildren();
 
+  
+  // DEBUG: Do not remove
   // std::string state = children[0].GetName();
   
   // std::cout << "aa" + state + "aa"<< std::endl;
 
   // for (size_t i = 0; i < children.size(); ++i) 
   // {
-  //   std::cout << "Child " << i << ": " << children[i].GetName() << std::endl;
+  //   if(children[i].GetName() == "property")
+  //   {
+  //     std::cout << "Child " << i << ": " << children[i].GetText() << std::endl;
+  //   }
   // }
     
-
-
-    /*
-  for(int i = 0; i < 13; ++i)
+  for (size_t i = 0; i < children.size() && i < checkboxes.size(); ++i) 
   {
-    if(children[i].GetText() == " ON ")
+    if (children[i].GetText() == " ON ") 
     {
-      for (size_t j = 0; j < checkboxes.size(); ++j)
-      {
-        if(j == i)
-        {
-          checkboxes[j]->set_active(true);
-        }
-      }
+      checkboxes[i]->set_active(true);
+    } 
+    else if (children[i].GetText() == " OFF ") 
+    {
+      checkboxes[i]->set_active(false);
     }
-    else if(children[i].GetText() == " OFF " )
+    
+  }
+
+  for (size_t i = 0; i < children.size(); ++i) 
+  {
+    if(children[i].GetName() == "property")
     {
-      for (size_t j = 0; j < checkboxes.size(); ++j)
-      {
-        if(j == i)
-        {
-          checkboxes[j]->set_active(false);
-        }
-      }
+      //std::cout << "Checking child: " << children[i].GetName() << " Text: " << children[i].GetText() << std::endl;
+      properties.push_back(children[i].GetText());
     }
   }
-     */
-    for (size_t i = 0; i < children.size() && i < checkboxes.size(); ++i) {
-        if (children[i].GetText() == " ON ") {
-            checkboxes[i]->set_active(true);
-        } else if (children[i].GetText() == " OFF ") {
-            checkboxes[i]->set_active(false);
-        }
-    }
 
+  // Add a property display area and show the properties
+  addPropertiesTextBox(m_Grid, properties);
 
   // Connecting each checkbox with a signal handler using sigc::bind
   checkboxes[0]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Simulation", checkboxes[0]));
@@ -183,7 +177,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
     Gtk::Entry customProperty;
-	m_Grid.attach(customProperty, 0, 8);
+	m_Grid.attach(customProperty, 0, 14);
 
   // children[0].SetText(" OFF ");
     if (children.size() > 0) {
@@ -196,7 +190,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   // create save button
   auto saveLabel = Glib::ustring::compose("Save");
 	auto saveButton = Gtk::make_managed<Gtk::ToggleButton>(saveLabel);
-	m_Grid.attach(*saveButton, 4, 8);
+	m_Grid.attach(*saveButton, 4, 14);
     
 
 
@@ -215,11 +209,6 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   std::cout << "\n\n\n" << std::endl;
   
 }
-// Function to set a specific checkbox on or off by its label or index
-// void MainWindow::setCheckboxState(int ID, bool state, const std::vector<Gtk::CheckButton*>& checkboxes)
-// {
-  
-// }
 
 // create and manage checkboxes
 void MainWindow::onCheckBoxToggle() 
@@ -235,7 +224,7 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
   // creates choose button
 	auto chooseLabel = Glib::ustring::compose("Choose");
 	auto chooseButton = Gtk::make_managed<Gtk::ToggleButton>(chooseLabel);
-	m_Grid.attach(*chooseButton, 1, 8);
+	m_Grid.attach(*chooseButton, 1, 14);
 	
 	// Connect the "Choose" button's signal to onChooseButtonClicked
   chooseButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::onChooseButtonClicked));
@@ -243,12 +232,12 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
 	// creates add button
 	auto addLabel = Glib::ustring::compose("Add");
 	auto addButton = Gtk::make_managed<Gtk::ToggleButton>(addLabel);
-	m_Grid.attach(*addButton, 2, 8);
+	m_Grid.attach(*addButton, 2, 14);
     
 	// creates delete button
 	auto deleteLabel = Glib::ustring::compose("Delete");
 	auto deleteButton = Gtk::make_managed<Gtk::ToggleButton>(deleteLabel);
-	m_Grid.attach(*deleteButton, 3, 8);
+	m_Grid.attach(*deleteButton, 3, 14);
 
 }
 
@@ -256,101 +245,42 @@ void MainWindow::onButtonClicked(Gtk::Grid& m_Grid)
 // Function to handle "Choose" button click
 void MainWindow::onChooseButtonClicked() 
 {
-  /*
-  auto popUp = new Gtk::Window();
-  popUp->set_title("Properties");
-  popUp->set_default_size(1000, 700); //can be adjusted
-  
-  // Create a grid for the popup content
-	auto popUpGrid = Gtk::make_managed<Gtk::Grid>();
-	popUp->set_child(*popUpGrid);
-  */
   auto popUpWindow = new PopUpWindow();
   popUpWindow->show(); // Show the popup window
-    
-  
-    
-    
 }
 
 void MainWindow::IOSave(std::vector<JSBEdit::XMLNode> children, std::vector<Gtk::CheckButton*> checkboxes)
 {
   std::cout << "Save method called!\n" << std::endl;
-
-  // for(int i = 0; i < 13; ++i)
-  // {
-  //   if(children[i].GetText() == " ON ")
-  //   {
-  //     for (size_t j = 0; j < checkboxes.size(); ++j)
-  //     {
-  //       if(j == i)
-  //       {
-  //         checkboxes[j]->set_active(true);
-  //       }
-  //     }
-  //   }
-  //   else if(children[i].GetText() == " OFF " )
-  //   {
-  //     for (size_t j = 0; j < checkboxes.size(); ++j)
-  //     {
-  //       if(j == i)
-  //       {
-  //         checkboxes[j]->set_active(false);
-  //       }
-  //     }
-  //   }
-  // }
   children[0].SetText(" OFF ");
-  // for (size_t i = 0; i < 13; ++i)
-  // {
-  //   if(checkboxes[i]->get_active())
-  //   {
-  //     children[i].SetText(" ON ");
-  //   }
-  //   else if(!(checkboxes[i]->get_active()))
-  //   {
-  //     children[i].SetText(" OFF ");
-  //   }
-  // }
-
-
-
 }
 
 void MainWindow::on_checkbox_toggled(const std::string& label, Gtk::CheckButton* checkbox)
                                       // std::set<std::string>& toggledCheckboxes) 
 {
   std::cout << "Checkbox [" << label << "] is now " << (checkbox->get_active() ? "ON" : "OFF") << std::endl;
-    
-
-
-  // addCheckBox(label);
-  
-  // toggledCheckboxes.insert(label);
-
-  // Print out the current contents of the set
-        // std::cout << "Toggled checkboxes so far: ";
-        // for (const auto& lbl : toggledCheckboxes) {
-        //     std::cout << lbl << " ";
-        // }
-        // std::cout << std::endl;
 }
 
-// void MainWindow::addCheckBox(const std::string& label)
-// {
-//   toggledCheckboxes.insert(label);
+void MainWindow::addPropertiesTextBox(Gtk::Grid& grid, const std::vector<std::string>& properties)
+{
+  // Create a ListBox to display the properties
+    auto listBox = Gtk::make_managed<Gtk::ListBox>();
 
+    // Populate the ListBox with the strings from the vector
+    for (const auto& property : properties) {
+        listBox->append(*Gtk::make_managed<Gtk::Label>(property));
+    }
 
-//   if (std::find(toggledCheckboxes.begin(), toggledCheckboxes.end(), label) == toggledCheckboxes.end()) 
-//   {
-//     toggledCheckboxes.push_back(label);
-//   }
+    // Optional: Add spacing and margins for better visuals
+    listBox->set_margin(10);
+    listBox->set_opacity(5);
 
-//   // Print out the current contents of the vector
-//   std::cout << "Toggled checkboxes so far: ";
-//   for (const auto& lbl : toggledCheckboxes) 
-//   {
-//     std::cout << lbl << " ";
-//   }
-//   std::cout << std::endl;
-// }
+    // Create a ScrolledWindow to make the ListBox scrollable
+    auto scrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+    scrolledWindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+    scrolledWindow->set_child(*listBox); // Attach the ListBox to the ScrolledWindow
+    scrolledWindow->set_margin(5);
+
+    // Attach the ScrolledWindow containing the ListBox to the grid
+    grid.attach(*scrolledWindow, 0, 7, 7, 7);
+}
