@@ -294,11 +294,11 @@ void MetricsSubsystem::add_vertex_data_unit(std::string tab_name, Metrics::strin
 
   // Linking to Y
   auto the_y = entry_boxes.at(1);
-  the_y->set_text(std::to_string(vertex_data_units[tab_name]->get_z()));
+  the_y->set_text(std::to_string(vertex_data_units[tab_name]->get_y()));
   the_y->signal_activate().connect([this, the_y, tab_name]()
                                    {
     vertex_data_units[tab_name]->set_y(update_text(the_y->get_text()));
-    the_y->set_text(std::to_string(vertex_data_units[tab_name]->get_z())); });
+    the_y->set_text(std::to_string(vertex_data_units[tab_name]->get_y())); });
 
   // Linking to Z
   auto the_z = entry_boxes.at(2);
