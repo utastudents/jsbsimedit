@@ -28,21 +28,30 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
 	std::cout << "IO Tab" << std::endl;
   std::cout << "-------------------------------------------------------------------\n" << std::endl;
   
+    
+    
   // Load the xml file and get the starting node
   auto node = xmlptr()->GetNode("fdm_config/output");
+
 
 	// creates name label and text box, then attaches them to the grid
   name.set_text("Name(*) : ");
   m_Grid.attach(name, 0, 0);
   // Get the attribute from the XML File
   auto nameField = node.GetAttribute("name");
+   
+
   nameTextBox.set_text(nameField.second);
   m_Grid.attach(nameTextBox, 1, 0);
+    
+
     
 	// creates type label and drop down list, then attaches them to the grid
 	type.set_text("Type(*) : ");
 	typeDropDownList.append("CSV");
 	typeDropDownList.append("TABULAR");
+    
+
   // Get the attribute from the XML File
   auto typeField = node.GetAttribute("type");
 	// Choose default based on what's in the XML File
@@ -57,6 +66,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   }
 	m_Grid.attach(type, 0, 1);
 	m_Grid.attach(typeDropDownList, 1, 1);
+   
     
 	// creates rate label and text box, then attaches them to the grid
   rate.set_text("Rate(*) : ");
@@ -66,7 +76,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
 	m_Grid.attach(rate, 0, 2);
 	m_Grid.attach(rateTextBox, 1, 2);
 
-    
+
   // Vector to store labels for each checkbox
   std::vector<std::string> checkboxLabels = 
   {
@@ -102,6 +112,8 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
       row++;
     }
   }
+    
+
 
   auto node2 = xmlptr()->GetNodes("fdm_config/output");
   std::vector<JSBEdit::XMLNode> children = node.GetChildren();
@@ -114,7 +126,10 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   // {
   //   std::cout << "Child " << i << ": " << children[i].GetName() << std::endl;
   // }
+    
 
+
+    /*
   for(int i = 0; i < 13; ++i)
   {
     if(children[i].GetText() == " ON ")
@@ -138,6 +153,14 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
       }
     }
   }
+     */
+    for (size_t i = 0; i < children.size() && i < checkboxes.size(); ++i) {
+        if (children[i].GetText() == " ON ") {
+            checkboxes[i]->set_active(true);
+        } else if (children[i].GetText() == " OFF ") {
+            checkboxes[i]->set_active(false);
+        }
+    }
 
 
   // Connecting each checkbox with a signal handler using sigc::bind
@@ -154,17 +177,28 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
   checkboxes[10]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Ground Reactions", checkboxes[10]));
   checkboxes[11]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "FCS", checkboxes[11]));
   checkboxes[12]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_checkbox_toggled), "Propulsion", checkboxes[12]));
+    
+   
 
   // creates the configurations textbox next to the "add", "choose", and "delete" buttons,
 	// then attaches it to the grid
-	m_Grid.attach(customProperty, 0, 8); 
+    Gtk::Entry customProperty;
+	m_Grid.attach(customProperty, 0, 8);
 
-  children[0].SetText(" OFF "); 
+  // children[0].SetText(" OFF ");
+    if (children.size() > 0) {
+      children[0].SetText(" OFF ");
+    }
+
+    
+
 
   // create save button
   auto saveLabel = Glib::ustring::compose("Save");
 	auto saveButton = Gtk::make_managed<Gtk::ToggleButton>(saveLabel);
 	m_Grid.attach(*saveButton, 4, 8);
+    
+
 
   // saveButton->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::IOSave), children, checkboxes);
   saveButton->signal_clicked().connect(
@@ -174,6 +208,8 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
         checkboxes
     )
 );
+    
+
 
 
   std::cout << "\n\n\n" << std::endl;
@@ -232,6 +268,8 @@ void MainWindow::onChooseButtonClicked()
   auto popUpWindow = new PopUpWindow();
   popUpWindow->show(); // Show the popup window
     
+  
+    
     
 }
 
@@ -283,6 +321,8 @@ void MainWindow::on_checkbox_toggled(const std::string& label, Gtk::CheckButton*
                                       // std::set<std::string>& toggledCheckboxes) 
 {
   std::cout << "Checkbox [" << label << "] is now " << (checkbox->get_active() ? "ON" : "OFF") << std::endl;
+    
+
 
   // addCheckBox(label);
   
