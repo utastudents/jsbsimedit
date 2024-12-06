@@ -11,7 +11,9 @@ GroundReactionsSubsystem::GroundReactionsSubsystem() {
 GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     const std::string& contactName, const std::string& contactType,
     const std::tuple<double, double, double>& locationCoordinates, const std::string& locationUnit,
-    const std::string& brakeGroup) {
+    const std::string& brakeGroup, const std::string& springCoefficient, const std::string& dampingCoefficient, 
+    const std::string& staticFriction, const std::string& dynamicFriction, const std::string& rollingFriction, 
+    const std::string& maxSteer, const std::string& retractable) {
 
     set_modal(true);
 
@@ -75,7 +77,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Spring Coefficient
     auto springCoefficientLabel = Gtk::make_managed<Gtk::Label>("Spring Coefficient =");
     auto springCoefficientTextbox = Gtk::make_managed<Gtk::Entry>();
-    springCoefficientTextbox->set_text("Spring Coefficient.");
+    springCoefficientTextbox->set_text(springCoefficient);
 
     auto springCoefficientUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
     springCoefficientUnitDropDown->append("LBS/FT");
@@ -89,7 +91,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Damping Coefficient
     auto dampingCoefficientLabel = Gtk::make_managed<Gtk::Label>("Damping Coefficient =");
     auto dampingCoefficientTextbox = Gtk::make_managed<Gtk::Entry>();
-    dampingCoefficientTextbox->set_text("Damping Coefficientt.");
+    dampingCoefficientTextbox->set_text(dampingCoefficient);
 
     auto dampingCoefficientUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
     dampingCoefficientUnitDropDown->append("LBS/FT/SEC");
@@ -103,7 +105,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Static Friction
     auto staticFrictionLabel = Gtk::make_managed<Gtk::Label>("Static Friction =");
     auto staticFrictionTextbox = Gtk::make_managed<Gtk::Entry>();
-    staticFrictionTextbox->set_text("Static Friction.");
+    staticFrictionTextbox->set_text(staticFriction);
 
     p_Grid->attach(*staticFrictionLabel, 0, p_row);
     p_Grid->attach(*staticFrictionTextbox, 1, p_row++);
@@ -111,7 +113,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Dynamic Friction
     auto dynamicFrictionLabel = Gtk::make_managed<Gtk::Label>("Dynamic Friction =");
     auto dynamicFrictionTextbox = Gtk::make_managed<Gtk::Entry>();
-    dynamicFrictionTextbox->set_text("Dynamic Friction.");
+    dynamicFrictionTextbox->set_text(dynamicFriction);
 
     p_Grid->attach(*dynamicFrictionLabel, 0, p_row);
     p_Grid->attach(*dynamicFrictionTextbox, 1, p_row++);
@@ -119,7 +121,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Rolling Friction
     auto rollingFrictionLabel = Gtk::make_managed<Gtk::Label>("Rolling Friction =");
     auto rollingFrictionTextbox = Gtk::make_managed<Gtk::Entry>();
-    rollingFrictionTextbox->set_text("Rolling Friction.");
+    rollingFrictionTextbox->set_text(rollingFriction);
 
     p_Grid->attach(*rollingFrictionLabel, 0, p_row);
     p_Grid->attach(*rollingFrictionTextbox, 1, p_row++);
@@ -127,7 +129,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Max Steer
     auto maxSteerLabel = Gtk::make_managed<Gtk::Label>("Max Steer =");
     auto maxSteerTextbox = Gtk::make_managed<Gtk::Entry>();
-    maxSteerTextbox->set_text("Max Steer.");
+    maxSteerTextbox->set_text(maxSteer);
 
     auto maxSteerUnitDropDown = Gtk::make_managed<Gtk::ComboBoxText>();
     maxSteerUnitDropDown->append("DEG");
@@ -156,6 +158,12 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
     // Retractable
     auto retractableLabel = Gtk::make_managed<Gtk::Label>("Retractable =");
     auto retractableCheckbox = Gtk::make_managed<Gtk::CheckButton>();
+    if ( retractable == "1") {
+        retractableCheckbox->set_active(TRUE);
+    }
+    else {
+        retractableCheckbox->set_active(FALSE);
+    }
 
     p_Grid->attach(*retractableLabel, 0, p_row);
     p_Grid->attach(*retractableCheckbox, 1, p_row++);
@@ -176,10 +184,14 @@ void GroundReactionsSubsystem::Create() {
     assert(xmlptr());
 
     // Vector for XML contact node extraction
-    std::vector<JSBEdit::XMLNode> nodes = xmlptr()->GetNodes("fdm_config/ground_reactions/contact");
+    JSBEdit::XMLDoc doc;
+    doc.LoadFileAndParse("../../../data/aircraft/f16/f16.xml");
+
+    std::vector<JSBEdit::XMLNode> nodes = doc.GetNodes("fdm_config/ground_reactions/contact");
 
     // Vector for storing contact data
-    std::vector<std::tuple<std::string, std::string, std::string, std::tuple<double, double, double>, std::string>> contactList;
+    std::vector<std::tuple<std::string, std::string, std::string, std::tuple<double, double, double>,
+                           std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string>> contactList;
 
     // XML data extraction of nodes: contact
     for (const auto& node : nodes) {
@@ -188,48 +200,37 @@ void GroundReactionsSubsystem::Create() {
         std::string locationUnit = "";
         std::tuple<double, double, double> locationCoordinates = {0.0, 0.0, 0.0};
         std::string brakeGroup = " NONE ";
+        std::string springCoefficient = " NONE ";
+        std::string dampingCoefficient = " NONE ";
+        std::string staticFriction = " NONE ";
+        std::string dynamicFriction = " NONE ";
+        std::string rollingFriction = " NONE ";
+        std::string maxSteer = " NONE ";
+        std::string retractable = " 0 ";
 
         // const_cast
         auto& nonConstNode = const_cast<JSBEdit::XMLNode&>(node);
 
         // Extraction of contact: type, name
         for (const auto& attribute : nonConstNode.GetAttributes()) {
-            
-            // To contactType
             if (attribute.first == "type") {
                 contactType = attribute.second;
-              
-              // To contactName
             } else if (attribute.first == "name") {
                 contactName = attribute.second;
             }
         }
 
-        // const_cast
-        auto& nonConstNodeForChildren = const_cast<JSBEdit::XMLNode&>(node);
-
-        // XML data extraction of children: location, brake_group
-        for (const auto& child : nonConstNodeForChildren.GetChildren()) {
-            
-            // const_cast
+        // Extraction of data from children nodes
+        for (const auto& child : nonConstNode.GetChildren()) {
             auto& nonConstChild = const_cast<JSBEdit::XMLNode&>(child);
 
             // Extraction of location
             if (nonConstChild.GetName() == "location") {
-                
-                // Extraction of location: unit
                 auto attribute = nonConstChild.GetAttribute("unit");
-                
-                // To locationUnit
-                locationUnit = attribute.second; 
+                locationUnit = attribute.second;
 
-                // Extraction of location children: x, y, z
                 for (const auto& locChild : nonConstChild.GetChildren()) {
-                    
-                    // const_cast
                     auto& nonConstLocChild = const_cast<JSBEdit::XMLNode&>(locChild);
-                    
-                    // To locationCoordinates
                     if (nonConstLocChild.GetName() == "x") {
                         std::get<0>(locationCoordinates) = std::stod(nonConstLocChild.GetText());
                     } else if (nonConstLocChild.GetName() == "y") {
@@ -238,42 +239,59 @@ void GroundReactionsSubsystem::Create() {
                         std::get<2>(locationCoordinates) = std::stod(nonConstLocChild.GetText());
                     }
                 }
-              
-              // Extraction of brake_group
             } else if (nonConstChild.GetName() == "brake_group") {
-                
-                // To brakeGroup
                 brakeGroup = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "spring_coeff") {
+                springCoefficient = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "damping_coeff") {
+                dampingCoefficient = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "static_friction") {
+                staticFriction = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "dynamic_friction") {
+                dynamicFriction = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "rolling_friction") {
+                rollingFriction = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "max_steer") {
+                maxSteer = nonConstChild.GetText();
+            } else if (nonConstChild.GetName() == "retractable") {
+                retractable = nonConstChild.GetText();
             }
         }
 
-        // Extracted data to contactList vector 
-        contactList.push_back(std::make_tuple(contactType, contactName, locationUnit, locationCoordinates, brakeGroup));
+        // Add extracted data to contactList vector
+        contactList.push_back(std::make_tuple(contactType, contactName, locationUnit, locationCoordinates,
+                                              brakeGroup, springCoefficient, dampingCoefficient,
+                                              staticFriction, dynamicFriction, rollingFriction, maxSteer, retractable));
     }
 
-    // Main grid
+    // Create grid and populate ListBox
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
 
-    // ListBox for contacts
     auto m_ContactListBox = Gtk::make_managed<Gtk::ListBox>();
     m_ContactListBox->set_halign(Gtk::Align::FILL);
     m_ContactListBox->set_hexpand(true);
     m_ContactListBox->set_selection_mode(Gtk::SelectionMode::SINGLE);
 
-    // contactList vector tuples to m_ContactListBox rows
     for (const auto& contact : contactList) {
         auto contactType = std::get<0>(contact);
         auto contactName = std::get<1>(contact);
         auto locationUnit = std::get<2>(contact);
         auto locationCoordinates = std::get<3>(contact);
         auto brakeGroup = std::get<4>(contact);
+        auto springCoefficient = std::get<5>(contact);
+        auto dampingCoefficient = std::get<6>(contact);
+        auto staticFriction = std::get<7>(contact);
+        auto dynamicFriction = std::get<8>(contact);
+        auto rollingFriction = std::get<9>(contact);
+        auto maxSteer = std::get<10>(contact);
+        auto retractable = std::get<11>(contact);
 
         auto labelText = contactName + " (" + contactType + ") at point [" +
-            std::to_string(std::get<0>(locationCoordinates)) + ", " +
-            std::to_string(std::get<1>(locationCoordinates)) + ", " +
-            std::to_string(std::get<2>(locationCoordinates)) + "] in " + locationUnit + " (in" +
-            brakeGroup + "brake group)";
+                         std::to_string(std::get<0>(locationCoordinates)) + ", " +
+                         std::to_string(std::get<1>(locationCoordinates)) + ", " +
+                         std::to_string(std::get<2>(locationCoordinates)) + "] in " + locationUnit + " (in" +
+                         brakeGroup + "brake group)";
 
         auto label = Gtk::make_managed<Gtk::Label>(labelText);
         label->set_halign(Gtk::Align::START);
@@ -282,41 +300,47 @@ void GroundReactionsSubsystem::Create() {
         m_ContactListBox->append(*row);
     }
 
-    // Initial m_ContactListBox row selection clear
     Glib::signal_idle().connect_once([m_ContactListBox]() {
         m_ContactListBox->unselect_all();
     });
 
-    // GestureClick for m_ContactListBox row double-click detection
     auto gesture = Gtk::GestureClick::create();
     gesture->signal_released().connect([this, m_ContactListBox, contactList](int n_press, double, double) {
         if (n_press == 2) {
             auto row = m_ContactListBox->get_selected_row();
             auto index = row->get_index();
 
-            // Contact details for dialog
             const auto& contact = contactList[index];
             const auto& contactName = std::get<1>(contact);
             const auto& contactType = std::get<0>(contact);
             const auto& locationUnit = std::get<2>(contact);
             const auto& locationCoordinates = std::get<3>(contact);
             const auto& brakeGroup = std::get<4>(contact);
+            const auto& springCoefficient = std::get<5>(contact);
+            const auto& dampingCoefficient = std::get<6>(contact);
+            const auto& staticFriction = std::get<7>(contact);
+            const auto& dynamicFriction = std::get<8>(contact);
+            const auto& rollingFriction = std::get<9>(contact);
+            const auto& maxSteer = std::get<10>(contact);
+            const auto& retractable = std::get<11>(contact);
 
             auto landingGearDialog = Gtk::make_managed<LandingGearSetupDialog>(
                 contactName, 
                 contactType, 
                 locationCoordinates, 
                 locationUnit, 
-                brakeGroup
+                brakeGroup,
+                springCoefficient,
+                dampingCoefficient,
+                staticFriction,
+                dynamicFriction,
+                rollingFriction,
+                maxSteer,
+                retractable
             );
             landingGearDialog->show();
         }
     });
     m_ContactListBox->add_controller(gesture);
-
-    // m_ContactListBox to grid
     m_Grid.attach(*m_ContactListBox, 0, 0);
-
-    // Keep track of rows
-    //int row = 1; // unused variable 
 }
