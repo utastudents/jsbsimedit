@@ -112,7 +112,7 @@ void GeneralInformationSubsystem::Create()
   auto organizationFrame = Gtk::make_managed<Gtk::Frame>();
 
   // Set up TextView content and appearance
-  organizationTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+  organizationTextView->get_buffer()->set_text(""); // Placeholder text
 
   // Configure the ScrolledWindow
   organizationScrolledWindow->set_min_content_height(100); // Set the height for the text area
@@ -213,7 +213,7 @@ void GeneralInformationSubsystem::Create()
   auto limitationsFrame = Gtk::make_managed<Gtk::Frame>();
 
   // Set up TextView content and appearance for Limitations
-  limitationsTextView->get_buffer()->set_text("1.\n2.\n3"); // Placeholder text
+  limitationsTextView->get_buffer()->set_text(""); // Placeholder text
   
   // Configure the ScrolledWindow
   limitationsScrolledWindow->set_min_content_height(100); // Set the height for the text area
