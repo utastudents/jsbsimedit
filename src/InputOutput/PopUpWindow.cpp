@@ -32,7 +32,7 @@ PopUpWindow::PopUpWindow()
     
     // Added box to show selected property
     currentPlaceholder->set_text("");
-    currentPlaceholder->set_editable(false);
+    currentPlaceholder->set_editable(true);
     currentPlaceholder->set_width_chars(20);
     currentHBox->append(*currentPlaceholder);
     currentHBox->append(showLabel);
