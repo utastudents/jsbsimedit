@@ -85,5 +85,5 @@ void TableMenu::populate_table() {
         row[columns.col2] = col2_data;
     }
 
-    //std::cout << "Table populated successfully!" << std::endl;
+    std::cout << "Table populated successfully!" << std::endl;
 }

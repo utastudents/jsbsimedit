@@ -9,7 +9,7 @@ User::User() : authorName(""), email(""), organization("") {}
 void User::setAuthorName(const std::string& name) {
     if (!Validation::validateAuthor(name))
     {
-        //std::cout << "Invalid author name!" << std::endl;
+        std::cout << "Invalid author name!" << std::endl;
         return;  //Exit early if the name is invalid
     }
     this->authorName = name;    //Only set the value name if it is valid

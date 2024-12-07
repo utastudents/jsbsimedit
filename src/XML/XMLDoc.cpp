@@ -161,10 +161,10 @@ bool JSBEdit::XMLDoc::SaveToFile(const std::filesystem::path &path)
 }
 
 //prints the nodes out to stdout
-// void JSBEdit::XMLDoc::Print()
-// {
-//     doc.print(std::cout);
-// }
+void JSBEdit::XMLDoc::Print()
+{
+    doc.print(std::cout);
+}
 
 // Definition of GetFilePath method
 std::filesystem::path JSBEdit::XMLDoc::GetFilePath() const

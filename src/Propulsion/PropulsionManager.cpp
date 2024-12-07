@@ -9,26 +9,26 @@ void PropulsionManager::showEngineThrusterSetup(const std::string& Engine, const
     // TODO: Implement engine/thruster setup display
     
     EngineThrusterDialog dialogEng(Engine, Thruster);
-    //std::cout << "Displaying engine/thruster setup..." << std::endl;
+    std::cout << "Displaying engine/thruster setup..." << std::endl;
 }
 
 void PropulsionManager::showTankSetup() {
     // TODO: Implement tank setup display
 
     TankDialog dialogTank;
-    //std::cout << "Displaying tank setup..." << std::endl;
+    std::cout << "Displaying tank setup..." << std::endl;
 }
 
 int PropulsionManager::createPair(const std::string& Engine, const std::string& Thruster) {
     // TODO: Implement confirmation for creating a pair
     showEngineThrusterSetup(Engine, Thruster);
-    //std::cout << "Confirming created pair..." << std::endl;
+    std::cout << "Confirming created pair..." << std::endl;
     return 1;
 }
 
 void PropulsionManager::createTank() {
     // TODO: Implement confirmation for creating a pair
-    //std::cout << "Confirming created Tank..." << std::endl;
+    std::cout << "Confirming created Tank..." << std::endl;
 }
 
 void PropulsionManager::confirmDeletePair() {

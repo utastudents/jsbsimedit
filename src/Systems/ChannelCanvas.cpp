@@ -122,7 +122,7 @@ void ChannelCanvas::OnClickRelease(int numClick, double x, double y)
     if(!CurrentChannelExists())
         return;
 
-    //std::cout << "Mouse released at: "<< x << ", " << y << ".\n";
+    std::cout << "Mouse released at: "<< x << ", " << y << ".\n";
 
 
     //WHYYYYYY does m_channels[m_currentChannel] raise all hell here but .at() is fine...

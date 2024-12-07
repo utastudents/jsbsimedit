@@ -25,83 +25,83 @@ Component::Component() {
 
 void Component::setGasType(GasType type) {
     gasType = type;
-    // std::cout << "   set gas type to " << gasType << std::endl;
+    std::cout << "   set gas type to " << gasType << std::endl;
 }
 
 void Component::setLocationUnit(Unit type) { 
     locationUnit = type;
-    // std::cout << "   set location unit to " << unitToString(locationUnit) << std::endl;
+    std::cout << "   set location unit to " << unitToString(locationUnit) << std::endl;
 }
 
 void Component::setDimensionsUnit(Unit type) { 
     dimensionsUnit = type;
-    // std::cout << "   set dimensions unit to " << unitToString(dimensionsUnit) << std::endl;
+    std::cout << "   set dimensions unit to " << unitToString(dimensionsUnit) << std::endl;
 }
 
 void Component::setDimensionsShape(Unit shape) {
     dimensionsShape = shape;
-    // std::cout << "   set dimensions shape to " << unitToString(dimensionsShape) << std::endl;
+    std::cout << "   set dimensions shape to " << unitToString(dimensionsShape) << std::endl;
 }
 
 void Component::setPressureUnit(Unit type) { 
     pressureUnit = type;
-    // std::cout << "   set pressure unit to " << unitToString(pressureUnit) << std::endl;
+    std::cout << "   set pressure unit to " << unitToString(pressureUnit) << std::endl;
 }
 
 void Component::setValveCoefficientUnit(Unit type) {
     valveCoefficientUnit = type;
-    // std::cout << "   set valve coefficient unit to " << unitToString(valveCoefficientUnit) << std::endl;
+    std::cout << "   set valve coefficient unit to " << unitToString(valveCoefficientUnit) << std::endl;
 }
 
 void Component::setXLocation(double x) {
     xLocation = x;
-    // std::cout << "   set x location to " << xLocation << std::endl;
+    std::cout << "   set x location to " << xLocation << std::endl;
 }
 
 void Component::setYLocation(double y) {
     yLocation = y;
-    // std::cout << "   set y location to " << yLocation << std::endl;
+    std::cout << "   set y location to " << yLocation << std::endl;
 }
 
 void Component::setZLocation(double z) {
     zLocation = z;
-    // std::cout << "   set z location to " << zLocation << std::endl;
+    std::cout << "   set z location to " << zLocation << std::endl;
 }
 
 void Component::setXDimension(double x) {
     xDimension = x;
-    // std::cout << "   set x dimension to " << xDimension << std::endl;
+    std::cout << "   set x dimension to " << xDimension << std::endl;
 }
 
 void Component::setYDimension(double y) {
     yDimension = y;
-    // std::cout << "   set y dimension to " << yDimension << std::endl;
+    std::cout << "   set y dimension to " << yDimension << std::endl;
 }
 
 void Component::setZDimension(double z) {
     zDimension = z;
-    // std::cout << "   set z dimension to " << zDimension << std::endl;
+    std::cout << "   set z dimension to " << zDimension << std::endl;
 }
 
 // Set Methods
 void Component::setOverpressure(double overpressure) { 
     maxOverpressure = overpressure; 
-    // std::cout << "   set overpressure to " << maxOverpressure << std::endl;
+    std::cout << "   set overpressure to " << maxOverpressure << std::endl;
 }
 
 void Component::setValveCoefficient(double valveCoefficient) { 
     this->valveCoefficient = valveCoefficient; 
-    // std::cout << "   set valve coefficient to " << valveCoefficient << std::endl;
+    std::cout << "   set valve coefficient to " << valveCoefficient << std::endl;
 }
 
 void Component::setInitialFullness(double initFullness) { 
     fullness = initFullness; 
-    // std::cout << "   set fullness to " << fullness << std::endl;
+    std::cout << "   set fullness to " << fullness << std::endl;
 }
 
 void Component::setName(std::string newName) {
     name = newName;
-    // std::cout << "   set name to " << name << std::endl;
+    std::cout << "   set name to " << name << std::endl;
 }
 
 // Get Methods

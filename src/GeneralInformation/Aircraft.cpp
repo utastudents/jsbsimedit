@@ -20,19 +20,19 @@ std::string Aircraft::getName() const {
 void Aircraft::setUser(const User& user) {
     if (!Validation::validateAuthor(user.getAuthorName()))
     {
-        // std::cout << "Invalid Author name!" << std::endl;
+        std::cout << "Invalid Author name!" << std::endl;
         return;
     }
 
     if (!Validation::validateEmail(user.getEmail()))
     {
-        // std::cout << "Invalid Email input!" << std::endl;
+        std::cout << "Invalid Email input!" << std::endl;
         return;
     }
 
     if (!Validation::validateOrganization(user.getOrganization()))
     {
-        // std::cout << "Organization limit must be 100 or fewer!" << std::endl;
+        std::cout << "Organization limit must be 100 or fewer!" << std::endl;
         return;
     }
 
@@ -73,7 +73,7 @@ std::vector<References> Aircraft::getReferences() const {
 // Set and get functions for description
 void Aircraft::setDescription(std::string description) {
      if (description.length() > 500) {
-        // std::cout << "Description must be 500 characters or fewer!" << std::endl;
+        std::cout << "Description must be 500 characters or fewer!" << std::endl;
         return;
     }
     this->Description = description;
@@ -87,7 +87,7 @@ std::string Aircraft::getDescription() {
 void Aircraft::setLimitations(std::string limitations) {
     if (!Validation::validateLimitations(limitations))
     {
-        // std::cout << "Limitations must be 400 characters or fewer!" << std::endl;
+        std::cout << "Limitations must be 400 characters or fewer!" << std::endl;
         return;
     }
     this->limitations = limitations;
@@ -101,7 +101,7 @@ std::string Aircraft::getLimitations() {
 void Aircraft::setNotes(std::string notes) {
     if (!Validation::validateNotes(notes))
     {
-        // std::cout << "Notes must be 500 characters or fewer!" << std::endl;
+        std::cout << "Notes must be 500 characters or fewer!" << std::endl;
         return;
     }
     this->notes = notes;
@@ -117,14 +117,14 @@ void Aircraft::saveToFile() {
      // need to change the file name as we want. 
 
     if (!outFile) {
-        // std::cout << "Error file!" << std::endl;
+        std::cout << "Error file!" << std::endl;
         return;
     }
 
     // put the data for the file such as....  outFile << "Name: " << name << "\n";
 
     outFile.close();
-    // std::cout << "Data saved successfully." << std::endl;
+    std::cout << "Data saved successfully." << std::endl;
 }
 
 // Load the Aircraft data from a file
@@ -136,7 +136,7 @@ Aircraft Aircraft::loadFromFile() {
 
 void Aircraft::setOrganization(std::string organization) {
     if (organization.length() > 100) {
-        // std::cout << "Organization name must be 100 characters or fewer!" << std::endl;
+        std::cout << "Organization name must be 100 characters or fewer!" << std::endl;
         return;
     }
     this->Organization = organization;

@@ -116,7 +116,7 @@ void TankDialog::onCreateButtonClicked()
 {
     if (isValidSelection()) 
     {
-        //std::cout << "Tank configuration saved!" << std::endl;
+        std::cout << "Tank configuration saved!" << std::endl;
         dialogTank->close();
     } 
     else 
