@@ -84,7 +84,7 @@ void MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)
   JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
   if (!metricsNode)
   {
-    std::cerr << "Error 'save_data' : <metrics> node not found in XML file." << std::endl;
+    std::cerr << "Error MetricsSubsystem::save_data : <metrics> node not found in XML file." << std::endl;
     return;
   }
 
@@ -148,7 +148,7 @@ void MetricsSubsystem::load_data(JSBEdit::XMLDoc *doc_ptr)
   JSBEdit::XMLNode metricsNode = doc_ptr->GetNode("/fdm_config/metrics");
   if (!metricsNode)
   {
-    std::cerr << "Error 'load_data' : <metrics> node not found in XML file." << std::endl;
+    std::cerr << "Error MetricsSubsystem::load_data : <metrics> node not found in XML file." << std::endl;
     return;
   }
 
