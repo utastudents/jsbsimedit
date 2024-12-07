@@ -43,8 +43,8 @@ public:
 
     // void setLimitations(const std::string& limitations);
     // std::string getLimitations() const;
-    void setDescription(std::string Description);
-    std::string getDescription() const;
+    // void setDescription(std::string Description);
+    // std::string getDescription() const;
 
     void setLimitations(std::string limitations);
     std::string getLimitations();
@@ -57,9 +57,6 @@ public:
 
     void setOrganization(std::string organization);
     std::string getOrganization() const;
-
-    void setNotes(const std::string& notes);
-    std::string getNotes() const;
 
     void setDescription(const std::string& description);
     std::string getDescription() const;
