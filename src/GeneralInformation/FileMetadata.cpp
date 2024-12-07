@@ -15,11 +15,7 @@ std::string FileMetadata::getFileName() const {
 }
 
 // Set and get functions for fileDate
-void FileMetadata::setFileDate(const std::string& fileDate) {
-    if (fileDate.empty() || fileDate.find('-') == std::string::npos) {
-        std::cerr << "Error: File date must follow the format YYYY-MM-DD." << std::endl;
-        return;
-    }
+void FileMetadata::setFileDate(const std::chrono::system_clock::time_point& fileDate) {
     this->fileDate = fileDate;
 }
 

@@ -19,7 +19,11 @@ private:
 
     std::vector<References> references; 
     std::string limitations;                
-    std::string notes;                      
+    std::string notes;     
+
+    std::string name;        
+    std::string notes;       
+    std::string description;                 
 
 public:
     Aircraft();
@@ -47,7 +51,7 @@ public:
     void setLimitations(std::string limitations);
     std::string getLimitations();
 
-    void setNotes(std::string notes);
+    void setNotes(const std::string& notes);
     std::string getNotes() const;
 
     void saveToFile();
@@ -56,6 +60,11 @@ public:
     void setOrganization(std::string organization);
     std::string getOrganization() const;
 
+    void setNotes(const std::string& notes);
+    std::string getNotes() const;
+
+    void setDescription(const std::string& description);
+    std::string getDescription() const;
 };
 
 
