@@ -15,8 +15,8 @@ public:
     void setFileName(const std::string& fileName);
     std::string getFileName() const;
 
-    void setFileDate(const std::chrono::system_clock::time_point& fileDate);
-    std::chrono::system_clock::time_point getFileDate() const;
+void FileMetadata::setFileDate(const std::string& fileDate);
+    std::string getFileDate() const;
 
     void setFlightModelVersion(const std::string& version);
     std::string getFlightModelVersion() const;

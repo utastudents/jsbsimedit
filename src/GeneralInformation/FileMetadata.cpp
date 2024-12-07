@@ -1,4 +1,5 @@
 #include "FileMetadata.hpp"
+#include <iostream>
 
 // Default constructor
 FileMetadata::FileMetadata() : fileName(""), fileDate(std::chrono::system_clock::now()), flightModelVersion("") {}
@@ -14,7 +15,11 @@ std::string FileMetadata::getFileName() const {
 }
 
 // Set and get functions for fileDate
-void FileMetadata::setFileDate(const std::chrono::system_clock::time_point& fileDate) {
+void FileMetadata::setFileDate(const std::string& fileDate) {
+    if (fileDate.empty() || fileDate.find('-') == std::string::npos) {
+        std::cerr << "Error: File date must follow the format YYYY-MM-DD." << std::endl;
+        return;
+    }
     this->fileDate = fileDate;
 }
 

@@ -4,6 +4,7 @@
 #include "Validation.hpp"
 
 
+// Default constructor
 Aircraft::Aircraft() : name(""), notes(""), description("") {}
 
 // Set and get functions for name
@@ -14,6 +15,7 @@ void Aircraft::setName(const std::string& name) {
     }
     this->name = name;
 }
+
 std::string Aircraft::getName() const {
     return name;
 }
@@ -26,6 +28,7 @@ void Aircraft::setNotes(const std::string& notes) {
     }
     this->notes = notes;
 }
+
 std::string Aircraft::getNotes() const {
     return notes;
 }
@@ -38,5 +41,7 @@ void Aircraft::setDescription(const std::string& description) {
     }
     this->description = description;
 }
+
 std::string Aircraft::getDescription() const {
     return description;
+}
