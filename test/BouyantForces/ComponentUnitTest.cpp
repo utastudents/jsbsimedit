@@ -107,3 +107,23 @@ TEST_CASE("Testing Unit to String Conversion") {
     
     REQUIRE(gasCell.unitToString(Component::Unit::FT3_SEC) == "ft^3 / sec");
 }
+
+TEST_CASE("Set and Verify Fullness") {
+    GasCell gasCell;
+
+    gasCell.setInitialFullness(0.75);  // initializing fullness
+    REQUIRE(gasCell.getInitialFullness() == 0.75);  //checking if true
+}
+TEST_CASE("Set and Verify Max Pressure") {
+    GasCell gasCell;
+
+    gasCell.setMaxPressure(1000.0);  //initializing maxpressure
+    REQUIRE(gasCell.getMaxPressure() == 1000.0);  // checking  if true
+}
+
+TEST_CASE("Set and Verify GasType") {
+    GasCell gasCell;
+
+    gasCell.setGasType(Component::GasType::HELIUM);  //initializing to Helium
+    REQUIRE(gasCell.getGasType() == Component::GasType::HELIUM);  //checking if true
+}
