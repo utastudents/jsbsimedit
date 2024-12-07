@@ -52,25 +52,78 @@ TEST_CASE("Set and Verify Z Location") {
 TEST_CASE("Set and Verify X Dimension") {
     GasCell gasCell;
 
-    gasCell.setXLocation(101.99);
-    REQUIRE(gasCell.getXLocation() == 101.99);
+    gasCell.setXDimension(101.99);
+    REQUIRE(gasCell.getXDimension() == 101.99);
 }
 
 TEST_CASE("Set and Verify Y Dimension") {
     GasCell gasCell;
 
-    gasCell.setXLocation(-123.45);
-    REQUIRE(gasCell.getXLocation() == -123.45);
+    gasCell.setYDimension(-123.45);
+    REQUIRE(gasCell.getYDimension() == -123.45);
 }
 
 TEST_CASE("Set and Verify Z Dimension") {
     GasCell gasCell;
 
-    gasCell.setXLocation(0.123);
-    REQUIRE(gasCell.getXLocation() == 0.123);
+    gasCell.setXDimension(0.123);
+    REQUIRE(gasCell.getZDimension() == 0.123);
 }
 
-// Add test cases for rest of class members
+TEST_CASE("Set and Verify Fullness") {
+    GasCell gasCell;
+
+    gasCell.setInitialFullness(0.75);  // initializing fullness
+    REQUIRE(gasCell.getInitialFullness() == 0.75);  //checking if true
+}
+TEST_CASE("Set and Verify Max Pressure") {
+    GasCell gasCell;
+
+    gasCell.setOverpressure(1000.0);  //initializing maxpressure
+    REQUIRE(gasCell.getOverpressure() == 1000.0);  // checking  if true
+}
+
+TEST_CASE("Set and Verify GasType") {
+    GasCell gasCell;
+
+    gasCell.setGasType(Component::GasType::HELIUM);  //initializing to Helium
+    REQUIRE(gasCell.getGasType() == Component::GasType::HELIUM);  //checking if true
+}
+
+TEST_CASE("Set and Verify Location Unit") {
+    GasCell gasCell;
+
+    gasCell.setLocationUnit(Component::Unit::IN);  
+    REQUIRE(gasCell.getLocationUnit() == Component::Unit::IN); 
+}
+
+TEST_CASE("Set and Verify Dimension Unit") {
+    GasCell gasCell;
+
+    gasCell.setDimensionsUnit(Component::Unit::IN);  
+    REQUIRE(gasCell.getDimensionsUnit() == Component::Unit::IN); 
+}
+
+TEST_CASE("Set and Verify Dimension Shape") {
+    GasCell gasCell;
+
+    gasCell.setDimensionsShape(Component::Unit::RADIUS);  
+    REQUIRE(gasCell.getDimensionsShape() == Component::Unit::RADIUS); 
+}
+
+TEST_CASE("Set and Verify Pressure Unit") {
+    GasCell gasCell;
+
+    gasCell.setPressureUnit(Component::Unit::M4_SEC_KG);  
+    REQUIRE(gasCell.getPressureUnit() == Component::Unit::M4_SEC_KG); 
+}
+
+TEST_CASE("Set and Verify Valve Coefficient Unit") {
+    GasCell gasCell;
+
+    gasCell.setValveCoefficientUnit(Component::Unit::LB_FT_SEC_R);  
+    REQUIRE(gasCell.getValveCoefficientUnit() == Component::Unit::LB_FT_SEC_R); 
+}
 
 TEST_CASE("Set and Verify Name") {
     GasCell gasCell;
@@ -108,22 +161,3 @@ TEST_CASE("Testing Unit to String Conversion") {
     REQUIRE(gasCell.unitToString(Component::Unit::FT3_SEC) == "ft^3 / sec");
 }
 
-TEST_CASE("Set and Verify Fullness") {
-    GasCell gasCell;
-
-    gasCell.setInitialFullness(0.75);  // initializing fullness
-    REQUIRE(gasCell.getInitialFullness() == 0.75);  //checking if true
-}
-TEST_CASE("Set and Verify Max Pressure") {
-    GasCell gasCell;
-
-    gasCell.setMaxPressure(1000.0);  //initializing maxpressure
-    REQUIRE(gasCell.getMaxPressure() == 1000.0);  // checking  if true
-}
-
-TEST_CASE("Set and Verify GasType") {
-    GasCell gasCell;
-
-    gasCell.setGasType(Component::GasType::HELIUM);  //initializing to Helium
-    REQUIRE(gasCell.getGasType() == Component::GasType::HELIUM);  //checking if true
-}
