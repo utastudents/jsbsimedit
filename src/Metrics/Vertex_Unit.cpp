@@ -17,6 +17,11 @@ void Vertex_Unit::set_y(double data) { y = data; }
 
 void Vertex_Unit::set_z(double data) { z = data; }
 
+void Metrics::Vertex_Unit::set_vertex(double p_x, double p_y, double p_z) {
+    x = p_x;
+    y = p_y;
+    z = p_z;
+}
 
 double Vertex_Unit::get_x() const { return x; }
 double Vertex_Unit::get_y() const { return y; }

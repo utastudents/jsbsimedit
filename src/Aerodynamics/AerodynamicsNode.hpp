@@ -58,6 +58,9 @@ public:
 
     const std::string& getDescription() const;
     void setDescription(const std::string& description);
+
+    // List of operators
+    static std::vector<std::string> operations;
 private:
     std::string functionType, description;
 };
@@ -97,6 +100,7 @@ public:
     static std::map<AxisName, std::string> axisNameToString;
     static std::map<std::string, AxisName> stringToAxisName;
     enum UnitName {
+        NONE,
         LBS,
         N,
         LBSFT,

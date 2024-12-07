@@ -18,10 +18,12 @@ class SummerComponentWindow : public ComponentWindowCommon
         void RemoveInput();
         void SaveInfo();
 
-        Gtk::CheckButton positive{"Positive"};
-        Gtk::CheckButton negative{"Negative"};
-        Gtk::TextView textBox; // <-- Make textBox a member variable
+        // MUST remain as pointer as they are manipulated in different function.
         std::vector<std::string> listInput{};
+        Glib::RefPtr<Gtk::CheckButton> m_positive{};
+        Glib::RefPtr<Gtk::CheckButton> m_negative{};
+        Glib::RefPtr<Gtk::Button> buttonAdd;
+        Glib::RefPtr<Gtk::Button> buttonRemove;
         Glib::RefPtr<Gtk::TextBuffer> textBuffer;
 };
 

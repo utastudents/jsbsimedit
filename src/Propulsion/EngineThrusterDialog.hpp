@@ -5,17 +5,18 @@
 #include <iostream>
 #include <gtk/gtk.h>
 #include <gtkmm.h>
+#include "PropulsionSubsystem.hpp"
+
+class PropulsionSubsystem;
 
 class EngineThrusterDialog : public Gtk::Window {
 public:
-    EngineThrusterDialog();
+    EngineThrusterDialog(const std::string& engine, const std::string& thruster);
     void show(); // Show the dialog
-
-protected:
     // Signal handlers
     void onConfirm();
     void onCancel();
-    void defaultValueFill();
+    void defaultValueFill(const std::string& engine, const std::string& thruster);
     void onResponse(int response_id);  // Declare onResponse method
 
 private:
@@ -23,7 +24,6 @@ private:
     Gtk::Dialog* dialogEng;
     Gtk::Grid grid;
 
-    Gtk::Entry* engine_name_entry;
     Gtk::Entry* x_entry, * y_entry, * z_entry;
     Gtk::ComboBoxText* location_dropdown;
     Gtk::Entry* roll_entry, * pitch_entry, * yaw_entry;

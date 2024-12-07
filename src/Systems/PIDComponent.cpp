@@ -10,4 +10,8 @@ PIDComponent::PIDComponent(const std::string &name)
 void PIDComponent::LoadGUI(Glib::RefPtr<Gtk::Application>& app)
 {}
 
+void PIDComponent::LoadFromXml(JSBEdit::XMLNode& node)
+{}
+
+
 };

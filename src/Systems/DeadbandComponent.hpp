@@ -1,6 +1,5 @@
 #pragma once
 #include "IComponentCommon.hpp"
-#include "DeadbandComponentWindow.hpp"
 
 
 namespace DragDrop{
@@ -12,7 +11,7 @@ class DeadbandComponent : public IComponentCommon
     ~DeadbandComponent() = default;
 
     void LoadGUI(Glib::RefPtr<Gtk::Application>& app) override;
-    // Constructors
+    void LoadFromXml(JSBEdit::XMLNode& node) override;
 
     // ==== TAB1
     std::string Description {};

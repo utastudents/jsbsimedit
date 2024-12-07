@@ -10,4 +10,6 @@ SummerComponent::SummerComponent(const std::string &name)
 void SummerComponent::LoadGUI(Glib::RefPtr<Gtk::Application>& app)
 {}
 
+void SummerComponent::LoadFromXml(JSBEdit::XMLNode& node)
+{}
 };

@@ -7,6 +7,18 @@ IComponentCommon::IComponentCommon(const std::string &compName, const ComponentT
 {
 }
 
+bool IComponentCommon::CanHaveMultipleInputs()
+{
+    //Summer and switch can have as many inputs a they want.
+    return (m_componentType == ComponentType::SUMMER || m_componentType == ComponentType::SWITCH);
+}
+
+bool IComponentCommon::CanHaveMultipleOutputs()
+{
+    //PID and Actuator are only allowed one output.
+    return !(m_componentType == ComponentType::ACTUATOR || m_componentType == ComponentType::PID);
+}
+
 std::string IComponentCommon::GetName() const
 {
     return m_componentName;

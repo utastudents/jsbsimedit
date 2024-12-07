@@ -11,6 +11,7 @@ namespace Metrics
         void set_x(double data);
         void set_y(double data);
         void set_z(double data);
+        void set_vertex(double p_x, double p_y, double p_z);
         double get_x() const;
         double get_y() const;
         double get_z() const;

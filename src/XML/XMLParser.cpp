@@ -12,18 +12,18 @@ void JSBEdit::XMLParser::on_start_element([[maybe_unused]] Glib::Markup::ParseCo
     }
 }
 
-void JSBEdit::XMLParser::on_end_element([[maybe_unused]] Glib::Markup::ParseContext& context, const Glib::ustring& element_name)
+void JSBEdit::XMLParser::on_end_element([[maybe_unused]] Glib::Markup::ParseContext& context, [[maybe_unused]] const Glib::ustring& element_name)
 {
     
 }
 
-void JSBEdit::XMLParser::on_text([[maybe_unused]] Glib::Markup::ParseContext& context, const Glib::ustring& text)
+void JSBEdit::XMLParser::on_text([[maybe_unused]] Glib::Markup::ParseContext& context, [[maybe_unused]] const Glib::ustring& text)
 {
     if(text.length() != 0)
         m_Node->SetText(text);
 }
 
-void JSBEdit::XMLParser::on_passthrough([[maybe_unused]] Glib::Markup::ParseContext& context, const Glib::ustring& passthrough_text)
+void JSBEdit::XMLParser::on_passthrough([[maybe_unused]] Glib::Markup::ParseContext& context, [[maybe_unused]] const Glib::ustring& passthrough_text)
 {
     
 }

@@ -9,4 +9,9 @@ KinematicsComponent::KinematicsComponent(const std::string &name)
 
 void KinematicsComponent::LoadGUI(Glib::RefPtr<Gtk::Application>& app)
 {}
+
+void KinematicsComponent::LoadFromXml(JSBEdit::XMLNode& node)
+{
+}
+
 };

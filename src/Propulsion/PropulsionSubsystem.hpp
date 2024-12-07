@@ -1,4 +1,3 @@
-#pragma once
 #ifndef PROPULSIONSUBSYSTEM_HPP
 #define PROPULSIONSUBSYSTEM_HPP
 
@@ -6,6 +5,7 @@
 #include "gtkmm.h"  
 #include "PropulsionManager.hpp"
 #include "inc/XML_api.hpp"
+#include "EngineThrusterDialog.hpp"
 
 // Inherit from both Subsystem and Gtk::Window
 class PropulsionSubsystem : public Subsystem, public Gtk::Window {
@@ -16,16 +16,13 @@ public:
     bool checkSelect(const std::string& inp); 
     std::string GetCurrentPlatformDebug();
     std::string EngineOrThruster(const std::string& pulledInput);
-
+    std::string getSelectedEngine() const;
+    std::string getSelectedThruster() const;
 
     std::string selectedEngine;
     std::string selectedThruster;
+    std::string selectedPair;
     std::string selectedTank;
-
-    
-
-
-    PropulsionManager m_PropManager;  // Propulsion manager instance
 };
 
 

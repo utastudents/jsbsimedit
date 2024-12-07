@@ -1,13 +1,14 @@
 #include "PropulsionManager.hpp"
 #include "EngineThrusterDialog.hpp"
+#include "PropulsionSubsystem.hpp"
 #include "TankDialog.hpp"
 #include <iostream>
 
-void PropulsionManager::showEngineThrusterSetup() { 
+void PropulsionManager::showEngineThrusterSetup(const std::string& Engine, const std::string& Thruster) { 
     // TODO: Confirm if 1st time setup
     // TODO: Implement engine/thruster setup display
     
-    EngineThrusterDialog dialogEng;
+    EngineThrusterDialog dialogEng(Engine, Thruster);
     std::cout << "Displaying engine/thruster setup..." << std::endl;
 }
 
@@ -18,9 +19,11 @@ void PropulsionManager::showTankSetup() {
     std::cout << "Displaying tank setup..." << std::endl;
 }
 
-void PropulsionManager::createPair() {
+int PropulsionManager::createPair(const std::string& Engine, const std::string& Thruster) {
     // TODO: Implement confirmation for creating a pair
+    showEngineThrusterSetup(Engine, Thruster);
     std::cout << "Confirming created pair..." << std::endl;
+    return 1;
 }
 
 void PropulsionManager::createTank() {
@@ -75,20 +78,3 @@ void PropulsionManager::saveTankData() {
     std::cout << "Saving tank data..." << std::endl;
 }
 
-
-/*void PropulsionManager::showTankSetup(Gtk::Window& parentWindow) {
-    /*if (!parentWindow_) {
-        std::cerr << "Error: Parent window is not initialized!" << std::endl;
-        return;
-    }
-
-    Tank selectedTank(0, 100.0, 50.0); // Example initialization
-    //TankDialog dialogTK(parentWindow_, selectedTank); // Use initialized parentWindow_
-    TankDialog dialogTK(*parentWindow_, selectedTank);
-
-    if (dialogTK.run_dialog()) {
-        std::cout << "Tank setup completed successfully." << std::endl;
-    } else {
-        std::cout << "Tank setup was canceled." << std::endl;
-    }
-}*/
