@@ -75,6 +75,8 @@ std::vector<References> Aircraft::getReferences() const {
     return references;
 }
 
+/*
+
 // Set and get functions for description
 void Aircraft::setDescription(std::string description) {
      if (description.length() > 500) {
@@ -84,9 +86,15 @@ void Aircraft::setDescription(std::string description) {
     this->Description = description;
 }
 
+*/
+
+/*
+
 std::string Aircraft::getDescription() {
     return Description;
 }
+
+*/
 
 // Set and get functions for limitations
 void Aircraft::setLimitations(std::string limitations) {
@@ -102,11 +110,16 @@ std::string Aircraft::getLimitations() {
     return limitations;
 }
 
+/*
+
 // Set and get functions for notes
 void Aircraft::setNotes(std::string notes) {
     if (!Validation::validateNotes(notes))
     {
         // std::cout << "Notes must be 500 characters or fewer!" << std::endl;
+
+*/
+
 // Set and get functions for notes
 void Aircraft::setNotes(const std::string& notes) {
     if (notes.length() > 500) {
@@ -146,7 +159,8 @@ Aircraft Aircraft::loadFromFile() {
 void Aircraft::setOrganization(std::string organization) {
     if (organization.length() > 100) {
         // std::cout << "Organization name must be 100 characters or fewer!" << std::endl;
-
+    }
+}
 // Set and get functions for description
 void Aircraft::setDescription(const std::string& description) {
     if (description.length() > 1000) {
