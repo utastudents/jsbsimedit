@@ -18,6 +18,10 @@ void ExternalReactionsSubsystem::Create()
 
     m_notebook.set_margin(10);
     m_notebook.set_expand();
+
+    // Prevents window stretching when adding alot of force tabs
+    m_notebook.set_scrollable(true);
+    m_notebook.set_tab_pos(Gtk::PositionType::TOP);
     m_Grid.attach(m_notebook, 0, 1, 7, 1); // Attach notebook below the buttons
 
     m_nameTextbox = Gtk::make_managed<Gtk::Entry>();

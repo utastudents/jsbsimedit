@@ -3,7 +3,7 @@
 #include "inc/XML_api.hpp"
 #include "XML/XMLDoc.hpp"
 
-class PopUpWindow : public Gtk::Window { // Explicitly inherit from Gtk::Window
+class PopUpWindow : public Gtk::Window {
 public:
     PopUpWindow();
     virtual ~PopUpWindow();
@@ -11,40 +11,46 @@ public:
     std::string getSelectedProperty(); // New method to return the selected property
 
 protected:
-    void onButtonClicked(); // handler for button click actions
     void onFilterButtonClicked();
     void onShowAllButtonClicked();
     void onOkButtonClicked();
     void onCancelButtonClicked();
-    void loadPropertiesFromFile(const std::string& filePath);
-    void onPropertySelected();
-    void updateShowHideCounts();
-    void applyFilter(); // Helper method
+    void applyFilter(); // Apply filtering logic
+    void updateShowHideCounts(); // Update counts of shown/hidden properties
+    void onPropertySelected(); // Handle property selection
 
 private:
     // Widgets
     Gtk::Box m_VBox;
-    Gtk::Label currentLabel;
-    Gtk::Entry* currentPlaceholder;
     Gtk::ScrolledWindow m_ScrolledWindow;
-    Gtk::Grid m_Grid;
-    Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView propertyTreeView;
-    Gtk::Label filterLabel;
-    Gtk::Window propertiesScrolledWindow;
-    Gtk::Label currentPropertyValue;
-    Gtk::Entry filterTextBox; 
-    Gtk::Button filterButton; 
-    Gtk::Button showAllButton; 
-    Gtk::Button okButton; 
-    Gtk::Button cancelButton; 
-    Gtk::Button closeButton;
-    int visibleProperties; 
-    int hiddenProperties; 
+
+    // Labels and Entry
+    Gtk::Label currentLabel;
     Gtk::Label showLabel;
     Gtk::Label hideLabel;
+    Gtk::Entry filterTextBox;
 
-    // Define property columns model
+    // Buttons
+    Gtk::Button filterButton;
+    Gtk::Button showAllButton;
+    Gtk::Button okButton;
+    Gtk::Button cancelButton;
+
+    // Grids
+    Gtk::Grid* filterGrid;
+    Gtk::Grid* buttonGrid;
+
+    // Current Placeholder for selected property
+    Gtk::Entry* currentPlaceholder;
+
+    // Properties
+    std::vector<std::string> properties;
+
+    // Store the selected property
+    std::string selectedProperty;
+
+    // TreeView Columns
     class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
     public:
         PropertyColumns() {
@@ -65,7 +71,5 @@ private:
 
     PropertyColumns propertyColumns;
     Glib::RefPtr<Gtk::ListStore> listStore;
-
-    std::string selectedProperty; // New private member to store the selected property
 };
 

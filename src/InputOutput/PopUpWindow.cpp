@@ -78,29 +78,37 @@ PopUpWindow::PopUpWindow()
     selection->signal_changed().connect(sigc::mem_fun(*this, &PopUpWindow::onPropertySelected));
 
     //This xmlFile method is hardcode, need to find another way to use xmlptr()
-    JSBEdit::XMLDoc xmlFile;
-    xmlFile.LoadFileAndParse({"../../../properties.xml"});
+   // Parse the XML file and retrieve the properties
+JSBEdit::XMLDoc xmlFile;
+xmlFile.LoadFileAndParse({"../../../properties.xml"});
 
-    auto parentNode = xmlFile.GetNode("/properties");
-    auto properties = parentNode.GetChildren();
+auto parentNode = xmlFile.GetNode("/properties");
+auto properties = parentNode.GetChildren(); // Assuming 'GetChildren()' provides all child nodes
 
-    int i = 1; // Row ID
-    for (const auto& property : properties) {
-        auto mutableProperty = const_cast<JSBEdit::XMLNode&>(property);
+int i = 1; // Row ID counter
+for (const auto& property : properties) {
+    auto mutableProperty = const_cast<JSBEdit::XMLNode&>(property);
 
-        if (mutableProperty.GetName() == "property") { // Check if the node is a <property>
+    if (mutableProperty.GetName() == "property") { // Check if the node is a <property>
         std::string propertyText = mutableProperty.GetText();
 
-        // Remove first '/' from view
+        // Remove the leading '/' if it exists
         if (!propertyText.empty() && propertyText[0] == '/') {
             propertyText = propertyText.substr(1);
         }
-            auto tableRow = *(listStore->append());
-            tableRow[propertyColumns.propertyName] = propertyText;
-            tableRow[propertyColumns.index] = i++;
-        }
-    }
 
+        // Add the property to the vector for filtering
+        this->properties.push_back(propertyText);
+
+        // Add the property to the ListStore for the TreeView
+        auto tableRow = *(listStore->append());
+        tableRow[propertyColumns.propertyName] = propertyText;
+        tableRow[propertyColumns.index] = i++;
+    }
+}
+    // Update "Show" and "Hide" counts after loading properties
+    updateShowHideCounts();
+    
     // Create a Grid for filter buttons and show all button
     auto filterGrid = Gtk::make_managed<Gtk::Grid>();
     filterGrid->set_row_spacing(10);  
@@ -110,6 +118,10 @@ PopUpWindow::PopUpWindow()
     filterButton.set_hexpand(false);  
     showAllButton.set_hexpand(false);  
 
+    // Connect the filterTextBox activation to applyFilter()
+    filterTextBox.signal_activate().connect(sigc::mem_fun(*this, &PopUpWindow::applyFilter));
+   
+    
     filterGrid->attach(filterTextBox, 1, 0, 7, 1);  
     filterGrid->attach(filterButton, 0, 0, 1, 1);   
     filterGrid->attach(showAllButton, 8, 0, 1, 1);  
@@ -154,10 +166,31 @@ void PopUpWindow::onCancelButtonClicked() {
 }
 
 void PopUpWindow::applyFilter() {
+    // Get the text entered in the filter box
     Glib::ustring filterText = filterTextBox.get_text().lowercase();
+
+    // Clear the current list store
     listStore->clear();
-    // Filter logic here
+
+    // Initialize counter for matching properties
+    int showCount = 0;
+
+    // Iterate through all properties in the vector
+    for (const auto& property : properties) {
+        // Check if the property contains the filter text
+        if (Glib::ustring(property).lowercase().find(filterText) != Glib::ustring::npos) {
+            // Add matching property to the TreeView
+            auto row = *(listStore->append());
+            row[propertyColumns.propertyName] = property;
+            row[propertyColumns.index] = ++showCount;
+        }
+    }
+
+    // Update the Show/Hide counts
+    updateShowHideCounts();
 }
+
+
 
 // Function to handle property selection
 void PopUpWindow::onPropertySelected() {
@@ -175,7 +208,7 @@ std::string PopUpWindow::getSelectedProperty() {
     return selectedProperty; // Return the stored property
 }
 
-void PopUpWindow::updateShowHideCounts() {
+/* void PopUpWindow::updateShowHideCounts() {
     int showCount = 0;
     int hideCount = 0;
 
@@ -189,6 +222,18 @@ void PopUpWindow::updateShowHideCounts() {
         }
     }
 
+    showLabel.set_text("Show: " + std::to_string(showCount));
+    hideLabel.set_text("Hide: " + std::to_string(hideCount));
+} */
+
+ void PopUpWindow::updateShowHideCounts() {
+    // Count the number of visible rows in the list store (properties shown in the TreeView)
+    int showCount = listStore->children().size();
+
+    // Safeguard to ensure hideCount doesn't go negative
+    int hideCount = std::max(0, static_cast<int>(properties.size()) - showCount);
+
+    // Update the labels to display the counts
     showLabel.set_text("Show: " + std::to_string(showCount));
     hideLabel.set_text("Hide: " + std::to_string(hideCount));
 }
