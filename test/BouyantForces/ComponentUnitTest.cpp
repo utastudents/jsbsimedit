@@ -35,12 +35,56 @@ TEST_CASE("Set and Verify X Location") {
     REQUIRE(gasCell.getXLocation() == 12.34);
 }
 
-// Test other setters and getters
+TEST_CASE("Set and Verify Y Location") {
+    GasCell gasCell;
+
+    gasCell.setYLocation(56.78);
+    REQUIRE(gasCell.getXLocation() == 56.78);
+}
+
+TEST_CASE("Set and Verify Z Location") {
+    GasCell gasCell;
+
+    gasCell.setZLocation(90.12);
+    REQUIRE(gasCell.getXLocation() == 90.12);
+}
+
+TEST_CASE("Set and Verify X Dimension") {
+    GasCell gasCell;
+
+    gasCell.setXLocation(101.99);
+    REQUIRE(gasCell.getXLocation() == 101.99);
+}
+
+TEST_CASE("Set and Verify Y Dimension") {
+    GasCell gasCell;
+
+    gasCell.setXLocation(-123.45);
+    REQUIRE(gasCell.getXLocation() == -123.45);
+}
+
+TEST_CASE("Set and Verify Z Dimension") {
+    GasCell gasCell;
+
+    gasCell.setXLocation(0.123);
+    REQUIRE(gasCell.getXLocation() == 0.123);
+}
+
+// Add test cases for rest of class members
+
+TEST_CASE("Set and Verify Name") {
+    GasCell gasCell;
+
+    gasCell.setName("Test Gas Cell");
+    REQUIRE(gasCell.getName() == "Test Gas Cell");
+}
  
 TEST_CASE("Testing GasType to String Conversion") {
     GasCell gasCell;
 
-    REQUIRE();
+    REQUIRE(gasCell.gasTypeToString(Component::GasType::AIR) == "AIR");
+    REQUIRE(gasCell.gasTypeToString(Component::GasType::HELIUM) == "HELIUM");
+    REQUIRE(gasCell.gasTypeToString(Component::GasType::HYDROGEN) == "HYDROGEN");
 }
 
 TEST_CASE("Testing Unit to String Conversion") {
