@@ -54,9 +54,6 @@ MetricsSubsystem::MetricsSubsystem()
 
   node_name = "Visual Reference Point";
   vertex_data_units[node_name] = std::make_unique<Metrics::Vertex_Unit>(0.0, 0.0, 0.0, unit_map["location"]);
-
-  its_xml_ptr = new JSBEdit::XMLDoc();
-  its_xml_ptr->LoadFileAndParse("../../../data/aircraft/f16/f16.xml");
 }
 
 void MetricsSubsystem::Create()
@@ -78,16 +75,6 @@ void MetricsSubsystem::Create()
     add_vertex_data_unit(cit->first, cit->second->get_its_unit()->get_unit_bank(), row, 0);
     row += 2;
   }
-
-  auto save_button = Gtk::make_managed<Gtk::Button>();
-  save_button->set_label("Save");
-  save_button->signal_clicked().connect([this]()
-                                         { save_data(its_xml_ptr); });
-
-  m_Grid.attach(*save_button, 0, row);
-
-  // load metrics from XML file
-  load_data(its_xml_ptr);
 }
 
 // This method should be invoked when the XML is being saved
