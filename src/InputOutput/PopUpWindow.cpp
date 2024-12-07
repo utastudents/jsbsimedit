@@ -155,6 +155,13 @@ void PopUpWindow::onFilterButtonClicked() {
 void PopUpWindow::onShowAllButtonClicked() {
     listStore->clear();
     // Logic to reload the properties list
+    int i = 1;
+    for (const auto& property : properties) {
+        auto row = *(listStore->append());
+        row[propertyColumns.propertyName] = property;
+        row[propertyColumns.index] = i++;
+    }
+    updateShowHideCounts();
 }
 
 void PopUpWindow::onOkButtonClicked() {
