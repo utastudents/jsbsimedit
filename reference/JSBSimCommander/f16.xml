@@ -14,28 +14,27 @@ Models        </description>
 		<reference refID="None" author="n/a" title="http://www.codeonemagazine.com/archives/1991/articles/jul_91/july2a_91.html" date="n/a" />
 	</fileheader>
 	<metrics>
-		<wingarea unit="FT2">3333333333.000000</wingarea>
-		<wingspan unit="FT">30.000000</wingspan>
-		<chord unit="M">11.320000</chord>
-		<wing_incidence unit="DEG">11231232.000000</wing_incidence>
-		<htailarea unit="FT2">63.700000</htailarea>
-		<htailarm unit="FT">16.460000</htailarm>
-		<vtailarea unit="FT2">54.750000</vtailarea>
-		<vtailarm unit="FT">0.000000</vtailarm>
-		<location unit="IN">
-			<x>-189.500000</x>
-			<y>0.000000</y>
-			<z>3.900000</z>
+		<wingarea unit="FT2"> 300	</wingarea>
+		<wingspan unit="FT"> 30	</wingspan>
+		<chord unit="FT"> 11.32	</chord>
+		<htailarea unit="FT2"> 63.7	</htailarea>
+		<htailarm unit="FT"> 16.46	</htailarm>
+		<vtailarea unit="FT2"> 54.75	</vtailarea>
+		<vtailarm unit="FT"> 0	</vtailarm>
+		<location name="AERORP" unit="IN">
+			<x> -189.5	</x>
+			<y> 0	</y>
+			<z> 3.9	</z>
 		</location>
-		<location unit="IN">
-			<x>-336.200000</x>
-			<y>0.000000</y>
-			<z>29.500000</z>
+		<location name="EYEPOINT" unit="IN">
+			<x> -336.2	</x>
+			<y> 0	</y>
+			<z> 29.5	</z>
 		</location>
-		<location unit="IN">
-			<x>0.000000</x>
-			<y>0.000000</y>
-			<z>0.000000</z>
+		<location name="VRP" unit="IN">
+			<x> -180	</x>
+			<y> 0	</y>
+			<z> 0	</z>
 		</location>
 	</metrics>
 	<mass_balance>
