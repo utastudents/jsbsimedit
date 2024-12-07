@@ -21,7 +21,7 @@ void ExternalReactionsSubsystem::Create()
     m_Grid.attach(m_notebook, 0, 1, 7, 1); // Attach notebook below the buttons
 
     m_nameTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_nameTextbox->set_text("");
+    m_nameTextbox->set_text("Enter Force name...");
 
     // Add New Force Button
     auto newForceButton = Gtk::make_managed<Gtk::Button>("Add Force");
@@ -36,13 +36,16 @@ void ExternalReactionsSubsystem::Create()
     {
         std::string forceName = m_nameTextbox->get_text();
 
-        if (forceName.empty()) {
+
+        if (forceName.empty()) 
+        {
             forceName = "Force " + std::to_string(++m_forceCount);
         }
 
         m_pages.push_back(std::make_unique<Gtk::Grid>());
         m_notebook.append_page(*m_pages.back(), forceName);
-        m_nameTextbox->set_text(""); });
+        m_nameTextbox->set_text(""); 
+        });
     m_Grid.attach(*newForceButton, 0, row);
 
     // Add Remove Force Button
@@ -158,3 +161,32 @@ void ExternalReactionsSubsystem::Create()
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     m_notebook.append_page(*m_pages.back(), "Force 2");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
