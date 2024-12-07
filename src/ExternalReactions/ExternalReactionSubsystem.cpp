@@ -55,12 +55,14 @@ void ExternalReactionsSubsystem::Create()
     removeForceButton->set_valign(Gtk::Align::START);
 
     removeForceButton->signal_clicked().connect([this]()
-                                                {
-        if (!m_pages.empty()) { // Ensure there are tabs to remove
+        {
+        if (!m_pages.empty()) // Ensure there are tabs to remove
+        { 
             m_notebook.remove_page(m_notebook.get_n_pages() - 1); // Remove the last page
             m_pages.pop_back(); // Remove from vector
             --m_forceCount;     // Adjust force count
-        } });
+        } 
+        });
     m_Grid.attach(*removeForceButton, 1, row); // Place next to Add Force button
 
     // Attach input fields and labels below the buttons
@@ -70,13 +72,13 @@ void ExternalReactionsSubsystem::Create()
 
     // Force Type Dropdown
     auto typeLabel = Gtk::make_managed<Gtk::Label>("Force Type:");
-    auto typeDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
-    typeDropDownList->append("Push-back");
-    typeDropDownList->append("Hook");
-    typeDropDownList->append("Gravity");
-    typeDropDownList->set_active(0); // Default to "Push-back"
+    auto forceTypeDropDownList = Gtk::make_managed<Gtk::ComboBoxText>();
+    forceTypeDropDownList->append("Push-back");
+    forceTypeDropDownList->append("Hook");
+    forceTypeDropDownList->append("Gravity");
+    forceTypeDropDownList->set_active(0); // Default to "Push-back"
     m_Grid.attach(*typeLabel, 0, 2);
-    m_Grid.attach(*typeDropDownList, 1, 2);
+    m_Grid.attach(*forceTypeDropDownList, 1, 2);
 
     // Force Metrics Dropdown
     auto metricLabel = Gtk::make_managed<Gtk::Label>("Metric:");
@@ -125,9 +127,9 @@ void ExternalReactionsSubsystem::Create()
     m_Grid.attach(*frameDropDownList, 1, 5);
 
     // Connect Force Type Dropdown
-    typeDropDownList->signal_changed().connect([typeDropDownList, locationXTextbox, locationYTextbox, locationZTextbox, directionXTextbox, directionYTextbox, directionZTextbox]()
+    forceTypeDropDownList->signal_changed().connect([forceTypeDropDownList, locationXTextbox, locationYTextbox, locationZTextbox, directionXTextbox, directionYTextbox, directionZTextbox]()
                                                {
-                                                   std::string selectedType = typeDropDownList->get_active_text();
+                                                   std::string selectedType = forceTypeDropDownList->get_active_text();
                                                    if (selectedType == "Push-back")
                                                    {
                                                        locationXTextbox->set_text("1.0");
