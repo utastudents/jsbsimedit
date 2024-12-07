@@ -20,5 +20,5 @@ TEST_CASE("Set and Verify Gas Cell") {
     GasCell gasCell;
 
     buoyantForces.setGasCell(gasCell);
-    REQUIRE(&buoyantForces.getGasCell() == &gasCell)  // Compare Memmory Address
+    REQUIRE(buoyantForces.getGasCell() == gasCell);  
 }
