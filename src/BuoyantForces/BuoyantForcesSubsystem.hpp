@@ -20,27 +20,31 @@ class BuoyantForcesSubsystem : public Subsystem
     void Create(); 
     void SaveXMLData();
     void LoadXMLData();
+    void UpdateData();
 
   protected:
-    void on_button_clicked();
-    void SetNodesFromWidgets(JSBEdit::XMLNode& parent);
+    // Signal Handlers
+    void on_button_toggled();
+    void on_dropdown_changed(const std::string& dropdown_name);
+    void on_entry_activate(const std::string& key);
+    void on_button_clicked(const std::string& button_name);
+
+    // Helper Methdos for Save and Load
+    void SetNodesFromWidgets(JSBEdit::XMLNode& parent, Component& component);
     void SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tabIndex);
     void SetDropDownFromNode(JSBEdit::XMLNode& node, const std::string& nodeName, const std::string& attributeName,
                              const Glib::RefPtr<Gtk::StringList>& stringList, const std::string& dropdownLabel,
                              int tabIndex);
     void SetEntryFromNode(JSBEdit::XMLNode& node, const std::string& nodeName,
                           const std::string& entryLabel, int tabIndex);
-    void UpdateData();
-    void on_button_toggled();
-    void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
-    void on_dropdown_changed(const std::string& dropdown_name);
-    void on_entry_activate(const std::string& key);
+
     void LoadStringLists();
     void BuildTabs(int target);
     void SetupTab(Gtk::Grid& p_grid);
     void AddDropDown(Gtk::Grid& p_grid, std::string label, int col, Glib::RefPtr<Gtk::StringList> stringlist);
     void AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu);
     Component::Unit stringToUnit(const std::string& unit_string) const;
+
 
 
     Gtk::Notebook m_notebook;
@@ -59,7 +63,8 @@ class BuoyantForcesSubsystem : public Subsystem
  private:
     //temporary
     JSBEdit::XMLDoc m_doc;
-    Gtk::Button m_testbutton;
+    Gtk::Button m_savebutton;
+    Gtk::Button m_loadbutton;
 
     BuoyantForces m_buoyantforces;
     GasCell m_gascell;

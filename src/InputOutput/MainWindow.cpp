@@ -27,9 +27,9 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
 {
 	//std::cout << "IO Tab" << std::endl;
   //std::cout << "-------------------------------------------------------------------\n" << std::endl;
-  
     
     
+
   // Load the xml file and get the starting node
   auto node = xmlptr()->GetNode("fdm_config/output");
 
