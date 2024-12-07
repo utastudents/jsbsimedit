@@ -101,7 +101,7 @@ void FlightControlDemo::on_notebook_switch_page(Gtk::Widget *wid, guint page_num
 {
     //not gonna lie i copied the function prototype above from the examplewindow.cpp
     auto nameClicked = m_notebook.get_tab_label_text(*wid);
-    std::cout << nameClicked << "\n";
+    //std::cout << nameClicked << "\n";
     m_canvas.SetCurrentChannelName(nameClicked);
 }
 };

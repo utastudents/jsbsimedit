@@ -94,13 +94,13 @@ void Channel::HandleClickRelease(int x, int y)
 
 void Channel::HandleDoubleClick(int x, int y)
 {
-    std::cout << "Canvas was double clicked at: " << x << ", " << y << ". \n";
+    //std::cout << "Canvas was double clicked at: " << x << ", " << y << ". \n";
     for(auto& i : m_spriteComponents)
     {
         if(i.second.ContainsPoint(x, y))
         {
             int uid = i.first;
-            std::cout << uid << " component was double clicked.\n";
+            //std::cout << uid << " component was double clicked.\n";
             auto cType = i.second.GetComponentType();
             switch(cType)
             {
