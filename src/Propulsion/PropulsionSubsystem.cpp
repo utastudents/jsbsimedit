@@ -127,7 +127,7 @@ void PropulsionSubsystem::Create() {
                     index++;  // Move to the next item in the list
                 }
 
-                std::cout << "rootElement: " << rootElement << std::endl;
+                //std::cout << "rootElement: " << rootElement << std::endl;
                 std::string type = EngineOrThruster(rootElement);
 
                 // Handle the result from EngineOrThruster

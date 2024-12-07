@@ -75,11 +75,11 @@ FunctionMenu::FunctionMenu(std::shared_ptr<AerodynamicsNode> node)
                 function->setDescription("");
             }
 
-            std::cout << "Changes saved: "
-                      << "Name = " << function->getName()
-                      << ", Description = " << function->getDescription()
-                      << ", Selected Option = " << function->getFunctionType()
-                      << std::endl;
+            // std::cout << "Changes saved: "
+            //           << "Name = " << function->getName()
+            //           << ", Description = " << function->getDescription()
+            //           << ", Selected Option = " << function->getFunctionType()
+            //           << std::endl;
         }
         update_signal.emit();
     });

@@ -34,7 +34,7 @@ namespace JSBEdit
         XMLNode GetNode(std::string search);
         std::vector<XMLNode> GetNodes(std::string search);
         bool SaveToFile(const std::filesystem::path &path);
-        void Print();
+        // void Print();
 
         //Function to retrieve the file file path
         std::filesystem::path GetFilePath() const;
