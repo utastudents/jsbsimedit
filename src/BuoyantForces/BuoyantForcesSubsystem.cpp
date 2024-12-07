@@ -85,7 +85,7 @@ void BuoyantForcesSubsystem::SaveXMLData() {
             root.AddChild(gascellNode);
         }   // else, print nothing if BuoyantForces is disabled
 
-        xmlptr()->SaveToFile("../../../out/build/Linux-x64-Clang-Debug/output.txt");
+        // xmlptr()->SaveToFile(xmlptr()->GetFilePath());
 
     } catch (const std::exception& e) {
         std::cerr << "Error in SaveXML: " << e.what() << std::endl;
