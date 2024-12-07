@@ -27,7 +27,7 @@ std::string PropulsionSubsystem::getSelectedThruster() const {
     return std::string(selectedThruster);
 }
 void PropulsionSubsystem::Create() {
-    std::cout << "in PropulsionSubsystem::Create" << std::endl;
+    //std::cout << "in PropulsionSubsystem::Create" << std::endl;
 
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);

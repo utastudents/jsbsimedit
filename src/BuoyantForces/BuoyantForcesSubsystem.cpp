@@ -16,7 +16,7 @@ BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 
 void BuoyantForcesSubsystem::Create()
 {
-  std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
+  //std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
   // auto node=xmlptr()->GetNode("buoyant_forces");
 
   // These widgets can come from a ui file or direct from code

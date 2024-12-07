@@ -185,7 +185,7 @@ GroundReactionsSubsystem::LandingGearSetupDialog::LandingGearSetupDialog(
 }
 
 void GroundReactionsSubsystem::Create() {
-    std::cout << "in GroundReactionsSubsystem::Create" << std::endl;
+    //std::cout << "in GroundReactionsSubsystem::Create" << std::endl;
 
     assert(xmlptr());
 

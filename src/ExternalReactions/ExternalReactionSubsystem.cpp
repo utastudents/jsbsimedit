@@ -4,13 +4,13 @@
 ExternalReactionsSubsystem::ExternalReactionsSubsystem()
 {
     m_Name = "External Reactions";
-    std::cout << "In ExternalReactionsSubsystem constructor" << std::endl;
+    //std::cout << "In ExternalReactionsSubsystem constructor" << std::endl;
     m_forceCount = 2;
 }
 
 void ExternalReactionsSubsystem::Create()
 {
-    std::cout << "In ExternalReactionsSubsystem::Create" << std::endl;
+    //std::cout << "In ExternalReactionsSubsystem::Create" << std::endl;
 
     m_Grid.set_row_spacing(10);
     m_Grid.set_column_spacing(10);
