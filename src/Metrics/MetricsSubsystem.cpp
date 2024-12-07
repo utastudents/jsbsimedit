@@ -136,9 +136,6 @@ void MetricsSubsystem::save_data(JSBEdit::XMLDoc *doc_ptr)
       z_node.SetText(std::to_string(vertex_data_units[name]->get_z()));
     }
   }
-
-  // This is only used for testing. Remove this function so mainwindow can handle the file path
-  doc_ptr->SaveToFile("../../../src/Metrics/f16.xml");
 }
 
 // This method should be invoked when an XML is opened
