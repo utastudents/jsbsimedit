@@ -25,7 +25,7 @@ void ExternalReactionsSubsystem::Create()
     m_Grid.attach(m_notebook, 0, 1, 7, 1); // Attach notebook below the buttons
 
     m_nameTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_nameTextbox->set_text("Enter Force name...");
+    m_nameTextbox->set_placeholder_text("Enter Force name...");
 
     // Add New Force Button
     auto newForceButton = Gtk::make_managed<Gtk::Button>("Add Force");
@@ -65,7 +65,12 @@ void ExternalReactionsSubsystem::Create()
         {
         if (!m_pages.empty()) // Ensure there are tabs to remove
         { 
-            m_notebook.remove_page(m_notebook.get_n_pages() - 1); // Remove the last page
+            int current_page = m_notebook.get_current_page();
+            if(current_page >= 0)
+            {
+                m_notebook.remove_page(current_page);
+            }
+            //m_notebook.remove_page(m_notebook.get_n_pages() - 1); // Remove the last page
             m_pages.pop_back(); // Remove from vector
             --m_forceCount;     // Adjust force count
         } 
