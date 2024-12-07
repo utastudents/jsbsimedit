@@ -18,10 +18,14 @@ void ExternalReactionsSubsystem::Create()
 
     m_notebook.set_margin(10);
     m_notebook.set_expand();
+
+    // Prevents window stretching when adding alot of force tabs
+    m_notebook.set_scrollable(true);
+    m_notebook.set_tab_pos(Gtk::PositionType::TOP);
     m_Grid.attach(m_notebook, 0, 1, 7, 1); // Attach notebook below the buttons
 
     m_nameTextbox = Gtk::make_managed<Gtk::Entry>();
-    m_nameTextbox->set_text("");
+    m_nameTextbox->set_placeholder_text("Enter Force name...");
 
     // Add New Force Button
     auto newForceButton = Gtk::make_managed<Gtk::Button>("Add Force");
@@ -36,13 +40,16 @@ void ExternalReactionsSubsystem::Create()
     {
         std::string forceName = m_nameTextbox->get_text();
 
-        if (forceName.empty()) {
+
+        if (forceName.empty()) 
+        {
             forceName = "Force " + std::to_string(++m_forceCount);
         }
 
         m_pages.push_back(std::make_unique<Gtk::Grid>());
         m_notebook.append_page(*m_pages.back(), forceName);
-        m_nameTextbox->set_text(""); });
+        m_nameTextbox->set_text(""); 
+        });
     m_Grid.attach(*newForceButton, 0, row);
 
     // Add Remove Force Button
@@ -58,7 +65,12 @@ void ExternalReactionsSubsystem::Create()
         {
         if (!m_pages.empty()) // Ensure there are tabs to remove
         { 
-            m_notebook.remove_page(m_notebook.get_n_pages() - 1); // Remove the last page
+            int current_page = m_notebook.get_current_page();
+            if(current_page >= 0)
+            {
+                m_notebook.remove_page(current_page);
+            }
+            //m_notebook.remove_page(m_notebook.get_n_pages() - 1); // Remove the last page
             m_pages.pop_back(); // Remove from vector
             --m_forceCount;     // Adjust force count
         } 
@@ -158,3 +170,32 @@ void ExternalReactionsSubsystem::Create()
     m_pages.push_back(std::make_unique<Gtk::Grid>());
     m_notebook.append_page(*m_pages.back(), "Force 2");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

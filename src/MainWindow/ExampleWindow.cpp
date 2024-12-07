@@ -126,6 +126,8 @@ void ExampleWindow::on_menu_file_save() //implement save function to over-write 
   if (xmlptr()->SaveToFile(xmlptr()->GetFilePath())) //Calling the SaveToFile function with the file path. Note: this save will overwrite the existing file.
   {
     std::cout << "Data saved successfully to: " << xmlptr()->GetFilePath() << std::endl;
+    MetricsSubsystem * metric_ptr{dynamic_cast<MetricsSubsystem *>(m_Subsystems.at(3))};
+    metric_ptr->save_data(xmlptr());
   }
   else
   {
@@ -170,6 +172,9 @@ void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
     xmlptr()->LoadFileAndParse(selected_path);
     
     std::cout << "Loaded XML data from: " << xmlptr()->GetFilePath() << std::endl;
+
+    MetricsSubsystem * metric_ptr{dynamic_cast<MetricsSubsystem *>(m_Subsystems.at(3))};
+    metric_ptr->load_data(xmlptr());
 }
 void ExampleWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {

@@ -28,6 +28,7 @@ private:
     Gtk::Entry m_OrganizationEntry;
     Gtk::Entry m_Limitations;
     Gtk::Entry m_Notes;
+    Gtk::Entry m_Description;
     Gtk::Entry m_filePathTextbox;
     std::string m_FilePath;
     Gtk::ComboBoxText* m_ReleaseLevelDropdown;

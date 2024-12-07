@@ -59,6 +59,8 @@ void GeneralInformationSubsystem::Create()
   auto node_flightModel = xmlptr()->GetNode("/fdm_config/fileheader/version");
   auto node_author = xmlptr()->GetNode("/fdm_config/fileheader/author");
   auto node_fileDate = xmlptr()->GetNode("/fdm_config/fileheader/filecreationdate");
+  auto node_description = xmlptr()->GetNode("/fdm_config/fileheader/description");
+  auto node_notes = xmlptr()->GetNode("/fdm_config/fileheader/note");
 
 
   // Aircraft Name
@@ -110,7 +112,7 @@ void GeneralInformationSubsystem::Create()
   auto organizationFrame = Gtk::make_managed<Gtk::Frame>();
 
   // Set up TextView content and appearance
-  organizationTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+  organizationTextView->get_buffer()->set_text(""); // Placeholder text
 
   // Configure the ScrolledWindow
   organizationScrolledWindow->set_min_content_height(100); // Set the height for the text area
@@ -132,7 +134,7 @@ void GeneralInformationSubsystem::Create()
   auto descriptionFrame = Gtk::make_managed<Gtk::Frame>();
 
   // Set up TextView content and appearance
-  descriptionTextView->get_buffer()->set_text("1.\n2.\n3."); // Placeholder text
+  descriptionTextView->get_buffer()->set_text(node_description.GetText()); // Placeholder text
 
   // Configure the ScrolledWindow
   descriptionScrolledWindow->set_min_content_height(100); // Set the height for the text area
@@ -151,58 +153,58 @@ void GeneralInformationSubsystem::Create()
   auto fileDateTextbox = Gtk::make_managed<Gtk::Entry>();
   fileDateTextbox->set_text( node_fileDate.GetText() ); // Load FileDate name here
 
-// References
-ReferencesColumns referencesColumns; //Initial reference Columns Object
-auto referencesLabel = Gtk::make_managed<Gtk::Label>("References");
-// Create ListStore and TreeView for references
-auto referencesStore = Gtk::ListStore::create(referencesColumns); // Define this model
-auto referencesTreeView = Gtk::make_managed<Gtk::TreeView>(referencesStore);
+  // References
+  ReferencesColumns referencesColumns; //Initial reference Columns Object
+  auto referencesLabel = Gtk::make_managed<Gtk::Label>("References");
+  // Create ListStore and TreeView for references
+  auto referencesStore = Gtk::ListStore::create(referencesColumns); // Define this model
+  auto referencesTreeView = Gtk::make_managed<Gtk::TreeView>(referencesStore);
 
-// Add columns to TreeView
-referencesTreeView->append_column("", referencesColumns.id);
-referencesTreeView->append_column("Ref ID.", referencesColumns.refID);
-referencesTreeView->append_column("Author", referencesColumns.author);
-referencesTreeView->append_column("Title", referencesColumns.title);
-referencesTreeView->append_column("Date", referencesColumns.date);
-// Create a scrolled window for the TreeView
-auto referencesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
-// Create a frame to hold the table (optional)
-auto referencesFrame = Gtk::make_managed<Gtk::Frame>();
+  // Add columns to TreeView
+  referencesTreeView->append_column("", referencesColumns.id);
+  referencesTreeView->append_column("Ref ID.", referencesColumns.refID);
+  referencesTreeView->append_column("Author", referencesColumns.author);
+  referencesTreeView->append_column("Title", referencesColumns.title);
+  referencesTreeView->append_column("Date", referencesColumns.date);
+  // Create a scrolled window for the TreeView
+  auto referencesScrolledWindow = Gtk::make_managed<Gtk::ScrolledWindow>();
+  // Create a frame to hold the table (optional)
+  auto referencesFrame = Gtk::make_managed<Gtk::Frame>();
 
-referencesScrolledWindow->set_min_content_height(100); // Set the height for the table
-referencesScrolledWindow->set_min_content_width(300);  // Set the width for the table
-referencesScrolledWindow->set_child(*referencesTreeView);
-referencesScrolledWindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+  referencesScrolledWindow->set_min_content_height(100); // Set the height for the table
+  referencesScrolledWindow->set_min_content_width(300);  // Set the width for the table
+  referencesScrolledWindow->set_child(*referencesTreeView);
+  referencesScrolledWindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
 
-referencesFrame->set_child(*referencesScrolledWindow);
+  referencesFrame->set_child(*referencesScrolledWindow);
 
-referencesTreeView->get_column(0)->set_fixed_width(50); // ID column
-referencesTreeView->get_column(1)->set_fixed_width(150); // Ref ID column
-referencesTreeView->get_column(2)->set_fixed_width(150); // Author column
-referencesTreeView->get_column(3)->set_fixed_width(300); // Title column
-referencesTreeView->get_column(4)->set_fixed_width(100); // Date column
+  referencesTreeView->get_column(0)->set_fixed_width(50); // ID column
+  referencesTreeView->get_column(1)->set_fixed_width(150); // Ref ID column
+  referencesTreeView->get_column(2)->set_fixed_width(150); // Author column
+  referencesTreeView->get_column(3)->set_fixed_width(300); // Title column
+  referencesTreeView->get_column(4)->set_fixed_width(100); // Date column
 
-// Get the parent node
-auto parentNode = xmlptr()->GetNode("/fdm_config/fileheader");
-// Get all child nodes
-auto references = parentNode.GetChildren();
+  // Get the parent node
+  auto parentNode = xmlptr()->GetNode("/fdm_config/fileheader");
+  // Get all child nodes
+  auto references = parentNode.GetChildren();
 
-int i = 1; // Row ID
-for (const auto& reference : references) {
+  int i = 1; // Row ID
+  for (const auto& reference : references) {
     // Create a mutable copy of the reference node
     auto mutableReference = const_cast<JSBEdit::XMLNode&>(reference);
 
     if (mutableReference.GetName() == "reference") { // Check if the node is a <reference>
-        auto tableRow = *(referencesStore->append());
+      auto tableRow = *(referencesStore->append());
         
-        tableRow[referencesColumns.refID] = mutableReference.GetAttribute("refID").second;  // Extract ref ID
-        tableRow[referencesColumns.author] = mutableReference.GetAttribute("author").second;  // Extract author
-        tableRow[referencesColumns.title] = mutableReference.GetAttribute("title").second;  // Extract title
-        tableRow[referencesColumns.date] = mutableReference.GetAttribute("date").second;  // Extract date
+      tableRow[referencesColumns.refID] = mutableReference.GetAttribute("refID").second;  // Extract ref ID
+      tableRow[referencesColumns.author] = mutableReference.GetAttribute("author").second;  // Extract author
+      tableRow[referencesColumns.title] = mutableReference.GetAttribute("title").second;  // Extract title
+      tableRow[referencesColumns.date] = mutableReference.GetAttribute("date").second;  // Extract date
 
-        tableRow[referencesColumns.id] = i++; // Increase index table by 1
+      tableRow[referencesColumns.id] = i++; // Increase index table by 1
     }
-}
+  }
 
   // Limitations
   auto limitationsLabel = Gtk::make_managed<Gtk::Label>("Limitations");
@@ -211,7 +213,7 @@ for (const auto& reference : references) {
   auto limitationsFrame = Gtk::make_managed<Gtk::Frame>();
 
   // Set up TextView content and appearance for Limitations
-  limitationsTextView->get_buffer()->set_text("1.\n2.\n3"); // Placeholder text
+  limitationsTextView->get_buffer()->set_text(""); // Placeholder text
   
   // Configure the ScrolledWindow
   limitationsScrolledWindow->set_min_content_height(100); // Set the height for the text area
@@ -232,7 +234,7 @@ for (const auto& reference : references) {
   auto notesFrame = Gtk::make_managed<Gtk::Frame>();
 
   // Set up TextView content and appearance for Notes
-  notesTextView->get_buffer()->set_text("1.\n2.\n3"); // Placeholder text
+  notesTextView->get_buffer()->set_text(node_notes.GetText()); // Placeholder text
   
   // Configure the ScrolledWindow
   notesScrolledWindow->set_min_content_height(100); // Set the height for the text area
@@ -277,17 +279,17 @@ for (const auto& reference : references) {
   spacer->set_size_request(-1, 10);  // Set height to 10 pixels
   m_Grid.attach(*spacer, 0, row++);
 
-//////////////
+  //////////////
 
   // m_Grid.attach(*referencesLabel, 0, row);
   // m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
 
   // Attach to grid
-m_Grid.attach(*referencesLabel, 0, row);
-m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
+  m_Grid.attach(*referencesLabel, 0, row);
+  m_Grid.attach(*referencesFrame, 1, row++, 43, 2);
   m_Grid.attach(*spacer, 0, row++);
 
-/////////////
+  /////////////
 
   m_Grid.attach(*limitationsLabel, 0, row);
   m_Grid.attach(*limitationsFrame, 1, row++, 43, 2);
@@ -322,6 +324,10 @@ void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
       user.setOrganization(node.GetText());
     if (auto node = xmlDoc.GetNode("/GeneralInfo/ReleaseLevel"))
       config.setReleaseLevel(node.GetText());
+    if (auto node = xmlDoc.GetNode("/GeneralInfo/Note"))
+      aircraft.setNotes(node.GetText());
+    if (auto node = xmlDoc.GetNode("/GeneralInfo/Description"))
+      aircraft.setDescription(node.GetText());
     
     // Populate GUI
     m_AircraftNameEntry.set_text(aircraft.getName());
@@ -329,6 +335,8 @@ void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
     m_EmailEntry.set_text(user.getEmail());
     m_OrganizationEntry.get_buffer()->set_text(user.getOrganization());
     m_ReleaseLevelEntry.set_text(config.getReleaseLevel());
+    m_Notes.get_buffer()->set_text(aircraft.getNotes());
+    m_Description.get_buffer()->set_text(aircraft.getDescription());
 
     // Populate Release Level dropdown
     auto fdmNode = xmlDoc.GetNode("fdm_config");
@@ -368,6 +376,8 @@ void GeneralInformationSubsystem::SaveToXML(const std::string& filePath, const A
   xmlDoc.GetNode("/GeneralInfo/Email").SetText(user.getEmail());
   xmlDoc.GetNode("/GeneralInfo/Organization").SetText(user.getOrganization());
   xmlDoc.GetNode("/GeneralInfo/ReleaseLevel").SetText(config.getReleaseLevel());
+  xmlDoc.GetNode("/GeneralInfo/Notes").SetText(aircraft.getNotes());
+  xmlDoc.GetNode("/GeneralInfo/Description").SetText(aircraft.getDescription());
 
   auto fdmNode = xmlDoc.GetNode("fdm_config");
   if (fdmNode) {
@@ -410,6 +420,8 @@ void GeneralInformationSubsystem::UpdateDataFromGUI(Aircraft& aircraft, User& us
   user.setEmail(m_EmailEntry.get_text());
   user.setOrganization(m_OrganizationEntry.get_buffer()->get_text());
   config.setReleaseLevel(m_ReleaseLevelEntry.get_text());
+  aircraft.setDescription(m_Description.get_buffer()->get_text());
+  aircraft.setNotes(m_Notes.get_buffer()->get_text());
   SetFilePath(newFilePath);
 }
 
@@ -427,6 +439,11 @@ void GeneralInformationSubsystem::ValidateAndSave() {
 
   if (!Validation::validateEmail(m_EmailEntry.get_text())) {
     std::cerr << "Invalid email format. Please enter a valid email address." << std::endl;
+    return;
+  }
+
+  if(!Validation::validateNotes(m_Notes.get_buffer()->get_text())) {
+    std::cerr << "Invalid, notes must be less than 500 characters." << std::endl;
     return;
   }
   // Additional validations for each field

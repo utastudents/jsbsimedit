@@ -3,18 +3,23 @@
 #include <iostream>
 #include "Validation.hpp"
 
+
 // Default constructor
-Aircraft::Aircraft() : name(""), Description(""), limitations(""), notes(""), Organization("")  {}
+Aircraft::Aircraft() : name(""), notes(""), description("") {}
 
 // Set and get functions for name
 void Aircraft::setName(const std::string& name) {
+    if (name.empty()) {
+        std::cerr << "Error: Aircraft name cannot be empty." << std::endl;
+        return;
+    }
     this->name = name;
-    // test for the push/pull
 }
 
 std::string Aircraft::getName() const {
     return name;
 }
+
 
 // Set and get functions for user
 void Aircraft::setUser(const User& user) {
@@ -102,6 +107,10 @@ void Aircraft::setNotes(std::string notes) {
     if (!Validation::validateNotes(notes))
     {
         // std::cout << "Notes must be 500 characters or fewer!" << std::endl;
+// Set and get functions for notes
+void Aircraft::setNotes(const std::string& notes) {
+    if (notes.length() > 500) {
+        std::cerr << "Error: Notes exceed the character limit of 500." << std::endl;
         return;
     }
     this->notes = notes;
@@ -137,11 +146,16 @@ Aircraft Aircraft::loadFromFile() {
 void Aircraft::setOrganization(std::string organization) {
     if (organization.length() > 100) {
         // std::cout << "Organization name must be 100 characters or fewer!" << std::endl;
+
+// Set and get functions for description
+void Aircraft::setDescription(const std::string& description) {
+    if (description.length() > 1000) {
+        std::cerr << "Error: Description exceeds the character limit of 1000." << std::endl;
         return;
     }
-    this->Organization = organization;
+    this->description = description;
 }
 
-std::string Aircraft::getOrganization() const {
-    return Organization;
+std::string Aircraft::getDescription() const {
+    return description;
 }
