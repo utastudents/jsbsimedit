@@ -1,4 +1,5 @@
 #include "FileMetadata.hpp"
+#include <iostream>
 
 // Default constructor
 FileMetadata::FileMetadata() : fileName(""), fileDate(std::chrono::system_clock::now()), flightModelVersion("") {}
