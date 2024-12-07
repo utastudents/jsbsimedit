@@ -63,34 +63,7 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
 
 
     xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"}); //loading xml data
-
     
-    // when do the subsystems read the file?  when the objects are created? or ??
-    // how does opening up a new file work? are all the subsystems destroyed and   
-    // then created.  hard problems, not for me to solve now.
-
-    //Drag drop team just saying hi we want to connect to load the file so we are doing so here
-    //Feel free to move this to wherever you solve the above^^^^^^^^
-    m_fcDemo.LoadXMLData();
-
-
-
-
-    
-
-    
-    //Get the menubar and toolbar widgets, and add them to a container widget:
-    //auto object = m_refBuilder->get_object("menubar");
-    //auto gmenu = std::dynamic_pointer_cast<Gio::Menu>(object);
-    //if (gmenu)
-    //{
-        //Menubar:
-    //    auto pMenubar = Gtk::make_managed<Gtk::PopoverMenuBar>(gmenu);
-    //    m_Box.append(*pMenubar);
-    //}
-    //else
-    //    g_warning("GMenu not found");
-
     try
     {
         m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
@@ -124,50 +97,16 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_Subsystems.push_back(new GroundReactionsSubsystem());
 
     
+    // Call Create() for all subsystems
+    for (const auto &i : m_Subsystems) 
+    {
+        i->Create();
+        m_Notebook->append_page(i->m_Grid, i->m_Name);  
+    }
 
+    // this subsystem is special
     m_Notebook->append_page(m_fcDemo,"Flight Control"); 
-    
-        // Call Create() for all subsystems
-        for (const auto &i : m_Subsystems) 
-        {
-            i->Create();
-            m_Notebook->append_page(i->m_Grid, i->m_Name);  
-        }
-
-    //Load Stack elements..
-    if(!load_stack(app))
-        std::cerr << "Error loading tabs\n";
-    //Append the stack siwtcher to the mainPage box
-    auto tabBox = m_refBuilder->get_widget<Gtk::Box>("tabBox");
-    if (tabBox)
-    {
-        m_Box.append(*tabBox);
-        tabBox->append(m_stackSwitcher);
-    }
-    else
-        g_warning("tabbox not found");
-    
-    //Append the stack to the tabContents box
-    auto tabContents = m_refBuilder->get_widget<Gtk::Box>("tabContents");
-    if (tabContents)
-    {
-        m_Box.append(*tabContents);
-        tabContents->append(m_stack);
-    }
-    else
-        g_warning("tabbox not found");
-
-}
-
-bool ExampleWindow::load_stack(const Glib::RefPtr<Gtk::Application> &app) //tabs
-{
-    //m_stack.add(m_tab1, "Tab1", "Tab1");
-    //m_stack.add(m_tab2, "Tab2", "Tab2");
-    m_stack.add(m_fcDemo, "Flight Control", "Flight Control");
-    m_stackSwitcher.set_stack(m_stack);
-    m_stackSwitcher.set_visible(true);
-    m_stack.set_visible(true);
-    return true;
+    m_fcDemo.LoadXMLData();
 }
 
 void ExampleWindow::on_menu_file_new()
@@ -182,16 +121,17 @@ if (!m_refFileDialog)
 
 void ExampleWindow::on_menu_file_save() //implement save function to over-write the xml
 {
-std::cout << "Saving data..." << std::endl;
-    // Example logic: Save data to a file
-    std::ofstream file("output.txt");
-    if (file.is_open()) {
-        file << "Your data goes here.\n";
-        file.close();
-        std::cout << "Data saved successfully." << std::endl;
-    } else {
-        std::cerr << "Failed to open file for saving." << std::endl; //saving data to txt file
-    }}
+  std::cout << "Saving data..." << std::endl;
+  
+  if (xmlptr()->SaveToFile(xmlptr()->GetFilePath())) //Calling the SaveToFile function with the file path. Note: this save will overwrite the existing file.
+  {
+    std::cout << "Data saved successfully to: " << xmlptr()->GetFilePath() << std::endl;
+  }
+  else
+  {
+    std::cout << "Failed to save to: " << xmlptr()->GetFilePath() << std::endl;
+  }
+}
 
 
 void ExampleWindow::on_menu_file_files_dialog()
@@ -200,6 +140,7 @@ void ExampleWindow::on_menu_file_files_dialog()
     {
         m_refFileDialog = Gtk::FileDialog::create();
         m_refFileDialog->set_modal(true);
+        m_refFileDialog->set_title("Open XML File");
     }
     m_refFileDialog->open(*this, sigc::mem_fun(*this, &ExampleWindow::on_dialog_finish));
 }
@@ -208,8 +149,6 @@ void ExampleWindow::on_menu_file_quit()
 {
     set_visible(false); //Closes the main window to stop the app->make_window_and_run().
 }
-
-
 
 void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
 {
@@ -226,8 +165,11 @@ void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
 
     auto selected_uri = file->get_uri();
     std::cout << "URI selected = " << selected_uri << std::endl;
-    std::cout << (m_refRecentManager->has_item(selected_uri) ? "A" : "Not a")
-        << " recently used file" << std::endl;
+    std::string selected_path = selected_uri.substr(7);
+    
+    xmlptr()->LoadFileAndParse(selected_path);
+    
+    std::cout << "Loaded XML data from: " << xmlptr()->GetFilePath() << std::endl;
 }
 void ExampleWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {

@@ -11,13 +11,12 @@ BuoyantForcesSubsystem::BuoyantForcesSubsystem()
 {
 
   m_Name = "Buoyant Forces";
-  std::cout << "In BuoyantForcesSubsystem contructor" << std::endl;
+  //std::cout << "In BuoyantForcesSubsystem contructor" << std::endl;
 }
 
 void BuoyantForcesSubsystem::Create()
 {
-  std::cout << "---------------------------------" << std::endl;
-  std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
+  // std::cout << "in BuoyantForcesSubsystem::Create" << std::endl;
 
   m_Grid.set_row_spacing(10);
   m_Grid.set_column_spacing(10);

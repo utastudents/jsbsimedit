@@ -18,9 +18,11 @@ ValueMenu::ValueMenu(std::shared_ptr<AerodynamicsNode> node)
     inputEntry = Gtk::make_managed<Gtk::Entry>();
     grid->attach(*inputEntry, 1,0);
     inputEntry->set_text(std::to_string(value->getInput()));
+    inputEntry->set_tooltip_text("Enter a numerical value");
 
     saveButton = Gtk::make_managed<Gtk::Button>();
     saveButton->set_label("Save");
+    saveButton->set_tooltip_text("Save changes to this value");
     saveButton->signal_clicked().connect(sigc::mem_fun(*this,&ValueMenu::on_save_clicked));
     grid->attach(*saveButton,1,1);
     

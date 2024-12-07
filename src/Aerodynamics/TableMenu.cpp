@@ -25,6 +25,7 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
     rowPropertyEntry = Gtk::make_managed<Gtk::Entry>();
     rowPropertyEntry->set_text(table->getRowProperty());
     rowPropertyEntry->set_editable(false);
+    rowPropertyEntry->set_tooltip_text("The property representing the rows in this table");
     grid->attach(*rowPropertyEntry,1,0);
 
     // Create column property label and entry
@@ -35,6 +36,7 @@ TableMenu::TableMenu(std::shared_ptr<AerodynamicsNode> node)
     columnPropertyEntry = Gtk::make_managed<Gtk::Entry>();
     columnPropertyEntry->set_text(table->getColumnProperty());
     columnPropertyEntry->set_editable(false);
+    columnPropertyEntry->set_tooltip_text("The property representing the rows in this table (if available)");
     grid->attach(*columnPropertyEntry,1,1);
 
     // Create a scrolled window for the TreeView

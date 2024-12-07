@@ -21,6 +21,7 @@ public:
 
     std::string selectedEngine;
     std::string selectedThruster;
+    std::string selectedPair;
     std::string selectedTank;
 };
 

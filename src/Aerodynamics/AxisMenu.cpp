@@ -19,6 +19,7 @@ AxisMenu::AxisMenu(std::shared_ptr<AerodynamicsNode> node)
         name_list->append(axisName.second);
     }
     nameDropdown->set_model(name_list);
+    nameDropdown->set_tooltip_text("Change the axis' name");
     nameDropdownLabel = Gtk::make_managed<Gtk::Label>("Axis Name:");
     nameDropdownLabel->set_halign(Gtk::Align::START);
     grid->attach(*nameDropdownLabel,0,0);
@@ -41,6 +42,7 @@ AxisMenu::AxisMenu(std::shared_ptr<AerodynamicsNode> node)
         unit_list->append(unitName.second);
     }
     unitDropdown->set_model(unit_list);
+    unitDropdown->set_tooltip_text("Change the axis' unit");
     unitDropdownLabel = Gtk::make_managed<Gtk::Label>("Unit:");
     unitDropdownLabel->set_halign(Gtk::Align::START);
     grid->attach(*unitDropdownLabel,0,1);
@@ -58,6 +60,7 @@ AxisMenu::AxisMenu(std::shared_ptr<AerodynamicsNode> node)
 
     saveButton = Gtk::make_managed<Gtk::Button>();
     saveButton->set_label("Save");
+    saveButton->set_tooltip_text("Save changes to this axis");
     saveButton->signal_clicked().connect(sigc::mem_fun(*this,&AxisMenu::on_save_clicked));
     grid->attach(*saveButton,1,2);
 }

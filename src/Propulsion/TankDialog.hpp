@@ -8,8 +8,14 @@ class TankDialog : public Gtk::Window {
 public:
     TankDialog(); // Constructor
     virtual ~TankDialog() = default;
+     // Helper methods
+    bool isValidSelection();
+    void onCreateButtonClicked();
+    void onCancelButtonClicked();
 
-private:
+    // set default values method 
+    void defaultValueFill();
+
     // Main dialog and layout
     Gtk::Dialog* dialogTank;
     Gtk::Grid grid;
@@ -22,16 +28,12 @@ private:
     Gtk::ComboBoxText contentsUnitComboBox;
 
     Gtk::Entry xEntry, yEntry, zEntry;
+    Gtk::ComboBoxText* zUnitComboBox; 
     Gtk::ComboBoxText locationUnitComboBox;
 
     // Buttons
     Gtk::Button createButton;
     Gtk::Button cancelButton;
-
-    // Helper methods
-    bool isValidSelection();
-    void onCreateButtonClicked();
-    void onCancelButtonClicked();
 };
 
-#endif // TANK_DIALOG_HPP
+#endif 
