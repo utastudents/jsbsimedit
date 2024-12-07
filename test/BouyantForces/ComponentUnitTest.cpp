@@ -46,5 +46,20 @@ TEST_CASE("Testing GasType to String Conversion") {
 TEST_CASE("Testing Unit to String Conversion") {
     GasCell gasCell;
 
-    REQUIRE();
+    REQUIRE(gasCell.unitToString(Component::Unit::WIDTH) == "width");
+    REQUIRE(gasCell.unitToString(Component::Unit::RADIUS) == "radius");
+
+    REQUIRE(gasCell.unitToString(Component::Unit::PA) == "PA");
+    REQUIRE(gasCell.unitToString(Component::Unit::PSI) == "PSI");
+    
+    REQUIRE(gasCell.unitToString(Component::Unit::M) == "M");
+    REQUIRE(gasCell.unitToString(Component::Unit::IN) == "IN");
+    
+    REQUIRE(gasCell.unitToString(Component::Unit::FT4_SEC_SLUG) == "FT4*SEC/SLUG");
+    REQUIRE(gasCell.unitToString(Component::Unit::M4_SEC_KG) == "M4*SEC/KG");
+    
+    REQUIRE(gasCell.unitToString(Component::Unit::LBS_FT_SEC) == "lbs ft / sec");
+    REQUIRE(gasCell.unitToString(Component::Unit::LB_FT_SEC_R) == "lb ft / (sec R)");
+    
+    REQUIRE(gasCell.unitToString(Component::Unit::FT3_SEC) == "ft^3 / sec");
 }
