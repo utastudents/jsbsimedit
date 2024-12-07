@@ -71,7 +71,7 @@ void BuoyantForcesSubsystem::Create()
   // Load XML data for testing
   try {
     LoadXMLData();
-    std::cout << "XML data loaded successfully." << std::endl;
+    // std::cout << "XML data loaded successfully." << std::endl;
   } catch (const std::exception& e) {
     std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
   }
@@ -79,12 +79,12 @@ void BuoyantForcesSubsystem::Create()
 
 // Needed for Testing SaveXMLData
 void BuoyantForcesSubsystem::on_button_clicked() {
-    std::cout << "Button clicked!" << std::endl;
+    // std::cout << "Button clicked!" << std::endl;
 
     // Save changes to XML file for testing
     try {
         SaveXMLData();
-        std::cout << "XML data saved successfully" << std::endl;
+        // std::cout << "XML data saved successfully" << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Error saving XML: " << e.what() << std::endl;
     }
@@ -465,10 +465,10 @@ void BuoyantForcesSubsystem::UpdateData() {
 void BuoyantForcesSubsystem::on_button_toggled() {
   bool enable = m_checkbutton.get_active();
 
-  if (enable) 
-    std::cout << "Buoyant Forces is ENABLED" << std::endl;
-  else 
-    std::cout << "Buoyant Forces is DISABLED" << std::endl;
+//   if (enable) 
+//     std::cout << "Buoyant Forces is ENABLED" << std::endl;
+//   else 
+//     std::cout << "Buoyant Forces is DISABLED" << std::endl;
 
   m_buoyantforces.setHasBuoyantForces(enable);
   m_notebook.set_sensitive(enable);
@@ -478,7 +478,7 @@ void BuoyantForcesSubsystem::on_notebook_switch_page(Gtk::Widget* /* page */, gu
 {
   Gtk::Widget* tab = m_notebook.get_nth_page(page_num);
   std::string tab_name = m_notebook.get_tab_label_text(*tab);
-  std::cout << "Switched to '" << tab_name << "' tab with index " << page_num << std::endl;
+//   std::cout << "Switched to '" << tab_name << "' tab with index " << page_num << std::endl;
 }
 
 void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
@@ -558,15 +558,15 @@ void BuoyantForcesSubsystem::on_dropdown_changed(const std::string& key) {
 
     }
 
-    std::cout << "Dropdown '" << key << "' changed, Row = " << selected
-              << ", String = " << selected_string << std::endl;
+    // std::cout << "Dropdown '" << key << "' changed, Row = " << selected
+    //           << ", String = " << selected_string << std::endl;
 }
 
 void BuoyantForcesSubsystem::on_entry_activate(const std::string& key) {
     auto it = m_entries.find(key);
     if (it != m_entries.end()) {
         Glib::ustring input = it->second->get_text();  // Retrieve text from the entry box
-        std::cout << "'" << key << "' activated with input: " << input << std::endl;
+        // std::cout << "'" << key << "' activated with input: " << input << std::endl;
 
         if (key.find("x Loc") != std::string::npos) {
             m_gascell.setXLocation(std::stod(input.raw()));
@@ -648,7 +648,7 @@ void BuoyantForcesSubsystem::BuildTabs(int target)
 
     // Add Ballonet Objects 
     while (current < target) {
-        std::cout << "Building Ballonet " << current << " Object" << std::endl;
+        // std::cout << "Building Ballonet " << current << " Object" << std::endl;
         m_ballonets.emplace_back("Ballonet " + std::to_string(current + 1));
         m_gascell.addBallonet(m_ballonets.back());
         current++;
@@ -656,7 +656,7 @@ void BuoyantForcesSubsystem::BuildTabs(int target)
 
     // Remove Ballonet Objects
     while (current > target) {
-        std::cout << "Destroying Ballonet " << current << " Object" << std::endl;
+        // std::cout << "Destroying Ballonet " << current << " Object" << std::endl;
         m_ballonets.pop_back();
         m_gascell.removeLastBallonet();
         current--;

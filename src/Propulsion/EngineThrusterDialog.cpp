@@ -189,13 +189,13 @@ void EngineThrusterDialog::onResponse(int response_id) {
 
 // Handle Confirm button press
 void EngineThrusterDialog::onConfirm() {
-    std::cout << "Confirmed! Settings have been applied." << std::endl;
+    //std::cout << "Confirmed! Settings have been applied." << std::endl;
     dialogEng->hide();
 }
 
 // Handle Cancel button press
 void EngineThrusterDialog::onCancel() {
-    std::cout << "Canceled! No changes were applied." << std::endl;
+    //std::cout << "Canceled! No changes were applied." << std::endl;
     dialogEng->hide();
 }
 

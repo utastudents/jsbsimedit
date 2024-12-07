@@ -212,7 +212,7 @@ void MainWindow::textboxesAndLists(Gtk::Grid& m_Grid)
     )
   );
  
-  std::cout << "\n\n\n" << std::endl;
+  //std::cout << "\n\n\n" << std::endl;
   
 }
 
@@ -257,7 +257,7 @@ void MainWindow::onChooseButtonClicked()
 
 void MainWindow::IOSave(std::vector<JSBEdit::XMLNode> children, std::vector<Gtk::CheckButton*> checkboxes, const std::vector<std::string> checkboxLabels)
 {
-  std::cout << "Save method called!\n" << std::endl;
+  //std::cout << "Save method called!\n" << std::endl;
   
   // Set the updated checkbox values
   for (size_t i = 0; i < checkboxes.size(); ++i) 

@@ -344,7 +344,7 @@ void GeneralInformationSubsystem::LoadFromXML(const std::string& filePath) {
       // Extract and set file path from XML
       auto filePathAttr = fdmNode.GetAttribute("filePath");
       if (!filePathAttr.first.empty()) {
-        std::cout << "File path found in XML: " << filePathAttr.second << std::endl;
+        //std::cout << "File path found in XML: " << filePathAttr.second << std::endl;
         SetFilePath(filePathAttr.second); // Update m_FilePath and GUI
       } else {
         std::cerr << "No file path attribute found in XML!" << std::endl;
@@ -388,7 +388,7 @@ void GeneralInformationSubsystem::SaveToXML(const std::string& filePath, const A
 
 // Method to set file path from the GUI
 void GeneralInformationSubsystem::SetFilePath(const std::string& filePath) {
-  std::cout << "Setting file path: " << filePath << std::endl;
+  //std::cout << "Setting file path: " << filePath << std::endl;
     if (filePath.empty()) {
         std::cerr << "Warning: File path is empty!" << std::endl;
     }

@@ -76,7 +76,7 @@ void GainComponentWindow::Scheduled()
                                 // now it is set as "No Selection" even if saved
     pComboBoxThr->signal_changed().connect([this, pComboBoxThr]() {
         this->selectedOption = pComboBoxThr->get_active_text();
-        std::cout << "Selected Thruster: " << this->selectedOption << std::endl;
+        //std::cout << "Selected Thruster: " << this->selectedOption << std::endl;
     });
 
     OptionLabel.set_margin_bottom(10);

@@ -44,7 +44,7 @@ void MassBalanceSubsystem::Create() {
   auto locChildren = locNode.GetChildren();
   auto massChildren = massNode.GetChildren();
   auto massLocChildren = massLocNode.GetChildren();
-  std::cout << "there are " << children.size() << " children " << std::endl;
+  //std::cout << "there are " << children.size() << " children " << std::endl;
   for (auto &child : children) {
     std::vector<AttributeKV> attributes = child.GetAttributes();
     //std::cout << child.GetName() << " " << child.GetText();
