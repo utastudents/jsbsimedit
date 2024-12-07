@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include "MathFunction.hpp"
 
 class Component
 {
@@ -103,6 +102,5 @@ class Component
         Unit dimensionsShape;
         Unit pressureUnit;
         Unit valveCoefficientUnit;
-        // bool hasHeat;
 };
 

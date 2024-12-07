@@ -36,18 +36,11 @@ void BuoyantForcesSubsystem::Create()
 
   m_savebutton.set_label("Save");
   m_savebutton.set_margin_top(10);
-  m_loadbutton.set_label("Load");
-  m_loadbutton.set_tooltip_text("Loading from Submarine_Scout.xml");
-  m_loadbutton.set_margin_top(10);
 
   m_savebutton.signal_clicked().connect(
     std::bind(&BuoyantForcesSubsystem::on_button_clicked, this, "Save"));
-  m_loadbutton.signal_clicked().connect(
-    std::bind(&BuoyantForcesSubsystem::on_button_clicked, this, "Load"));
-
 
   m_Grid.attach(m_checkbutton, 0, m_rows);
-  m_Grid.attach(m_loadbutton, 2, m_rows);
   m_Grid.attach(m_savebutton, 3, m_rows++);
   m_Grid.attach(m_notebook, 0, m_rows++);
 
@@ -60,6 +53,13 @@ void BuoyantForcesSubsystem::Create()
   m_pages[gc_name] = std::make_unique<Gtk::Grid>();
   SetupTab(*m_pages[gc_name]);
   m_notebook.append_page(*m_pages[gc_name], gc_name);
+
+  try {
+    LoadXMLData();
+    std::cout << "XML data loaded successfully." << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "Error loading XML in Create(): " << e.what() << std::endl;
+  }
 }
 
 void BuoyantForcesSubsystem::SaveXMLData() {
@@ -85,10 +85,10 @@ void BuoyantForcesSubsystem::SaveXMLData() {
             root.AddChild(gascellNode);
         }   // else, print nothing if BuoyantForces is disabled
 
-        // xmlptr()->SaveToFile(xmlptr()->GetFilePath());
+        xmlptr()->SaveToFile("../../../out/build/Linux-x64-Clang-Debug/output.txt");
 
     } catch (const std::exception& e) {
-        std::cerr << "Error in SaveXML: " << e.what() << std::endl;
+        std::cerr << "Error in SaveXML (Buoyant Forces): " << e.what() << std::endl;
     }
 }
 
@@ -123,7 +123,7 @@ void BuoyantForcesSubsystem::LoadXMLData() {
             }
         }
     } catch (const std::exception& e) {
-        std::cerr << "Error loading XML data: " << e.what() << std::endl;
+        std::cerr << "Error loading XML data (in Buoyant Forces): " << e.what() << std::endl;
         m_checkbutton.set_active(false);    // Default to disabled in case of error
     }
 }

@@ -61,14 +61,13 @@ class BuoyantForcesSubsystem : public Subsystem
     Glib::RefPtr<Gtk::StringList> m_blowerStringList;
 
  private:
-    //temporary
-    JSBEdit::XMLDoc m_doc;
-    Gtk::Button m_savebutton;
-    Gtk::Button m_loadbutton;
-
     BuoyantForces m_buoyantforces;
     GasCell m_gascell;
     std::vector<Ballonet> m_ballonets;
     static int m_rows;
     static int m_tab_count;
+
+    //temporary
+    JSBEdit::XMLDoc m_doc;
+    Gtk::Button m_savebutton;
   };
