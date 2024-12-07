@@ -25,12 +25,12 @@ class BuoyantForcesSubsystem : public Subsystem
   protected:
     // Signal Handlers
     void on_button_toggled();
-    void on_notebook_switch_page(Gtk::Widget* page, guint page_num);
     void on_dropdown_changed(const std::string& dropdown_name);
     void on_entry_activate(const std::string& key);
+    void on_button_clicked(const std::string& button_name);
 
     // Helper Methdos for Save and Load
-    void SetNodesFromWidgets(JSBEdit::XMLNode& parent);
+    void SetNodesFromWidgets(JSBEdit::XMLNode& parent, Component& component);
     void SetWidgetsFromNodes(JSBEdit::XMLNode& root, int tabIndex);
     void SetDropDownFromNode(JSBEdit::XMLNode& node, const std::string& nodeName, const std::string& attributeName,
                              const Glib::RefPtr<Gtk::StringList>& stringList, const std::string& dropdownLabel,
@@ -45,8 +45,6 @@ class BuoyantForcesSubsystem : public Subsystem
     void AddEntry(Gtk::Grid& p_grid, std::string label, bool hasDDMenu);
     Component::Unit stringToUnit(const std::string& unit_string) const;
 
-    // Methods for Testing (Temporary)
-    void on_button_clicked(const std::string& button_name);
 
 
     Gtk::Notebook m_notebook;
