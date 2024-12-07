@@ -20,9 +20,7 @@ private:
     std::vector<References> references; 
     std::string limitations;                
     std::string notes;     
-
-    std::string name;        
-    std::string notes;       
+    
     std::string description;                 
 
 public:
