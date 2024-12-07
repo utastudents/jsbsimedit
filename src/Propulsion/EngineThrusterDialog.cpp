@@ -199,7 +199,7 @@ void EngineThrusterDialog::onCancel() {
     dialogEng->hide();
 }
 
-void EngineThrusterDialog::defaultValueFill(const std::string& engine, const std::string& thruster) {
+void EngineThrusterDialog::defaultValueFill([[maybe_unused]] const std::string& engine, [[maybe_unused]] const std::string& thruster) {
     // Set default values for other fields (e.g., location, orientation, etc.)
     PropulsionSubsystem propSubsystem;
     x_entry->set_text("0.0");

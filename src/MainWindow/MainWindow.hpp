@@ -18,7 +18,7 @@ public:
         //main_notebook.show();
 
         // Example: Create a new tab with JSBSim placeholder content
-        Gtk::Box* jsbsim_content = create_example_jsbsim_box();
+        [[maybe_unused]]Gtk::Box* jsbsim_content = create_example_jsbsim_box();
 
         // Create a new tab with the JSBSim content
         //create_tab(main_notebook, "JSBSim Data Tab", *jsbsim_content);
