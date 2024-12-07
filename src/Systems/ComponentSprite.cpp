@@ -26,7 +26,7 @@ void ComponentSprite::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
 
     //Draw Input box, I know width height is 4x4 which is bad if we change later, sorry for hardcode
     //Source shouldnt have a input box.
-    if(m_componentType == ComponentType::SOURCE)
+    if(m_componentType != ComponentType::SOURCE)
     {
         auto impPos = m_inputBox.GetPosition();
         drawCont->set_source_rgb(0.0, 1.0, 0.0); //Green

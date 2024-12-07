@@ -3,7 +3,7 @@
 
 namespace JSBEdit {
 
-ExampleTab::ExampleTab(const Glib::RefPtr<Gtk::Application>& app
+ExampleTab::ExampleTab([[maybe_unused]] const Glib::RefPtr<Gtk::Application>& app
     , const std::string& buttonName)
         : l(buttonName)
 {

@@ -60,6 +60,10 @@ void Channel::Draw(const Cairo::RefPtr<Cairo::Context> &drawCont)
     for(auto& spritePair : m_spriteComponents)
         spritePair.second.Draw(drawCont);
 
+    //Draw every connection.
+    for(auto& connect : m_connections)
+        connect.Draw(drawCont, m_spriteComponents);
+
     //If we are not connecting then exit early.
     if(m_dragState == DragState::DRAGGING || m_dragState == DragState::NONE)
         return;
@@ -129,6 +133,11 @@ void Channel::HandleDoubleClick(int x, int y)
                     m_appRef->add_window(*m_winPtr);
                     break;
 
+                case ComponentType::SWITCH:
+                    m_winPtr = std::make_shared<SwitchComponentWindow>(m_components.at(uid), m_componentNameSet);
+                    m_appRef->add_window(*m_winPtr);
+                    break;
+
                 default:
                     m_winPtr = std::make_shared<GainComponentWindow>(m_components.at(uid), m_componentNameSet);
                     m_appRef->add_window(*m_winPtr);
@@ -191,6 +200,9 @@ std::shared_ptr<IComponentCommon> Channel::createComponentFromType(ComponentType
         case ComponentType::FILTER:
             component = std::make_shared<FilterComponent>(name);
             break;
+        case ComponentType::SWITCH:
+            component = std::make_shared<SwitchComponent>(name);
+            break;
         default:
             component = std::make_shared<GainComponent>(name);
             break;
@@ -213,6 +225,22 @@ int Channel::generateUniqueId()
     if(m_uniqueIDSet.contains(uId))
         uId = generateUniqueId();
     return uId;
+}
+
+void Channel::makeConnection(int inputUID, int outputUID)
+{
+    Connection connect{inputUID, outputUID};
+    //CONNECTIONS ARE ALL SCUFFED AND NEEDS TO BE REWRITTEN.
+    if(m_inputConnectionSet.contains(inputUID)){
+        if(m_components.at(inputUID)->CanHaveMultipleInputs())
+            m_connections.push_back(connect);
+    }
+    else
+    {
+        m_inputConnectionSet.insert(inputUID);
+        m_connections.push_back(connect);
+    }
+
 }
 
 void Channel::populateStringComponentMap()
@@ -267,11 +295,27 @@ void Channel::OnDragEnd(int x, int y)
         return;
     
     m_currentDragPos = {x,y};
-
-    //Todo handle connections here.
-
     if(m_dragState == DragState::DRAGGING)
+    {
         m_spriteComponents.at(m_selectedId).SetPosition(x,y);
+    }
+    else if(m_dragState == DragState::CONNECT_INP || m_dragState == DragState::CONNECT_OUT)
+    {
+        for(auto& i : m_spriteComponents)
+        {
+            //Make connection.
+            if(i.first == m_selectedId)
+                continue;
+            if(i.second.ContainsPoint(x,y))
+            {
+                if(m_dragState == DragState::CONNECT_OUT)
+                    makeConnection(m_selectedId, i.first);
+                else
+                    makeConnection(i.first, m_selectedId);
+                break;
+            }
+        }
+    }
 
     m_dragState = DragState::NONE;
 }

@@ -3,16 +3,14 @@
 #include "inc/XML_api.hpp"
 #include "XML/XMLDoc.hpp"
 
-
 class PopUpWindow : public Gtk::Window { // Explicitly inherit from Gtk::Window
 public:
-
     PopUpWindow();
     virtual ~PopUpWindow();
-    
+
+    std::string getSelectedProperty(); // New method to return the selected property
 
 protected:
-
     void onButtonClicked(); // handler for button click actions
     void onFilterButtonClicked();
     void onShowAllButtonClicked();
@@ -21,22 +19,20 @@ protected:
     void loadPropertiesFromFile(const std::string& filePath);
     void onPropertySelected();
     void updateShowHideCounts();
-   // Helper methods
-    void applyFilter();
-    
+    void applyFilter(); // Helper method
+
 private:
     // Widgets
-    // Gtk::Grid gridLayout;,,,not needed
     Gtk::Box m_VBox;
     Gtk::Label currentLabel;
     Gtk::Entry* currentPlaceholder;
     Gtk::ScrolledWindow m_ScrolledWindow;
     Gtk::Grid m_Grid;
-    Gtk::ScrolledWindow scrolledWindow; 
+    Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView propertyTreeView;
     Gtk::Label filterLabel;
     Gtk::Window propertiesScrolledWindow;
-    Gtk::Label currentPropertyValue; 
+    Gtk::Label currentPropertyValue;
     Gtk::Entry filterTextBox; 
     Gtk::Button filterButton; 
     Gtk::Button showAllButton; 
@@ -47,12 +43,9 @@ private:
     int hiddenProperties; 
     Gtk::Label showLabel;
     Gtk::Label hideLabel;
-    
-    //Gtk::ScrolledWindow scrolledWindowV; // Vertical scrolling window for property list
-    //Gtk::ScrolledWindow scrolledWindowH; // Horizontal scrolling window for property list
 
-// Define property columns model
-class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
+    // Define property columns model
+    class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
     public:
         PropertyColumns() {
             add(index);
@@ -62,8 +55,6 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
             add(access);
             add(comments);
         }
-    // Gtk::TreeModelColumn<Glib::ustring> index, propertyName, description, unit, access, comments;
-        
         Gtk::TreeModelColumn<int> index;  // Use int for the "No." column
         Gtk::TreeModelColumn<Glib::ustring> propertyName;
         Gtk::TreeModelColumn<Glib::ustring> description;
@@ -74,5 +65,7 @@ class PropertyColumns : public Gtk::TreeModel::ColumnRecord {
 
     PropertyColumns propertyColumns;
     Glib::RefPtr<Gtk::ListStore> listStore;
-    
+
+    std::string selectedProperty; // New private member to store the selected property
 };
+

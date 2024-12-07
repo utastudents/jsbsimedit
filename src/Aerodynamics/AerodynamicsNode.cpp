@@ -101,9 +101,19 @@ const std::string &Table::getRowProperty() const
     return rowProperty;
 }
 
+void Table::setRowProperty(const std::string &rowProperty)
+{
+    this->rowProperty = rowProperty;
+}
+
 const std::string &Table::getColumnProperty() const
 {
     return columnProperty;
+}
+
+void Table::setColumnProperty(const std::string &columnProperty)
+{
+    this->columnProperty = columnProperty;
 }
 
 const std::string &Table::getTableData() const
@@ -141,7 +151,7 @@ void Axis::setUnit(UnitName unit)
     this->unit = unit;
 }
 
-// Initializing static maps
+// Initializing static maps/vectors
 std::map<Axis::AxisName, std::string> Axis::axisNameToString = {
     { DRAG, "DRAG" },
     { SIDE, "SIDE" },
@@ -177,4 +187,9 @@ std::map<std::string, Axis::UnitName> Axis::stringToUnitName = {
     { "N", N },
     { "LBSFT", LBSFT },
     { "NM", NM }
+};
+std::vector<std::string> Function::operations = {
+    "product", "difference", "sum", "quotient", "pow", "abs", 
+    "sin", "cos", "tan", "asin", "acos", "atan", "derivative", "integral", 
+    "lt", "le", "ge", "gt", "eq", "ne", "and", "or", "not", "ifthen"
 };
