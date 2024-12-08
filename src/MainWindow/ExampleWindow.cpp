@@ -57,13 +57,6 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     app->set_accel_for_action("example.quit", "<Primary>q");
     app->set_accel_for_action("example.save", "<Primary>s");
 
-    // There are a lot of reasons this is the wrong place to open
-    // up the xml file.  But to get work progressing, this is a 
-    // start.
-
-
-    xmlptr()->LoadFileAndParse({"../../../data/aircraft/f16/f16.xml"}); //loading xml data
-    
     try
     {
         m_refBuilder = Gtk::Builder::create_from_file("../../../mainWindow.xml");
@@ -84,29 +77,6 @@ ExampleWindow::ExampleWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_Notebook->set_margin(10);
     m_Notebook->set_expand();
     m_Box.append(*m_Notebook);
-
-    // create the Subsystems objects
-    m_Subsystems.push_back(new GeneralInformationSubsystem());
-    m_Subsystems.push_back(new AeroDynamicsSubsystem());
-    m_Subsystems.push_back(new BuoyantForcesSubsystem());
-    m_Subsystems.push_back(new MetricsSubsystem());
-    m_Subsystems.push_back(new PropulsionSubsystem());
-    m_Subsystems.push_back(new IOSubSystem());
-    m_Subsystems.push_back(new MassBalanceSubsystem());
-    m_Subsystems.push_back(new ExternalReactionsSubsystem());
-    m_Subsystems.push_back(new GroundReactionsSubsystem());
-
-    
-    // Call Create() for all subsystems
-    for (const auto &i : m_Subsystems) 
-    {
-        i->Create();
-        m_Notebook->append_page(i->m_Grid, i->m_Name);  
-    }
-
-    // this subsystem is special
-    m_Notebook->append_page(m_fcDemo,"Flight Control"); 
-    m_fcDemo.LoadXMLData();
 }
 
 void ExampleWindow::on_menu_file_new()
@@ -170,11 +140,48 @@ void ExampleWindow::on_dialog_finish(Glib::RefPtr<Gio::AsyncResult>& result)
     std::string selected_path = selected_uri.substr(7);
     
     xmlptr()->LoadFileAndParse(selected_path);
+
+    // delete the previous, if it exists
+    if (m_Notebook)
+    {
+        m_Box.remove(*m_Notebook);
+        delete m_Notebook;
+    }
+
+    m_Notebook = new Gtk::Notebook();
+    m_Notebook->set_margin(10);
+    m_Notebook->set_expand();
+    m_Box.append(*m_Notebook);
+
+    m_Subsystems.erase (m_Subsystems.begin(),m_Subsystems.end());  
+    // I suspect this leaks.  Strongly suspect
+
+    // create the Subsystems objects
+    m_Subsystems.push_back(new GeneralInformationSubsystem());
+    m_Subsystems.push_back(new AeroDynamicsSubsystem());
+    m_Subsystems.push_back(new BuoyantForcesSubsystem());
+    m_Subsystems.push_back(new MetricsSubsystem());
+    m_Subsystems.push_back(new PropulsionSubsystem());
+    m_Subsystems.push_back(new IOSubSystem());
+    m_Subsystems.push_back(new MassBalanceSubsystem());
+    m_Subsystems.push_back(new ExternalReactionsSubsystem());
+    m_Subsystems.push_back(new GroundReactionsSubsystem());
+
     
+    // Call Create() for all subsystems
+    for (const auto &i : m_Subsystems) 
+    {
+        i->Create();
+        m_Notebook->append_page(i->m_Grid, i->m_Name);  
+    }
+
+    // this subsystem is special
+    m_Notebook->append_page(m_fcDemo,"Flight Control"); 
+    m_fcDemo.LoadXMLData();
+
     std::cout << "Loaded XML data from: " << xmlptr()->GetFilePath() << std::endl;
 
-    MetricsSubsystem * metric_ptr{dynamic_cast<MetricsSubsystem *>(m_Subsystems.at(3))};
-    metric_ptr->load_data(xmlptr());
+    //metric_ptr->load_data(xmlptr());
 }
 void ExampleWindow::on_notebook_switch_page(Gtk::Widget* /* page */, guint page_num)
 {
