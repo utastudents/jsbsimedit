@@ -91,7 +91,7 @@ if (!m_refFileDialog)
 
 void ExampleWindow::on_menu_file_save() //implement save function to over-write the xml
 {
-    std::string filePath = xmlptr()->GetFilePath();
+    std::filesystem::path filePath = xmlptr()->GetFilePath();
     if (xmlptr()->SaveToFile(filePath))
     {
        std::cout << "Data saved successfully to: " << filePath << std::endl;
