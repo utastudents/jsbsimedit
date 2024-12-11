@@ -42,7 +42,7 @@ void PropulsionSubsystem::Create() {
         "Create Tank", "Tank Details", "Delete Tank"
     };
 
-    int nameIndex = 0;
+    
 
     // Engine UI
     Gtk::Label* pLabelEng = Gtk::make_managed<Gtk::Label>("Select Engine:");
