@@ -5,10 +5,76 @@
 #include <assert.h>
 #include <iostream>
 #include <vector>
+#include <string>
 
 MassBalanceSubsystem::MassBalanceSubsystem() {
   m_Name = "Mass Balance";
   //std::cout << "In MassBalanceSubsystem constructor" << std::endl;
+}
+
+
+// Mock XML data for testing
+const std::string mockXML = R"(
+<fdm_config>
+  <mass_balance negated_crossproduct_inertia="true">
+    <ixx unit="SLUG*FT2">9496</ixx>
+    <iyy unit="SLUG*FT2">55814</iyy>
+    <izz unit="SLUG*FT2">63100</izz>
+    <ixy unit="SLUG*FT2">0</ixy>
+    <ixz unit="SLUG*FT2">-982</ixz>
+    <iyz unit="SLUG*FT2">0</iyz>
+    <emptywt unit="LBS">17400</emptywt>
+    <location name="CG" unit="IN">
+      <x>-193</x>
+      <y>0</y>
+      <z>-5.1</z>
+    </location>
+    <pointmass name="Pilot">
+      <weight unit="LBS">230</weight>
+      <location name="POINTMASS" unit="IN">
+        <x>-336.2</x>
+        <y>0</y>
+        <z>0</z>
+      </location>
+    </pointmass>
+  </mass_balance>
+</fdm_config>
+)";
+
+void testMassBalanceSubsystemCreate() {
+    // Set up XML parser mock
+    JSBEdit::XML_api xmlMock;
+    xmlMock.LoadFileAndParseFromString(mockXML);
+    assert(xmlptr() != nullptr); // Ensure the mock XML is loaded
+
+    // Initialize the subsystem
+    MassBalanceSubsystem massBalanceSubsystem;
+
+    // Call Create to parse the mock XML and initialize attributes
+    massBalanceSubsystem.Create();
+
+    // Test assertions
+    assert(massBalanceSubsystem.getAirplane().getIxx() == 9496);
+    assert(massBalanceSubsystem.getAirplane().getIyy() == 55814);
+    assert(massBalanceSubsystem.getAirplane().getIzz() == 63100);
+    assert(massBalanceSubsystem.getAirplane().getIxy() == 0);
+    assert(massBalanceSubsystem.getAirplane().getIxz() == -982);
+    assert(massBalanceSubsystem.getAirplane().getIyz() == 0);
+    assert(massBalanceSubsystem.getEmptymass().getEmptyMass() == 17400);
+    assert(massBalanceSubsystem.getLocation().getX() == -193);
+    assert(massBalanceSubsystem.getLocation().getY() == 0);
+    assert(massBalanceSubsystem.getLocation().getZ() == -5.1);
+    assert(massBalanceSubsystem.getPointmass().getWeight() == 230);
+    assert(massBalanceSubsystem.getPointmass().getX() == -336.2);
+    assert(massBalanceSubsystem.getPointmass().getY() == 0);
+    assert(massBalanceSubsystem.getPointmass().getZ() == 0);
+
+    std::cout << "MassBalanceSubsystem::Create test passed!" << std::endl;
+}
+
+int main() {
+    testMassBalanceSubsystemCreate();
+    return 0;
 }
 
 void MassBalanceSubsystem::Create() {
