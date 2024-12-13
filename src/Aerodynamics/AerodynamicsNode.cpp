@@ -1,3 +1,4 @@
+
 #include "AerodynamicsNode.hpp"
 
 const std::string &AerodynamicsNode::getName() const
